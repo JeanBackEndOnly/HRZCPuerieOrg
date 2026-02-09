@@ -21251,9 +21251,6 @@ label {
     background-image: linear-gradient(300deg,#E32126, #FF6F8F,#E32126);
     color: #fff;
 }
-.fw-bolder{
-    font-weight: 900 !important;
-}
 .bg-gradeint-fade{
     background-image: linear-gradient(to bottom,#E32126, rgba(225,0,0,.50),rgba(225,0,0,.25), rgba(225,0,0,.25));
 }

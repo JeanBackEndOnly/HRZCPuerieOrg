@@ -416,8 +416,12 @@ class Action
 
         try {
             // ==== Admin Login ====
-            $stmt = $this->db->prepare("SELECT a.*, ai.admin_employee_id FROM admin a
+            $stmt = $this->db->prepare("SELECT a.*, ai.admin_employee_id,
+            d.Department_name AS admin_department, j.jobTitle AS admin_position
+            FROM admin a
             INNER JOIN admin_info ai ON a.admin_id = ai.admin_id
+            LEFT JOIN jobTitles j ON ai.admin_position_id = j.jobTitles_id
+            LEFT JOIN departments d ON ai.admin_department_id = d.Department_id
             WHERE admin_username = ? OR admin_email = ?");
             $stmt->execute([$username, $username]);
             $admin = $stmt->fetch();
@@ -429,6 +433,8 @@ class Action
                         'admin_middlename' => $admin['admin_middlename'],
                         'admin_lastname' => $admin['admin_lastname'],
                         'admin_email' => $admin['admin_email'],
+                        'admin_department' => $admin['admin_department'],
+                        'admin_position' => $admin['admin_position'],
                         'admin_user_role' => $admin['admin_user_role'],
                         'admin_username' => $admin['admin_username'],
                         'admin_id' => $admin['admin_id'],
@@ -453,7 +459,14 @@ class Action
 
 
             // ==== Employee Login ====
-            $stmt = $this->db->prepare("SELECT * FROM employee_data WHERE username = ? OR email = ?");
+            $stmt = $this->db->prepare("SELECT ed.*, hd.employeeID,
+            d.Department_name AS employee_department,
+            j.jobTitle AS employee_position
+            FROM employee_data ed
+            INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
+            LEFT JOIN departments d ON hd.Department_id = d.Department_id
+            LEFT JOIN jobTitles j ON hd.jobtitle_id = j.jobTitles_id
+            WHERE ed.username = ? OR ed.email = ?");
             $stmt->execute([$username, $username]);
             $employees = $stmt->fetch();
 
@@ -470,6 +483,10 @@ class Action
                         'user_role' => $employees['user_role'],
                         'username' => $employees['username'],
                         'employee_id' => $employees['employee_id'],
+                        'employeeID' => $employees['employeeID'],
+                        'employee_department' => $employees['employee_department'],
+                        'employee_position' => $employees['employee_position'],
+                        'profile_picture' => $employees['profile_picture'],
                         'created_date' => $employees['created_date']
                     ];
 
@@ -537,10 +554,14 @@ class Action
                         'firstname' => $employees['firstname'],
                         'middlename' => $employees['middlename'],
                         'lastname' => $employees['lastname'],
+                        'employeeID' => $employees['employeeID'],
+                        'employee_department' => $employees['employee_department'],
+                        'employee_position' => $employees['employee_position'],
                         'email' => $employees['email'],
                         'user_role' => $employees['user_role'],
                         'username' => $employees['username'],
                         'employee_id' => $employees['employee_id'],
+                        'profile_picture' => $employees['profile_picture'],
                         'created_date' => $employees['created_date']
                     ];
 

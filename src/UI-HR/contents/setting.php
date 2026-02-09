@@ -68,7 +68,7 @@
                     <span
                         id="employeeName"><?= htmlspecialchars($getHrData["firstname"]) . " " .  substr(htmlspecialchars($getHrData["middlename"]), 0, 1) . ". " . htmlspecialchars($getHrData["lastname"]) ?></span>
                     <span class="text-center"
-                        id="employeeDept"><?= htmlspecialchars($getHrData["Department_name"]) . ' (' . htmlspecialchars($getHrData["Department_code"]) ?? '' . ')'?></span>
+                        id="employeeDept"><?= htmlspecialchars($getHrData["Department_name"]) . ' (' . htmlspecialchars($getHrData["Department_code"]) . ')'?></span>
                     <span id="employeeJobTitle"><?= htmlspecialchars($getHrData["jobTitle"]) ?? '' ?></span>
                     <span id="employeeSchedule" class="fw-bold"></span>
                       <a href="index.php?page=contents/pds&employee_id=<?= $getHrData["employee_id"] ?? '' ?>" class="mt-2"><strong>View Personal Data Sheet <i class="fa-solid fa-arrow-up-right-from-square ms-2"></i></strong></a>

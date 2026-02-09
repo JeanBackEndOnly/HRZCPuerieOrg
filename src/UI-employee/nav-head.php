@@ -6,6 +6,15 @@ if (!isset($_SESSION['employeeData'])) {
   include 'eror.php';
   exit;
 }
+
+$employeeID = $_SESSION['employeeData']['employeeID'];
+$position = $_SESSION['employeeData']['employee_position'] ?? '';
+$department = $_SESSION['employeeData']['employee_department'] ?? '';
+$firstname = $_SESSION['employeeData']['firstname'];
+$middelname = $_SESSION['employeeData']['middlename'];
+$lastname = $_SESSION['employeeData']['lastname'];
+$profile_picture = $_SESSION['employeeData']['profile_picture'];
+$getEmployee = $employees["employee_data"];
 $employee_id = $_SESSION['employeeData']['employee_id'];
 verify_init($employee_id);
 
@@ -97,11 +106,7 @@ if ($days_passed >= 15) {
         <img src="../../assets/image/system_logo/pueri-logo.png" class="image-header me-2">
         <h4 class="w-100 text-white m-0 system-title">Zamboanga Puericulture Center</h4>
     </div>
-    <div class="justify-content-end p-4 mx-2 d-flex col-md-6 col-5 media-header-padding no-media-margin">
-        <div class="col-md-4 col-9 d-flex justify-content-end align-items-center">
-            <i class="fas fa-user-shield me-2"></i>
-            <span class="header-name-media"><?= htmlspecialchars($employee_name["lastname"]) ?></span>
-        </div>
+    <div class="justify-content-start p-4 mx-2 d-flex col-md-1 col-2 media-header-padding no-media-margin">
 
         <button type="button" id="logoutBtn" class="col-md-2 col-3 button-location-media">
             <i class="fas fa-sign-out-alt text-black ms-1"></i>

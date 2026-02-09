@@ -17,7 +17,11 @@
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
-
+.image-profile{
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+}
 .custom-swal {
     width: 350px !important;
     padding-left: 25px !important;
@@ -27,6 +31,9 @@
 }
 h2{
   padding: 0 !important;
+}
+.f12{
+  font-size: 12px !important;
 }
 .custom-html-container {
     padding: 0 !important;
@@ -194,11 +201,11 @@ label {
 } */
 
 
-#sidebar {
+    #sidebar {
         background-color: #fff;
         color: #000;
         height: 100%;
-        width: 250px;
+        width: 240px !important;
         transition: all 1s ease-in-out;
     }
     .sidebar-list a {
@@ -223,6 +230,7 @@ label {
     .sidebar-list {
         background-color: #fff;
         font-size: .9rem;
+        width: 240px !important;
         height: 100vh !important;
         box-shadow: 5px 0 5px 0 #0e0e0e3f;
     }
@@ -254,6 +262,7 @@ label {
         position: absolute;
         transform: translateX(-50rem);
         transition: ease-in;
+        width: 230px !important;
         z-index: 1000; /* Added z-index */
     }
     

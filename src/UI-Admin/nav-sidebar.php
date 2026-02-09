@@ -7,7 +7,7 @@
                     <?php if($profile_picture == null){ ?>
                         <strong class="py-1 px-5 text-dark mb-2" style="
                                     border-radius: 50%;
-                                    font-size: 5rem;
+                                    font-size: 4rem;
                                     background-color: #FEFEFE;
                                 "><?= htmlspecialchars(substr($admin_lastname, 0,1)) ?>
                         </strong>
@@ -16,16 +16,18 @@
                     <?php } ?>
                 </div>
                 <strong class="text-center text-dark fw-bolder col-md-12 m-0">
-                    <?= htmlspecialchars($admin_firstname) . ' ' . htmlspecialchars(substr($admin_middelname,0,1)) . ' ' . htmlspecialchars($admin_lastname) ?>
+                    <span class="w-100 text-start text-dark fw-bolder"><?= htmlspecialchars($admin_firstname) . ' '
+                        . htmlspecialchars(substr($admin_middelname,0,1)) . ' ' . htmlspecialchars($admin_lastname) ?>
+                    </span>
                 </strong>
-                <strong class="w-100 text-start text-dark fw-bolder">
-                    <label class="form-label text-dark fw-bolder m-0 w-60 text-end">EMPLOYEE ID : </label><span class="w-40 text-dark fw-bolder"><?= ' ' . htmlspecialchars($admin_employee_id) ?></span>
+                <strong class="w-100 text-center text-dark fw-bolder">
+                    <span class="w-100 text-start text-dark fw-bolder"><?= htmlspecialchars($admin_employee_id) ?></span>
                 </strong>
-                <strong class="w-100 text-start text-dark fw-bolder">
-                    <label class="form-label text-dark fw-bolder m-0 w-60 text-end">POSITION : </label><span class="w-40 text-dark fw-bolder"><?= ' ' . htmlspecialchars($admin_position) ?></span>
+                <strong class="w-100 text-center text-dark fw-bolder">
+                    <span class="w-100 text-start text-dark fw-bolder"><?= htmlspecialchars($admin_position) ?></span>
                 </strong>
-                <strong class="w-100 text-start text-dark fw-bolder">
-                    <label class="form-label text-dark fw-bolder m-0 w-60 text-end">DEPARTMENT : </label><span class="w-40 text-dark fw-bolder"><?= ' ' . htmlspecialchars($admin_department) ?></span>
+                <strong class="w-100 text-center text-dark fw-bolder">
+                    <span class="w-100 text-start text-dark fw-bolder"><?= htmlspecialchars($admin_department) ?></span>
                 </strong>
             </div>
             <a href="index.php?page=home" class="nav-item nav-home rounded-2 m-0">

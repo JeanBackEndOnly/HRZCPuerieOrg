@@ -1,13 +1,43 @@
+<?php 
+    $stmt = $pdo->prepare("SELECT profile_picture FROM employee_data WHERE employee_id = ?");
+    $stmt->execute([$hr_id]);
+    $getProfile = $stmt->fetch(PDO::FETCH_ASSOC);
 
-<nav id="sidebar" class="navbarHide">
+?>
+<nav id="sidebar" class="navbarHide m-0 p-0">
     <div style="width: 240px; border-radius: 5px;">
-        <div class="sidebar-list m-2">
-            <a href="index.php?page=home" class="nav-item nav-home rounded-2">
+        <div class="sidebar-list m-0">
+            <div class="profile-nav bg-gradeint-fade w-100 d-flex align-items-start justify-content-center flex-column p-2">
+                <div class="w-100 d-flex align-items-center justify-content-center">
+                    <?php if($profile_picture == null){ ?>
+                        <strong class="py-1 px-5 text-dark mb-2" style="
+                                    border-radius: 50%;
+                                    font-size: 4rem;
+                                    background-color: #FEFEFE;
+                                "><?= htmlspecialchars(substr($lastname, 0,1)) ?>
+                        </strong>
+                    <?php } else { ?>
+                        <img src="../../authentication/uploads/<?= $getProfile["profile_picture"] ?>" class="image-profile">
+                    <?php } ?>
+                </div>
+                <strong class="text-center text-dark fw-bolder col-md-12 m-0">
+                    <?= htmlspecialchars($firstname) . ' ' . htmlspecialchars(substr($middelname,0,1)) . ' ' . htmlspecialchars($lastname) ?>
+                </strong>
+                <strong class="w-100 text-center text-dark fw-bolder">
+                    <span class="w-100 text-dark fw-bolder"><?= ' ' . htmlspecialchars($employeeID) ?></span>
+                </strong>
+                <strong class="w-100 text-center text-dark fw-bolder">
+                    <span class="w-100 text-dark fw-bolder"><?= ' ' . htmlspecialchars($position) ?></span>
+                </strong>
+                <strong class="w-100 text-center text-dark fw-bolder">
+                    <span class="w-100 text-dark fw-bolder"><?= ' ' . htmlspecialchars($department) ?></span>
+                </strong>
+            </div>
+            <a href="index.php?page=home" class="nav-item nav-home rounded-2 m-0">
                 <span class=""><i class=""></i></span> Dashboard
             </a>
-            
             <!-- Human Resources Section -->
-            <button class="toggle-btn collapsed rounded-2" data-target="hr-section">
+            <button class="toggle-btn collapsed rounded-2 m-0" data-target="hr-section">
                 Human Resources <i class="toggle-icon"><i class="fa-solid fa-caret-down"></i></i>
             </button>
             <div id="hr-section" class="toggle-section">
@@ -27,7 +57,7 @@
                     <span class=""><i class=""></i></span> HR settings
                 </a>
             </div>
-            <a href="index.php?page=contents/setting" class="nav-item nav-setting rounded-2 my-1">
+            <a href="index.php?page=contents/setting" class="nav-item nav-setting rounded-2 m-0">
                 <span class=""><i class=""></i></span> Account Settings
             </a>
         </div>

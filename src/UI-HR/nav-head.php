@@ -6,7 +6,14 @@ if (!isset($_SESSION['hrData'])) {
   include 'eror.php';
   exit;
 }
-
+$employeeID = $_SESSION['hrData']['employeeID'];
+$position = $_SESSION['hrData']['employee_position'] ?? '';
+$department = $_SESSION['hrData']['employee_department'] ?? '';
+$firstname = $_SESSION['hrData']['firstname'];
+$middelname = $_SESSION['hrData']['middlename'];
+$lastname = $_SESSION['hrData']['lastname'];
+$profile_picture = $_SESSION['hrData']['profile_picture'];
+$getEmployee = $employees["employee_data"];
 $hr_id = $_SESSION['hrData']['employee_id'];
 $getEmployee = $employees["employee_data"];
 
@@ -38,9 +45,6 @@ $leaveCounts = $stmt->fetchColumn();
                     <i class="fa-solid fa-bell fs-5 text-white"></i>
                 </button>
             </form>
-        </div>
-        <div class="">
-            <span><?php echo get_employee('lastname',$hr_id); ?></span>
         </div>
 
         <button type="button" id="logoutBtn">

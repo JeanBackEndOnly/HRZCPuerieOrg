@@ -1,8 +1,9 @@
 <?php
-    $stmt = $pdo->prepare("SELECT a.*, ai.*, d.Department_name, d.Department_code, d.Department_id, j.jobTitle, j.jobTitles_id  FROM admin a
+    $stmt = $pdo->prepare("SELECT a.*, ai.*, ass.*, d.Department_name, d.Department_code, d.Department_id, j.jobTitle, j.jobTitles_id  FROM admin a
         LEFT JOIN admin_info ai ON a.admin_id = ai.admin_id
         LEFT JOIN departments d ON ai.admin_department_id = d.Department_id
         LEFT JOIN jobTitles j ON ai.admin_position_id = j.jobTitles_id
+        LEFT JOIN admin_schedule ass ON a.admin_id = ass.admin_id 
         WHERE a.admin_id = 1");
     $stmt->execute();
     $getAdminData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -346,6 +347,11 @@
                                 value="<?= $getAdminData["admin_employee_id"] ?>" id="employeeID_field"
                                 class="form-control">
                         </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Joined at</label>
+                            <input type="text" name="joined_at" value="<?= $getAdminData["joined_at"] ?>"
+                                id="joined_at_field" class="form-control">
+                        </div>
                         <?php
                             $stmt = $pdo->prepare("SELECT d.Department_id, d.Department_name FROM departments d");
                             $stmt->execute();
@@ -386,7 +392,7 @@
                         </strong>
                         <!-- <div class="col-md-4">
                             <label class="form-label">Work Schedule</label>
-                            <input type="text" name="work_schedule_type" value="<?= $getEmployee["work_schedule_type"] ?? '' ?>"
+                            <input type="text" name="work_schedule_type" value="<?= $getAdminData["work_schedule_type"] ?? '' ?>"
                                 id="work_schedule_type" class="form-control" placeholder="">
                         </div> -->
                         <?php
@@ -425,23 +431,23 @@
 
                         <div class="col-md-3">
                             <label class="form-label">Shift Type</label>
-                            <input type="text" name="shift_type" value="<?= $getEmployee["shift_type"] ?? '' ?>"
+                            <input type="text" name="shift_type" value="<?= $getAdminData["shift_type"] ?? '' ?>"
                                 id="shift_type" class="form-control" placeholder="Auto-filled from template" readonly>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Work Days</label>
-                            <input type="text" name="work_days" value="<?= $getEmployee["work_days"] ?? '' ?>"
+                            <input type="text" name="work_days" value="<?= $getAdminData["work_days"] ?? '' ?>"
                                 id="work_days" class="form-control" placeholder="Auto-filled from template" readonly>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Schedule From</label>
-                            <input type="time" name="scheduleFrom" value="<?= $getEmployee["scheduleFrom"] ?? '' ?>"
+                            <input type="time" name="scheduleFrom" value="<?= $getAdminData["scheduleFrom"] ?? '' ?>"
                                 id="scheduleFrom" class="form-control" readonly>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Schedule To</label>
                             <input type="time" name="scheduleTo" id="scheduleTo"
-                                value="<?= $getEmployee["scheduleTo"] ?? '' ?>" class="form-control" readonly>
+                                value="<?= $getAdminData["scheduleTo"] ?? '' ?>" class="form-control" readonly>
                         </div>
 
                         <script>

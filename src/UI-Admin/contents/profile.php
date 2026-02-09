@@ -315,6 +315,11 @@
                             <input readonly type="text" name="employeeID" value="<?= $getEmployee["employeeID"] ?>"
                                 id="employeeID_field" class="form-control">
                         </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Joined at</label>
+                            <input type="text" name="joined_at" value="<?= $getEmployee["joined_at"] ?>"
+                                id="joined_at_field" class="form-control">
+                        </div>
                         <?php
                             $stmt = $pdo->prepare("SELECT * FROM departments");
                             $stmt->execute();

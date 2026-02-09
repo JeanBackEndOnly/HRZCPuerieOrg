@@ -315,8 +315,13 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
                 </li>
                 <li class="nav-item col-md-4" role="presentation">
                     <div
-                        style="background-color: #fff !important; z-index: 3 !important; position: absolute !important; transform: translateX(11.8rem) !important; ">
-                        <strong class="px-1 text-dark"><?php echo $pending ?></strong>
+                        style="background-color: #E32126 !important;
+                        z-index: 3 !important;
+                        position: absolute !important;
+                        transform: translateX(11.8rem) !important;
+                        border-radius: 50% !important;
+                        ">
+                        <strong class="px-1 text-white"><?php echo $pending ?></strong>
                     </div>
                     <button class="nav-link w-100 h-100" id="pending-tab" data-bs-toggle="tab"
                         data-bs-target="#Pending_Accounts" type="button" role="tab" aria-controls="Pending_Accounts"

@@ -1794,13 +1794,21 @@ class Action
         $shift_type = htmlSpecialChars($_POST["shift_type"] ?? '');
         $work_days = htmlSpecialChars($_POST["work_days"] ?? '');
         $admin_update = htmlSpecialChars($_POST["admin_update"]);
-        
+        $joined_at = htmlSpecialChars($_POST["joined_at"]);
+
         try {
             if($admin_update == 'true'){
                 $admin_employee_id = htmlSpecialChars($_POST["admin_employee_id"]);
                 $admin_department_id = htmlSpecialChars($_POST["admin_department_id"]);
                 $admin_position_id = htmlSpecialChars($_POST["admin_position_id"]);
                 $admin_id = 1;
+
+                $stmt = $this->db->prepare("UPDATE admin SET joined_at = :joined_at WHERE admin_id = :admin_id");
+                $stmt->execute([
+                    'joined_at' => $joined_at,
+                    'admin_id' => $admin_id
+                ]);
+
                 $stmt = $this->db->prepare("UPDATE admin_info SET admin_employee_id = :admin_employee_id, admin_position_id = :admin_position_id,
                     admin_department_id = :admin_department_id, salary = :salary WHERE
                     admin_id = :admin_id");
@@ -1826,14 +1834,15 @@ class Action
                 $Department_id = htmlSpecialChars($_POST["Department_id"]);
 
                 $stmt = $this->db->prepare("UPDATE hr_data SET employeeID = :employeeID, Department_id = :Department_id, salary = :salary, 
-                scheduleFrom = :scheduleFrom, scheduleTo = :scheduleTo WHERE employee_id = :employee_id");
+                scheduleFrom = :scheduleFrom, scheduleTo = :scheduleTo, joined_at = :joined_at WHERE employee_id = :employee_id");
                 $stmt->execute([
                     'employee_id' => $employee_id,
                     'employeeID' => $employeeID,
                     'Department_id' => $Department_id,
                     'salary' => $salary,
                     'scheduleFrom' => $scheduleFrom,
-                    'scheduleTo' => $scheduleTo
+                    'scheduleTo' => $scheduleTo,
+                    'joined_at' => $joined_at
                 ]);
 
                 $stmtSchdule = $this->db->prepare("UPDATE schedule SET  shift_type = :shift_type, work_days = :work_days WHERE employee_id = :employee_id");

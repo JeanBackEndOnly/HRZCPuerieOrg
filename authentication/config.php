@@ -300,6 +300,7 @@ function db_connect()
                 deduction_pay DECIMAL(12,2) NOT NULL, 
 
                 employeeID VARCHAR(150) NOT NULL,
+                joined_at VARCHAR(20),
                 -- department VARCHAR(50) NOT NULL,
                 -- jobTitle VARCHAR(50) NOT NULL,
                 salary DECIMAL(12,2) NOT NULL,

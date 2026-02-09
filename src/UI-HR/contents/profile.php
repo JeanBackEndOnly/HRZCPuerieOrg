@@ -292,6 +292,7 @@
         <!-- WORK INFORMATIONS TAB -->
         <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Employment">
             <form id="employment_update">
+                <input type="hidden" name="admin_update" value="false">
                 <div class="card rounded-2 profile-contents pb-5" style="overflow-y: scroll;">
                     <!-- EMPLOYMENT INFORMATION HEADER -->
                     <div class="col-md-12 d-flex">

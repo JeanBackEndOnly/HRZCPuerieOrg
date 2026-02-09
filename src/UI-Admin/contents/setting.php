@@ -358,7 +358,7 @@
 
                         <div class="col-md-4">
                             <label class="form-label">Department</label>
-                            <select name="admin_department_id" class="form-select">
+                            <select name="admin_department_id" class="form-select" required>
                                 <option value="">Select Department</option>
                                 <?php foreach($departmentResult as $departments): ?>
                                 <option value="<?= $departments['Department_id'] ?>"
@@ -371,7 +371,7 @@
 
                         <div class="col-md-4">
                             <label class="form-label">Job Title</label>
-                            <select name="admin_position_id" class="form-select">
+                            <select name="admin_position_id" class="form-select" required>
                                 <option value="">Select Job Title</option>
                                 <?php foreach($jobtitleResult as $jb): ?>
                                 <option value="<?= $jb['jobTitles_id'] ?>"
@@ -494,22 +494,21 @@
                         </div>
                     </div>
                 </div>
+            </form>
         </div>
-        </form>
-    </div>
-    <!-- HRMS Activation -->
-    <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="hrEmployees">
-        <table class="text-center table table-bordered text-center table-sm">
-            <thead class="table-light col-md-12">
-                <tr class="col-md-12">
-                    <th>#</th>
-                    <th>Complete Name</th>
-                    <th>Account Role</th>
-                    <th class="text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="text-center" id="Accounts_approved" style="color: #666;">
-                <?php 
+        <!-- HRMS Activation -->
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="hrEmployees">
+            <table class="text-center table table-bordered text-center table-sm">
+                <thead class="table-light col-md-12">
+                    <tr class="col-md-12">
+                        <th>#</th>
+                        <th>Complete Name</th>
+                        <th>Account Role</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center" id="Accounts_approved" style="color: #666;">
+                    <?php 
                         $stmtOfficial = $pdo->prepare("
                             SELECT 
                                 ed.employee_id, 
@@ -535,57 +534,60 @@
                         $countOfficials = 1;
                         if($officialEmployees){
                             foreach ($officialEmployees as $officials) : ?>
-                <tr>
-                    <th><?= $countOfficials++ ?></th>
-                    <th><?= htmlspecialchars($officials["firstname"]) . ' ' . htmlspecialchars($officials["lastname"]) ?>
-                    </th>
-                    <th>HRMS</th>
-                    <td class="d-flex justify-content-center flex-wrap gap-1">
-                        <a href="index.php?page=contents/profile&id=<?= htmlspecialchars($officials["employee_id"]) ?>">
-                            <button class="btn btn-sm btn-danger px-3 py-2 m-0">
-                                <i class="fas fa-eye"></i> View
-                            </button>
-                        </a>
+                    <tr>
+                        <th><?= $countOfficials++ ?></th>
+                        <th><?= htmlspecialchars($officials["firstname"]) . ' ' . htmlspecialchars($officials["lastname"]) ?>
+                        </th>
+                        <th>HRMS</th>
+                        <td class="d-flex justify-content-center flex-wrap gap-1">
+                            <a
+                                href="index.php?page=contents/profile&id=<?= htmlspecialchars($officials["employee_id"]) ?>">
+                                <button class="btn btn-sm btn-danger px-3 py-2 m-0">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                            </a>
 
-                        <form class="form_select d-flex align-items-center">
-                            <input type="hidden" name="employee_id"
-                                value="<?= htmlspecialchars($officials['employee_id']) ?>">
-                            <select class="form-select m-0 p-2 select_status" name="status">
-                                <option value="" disabled>Select Status</option>
-                                <option value="Active" <?= ($officials['status'] === 'Active') ? 'selected' : '' ?>>
-                                    Active
-                                </option>
-                                <option value="Inactive" <?= ($officials['status'] === 'Inactive') ? 'selected' : '' ?>>
-                                    Inactive</option>
-                                <option value="Pending" <?= ($officials['status'] === 'Pending') ? 'selected' : '' ?>>
-                                    Pending</option>
-                            </select>
-                        </form>
-                    </td>
-                </tr>
-                <?php 
+                            <form class="form_select d-flex align-items-center">
+                                <input type="hidden" name="employee_id"
+                                    value="<?= htmlspecialchars($officials['employee_id']) ?>">
+                                <select class="form-select m-0 p-2 select_status" name="status">
+                                    <option value="" disabled>Select Status</option>
+                                    <option value="Active" <?= ($officials['status'] === 'Active') ? 'selected' : '' ?>>
+                                        Active
+                                    </option>
+                                    <option value="Inactive"
+                                        <?= ($officials['status'] === 'Inactive') ? 'selected' : '' ?>>
+                                        Inactive</option>
+                                    <option value="Pending"
+                                        <?= ($officials['status'] === 'Pending') ? 'selected' : '' ?>>
+                                        Pending</option>
+                                </select>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php 
                                         endforeach; 
                                     }else {
                                         echo '<tr><td colspan="6" class="text-center">No employees found</td></tr>';
                                     }  
                                 ?>
-            </tbody>
-        </table>
-    </div>
-    <!-- LOGIN HISTORY TAB -->
-    <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="history">
-        <div class="card rounded-2 profile-contents" style="overflow-y: scroll;">
-            <!-- LOGIN HISTORY HEADER -->
-            <div class="header ps-3 pt-3">
-                <h5 class="m-0 p-0">
-                    <i class="fa-solid fa-circle-info me-2"></i>Login History
-                </h5>
-            </div>
+                </tbody>
+            </table>
+        </div>
+        <!-- LOGIN HISTORY TAB -->
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="history">
+            <div class="card rounded-2 profile-contents" style="overflow-y: scroll;">
+                <!-- LOGIN HISTORY HEADER -->
+                <div class="header ps-3 pt-3">
+                    <h5 class="m-0 p-0">
+                        <i class="fa-solid fa-circle-info me-2"></i>Login History
+                    </h5>
+                </div>
 
-            <!-- LOGIN HISTORY CONTENTS -->
-            <div class="table-responsive table-body-201">
-                <table class="text-center table table-bordered text-center table-sm">
-                    <?php
+                <!-- LOGIN HISTORY CONTENTS -->
+                <div class="table-responsive table-body-201">
+                    <table class="text-center table table-bordered text-center table-sm">
+                        <?php
                         $stmtHistory = $pdo->prepare("SELECT * FROM admin_login_history WHERE employee_id = '$admin_id' ORDER BY login_time DESC");
                         $stmtHistory->execute();
                         $history = $stmtHistory->fetchAll(PDO::FETCH_ASSOC);  
@@ -593,34 +595,34 @@
 
 
 
-                    <thead class="table-light col-md-12">
-                        <tr class="col-md-12">
-                        <tr>
-                            <th>Login Time</th>
-                            <th>Logout Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($history as $his) : ?>
-                        <tr>
-                            <th><?= 'Login at: <strong>' . date("M d Y g:iA", strtotime($his["login_time"])) . '</strong>' ?>
-                            </th>
-                            <th>
-                                <p class="w-100 text-danger mb-0 mb-2">
-                                    <?php if (!empty($his["logout_time"])): ?>
-                                    <?= 'Logout at: <strong>' . date("M d Y g:i A", strtotime($his["logout_time"])) . '</strong>' ?>
-                                    <?php else: ?>
+                        <thead class="table-light col-md-12">
+                            <tr class="col-md-12">
+                            <tr>
+                                <th>Login Time</th>
+                                <th>Logout Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($history as $his) : ?>
+                            <tr>
+                                <th><?= 'Login at: <strong>' . date("M d Y g:iA", strtotime($his["login_time"])) . '</strong>' ?>
+                                </th>
+                                <th>
+                                    <p class="w-100 text-danger mb-0 mb-2">
+                                        <?php if (!empty($his["logout_time"])): ?>
+                                        <?= 'Logout at: <strong>' . date("M d Y g:i A", strtotime($his["logout_time"])) . '</strong>' ?>
+                                        <?php else: ?>
 
-                                    <?php endif; ?>
-                                </p>
-                            </th>
-                        </tr>
-                        <?php endforeach ?>
-                    </tbody>
-                </table>
+                                        <?php endif; ?>
+                                    </p>
+                                </th>
+                            </tr>
+                            <?php endforeach ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
     </div>
     </div>
 

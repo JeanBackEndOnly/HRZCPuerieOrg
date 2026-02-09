@@ -1799,7 +1799,7 @@ class Action
                         'scheduleTo' => $scheduleTo,
                         'admin_id'     => $admin_id
                     ]);
-            }else {
+            }else if($admin_update == 'false'){
                 $employee_id = htmlSpecialChars($_POST["employee_id"]);
                 $employeeID = htmlSpecialChars($_POST["employeeID"]);
                 $Department_id = htmlSpecialChars($_POST["Department_id"]);

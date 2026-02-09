@@ -1,0 +1,12 @@
+@media(max-width:768px) {
+    .image-header{
+        width: 50px !important;
+        height: 50px !important;
+    }
+    .header-text{
+        font-size: 15px !important;
+    }
+    .media-adjustaments{
+        margin: 0 !important;
+    }
+}

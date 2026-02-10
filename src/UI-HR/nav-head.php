@@ -15,7 +15,6 @@ $lastname = $_SESSION['hrData']['lastname'];
 $profile_picture = $_SESSION['hrData']['profile_picture'];
 $getEmployee = $employees["employee_data"];
 $hr_id = $_SESSION['hrData']['employee_id'];
-$getEmployee = $employees["employee_data"];
 
 $stmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE type = 'HR' AND status = 'Active'");
 $stmt->execute();

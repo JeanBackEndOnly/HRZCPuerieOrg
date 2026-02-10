@@ -16,6 +16,10 @@
 .transform{
     transform: translateY(-4rem);
 }
+.show-scroll::-webkit-scrollbar{
+    display: flex;
+    width: 2px !important;
+}
  .table-responsive {
     overflow-x: auto;
 }

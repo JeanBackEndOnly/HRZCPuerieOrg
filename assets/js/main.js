@@ -15,31 +15,37 @@ $(document).ready(function () {
   });
 
 // GET METHODS =============================================================================
-  $(document).on("click", "#getID", function (e) {
-    const employee_id = $(this).data("id");
-    document.getElementById("employee_id").value = employee_id;
-  });
-  $(document).on("click", "#getLeaveIdDelete", function (e) {
-    const leaves_id = $(this).data("id");
-    document.getElementById("delete_leaves_id").value = leaves_id;
-  });
-  $(document).on("click", "#delete-file", function (e) {
-    const files_id = $(this).data("id");
-    document.getElementById("files_id").value = files_id;
-  });
-  $("#InclusiveFrom, #InclusiveTo").on("change", function () {
-    $("#numberOfDays").removeClass("is-invalid");
-    $("#daysError").text("");
-  });
-  $(document).on('click', '#getEmployeeId', function () {
-        const employee_id = $(this).data('id');
-        document.getElementById('approval_employeeID').value = employee_id;
-        document.getElementById('rejection_employeeID').value = employee_id;
-  });
-  $(document).on("click", "#scheduleTemplateId", function () {
-    const TemplateId = $(this).data("id");
-    document.getElementById("TemplateId").value = TemplateId;
-  });
+    $(document).on("click", "#getID", function (e) {
+      const employee_id = $(this).data("id");
+      document.getElementById("employee_id").value = employee_id;
+    });
+    $(document).on("click", "#getLeaveIdDelete", function (e) {
+      const leaves_id = $(this).data("id");
+      document.getElementById("delete_leaves_id").value = leaves_id;
+    });
+    $(document).on("click", "#delete-file", function (e) {
+      const files_id = $(this).data("id");
+      document.getElementById("files_id").value = files_id;
+    });
+    $("#InclusiveFrom, #InclusiveTo").on("change", function () {
+      $("#numberOfDays").removeClass("is-invalid");
+      $("#daysError").text("");
+    });
+    $(document).on('click', '#getEmployeeId', function () {
+          const employee_id = $(this).data('id');
+          document.getElementById('approval_employeeID').value = employee_id;
+          document.getElementById('rejection_employeeID').value = employee_id;
+    });
+    $(document).on("click", "#scheduleTemplateId", function () {
+      const TemplateId = $(this).data("id");
+      document.getElementById("TemplateId").value = TemplateId;
+    });
+    $(document).on("click", "#GetDeleteIdFromUniitSection", function (){
+      const unitSectionId = $(this).data('id');
+      // alert(unitSectionId);
+      document.getElementById('deleteUnitSectionsId').value = unitSectionId;
+      document.getElementById('editUnitSectionsId').value = unitSectionId;
+    });
 
   // Login Forms here ===========================================================
       // $(document).on("submit", "#login-form", function (e) {
@@ -823,7 +829,191 @@ $(document).ready(function () {
     });
   });
   
-  
+// Unit Sections =======================================================================
+  $(document).on("submit", "#unitsection-form", function (e) { 
+      e.preventDefault();
+      const $form = $(this);
+      if ($form.data("isSubmitted")) return;
+      $form.data("isSubmitted", true);
+      
+      const formData = new FormData(this);
+      const $btn = $form.find("button[type='submit']");
+      $btn.prop("disabled", true);
+      $btn.html('<i class="fas fa-spinner fa-spin me-1"></i> Processing...');
+      
+      $.ajax({
+          url: base_url + "authentication/action.php?action=unitsection_form",
+          type: "POST",
+          data: formData,
+          processData: false,
+          contentType: false,
+          dataType: "json",
+          success: function (response) {
+              if (response.status === 1) {
+                  Swal.fire({
+                      title: "Success!",
+                      text: response.message,
+                      icon: "success",
+                      toast: true,
+                      position: "top-end",
+                      timer: 1000,
+                      showConfirmButton: false,
+                  }).then(() => {
+                      location.reload();
+                  });
+              } else {
+                  Swal.fire({
+                      title: "Error",
+                      text: response.message,
+                      icon: "error",
+                      toast: true,
+                      position: "top-end",
+                      timer: 1000,
+                      showConfirmButton: false,
+                  });
+              }
+          },
+          error: function (jqXHR, textStatus, err) {
+              console.error("AJAX error:", textStatus, err);
+              Swal.fire({
+                  title: "Connection Error",
+                  text: "Please check your connection and try again.",
+                  icon: "error",
+                  toast: true,
+                  position: "top-end",
+                  timer: 1000,
+                  showConfirmButton: false,
+              });
+          },
+          complete: function () {
+              $form.data("isSubmitted", false);
+              $btn.prop("disabled", false).html('Create Unit/Section');
+          }
+      });
+  });
+  $(document).on("submit", "#edit-unitsection", function (e) {
+    e.preventDefault();
+    const $form = $(this);
+    if ($form.data("isSubmitted")) return;
+    $form.data("isSubmitted", true);
+
+    const formData = new FormData(this);
+    const $btn = $form.find("button[type='submit']");
+    $btn.prop("disabled", true);
+    $btn.html('<i class="fas fa-spinner fa-spin me-1"></i> Processing...');
+
+    $.ajax({
+      url: base_url + "authentication/action.php?action=edit_unitsection",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      dataType: "json",
+      success: function (response) {
+        if (response.status === 1) {
+          Swal.fire({
+            title: "Success!",
+            text: response.message,
+            icon: "success",
+            toast: true,
+            position: "top-end",
+            timer: 1000,
+            showConfirmButton: false,
+          }).then(() => {
+            location.reload();
+          });
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: response.message,
+            icon: "error",
+            toast: true,
+            position: "top-end",
+            timer: 1000,
+            showConfirmButton: false,
+          });
+        }
+      },
+      error: function (jqXHR, textStatus, err) {
+        console.error("AJAX error:", textStatus, err);
+        Swal.fire({
+          title: "Connection Error",
+          text: "Please check your connection and try again.",
+          icon: "error",
+          toast: true,
+          position: "top-end",
+          timer: 1000,
+          showConfirmButton: false,
+        });
+      },
+      complete: function () {
+        $form.data("isSubmitted", false);
+        $btn.prop("disabled", false).html("Edit Unit/Section");
+      },
+    });
+  });
+  $(document).on("submit", "#unitsection-delete-form", function (e) {
+    e.preventDefault();
+    const $form = $(this);
+    if ($form.data("isSubmitted")) return;
+    $form.data("isSubmitted", true);
+
+    const formData = new FormData(this);
+    const $btn = $form.find("button[type='submit']");
+    $btn.prop("disabled", true);
+    $btn.html('<i class="fas fa-spinner fa-spin me-1"></i> Processing...');
+
+    $.ajax({
+      url: base_url + "authentication/action.php?action=unitsection_delete_form",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      dataType: "json",
+      success: function (response) {
+        if (response.status === 1) {
+          Swal.fire({
+            title: "Success!",
+            text: response.message,
+            icon: "success",
+            toast: true,
+            position: "top-end",
+            timer: 1000,
+            showConfirmButton: false,
+          }).then(() => {
+            location.reload();
+          });
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: response.message,
+            icon: "error",
+            toast: true,
+            position: "top-end",
+            timer: 1000,
+            showConfirmButton: false,
+          });
+        }
+      },
+      error: function (jqXHR, textStatus, err) {
+        console.error("AJAX error:", textStatus, err);
+        Swal.fire({
+          title: "Connection Error",
+          text: "Please check your connection and try again.",
+          icon: "error",
+          toast: true,
+          position: "top-end",
+          timer: 1000,
+          showConfirmButton: false,
+        });
+      },
+      complete: function () {
+        $form.data("isSubmitted", false);
+        $btn.prop("disabled", false).html("Delete Unit/Section");
+      },
+    });
+  });
+
 // JOB TITLE ==============================================================================
   $(document).on("submit", "#update-jobInfo", function (e) { 
       e.preventDefault();

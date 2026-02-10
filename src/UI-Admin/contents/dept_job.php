@@ -5,6 +5,13 @@
     $stmtDepartments->execute();
     $Departments = $stmtDepartments->fetchAll(PDO::FETCH_ASSOC);
 
+    $stmtUnitSections = $pdo->prepare("SELECT us.unit_section_id, us.unit_section_name, us.addAt, d.Department_name, d.Department_code, d.Department_id
+                FROM unit_section us
+                INNER JOIN departments d ON us.department_id = d.Department_id 
+                ORDER BY addAt ASC");
+    $stmtUnitSections->execute();
+    $unitSections = $stmtUnitSections->fetchAll(PDO::FETCH_ASSOC);
+
     $stmtJobtitles = $pdo->prepare("SELECT j.jobTitles_id, j.jobTitle, j.salary, j.addAt, d.Department_name
                     FROM jobTitles j
                     INNER JOIN departments d ON j.department_id = d.Department_id
@@ -51,15 +58,19 @@
     <div class="card">
         <div class="card-body col-md-12 col-12 d-flex justify-content-between">
             <ul class="nav nav-tabs col-md-12 col-12" id="DepartmentsJobsInfoTab">
-                <li class="nav-item col-md-2">
+                <li class="nav-item cursor-pointer col-md-2">
                     <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#departmentsInfo"><i
                             class="fa-solid me-2 fa-building"></i>Departments</a>
                 </li>
-                <li class="nav-item col-md-2">
+                <li class="nav-item cursor-pointer col-md-2">
+                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#unitSections">
+                        <i class="fa-solid fa-building-un me-2"></i>Unit/Section</a>
+                </li>
+                <li class="nav-item cursor-pointer col-md-2">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#JobTitlesInfno"><i
                             class="fa-solid me-2 fa-user-doctor"></i>Job Titles</a>
                 </li>
-                <li class="nav-item col-md-2">
+                <li class="nav-item cursor-pointer col-md-2">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#CareerPathsInfo"><i
                             class="fa-solid me-2 fa-up-down"></i></i>Career Paths</a>
                 </li>
@@ -84,7 +95,7 @@
                     </div>
                     <!-- ADD departments -->
                     <div class="modal fade" id="addDepartments" tabindex="-1" aria-labelledby="addDepartmentsLabel"
-                        aria-hidden="true" >
+                        aria-hidden="true">
                         <div class="modal-dialog modal-md">
                             <div class="modal-content">
                                 <div class="modal-header bg-danger text-white">
@@ -157,11 +168,6 @@
                         aria-labelledby="deleteJobModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <form id="department-delete-form" class="modal-content">
-                                <!-- <?php $csrf = $_SESSION["csrf_token"] ?? ''?>
-                                <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
-                                <input type="hidden" name="deprtament_auth" value="true">
-                                <input type="hidden" name="admin_id" value="<?= $admin_id ?>">
-                                <input type="hidden" name="dept_auth_type" value="delete"> -->
                                 <div class="modal-header bg-gradient-primary text-white">
                                     <h5 class="modal-title text-white" id="deleteJobModalLabel">Confirmation Delete</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -180,7 +186,8 @@
                     </div>
                     <!-- DEPARTMENTS TABLE -->
                     <div class="table-responsive table-body">
-                        <table class="table table-bordered table-hover table-sm text-center" style="font-size: 0.875rem;">
+                        <table class="table table-bordered table-hover table-sm text-center"
+                            style="font-size: 0.875rem;">
                             <thead class="table-light">
                                 <tr style="color: #555;">
                                     <th>#</th>
@@ -214,6 +221,173 @@
                                     </th>
                                 </tr>
                                 <?php endforeach ?>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <!-- unit sections -->
+                <div class="tab-pane fade" id="unitSections" role="tabpanel">
+                    <!-- unit sections ADD AND SEARCH -->
+                    <div class="col-md-12 col-12 d-flex justify-content-between">
+                        <div class="col-md-4 col-5">
+                            <input type="text" placeholder="search by... unit section name" id="searchDepartments"
+                                class="form-control">
+                        </div>
+                        <div class="col-md-3 col-6 d-flex justify-content-end">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                data-bs-target="#addUnitSections" id="add_new">
+                                <i class="fa fa-plus"></i> Add new Unit/Sections
+                            </button>
+                        </div>
+                    </div>
+                    <!-- ADD unit sections -->
+                    <div class="modal fade" id="addUnitSections" tabindex="-1" aria-labelledby="addUnitSectionsLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+                                <div class="modal-header bg-danger text-white">
+                                    <h5 class="modal-title text-white" id="createAccountsLabel">Add New Unit/Section
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                        aria-label="Close" onclick="location.reload()"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="row g-3" id="unitsection-form">
+                                        <div class="m-2">
+                                            <label class="form-label">Unit section name</label>
+                                            <input required type="text" class="form-control" name="unit_section_name">
+                                        </div>
+                                        <div class="m-2">
+                                            <label class="form-label">Under Department</label>
+                                            <select name="department_id" id="" class="form-select">
+                                                <option value="">Select Department</option>
+                                                <?php
+                                                    foreach($Departments as $dept) :
+                                                ?>
+                                                <option value="<?= $dept["Department_id"] ?>">
+                                                    <?= htmlspecialchars($dept["Department_name"] . ' (' . $dept["Department_code"] . ')') ?>
+                                                </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-12 text-center mt-3">
+                                            <button type="submit" class="btn btn-danger px-5">
+                                                <i class="bi bi-person-plus-fill me-1"></i> Add Department
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- edit unit section -->
+                    <div class="modal fade" id="editunitsectionModal" tabindex="-1"
+                        aria-labelledby="editunitsectionModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form id="edit-unitsection">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-gradient-primary text-white">
+                                        <h5 class="modal-title text-white" id="editunitsectionModalLabel">Edit Unit/Section information</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <input type="hidden" name="unit_section_id" id="editUnitSectionsId">
+
+                                        <div class="mb-3">
+                                            <label for="editUnitSectionName" class="form-label">Unit/Section name</label>
+                                            <input type="text" class="form-control" id="editUnitSectionName" value=""
+                                                name="unit_section_name">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="editUnderDepartmentId" class="form-label">Under Department</label>
+                                            <select name="department_id" id="editUnderDepartmentId" class="form-select">
+                                                <?php foreach($Departments as $dept) : ?>
+                                                    <option value="<?= $dept["Department_id"] ?>"><?= htmlspecialchars($dept["Department_name"] . ' (' . $dept["Department_code"] . ')') ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-danger">Update Unit/Section</button>
+                                        <button type="button" class="btn btn-dark"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- delete Unit section -->
+                    <div class="modal fade" id="deleteUnitSectionModal" tabindex="-1"
+                        aria-labelledby="deleteUnitSectionModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form id="unitsection-delete-form" class="modal-content">
+                                <div class="modal-header bg-gradient-primary text-white">
+                                    <h5 class="modal-title text-white" id="deleteUnitSectionModalLabel">Confirmation Delete</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Unit/Section?
+                                    <input type="hidden" name="unit_section_id" id="deleteUnitSectionsId">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- UNIT/SECCTION TABLE -->
+                    <div class="table-responsive table-body">
+                        <table class="table table-bordered table-hover table-sm text-center"
+                            style="font-size: 0.875rem;">
+                            <thead class="table-light">
+                                <tr style="color: #555;">
+                                    <th>#</th>
+                                    <th>Unit/Section</th>
+                                    <th>Department</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody class="text-center" id="departments" style="color: #666;">
+                                <?php
+                                    $countsUnitSection = 1;
+                                    if($unitSections){ ?>
+                                    <?php foreach($unitSections as $uniSec) : ?>
+                                    <tr>
+                                        <th><?= $countsUnitSection++ ?></th>
+                                        <th><?= htmlspecialchars($uniSec["unit_section_name"]) ?></th>
+                                        <th><?= htmlspecialchars($uniSec["Department_name"] . ' (' . $uniSec["Department_code"] . ')') ?></th>
+                                        <th><?= htmlspecialchars($uniSec["addAt"]) ?></th>
+                                        <th>
+                                            <button type="button" class="btn m-0 btn-sm btn-danger" onclick="edit_UnitSection(
+                                                    <?= $uniSec['unit_section_id'] ?>,
+                                                    '<?= addslashes($uniSec['unit_section_name']) ?>',
+                                                    '<?= addslashes($uniSec['Department_id']) ?>'
+                                                )">
+                                                <i class="fas fa-eye"></i> Edit
+                                            </button>
+
+                                            <button type="button" class="btn m-0 btn-sm btn-dark"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteUnitSectionModal"
+                                                data-id="<?= $uniSec['unit_section_id'] ?>"
+                                                id="GetDeleteIdFromUniitSection"
+                                                <i class="fas fa-eye"></i> Delete
+                                            </button>
+                                        </th>
+                                    </tr>
+                                    <?php endforeach;
+                                         }else{ ?>
+                                        <tr><td class="w-100 text-center py-2"colspan="4"><strong>No Section/Unit Found</strong></td></tr>
+                                <?php } ?>
                             </tbody>
                         </table>
 
@@ -357,31 +531,30 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                           <tbody class="text-center" id="jobtitles" style="color: #666;">
+                            <tbody class="text-center" id="jobtitles" style="color: #666;">
                                 <?php foreach($jobtitlesData as $job) : ?>
-                                    <tr>
-                                        <th><?= $countsjob++ ?></th>
-                                        <th><?= htmlspecialchars($job["jobTitle"]) ?></th>
-                                        <th><?= htmlspecialchars($job["salary"]) ?></th>
-                                        <th><?= htmlspecialchars($job["Department_name"]) ?></th>
-                                        <th><?= htmlspecialchars($job["addAt"]) ?></th>
-                                        <th>
-                                            <button type="button" class="btn m-0 btn-sm btn-danger" 
-                                                onclick="edit_jobTitle(
+                                <tr>
+                                    <th><?= $countsjob++ ?></th>
+                                    <th><?= htmlspecialchars($job["jobTitle"]) ?></th>
+                                    <th><?= htmlspecialchars($job["salary"]) ?></th>
+                                    <th><?= htmlspecialchars($job["Department_name"]) ?></th>
+                                    <th><?= htmlspecialchars($job["addAt"]) ?></th>
+                                    <th>
+                                        <button type="button" class="btn m-0 btn-sm btn-danger" onclick="edit_jobTitle(
                                                     <?= $job['jobTitles_id'] ?>,
                                                     '<?= addslashes($job['jobTitle']) ?>',
                                                     '<?= $job['salary'] ?>'
                                                 )">
-                                                <i class="fas fa-eye"></i> Edit
-                                            </button>
+                                            <i class="fas fa-eye"></i> Edit
+                                        </button>
 
-                                            <button type="button" class="btn m-0 btn-sm btn-dark" 
-                                                data-bs-toggle="modal" data-bs-target="#deleteJobModal" 
-                                                onclick="setDeletejobtTitleId(<?= $job['jobTitles_id'] ?>)">
-                                                <i class="fas fa-eye"></i> Delete
-                                            </button>
-                                        </th>
-                                    </tr>
+                                        <button type="button" class="btn m-0 btn-sm btn-dark" data-bs-toggle="modal"
+                                            data-bs-target="#deleteJobModal"
+                                            onclick="setDeletejobtTitleId(<?= $job['jobTitles_id'] ?>)">
+                                            <i class="fas fa-eye"></i> Delete
+                                        </button>
+                                    </th>
+                                </tr>
                                 <?php endforeach ?>
                             </tbody>
 
@@ -404,7 +577,8 @@
                             <div class="modal-content">
                                 <div class="modal-header bg-danger text-white">
                                     <h5 class="modal-title text-white" id="viewCareerPathLabel">Career Path History</h5>
-                                    <button type="button" class="btn btn-info btn-sm m-0" id="print_history">print</button>
+                                    <button type="button" class="btn btn-info btn-sm m-0"
+                                        id="print_history">print</button>
                                 </div>
                                 <div class="modal-body">
 
@@ -420,8 +594,8 @@
                                 <div class="modal-header bg-gradient-primary text-white">
                                     <h5 class="modal-title text-white" id="manageCareerPathLabel">Manage Employee Career
                                         Path</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close" onclick="location.reload()"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                        onclick="location.reload()"></button>
                                 </div>
                                 <form method="post" action="../../authentication/hrAuth.php" class="d-inline">
                                     <div class="modal-body">
@@ -483,7 +657,8 @@
                                         </button>
                                 </form>
 
-                                <button type="button" class="btn btn-dark" onclick="location.reload()" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                                <button type="button" class="btn btn-dark" onclick="location.reload()"
+                                    data-bs-dismiss="modal" aria-label="Close">Cancel</button>
                             </div>
                         </div>
                     </div>
@@ -600,7 +775,7 @@ function simpleSearch(inputId, tbodyId, noResultText, colspanCount) {
         return;
     }
 
-    input.addEventListener("input", function () {
+    input.addEventListener("input", function() {
         const term = this.value.toLowerCase().trim();
         const rows = tbody.getElementsByTagName("tr");
         let foundAny = false;
@@ -789,40 +964,40 @@ if (!document.querySelector('#search-highlight-style')) {
 }
 </script>
 <script>
-    // Print functionality for career path history
+// Print functionality for career path history
 document.getElementById('print_history').addEventListener('click', function() {
     // Get modal content
     const modal = document.getElementById('viewCareerPath');
     const modalContent = modal.querySelector('.modal-content');
     const modalBody = modal.querySelector('.modal-body');
-    
+
     // Check if there's content to print
     if (!modalBody || modalBody.innerHTML.includes('spinner-border')) {
         alert('Please wait for the data to load before printing.');
         return;
     }
-    
+
     // Create a new window for printing
     const printWindow = window.open('', '_blank', 'width=800,height=600');
-    
+
     // Get employee info if available
     let employeeInfo = '';
     const employeeDetails = modalBody.querySelector('.card-body');
     if (employeeDetails) {
         employeeInfo = employeeDetails.innerHTML;
     }
-    
+
     // Get history table if available
     let historyTable = '';
     const table = modalBody.querySelector('table');
     if (table) {
         const tableClone = table.cloneNode(true);
-        
+
         // Add print-specific classes
         tableClone.classList.add('table-print');
         tableClone.style.width = '100%';
         tableClone.style.borderCollapse = 'collapse';
-        
+
         // Style table headers
         const thElements = tableClone.querySelectorAll('th');
         thElements.forEach(th => {
@@ -831,14 +1006,14 @@ document.getElementById('print_history').addEventListener('click', function() {
             th.style.padding = '8px';
             th.style.textAlign = 'left';
         });
-        
+
         // Style table cells
         const tdElements = tableClone.querySelectorAll('td');
         tdElements.forEach(td => {
             td.style.border = '1px solid #dee2e6';
             td.style.padding = '8px';
         });
-        
+
         // Style table rows
         const trElements = tableClone.querySelectorAll('tr');
         trElements.forEach((tr, index) => {
@@ -846,10 +1021,10 @@ document.getElementById('print_history').addEventListener('click', function() {
                 tr.style.borderTop = '1px solid #dee2e6';
             }
         });
-        
+
         historyTable = tableClone.outerHTML;
     }
-    
+
     // Get current date for print header
     const now = new Date();
     const printDate = now.toLocaleDateString('en-US', {
@@ -860,7 +1035,7 @@ document.getElementById('print_history').addEventListener('click', function() {
         hour: '2-digit',
         minute: '2-digit'
     });
-    
+
     // Write print content
     printWindow.document.write(`
         <!DOCTYPE html>
@@ -1021,7 +1196,7 @@ document.getElementById('print_history').addEventListener('click', function() {
         </body>
         </html>
     `);
-    
+
     printWindow.document.close();
 });
 
@@ -1029,16 +1204,16 @@ document.getElementById('print_history').addEventListener('click', function() {
 function printCareerPathHistory() {
     const modalContent = document.querySelector('#viewCareerPath .modal-content');
     if (!modalContent) return;
-    
+
     // Store original display settings
     const originalDisplay = modalContent.style.display;
-    
+
     // Show modal content for printing
     modalContent.style.display = 'block';
-    
+
     // Print the modal content
     window.print();
-    
+
     // Restore original display
     modalContent.style.display = originalDisplay;
 }

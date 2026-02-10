@@ -1039,6 +1039,79 @@ class Action
         }
     }
 
+// DEPARTMENTS =======================================================================
+    function unitsection_form(){
+        $unit_section_name = htmlspecialchars(trim($_POST["unit_section_name"]));
+        $department_id = htmlspecialchars(trim($_POST["department_id"]));
+
+        try {
+            $stmt = $this->db->prepare("SELECT unit_section_name FROM unit_section WHERE unit_section_name = ?");
+            $stmt->execute([$unit_section_name]);
+            $unit_section_nameTaken = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($unit_section_nameTaken) {
+                return json_encode([
+                    'status' => 0,
+                    'message' => 'unit_section_name ' . $unit_section_nameTaken["unit_section_name"] . ' already taken please try another unit_section_name'
+                ]);
+            }
+
+            $stmt = $this->db->prepare("INSERT INTO unit_section (unit_section_name, department_id) VALUES (?, ?)");
+            $stmt->execute([$unit_section_name, $department_id]);
+
+            return json_encode([
+                'status' => 1,
+                'message' => 'Unit Section created successfully!'
+            ]);
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+            return json_encode([
+                'status' => 0,
+                'message' => 'An error occurred. Please try again later.'
+            ]);
+        }
+    }
+    function edit_unitsection(){
+        $department_id = htmlspecialchars($_POST["department_id"] ?? '');
+        $unit_section_id = htmlspecialchars($_POST["unit_section_id"] ?? '');
+        $unit_section_name = htmlspecialchars($_POST["unit_section_name"] ?? '');
+
+        try {
+
+            $stmt = $this->db->prepare("UPDATE unit_section SET unit_section_name = :unit_section_name, department_id = :department_id WHERE unit_section_id = :unit_section_id");
+            $stmt->execute(['unit_section_name' => $unit_section_name, 'department_id' => $department_id, 'unit_section_id' => $unit_section_id]);
+
+            return json_encode([
+                'status' => 1,
+                'message' => 'Unit/Section Edited successfully!'
+            ]);
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+            return json_encode([
+                'status' => 0,
+                'message' => 'An error occurred. Please try again later.'
+            ]);
+        }
+    }
+    function unitsection_delete_form(){
+        try {
+            $unit_section_id = $_POST["unit_section_id"];
+
+                $stmt = $this->db->prepare("DELETE FROM unit_section WHERE unit_section_id = ?");
+                $stmt->execute([$unit_section_id]);
+                
+                return json_encode([
+                    'status' => 1,
+                    'message' => 'Unit/Section Deleted Successfully!'
+                ]);
+        } catch (PDOException $e) {
+            return json_encode([
+                'status' => 0,
+                'message' => 'An error occured: ' . $e->getMessage()
+            ]);
+        }
+    }
+
 // JOB TITLE ==============================================================================
     function update_jobInfo(){
         $jobTitles_id = htmlspecialchars($_POST["jobTitles_id"] ?? '');

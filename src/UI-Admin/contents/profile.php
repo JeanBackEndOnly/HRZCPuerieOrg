@@ -70,7 +70,7 @@
         <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade show active" role="tabpanel"
             id="Personal">
             <form id="profile_update">
-                <div class="card rounded-2 profile-contents show-scroll" style="overflow-y: scroll;">
+                <div class="card rounded-2 profile-contents show-scroll">
                     <input type="hidden" name="employee_id" value="<?= $getEmployee["employee_id"] ?>">
                     <!-- PERSONAL INFORMATION HEADER -->
                     <div class="col-md-12 d-flex">
@@ -293,7 +293,7 @@
         <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Employment">
             <form id="employment_update">
                 <input type="hidden" name="admin_update" value="false">
-                <div class="card rounded-2 profile-contents pb-5 show-scroll" style="overflow-y: scroll;">
+                <div class="card rounded-2 profile-contents pb-5 show-scroll">
                     <!-- EMPLOYMENT INFORMATION HEADER -->
                     <div class="col-md-12 d-flex">
                         <div class="header ps-3 pt-3 col-md-5">
@@ -354,6 +354,11 @@
                                 </option>
                                 <?php endforeach; ?>
                             </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Unit/Section</label>
+                            <input type="text" name="unit_section" value="<?= $getEmployee["unit_section"] ?>"
+                                id="unit_section_field" class="form-control">
                         </div>
 
                         <div class="col-md-4">
@@ -520,7 +525,7 @@
         </div>
         <!-- EDUCATIONAL BACKGROUND TAB -->
         <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Education">
-            <form id="educational_update" class="profile-contents">
+            <form id="educational_update" class="profile-contents show-scroll">
                 <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
                 <div class="card rounded-2 show-scroll">
                     <!-- EDUCATIONAL INFORMATION HEADER -->
@@ -691,7 +696,7 @@
         <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Family">
             <form id="family_update">
                 <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
-                <div class="card rounded-2 profile-contents" style="overflow-y: scroll;">
+                <div class="card rounded-2 profile-contents show-scroll">
                     <!-- FAMILY INFORMATION HEADER -->
                     <div class="col-md-12 d-flex">
                         <div class="header ps-3 pt-3 col-md-5">
@@ -992,7 +997,7 @@
         </div>
         <!-- Leave Informations -->
         <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Leave">
-            <div class="card rounded-2 profile-contents show-scroll" style="overflow-y: scroll;">
+            <div class="card rounded-2 profile-contents show-scroll">
                 <!-- FAMILY INFORMATION HEADER -->
                 <div class="header ps-3 pt-3">
                     <h5 class="m-0 p-0">

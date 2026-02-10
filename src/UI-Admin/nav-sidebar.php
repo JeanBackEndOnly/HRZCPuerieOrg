@@ -55,7 +55,9 @@
                     <span class=""><i class=""></i></span> HR settings
                 </a>
             </div>
-            
+            <a href="index.php?page=contents/form" class="nav-item nav-form rounded-2 m-0">
+                <span class=""><i class=""></i></span> Forms
+            </a>
             <a href="index.php?page=contents/setting" class="nav-item nav-setting rounded-2 ">
                 <span class=""><i class=""></i></span> Account Settings
             </a>

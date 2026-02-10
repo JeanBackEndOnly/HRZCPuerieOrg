@@ -80,6 +80,26 @@ if ($action === 'department_delete_form') {
     }
 } 
 
+// Unit/Sections =======================================================================
+if ($action === 'unitsection_form') {
+    $employees = $crud->unitsection_form();
+    if ($employees) {
+        echo $employees;
+    }
+} 
+if ($action === 'edit_unitsection') {
+    $employees = $crud->edit_unitsection();
+    if ($employees) {
+        echo $employees;
+    }
+} 
+if ($action === 'unitsection_delete_form') {
+    $employees = $crud->unitsection_delete_form();
+    if ($employees) {
+        echo $employees;
+    }
+} 
+
 // JOB TITLE ==============================================================================
 if ($action === 'update_jobInfo') {
     $employees = $crud->update_jobInfo();

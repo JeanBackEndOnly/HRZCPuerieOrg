@@ -146,6 +146,8 @@
                         
                     } else if (targetId === '#departmentsInfo') {
                         
+                    }  else if (targetId === '#unitSections') {
+                        
                     } else if (targetId === '#CareerPathsInfo') {
                         loadCareerPathData();
                     } 
@@ -168,6 +170,22 @@
         );
         // Show the modal
         var editModal = new bootstrap.Modal(document.getElementById('editdepartmentsModal'));
+        editModal.show();
+    }
+    // Uniit section edit
+    function edit_UnitSection(id, name, department_id) {
+        // Set the values directly (bypassing the fetch for now)
+        document.getElementById('editUnitSectionsId').value = id;
+        document.getElementById('editUnitSectionName').value = name;
+        document.getElementById('editUnderDepartmentId').value = department_id;
+
+        console.log('Modal values set:',
+            document.getElementById('editUnitSectionsId').value,
+            document.getElementById('editUnitSectionName').value,
+            document.getElementById('editUnderDepartmentId').value
+        );
+        // Show the modal
+        var editModal = new bootstrap.Modal(document.getElementById('editunitsectionModal'));
         editModal.show();
     }
     // onclicked function Delete

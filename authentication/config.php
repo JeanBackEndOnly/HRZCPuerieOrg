@@ -23,8 +23,15 @@ function db_connect()
             "CREATE TABLE IF NOT EXISTS departments(
                 Department_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
                 Department_name VARCHAR(50) NOT NULL,
-                Department_code VARCHAR(50) NOT NULL,
+                Department_code VARCHAR(50),
                 addAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )",
+            "CREATE TABLE IF NOT EXISTS unit_section(
+                unit_section_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                department_id INT,
+                unit_section_name VARCHAR(50) NOT NULL,
+                addAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY(department_id) REFERENCES departments(Department_id)
             )",
             "CREATE TABLE IF NOT EXISTS jobTitles(
                 jobTitles_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -71,6 +78,7 @@ function db_connect()
                 admin_street VARCHAR(50),
                 admin_zip_code VARCHAR(50),
                 salary DECIMAL(12,2),
+                unit_section VARCHAR(70),
                 admin_rating VARCHAR(10) NOT NULL,
                 created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 FOREIGN KEY (admin_id) REFERENCES admin(admin_id),
@@ -293,6 +301,7 @@ function db_connect()
                 employee_id INT,
                 jobtitle_id INT(11),
                 Department_id INT(11),
+                unit_section VARCHAR(70),
 
                 annual_salary DECIMAL(12,2) NOT NULL,      
                 net_pay DECIMAL(12,2) NOT NULL,          
@@ -301,8 +310,6 @@ function db_connect()
 
                 employeeID VARCHAR(150) NOT NULL,
                 joined_at VARCHAR(20),
-                -- department VARCHAR(50) NOT NULL,
-                -- jobTitle VARCHAR(50) NOT NULL,
                 salary DECIMAL(12,2) NOT NULL,
                 scheduleFrom time,
                 scheduleTo time,

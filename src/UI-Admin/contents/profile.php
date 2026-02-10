@@ -57,7 +57,8 @@
                     <span
                         id="employeeName"><?= htmlspecialchars($getEmployee["firstname"]) . " " .  substr(htmlspecialchars($getEmployee["middlename"]), 0, 1) . ". " . htmlspecialchars($getEmployee["lastname"]) ?></span>
                     <span class="text-center"
-                        id="employeeDept"><?= htmlspecialchars($getEmployee["Department_name"]) . ' (' . htmlspecialchars($getEmployee["Department_code"]) . ')'?></span>
+                        id="employeeDept"><?= htmlspecialchars($getEmployee["Department_name"]) ?></span>
+                        <span class="text-center"><?= ' (' . htmlspecialchars($getEmployee["unit_section_name"]) . ')' ?></span>
                     <span id="employeeJobTitle"><?= htmlspecialchars($getEmployee["jobTitle"]) ?></span>
                     <span id="employeeSchedule" class="fw-bold"></span>
                     <a href="index.php?page=contents/pds&employee_id=<?= $getEmployee["employee_id"] ?>"

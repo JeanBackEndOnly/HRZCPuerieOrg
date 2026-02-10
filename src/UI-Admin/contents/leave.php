@@ -28,12 +28,6 @@
             $pending = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Recommended'")->fetchColumn();
             $inactive = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Disapproved'")->fetchColumn();
         ?>
-        <!-- <div class="col-md-3">
-                <div class="card-header shadow  bg-white text-center p-4 ">
-                    <h5 id="totalChildren"><?php echo get_total() ?></h5>
-                    <small>Application request</small>
-                </div>
-            </div> -->
         <div class="col-md-4">
             <div class="card-header shadow bg-white text-center p-4 ">
 
@@ -118,21 +112,25 @@
                                 ORDER BY lr.request_date DESC");
                             $stmt->execute();
                             $recommendedLeave = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                            $count = 1;
-                            foreach($recommendedLeave as $recommended) : ?>
-                            <tr>
-                                <th><?= $count++ ?></th>
-                                <th><?= htmlspecialchars($recommended["firstname"]) . " " . htmlspecialchars(substr($recommended["middlename"], 0, 1)) . ". " . htmlspecialchars($recommended["lastname"]) ?></th>
-                                <th><?= htmlspecialchars($recommended["leaveType"]) ?></th>
-                                <th><?= htmlspecialchars($recommended["InclusiveFrom"]) . " to " . htmlspecialchars($recommended["InclusiveTo"]) ?></th>
-                                <th><?= htmlspecialchars($recommended["leaveStatus"]) ?></th>
-                                <th><a href="index.php?page=contents/viewLeave&leave_id=<?= htmlspecialchars($recommended["leave_id"]) ?>" ><button class="btn btn-sm btn-danger px-3 view-leave-details" data-id="${leave.leave_id}">
-                                        <i class="fas fa-eye"></i> View
-                                    </button></a>
-                                </th>
-                            </tr>
-                            <?php endforeach ?>
+                            if($recommendedLeave ){
+                                $count = 1; 
+                                    foreach($recommendedLeave as $recommended) : ?>
+                                    <tr>
+                                        <th><?= $count++ ?></th>
+                                        <th><?= htmlspecialchars($recommended["firstname"]) . " " . htmlspecialchars(substr($recommended["middlename"], 0, 1)) . ". " . htmlspecialchars($recommended["lastname"]) ?></th>
+                                        <th><?= htmlspecialchars($recommended["leaveType"]) ?></th>
+                                        <th><?= htmlspecialchars($recommended["InclusiveFrom"]) . " to " . htmlspecialchars($recommended["InclusiveTo"]) ?></th>
+                                        <th><?= htmlspecialchars($recommended["leaveStatus"]) ?></th>
+                                        <th><a href="index.php?page=contents/viewLeave&leave_id=<?= htmlspecialchars($recommended["leave_id"]) ?>" ><button class="btn btn-sm btn-danger px-3 view-leave-details" data-id="${leave.leave_id}">
+                                                <i class="fas fa-eye"></i> View
+                                            </button></a>
+                                        </th>
+                                    </tr>
+                                    
+                            <?php endforeach;
+                            }else{?>
+                                <tr><td colspan="6" class="text-center"><strong>No Recommended Leave Data</strong></td></tr>
+                            <?php } ?>
                         </tbody>
                     </table>
                 </div>
@@ -176,7 +174,7 @@
                                 ORDER BY lr.request_date DESC");
                             $stmt->execute();
                             $ApprovedLeave = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+                            if($ApprovedLeave){
                             foreach($ApprovedLeave as $approved) : ?>
                             <tr>
                                 <th><?= $count++ ?></th>
@@ -189,7 +187,10 @@
                                     </button></a>
                                 </th>
                             </tr>
-                            <?php endforeach ?>
+                            <?php endforeach;
+                            }else{ ?>
+                                <tr><td colspan="6" class="text-center"><strong>No Approved Leave Data</strong></td></tr>
+                            <?php } ?>
                         </tbody>
                         </table>
                     </div>
@@ -237,6 +238,8 @@
                             $disapprovedLeave = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                             $count = 1;
+                            if($disapprovedLeave){
+
                             foreach($disapprovedLeave as $disapproved) : ?>
                             <tr>
                                 <th><?= $count++ ?></th>
@@ -249,7 +252,10 @@
                                     </button></a>
                                 </th>
                             </tr>
-                            <?php endforeach ?>
+                            <?php endforeach;
+                            }else{ ?>
+                                <tr><td colspan="6" class="text-center"><strong>No Disapproved Leave Data</strong></td></tr>
+                            <?php } ?>
                         </tbody>
                     </table>
                 </div>

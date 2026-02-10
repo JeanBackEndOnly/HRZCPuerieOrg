@@ -1,9 +1,10 @@
 <?php
-    $stmt = $pdo->prepare("SELECT a.*, ai.*, ass.*, d.Department_name, d.Department_code, d.Department_id, j.jobTitle, j.jobTitles_id  FROM admin a
+    $stmt = $pdo->prepare("SELECT a.*, ai.*, ass.*, us.unit_section_name, d.Department_name, d.Department_code, d.Department_id, j.jobTitle, j.jobTitles_id  FROM admin a
         LEFT JOIN admin_info ai ON a.admin_id = ai.admin_id
         LEFT JOIN departments d ON ai.admin_department_id = d.Department_id
         LEFT JOIN jobTitles j ON ai.admin_position_id = j.jobTitles_id
         LEFT JOIN admin_schedule ass ON a.admin_id = ass.admin_id 
+        LEFT JOIN unit_section us ON ai.unit_section_id = us.unit_section_id 
         WHERE a.admin_id = 1");
     $stmt->execute();
     $getAdminData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -71,7 +72,11 @@
                     <span
                         id="employeeName"><?= htmlspecialchars($getAdminData["admin_firstname"] ?? '') . " " .  substr(htmlspecialchars($getAdminData["admin_middlename"] ?? ''), 0, 1) . ". " . htmlspecialchars($getAdminData["admin_lastname"] ?? '') ?></span>
                     <span class="text-center"
-                        id="employeeDept"><?= isset($getAdminData["Department_name"]) ? htmlspecialchars($getAdminData["Department_name"] . ' (' . $getAdminData["Department_code"] . ')') : '' ?></span>
+                        id="employeeDept"><?= isset($getAdminData["Department_name"]) ? htmlspecialchars($getAdminData["Department_name"]) : '' ?>
+                    </span>
+                    <span class="text-center">
+                        <?= ' (' . $getAdminData["unit_section_name"] . ')' ?>
+                    </span>
                     <span id="employeeJobTitle"><?= htmlspecialchars($getAdminData["jobTitle"]) ?? '' ?></span>
 
                 </div>

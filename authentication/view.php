@@ -10,24 +10,27 @@ function getEmployees(){
 
     $sql = "
         SELECT 
-            jobTitles.*,
-            employee_data.*,
-            departments.*,
-            hr_data.*,
-            schedule.*,
-            leaveCounts.*
-        FROM employee_data
-        INNER JOIN hr_data 
-            ON employee_data.employee_id = hr_data.employee_id
-        INNER JOIN jobTitles 
-            ON hr_data.jobtitle_id = jobTitles.jobTitles_id
-        INNER JOIN schedule 
-            ON employee_data.employee_id = schedule.employee_id
-        INNER JOIN departments 
-            ON hr_data.Department_id = departments.Department_id
-        INNER JOIN leaveCounts 
-            ON employee_data.employee_id = leaveCounts.employee_id
-        WHERE employee_data.employee_id = :employee_id
+            j.*,
+            ed.*,
+            d.*,
+            hd.*,
+            s.*,
+            lc.*,
+            us.unit_section_name
+        FROM employee_data ed
+        INNER JOIN hr_data hd
+            ON ed.employee_id = hd.employee_id
+        INNER JOIN jobTitles j
+            ON hd.jobtitle_id = j.jobTitles_id
+        INNER JOIN schedule s
+            ON ed.employee_id = s.employee_id
+        INNER JOIN departments d
+            ON hd.Department_id = d.Department_id
+        INNER JOIN leaveCounts lc
+            ON ed.employee_id = lc.employee_id
+        INNER JOIN unit_section us
+            ON hd.unit_section_id = us.unit_section_id
+        WHERE ed.employee_id = :employee_id
     ";
 
     $stmt = $pdo->prepare($sql);

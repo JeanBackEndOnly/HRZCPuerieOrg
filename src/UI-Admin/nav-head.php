@@ -1,6 +1,6 @@
 <?php
     include "../../header.php";
-    include "../../authentication/View/admin/view.php"; 
+    include "../../view/admin/view.php"; 
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

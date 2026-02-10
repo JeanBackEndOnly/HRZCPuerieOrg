@@ -1,5 +1,6 @@
 <?php
     $unit_sections = getUnitSection();
+    $getUnit = $unit_sections["Unit_Sections"];
 
     $stmt = $pdo->prepare("SELECT a.*, ai.*, ass.*, d.Department_name, d.Department_code, d.Department_id, j.jobTitle, j.jobTitles_id  FROM admin a
         LEFT JOIN admin_info ai ON a.admin_id = ai.admin_id
@@ -391,25 +392,20 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Unit/Section</label>
-                            <select name="" id="">
-                                <option value="">Select Unit/Section</option>
+                            <select name="" id="" class="form-select">
+                                <?php foreach($getUnit as $uniSec):  ?>
+                                    <option value=""><?= $uniSec["unit_section_name"] ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                         <strong class="w-100 text-start fs-5 mt-3">
                             Scheduling information
                         </strong>
-                        <!-- <div class="col-md-4">
-                            <label class="form-label">Work Schedule</label>
-                            <input type="text" name="work_schedule_type" value="<?= $getAdminData["work_schedule_type"] ?? '' ?>"
-                                id="work_schedule_type" class="form-control" placeholder="">
-                        </div> -->
                         <?php
-                            // Fetch schedule templates grouped by department
                             $stmtTemplates = $pdo->prepare("SELECT * FROM sched_template ORDER BY department, scheduleName");
                             $stmtTemplates->execute();
                             $templates = $stmtTemplates->fetchAll(PDO::FETCH_ASSOC);
 
-                            // Group templates by department
                             $groupedTemplates = [];
                             foreach ($templates as $template) {
                                 $groupedTemplates[$template['department']][] = $template;

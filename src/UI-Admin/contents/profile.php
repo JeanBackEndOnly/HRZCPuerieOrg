@@ -7,27 +7,27 @@
         </div>
         <div class="card-body col-md-9 col-12">
             <ul class="nav nav-tabs justify-content-end align-items-end col-md-12 col-12" id="ProfileInfoTabs">
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Personal"><i
                             class="fa-solid fa-circle-info me-2"></i>Personal</a>
                 </li>
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Employment"><i
                             class="fa-solid me-2 fa-briefcase"></i>Employment</a>
                 </li>
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Leave_Credits"><i
                             class="fa-solid fa-person-through-window me-2"></i>Leave Credits</a>
                 </li>
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Education"><i
                             class="fa-solid me-2 fa-school"></i>Education</a>
                 </li>
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Family"><i
                             class="fa-solid me-2 fa-people-group"></i>Family</a>
                 </li>
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Leave">
                         <i class="fa-solid fa-chart-line me-2"></i>Activities</a>
                 </li>
@@ -357,8 +357,15 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Unit/Section</label>
-                            <input type="text" name="unit_section" value="<?= $getEmployee["unit_section"] ?>"
-                                id="unit_section_field" class="form-control">
+                            <select name="unit_section_id" id="" class="form-select" required>
+                                <option value="">Select Unit/Section</option>
+                                <?php foreach($getUnit as $uniSec):  ?>
+                                    <option value="<?= $uniSec['unit_section_id'] ?>"
+                                    <?= ($uniSec['unit_section_id'] == $getEmployee['unit_section_id']) ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($uniSec['unit_section_name']) ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
 
                         <div class="col-md-4">

@@ -1039,7 +1039,7 @@ class Action
         }
     }
 
-// DEPARTMENTS =======================================================================
+// Unit/Sections =======================================================================
     function unitsection_form(){
         $unit_section_name = htmlspecialchars(trim($_POST["unit_section_name"]));
         $department_id = htmlspecialchars(trim($_POST["department_id"]));
@@ -1867,9 +1867,16 @@ class Action
         $shift_type = htmlSpecialChars($_POST["shift_type"] ?? '');
         $work_days = htmlSpecialChars($_POST["work_days"] ?? '');
         $admin_update = htmlSpecialChars($_POST["admin_update"]);
+        $unit_section_id = htmlSpecialChars($_POST["unit_section_id"]);
         $joined_at = htmlSpecialChars($_POST["joined_at"]);
 
         try {
+            if($unit_section_id == ''){
+                return json_encode([
+                    'status' => 0,
+                    'message' => 'NO ID man'
+                ]);
+            }
             if($admin_update == 'true'){
                 $admin_employee_id = htmlSpecialChars($_POST["admin_employee_id"]);
                 $admin_department_id = htmlSpecialChars($_POST["admin_department_id"]);
@@ -1883,14 +1890,15 @@ class Action
                 ]);
 
                 $stmt = $this->db->prepare("UPDATE admin_info SET admin_employee_id = :admin_employee_id, admin_position_id = :admin_position_id,
-                    admin_department_id = :admin_department_id, salary = :salary WHERE
+                    admin_department_id = :admin_department_id, salary = :salary, unit_section_id = :unit_section_id WHERE
                     admin_id = :admin_id");
                     $stmt->execute([
                         'admin_id' => $admin_id,
                         'admin_employee_id' => $admin_employee_id,
                         'admin_position_id' => $admin_position_id,
                         'admin_department_id' => $admin_department_id,
-                        'salary' => $salary
+                        'salary' => $salary,
+                        'unit_section_id' => $unit_section_id
                     ]);
 
                     $stmtSchdule = $this->db->prepare("UPDATE admin_schedule SET  shift_type = :shift_type, work_days = :work_days, scheduleFrom = :scheduleFrom, scheduleTo = :scheduleTo WHERE admin_id = :admin_id");
@@ -1907,7 +1915,7 @@ class Action
                 $Department_id = htmlSpecialChars($_POST["Department_id"]);
 
                 $stmt = $this->db->prepare("UPDATE hr_data SET employeeID = :employeeID, Department_id = :Department_id, salary = :salary, 
-                scheduleFrom = :scheduleFrom, scheduleTo = :scheduleTo, joined_at = :joined_at WHERE employee_id = :employee_id");
+                scheduleFrom = :scheduleFrom, scheduleTo = :scheduleTo, joined_at = :joined_at, unit_section_id = :unit_section_id WHERE employee_id = :employee_id");
                 $stmt->execute([
                     'employee_id' => $employee_id,
                     'employeeID' => $employeeID,
@@ -1915,7 +1923,8 @@ class Action
                     'salary' => $salary,
                     'scheduleFrom' => $scheduleFrom,
                     'scheduleTo' => $scheduleTo,
-                    'joined_at' => $joined_at
+                    'joined_at' => $joined_at,
+                    'unit_section_id' => $unit_section_id
                 ]);
 
                 $stmtSchdule = $this->db->prepare("UPDATE schedule SET  shift_type = :shift_type, work_days = :work_days WHERE employee_id = :employee_id");

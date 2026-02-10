@@ -2,6 +2,9 @@
     include "../../header.php";
     include "../../view/admin/view.php"; 
 
+    $unit_sections = getUnitSection();
+    $getUnit = $unit_sections["Unit_Sections"];
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

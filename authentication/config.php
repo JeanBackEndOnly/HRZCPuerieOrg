@@ -70,6 +70,7 @@ function db_connect()
                 admin_employee_id VARCHAR(20) NOT NULL,
                 admin_position_id INT,
                 admin_department_id INT,
+                unit_section_id INT,
                 admin_province VARCHAR(50),
                 admin_city VARCHAR(50),
                 admin_barangay VARCHAR(50),
@@ -78,9 +79,9 @@ function db_connect()
                 admin_street VARCHAR(50),
                 admin_zip_code VARCHAR(50),
                 salary DECIMAL(12,2),
-                unit_section VARCHAR(70),
                 admin_rating VARCHAR(10) NOT NULL,
                 created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY (unit_section_id) REFERENCES unit_section(unit_section_id),
                 FOREIGN KEY (admin_id) REFERENCES admin(admin_id),
                 FOREIGN KEY (admin_position_id) REFERENCES jobTitles(jobTitles_id),
                 FOREIGN KEY (admin_department_id) REFERENCES departments(Department_id)
@@ -301,7 +302,7 @@ function db_connect()
                 employee_id INT,
                 jobtitle_id INT(11),
                 Department_id INT(11),
-                unit_section VARCHAR(70),
+                unit_section_id INT,
 
                 annual_salary DECIMAL(12,2) NOT NULL,      
                 net_pay DECIMAL(12,2) NOT NULL,          
@@ -322,6 +323,7 @@ function db_connect()
                 zip_code VARCHAR(10) NOT NULL,
                 updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (unit_section_id) REFERENCES unit_section(unit_section_id),
                 FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id) ON DELETE CASCADE ON UPDATE CASCADE,
                 FOREIGN KEY (jobtitle_id) REFERENCES jobTitles(jobTitles_id),
                 FOREIGN KEY (Department_id) REFERENCES departments(Department_id)

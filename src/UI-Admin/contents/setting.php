@@ -1,7 +1,4 @@
 <?php
-    $unit_sections = getUnitSection();
-    $getUnit = $unit_sections["Unit_Sections"];
-
     $stmt = $pdo->prepare("SELECT a.*, ai.*, ass.*, d.Department_name, d.Department_code, d.Department_id, j.jobTitle, j.jobTitles_id  FROM admin a
         LEFT JOIN admin_info ai ON a.admin_id = ai.admin_id
         LEFT JOIN departments d ON ai.admin_department_id = d.Department_id
@@ -392,9 +389,10 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Unit/Section</label>
-                            <select name="" id="" class="form-select">
+                            <select name="unit_section_id" id="" class="form-select">
+                                <option value="">Select Unit/Section</option>
                                 <?php foreach($getUnit as $uniSec):  ?>
-                                    <option value=""><?= $uniSec["unit_section_name"] ?></option>
+                                    <option value="<?= $uniSec["unit_section_id"] ?>"><?= htmlspecialchars($uniSec["unit_section_name"]) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>

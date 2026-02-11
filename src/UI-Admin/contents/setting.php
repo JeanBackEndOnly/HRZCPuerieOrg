@@ -25,22 +25,22 @@
     <div class="d-flex justify-content-between align-items-center mb-0 col-md-12 col-12 flex-wrap">
         <div class="card-body col-md-8 col-12">
             <ul class="nav nav-tabs justify-content-start align-items-start col-md-12 col-12" id="AdminSettingsTabs">
-                <li class="nav-item col-md-3 col-12">
+                <li class="nav-item cursor-pointer col-md-3 col-12">
                     <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Personal">
                         <i class="fa-solid fa-circle-info me-2"></i> Personal Information
                     </a>
                 </li>
-                <li class="nav-item col-md-3 col-12">
+                <li class="nav-item cursor-pointer col-md-3 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Employement">
                         <i class="fa-solid fa-circle-info me-2"></i> Employement
                     </a>
                 </li>
-                <li class="nav-item col-md-3 col-12">
+                <li class="nav-item cursor-pointer col-md-3 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#hrEmployees">
                         <i class="fa-solid fa-circle-info me-2"></i> HRMS Activation
                     </a>
                 </li>
-                <li class="nav-item col-md-3 col-12">
+                <li class="nav-item cursor-pointer col-md-3 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#history">
                         <i class="fa-solid fa-clock me-2"></i>Login History
                     </a>

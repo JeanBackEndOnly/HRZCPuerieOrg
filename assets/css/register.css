@@ -1,0 +1,39 @@
+@media(max-width:768px) {
+    .container {
+        margin: 0 !important;
+    }
+
+    .card-header {
+        width: 90vw;
+    }
+
+    .card-body {
+        display: flex !important;
+        justify-content: start !important;
+        align-items: start !important;
+        height: 75vh !important;
+        padding: .3rem !important;
+    }
+
+    .card-body::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    .fontRegister {
+        font-size: 2rem !important;
+    }
+}
+
+.verification-section {
+    display: none;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    border-left: 4px solid #007bff;
+}
+
+.password-feedback {
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}

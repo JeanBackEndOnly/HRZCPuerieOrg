@@ -54,15 +54,15 @@
         <!-- NAVIAGATIONS OF TABS -->
         <div class="card-body col-md-12 col-12 d-flex justify-content-between pb-4">
             <ul class="nav nav-tabs col-md-7 col-12" id="LeaveRequestTabs">
-                <li class="nav-item col-md-4">
+                <li class="nav-item cursor-pointer col-md-4">
                     <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Pending_Leave"><i
                             class="fa-solid fa-user-tie me-2"></i>Recommended Leaves</a>
                 </li>
-                <li class="nav-item col-md-4">
+                <li class="nav-item cursor-pointer col-md-4">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Approved_leave"><i
                             class="fa-solid fa-user-plus me-2"></i>Approved Leaves</a>
                 </li>
-                <li class="nav-item col-md-4">
+                <li class="nav-item cursor-pointer col-md-4">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Rejected_Leave"><i
                             class="fa-solid fa-user-minus me-2"></i>Disapproved Leaves</a>
                 </li>

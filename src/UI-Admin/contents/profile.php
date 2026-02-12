@@ -1,9 +1,9 @@
+<?php $employee_id = $getEmployee["employee_id"]; ?>
 <section>
-    <?php $employee_id = $getEmployee["employee_id"]; ?>
     <div class="d-flex justify-content-between align-items-center mb-0 col-md-12 col-12 flex-wrap">
         <div class="mx-2 col-md-3 col-12">
             <h4 class=""><i class="fa-regular fa-circle-user me-1"></i>Employee Profile</h4>
-            <small class="text-muted ">Manage Employee Profile</small>
+            <small class="text-muted ">Masnage Employee Profile</small>
         </div>
         <div class="card-body col-md-9 col-12">
             <ul class="nav nav-tabs justify-content-end align-items-end col-md-12 col-12" id="ProfileInfoTabs">
@@ -58,10 +58,10 @@
                         id="employeeName"><?= htmlspecialchars($getEmployee["firstname"]) . " " .  substr(htmlspecialchars($getEmployee["middlename"]), 0, 1) . ". " . htmlspecialchars($getEmployee["lastname"]) ?></span>
                     <span class="text-center"
                         id="employeeDept"><?= htmlspecialchars($getEmployee["Department_name"]) ?></span>
-                        <span class="text-center"><?= ' (' . htmlspecialchars($getEmployee["unit_section_name"]) . ')' ?></span>
+                        <span class="text-center"><?= isset($getEmployee["unit_section_name"]) ? ' (' . htmlspecialchars($getEmployee["unit_section_name"]) . ')' : '' ?></span>
                     <span id="employeeJobTitle"><?= htmlspecialchars($getEmployee["jobTitle"]) ?></span>
                     <span id="employeeSchedule" class="fw-bold"></span>
-                    <a href="index.php?page=contents/pds&employee_id=<?= $getEmployee["employee_id"] ?>"
+                    <a href="index.php?page=contents/pds&employee_id=<?= $employee_id ?>"
                         class="mt-2"><strong>View Personal Data Sheet <i
                                 class="fa-solid fa-arrow-up-right-from-square ms-2"></i></strong></a>
                 </div>
@@ -72,7 +72,7 @@
             id="Personal">
             <form id="profile_update">
                 <div class="card rounded-2 profile-contents show-scroll">
-                    <input type="hidden" name="employee_id" value="<?= $getEmployee["employee_id"] ?>">
+                    <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
                     <!-- PERSONAL INFORMATION HEADER -->
                     <div class="col-md-12 d-flex">
                         <div class="header ps-3 pt-3 col-md-5">
@@ -308,7 +308,7 @@
                         </div>
                         <?php } else {} ?>
                     </div>
-                    <input type="hidden" name="employee_id" value="<?= $getEmployee["employee_id"] ?>">
+                    <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
                     <!-- EMPLOYMENT INFORMATION CONTENTS -->
                     <div class="row flex-wrap col-md-12 col-12 p-3">
                         <div class="col-md-4">
@@ -497,7 +497,7 @@
         <!-- Leave Credits Tab -->
         <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Leave_Credits">
             <form id="leave_update">
-                <input type="hidden" name="employee_id" value="<?= $getEmployee["employee_id"] ?>">
+                <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
                 <strong class="w-100 text-start fs-5 mt-3">
                     Leave Credits
                 </strong>

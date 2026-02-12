@@ -14,7 +14,7 @@ $firstname = $_SESSION['employeeData']['firstname'];
 $middelname = $_SESSION['employeeData']['middlename'];
 $lastname = $_SESSION['employeeData']['lastname'];
 $profile_picture = $_SESSION['employeeData']['profile_picture'];
-$getEmployee = $employees["employee_data"];
+// $getEmployee = $employees["employee_data"];
 $employee_id = $_SESSION['employeeData']['employee_id'];
 verify_init($employee_id);
 

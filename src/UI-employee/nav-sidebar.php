@@ -12,7 +12,7 @@
                                 "><?= htmlspecialchars(substr($lastname, 0,1)) ?>
                         </strong>
                     <?php } else { ?>
-                        <img src="../../authentication/uploads/<?= $getProfile["profile_picture"] ?>" class="image-profile">
+                        <img src="../../authentication/uploads/<?= $profile_picture ?>" class="image-profile">
                     <?php } ?>
                 </div>
                 <strong class="text-center text-dark fw-bolder w-100 m-0">

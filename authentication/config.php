@@ -100,7 +100,6 @@ function db_connect()
             // HUMAN RESOURCES DATABASE =============================================================
             "CREATE TABLE IF NOT EXISTS employee_data (    
                 employee_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                reference_id INT(11) NOT NULL,
 
                 firstname VARCHAR(50) NOT NULL,
                 middlename VARCHAR(50) NOT NULL,
@@ -116,11 +115,7 @@ function db_connect()
                 birthday VARCHAR(50),
                 birthPlace VARCHAR(50),
                 contact VARCHAR(50),
-                
-                verification_code VARCHAR(6) NULL,
-                verification_code_expires DATETIME NULL,
-                is_verified TINYINT(1) DEFAULT 0,
-                biometric_data LONGTEXT,
+        
                 status ENUM('Active', 'Inactive', 'Pending') DEFAULT 'Pending',
                 username VARCHAR(50) NOT NULL,
                 password VARCHAR(255) NOT NULL,

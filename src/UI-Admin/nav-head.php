@@ -1,9 +1,6 @@
 <?php
     include "../../header.php";
-    include "../../view/admin/view.php"; 
-
-    $unit_sections = getUnitSection();
-    $getUnit = $unit_sections["Unit_Sections"];
+    include 'view_header.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -23,7 +20,6 @@ $admin_firstname = $_SESSION['adminData']['admin_firstname'];
 $admin_middelname = $_SESSION['adminData']['admin_middlename'];
 $admin_lastname = $_SESSION['adminData']['admin_lastname'];
 $profile_picture = $_SESSION['adminData']['admin_picture'];
-$getEmployee = $employees["employee_data"];
 
 $stmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE type = 'ADMIN' AND status = 'Active'");
 $stmt->execute();

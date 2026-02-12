@@ -1,4 +1,6 @@
 <?php
+// include "../../header.php";
+include 'view_header.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -6,6 +8,7 @@ if (!isset($_SESSION['hrData'])) {
   include 'eror.php';
   exit;
 }
+
 $employeeID = $_SESSION['hrData']['employeeID'];
 $position = $_SESSION['hrData']['employee_position'] ?? '';
 $department = $_SESSION['hrData']['employee_department'] ?? '';
@@ -13,7 +16,6 @@ $firstname = $_SESSION['hrData']['firstname'];
 $middelname = $_SESSION['hrData']['middlename'];
 $lastname = $_SESSION['hrData']['lastname'];
 $profile_picture = $_SESSION['hrData']['profile_picture'];
-$getEmployee = $employees["employee_data"];
 $hr_id = $_SESSION['hrData']['employee_id'];
 
 $stmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE type = 'HR' AND status = 'Active'");

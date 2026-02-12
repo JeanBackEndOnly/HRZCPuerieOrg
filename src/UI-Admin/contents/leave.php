@@ -67,9 +67,6 @@
                             class="fa-solid fa-user-minus me-2"></i>Disapproved Leaves</a>
                 </li>
             </ul>
-            <!-- <div class="col-md-4 col-12">
-                <input type="text" id="searchLeaves" placeholder="search by... Employee name, ID and leave_type" class="form-control">
-            </div> -->
         </div>
         <!-- CONTENTS -->
         <div class="card-body pt-0">
@@ -173,11 +170,14 @@
                                 WHERE lr.leaveStatus = 'Approved'
                                 ORDER BY lr.request_date DESC");
                             $stmt->execute();
+
+                            $countApproved = 1;
+
                             $ApprovedLeave = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             if($ApprovedLeave){
                             foreach($ApprovedLeave as $approved) : ?>
                             <tr>
-                                <th><?= $count++ ?></th>
+                                <th><?= $countApproved++ ?></th>
                                 <th><?= htmlspecialchars($approved["firstname"]) . " " . htmlspecialchars(substr($approved["middlename"], 0, 1)) . ". " . htmlspecialchars($approved["lastname"]) ?></th>
                                 <th><?= htmlspecialchars($approved["leaveType"]) ?></th>
                                 <th><?= htmlspecialchars($approved["InclusiveFrom"]) . " to " . htmlspecialchars($approved["InclusiveTo"]) ?></th>
@@ -237,12 +237,12 @@
                             $stmt->execute();
                             $disapprovedLeave = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                            $count = 1;
+                            $countDisapproved = 1;
                             if($disapprovedLeave){
 
                             foreach($disapprovedLeave as $disapproved) : ?>
                             <tr>
-                                <th><?= $count++ ?></th>
+                                <th><?= $countDisapproved++ ?></th>
                                 <th><?= htmlspecialchars($disapproved["firstname"]) . " " . htmlspecialchars(substr($disapproved["middlename"], 0, 1)) . ". " . htmlspecialchars($disapproved["lastname"]) ?></th>
                                 <th><?= htmlspecialchars($disapproved["leaveType"]) ?></th>
                                 <th><?= htmlspecialchars($disapproved["InclusiveFrom"]) . " to " . htmlspecialchars($disapproved["InclusiveTo"]) ?></th>

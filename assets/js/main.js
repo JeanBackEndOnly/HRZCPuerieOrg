@@ -2640,6 +2640,94 @@ $(document).ready(function () {
       },
     });
   });
+  $(document).on("submit", "#leaveProcess-form", function (e) {
+    e.preventDefault();
+    const $form = $(this);
+
+    // Prevent double submissions
+    if ($form.data("isSubmitted")) return;
+    $form.data("isSubmitted", true);
+
+    const formData = new FormData(this);
+    const $btn = $form.find("button[type='submit']");
+    const originalBtnText = $btn.html();
+
+    $btn.prop("disabled", true);
+    $btn.html('<i class="fas fa-spinner fa-spin me-1"></i> Processing...');
+
+    $.ajax({
+      url: base_url + "authentication/action.php?action=leaveProcess_form",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      dataType: "json",
+
+      success: function (response) {
+        // 🔴 NOT ENOUGH CREDITS — highlight input
+        if (
+          response.status === 0 &&
+          response.message.includes("Not enough leave credits")
+        ) {
+          $("#numberOfDays").addClass("is-invalid");
+          $("#daysError").text(response.message);
+
+          $form.data("isSubmitted", false);
+          $btn.prop("disabled", false).html(originalBtnText);
+
+          return; // STOP reload
+        }
+
+        // 🟢 SUCCESS
+        if (response.status === 1) {
+          Swal.fire({
+            title: "Success!",
+            text: response.message,
+            icon: "success",
+            toast: true,
+            position: "top-end",
+            timer: 1000,
+            showConfirmButton: false,
+          }).then(() => {
+            window.location = "index.php?page=contents/leave";
+          });
+        }
+
+        // ❌ OTHER ERRORS
+        else {
+          Swal.fire({
+            title: "Error",
+            text: response.message,
+            icon: "error",
+            toast: true,
+            position: "top-end",
+            timer: 1000,
+            showConfirmButton: false,
+          });
+        }
+      },
+
+      error: function (jqXHR, textStatus, err) {
+        console.error("AJAX error:", textStatus, err);
+        console.log("Response:", jqXHR.responseText);
+
+        Swal.fire({
+          title: "Error",
+          text: "An error occurred, please try again!",
+          icon: "error",
+          toast: true,
+          position: "top-end",
+          timer: 1000,
+          showConfirmButton: false,
+        });
+      },
+
+      complete: function () {
+        $form.data("isSubmitted", false);
+        $btn.prop("disabled", false).html(originalBtnText);
+      },
+    });
+  });
   $(document).on("submit", "#cancel-leave-form", function (e) {
     e.preventDefault();
     const $form = $(this);

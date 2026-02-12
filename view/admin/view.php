@@ -10,24 +10,19 @@
             $pdo = db_connect();
             $stmt = $pdo->prepare("SELECT * FROM unit_section");
             $stmt->execute();
-            $allUnitSections = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return [
-                'Unit_Sections' => $allUnitSections
-            ];
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             echo 'An error occured: ' . $e->getMessage();
         }
     }
-    // employee fetching
+    // employee fetching ===================================================================================
     function getEmployees(){
         $pdo = db_connect();
         
-        // Check if ID exists
         if (!isset($_GET["id"]) || empty($_GET["id"])) {
             return ['employee_data' => null, 'error' => 'No employee ID provided'];
         }
         
-        // Validate that ID is numeric
         if (!is_numeric($_GET["id"])) {
             return ['employee_data' => null, 'error' => 'Invalid employee ID format'];
         }
@@ -61,13 +56,8 @@
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$employee_id]);
-        $employee_data = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if (!$employee_data) {
-            return ['employee_data' => null, 'error' => 'Employee not found'];
-        }
-        
-        return ['employee_data' => $employee_data];
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+
     }
 
         

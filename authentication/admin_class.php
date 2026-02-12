@@ -1587,7 +1587,7 @@ class Action
             }
             return json_encode([
                 'status' => 1,
-                'message' => 'Profile updated successfu lly!'
+                'message' => 'Profile updated successfully!'
             ]);
         } catch (PDOException $e) {
             error_log("Database error: " . $e->getMessage());

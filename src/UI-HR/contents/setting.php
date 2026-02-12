@@ -1,9 +1,10 @@
 <section>
     <?php
-        $query = "SELECT jobtitles.*, employee_data.*, departments.*, hr_data.* FROM employee_data
+        $query = "SELECT jobtitles.*, employee_data.*, departments.*, hr_data.*, us.unit_section_id, us.unit_section_name FROM employee_data
         INNER JOIN hr_data ON employee_data.employee_id = hr_data.employee_id
         INNER JOIN jobtitles ON hr_data.jobtitle_id = jobtitles.jobtitles_id
         INNER JOIN departments ON hr_data.Department_id = departments.Department_id
+        LEFT JOIN unit_section us ON hr_data.unit_section_id = us.unit_section_id
         WHERE employee_data.employee_id = '$hr_id'";
         $stmt = $pdo->prepare($query);
         $stmt->execute();
@@ -21,27 +22,27 @@
     <div class="d-flex justify-content-between align-items-center mb-0 col-md-12 col-12 flex-wrap">
         <div class="card-body col-md-8 col-12">
             <ul class="nav nav-tabs justify-content-end align-items-end col-md-12 col-12" id="ProfileInfoTabs">
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Personal"><i
                             class="fa-solid fa-circle-info me-2"></i>Personal</a>
                 </li>
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Employment"><i
                             class="fa-solid me-2 fa-briefcase"></i>Employment</a>
                 </li>
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Education"><i
                             class="fa-solid me-2 fa-school"></i>Education</a>
                 </li>
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Family"><i
                             class="fa-solid me-2 fa-people-group"></i>Family</a>
                 </li>
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Leave">
                         <i class="fa-solid fa-chart-line me-2"></i>Activities</a>
                 </li>
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#history">
                         <i class="fa-solid fa-clock-rotate-left me-2"></i>Login history</a>
                 </li>
@@ -304,41 +305,43 @@
         <!-- WORK INFORMATIONS TAB -->
         <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Employment">
             <form id="employment_update">
+                <input type="hidden" name="admin_update" value="false">
+                <input type="hidden" name="employee_id" value="<?= $hr_id ?>">
                 <div class="card rounded-2 profile-contents col-md-12 col-12" style="overflow-y: scroll;">
                     <!-- EMPLOYMENT INFORMATION HEADER -->
                     <div class="col-md-12 d-flex">
                         <div class="header ps-3 pt-3 col-md-5">
-                            <h5 class="m-0 p-0 label-media-name" >
+                            <h5 class="m-0 p-0 label-media-name">
                                 <i class="fa-solid fa-circle-info me-2"></i>Employment Information
                             </h5>
                         </div>
                     </div>
-                    <input type="hidden" name="employee_id" value="<?= $getHrData["employee_id"] ?>">
                     <!-- EMPLOYMENT INFORMATION CONTENTS -->
                     <div class="row flex-wrap col-md-12 col-12 p-3">
                         <div class="col-md-4">
                             <label class="form-label">Employee ID</label>
-                            <input readonly type="text" name="employeeID" value="<?= $getHrData["employeeID"] ?>"
-                               readonly id="employeeID_field" class="form-control">
+                            <input type="text" name="employeeID"
+                                value="<?= $getHrData["employeeID"] ?>" id="employeeID" readonly
+                                class="form-control">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Joined at</label>
-                            <input type="text" name="joined_at" value="<?= $getEmployee["joined_at"] ?>"
-                                readonly id="joined_at_field" class="form-control">
+                            <input type="text" name="joined_at" value="<?= $getHrData["joined_at"] ?>"
+                                id="joined_at_field" class="form-control">
                         </div>
                         <?php
-                            $stmt = $pdo->prepare("SELECT * FROM departments");
+                            $stmt = $pdo->prepare("SELECT d.Department_id, d.Department_name FROM departments d");
                             $stmt->execute();
                             $departmentResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                            $stmt = $pdo->prepare("SELECT * FROM jobtitles");
+                            $stmt = $pdo->prepare("SELECT * FROM jobTitles");
                             $stmt->execute();
                             $jobtitleResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         ?>
 
                         <div class="col-md-4">
                             <label class="form-label">Department</label>
-                            <select name="Department_id" class="form-select" disabled>
+                            <select name="Department_id" class="form-select" required>
                                 <option value="">Select Department</option>
                                 <?php foreach($departmentResult as $departments): ?>
                                 <option value="<?= $departments['Department_id'] ?>"
@@ -350,9 +353,9 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label class="form-label">Job Title</label>
-                            <select name="jobTitles_id" class="form-select" disabled>
-                                <option value="">Select Job Title</option>
+                            <label class="form-label">Designation</label>
+                            <select name="" disabled class="form-select" required>
+                                <option value="">Select Designation</option>
                                 <?php foreach($jobtitleResult as $jb): ?>
                                 <option value="<?= $jb['jobTitles_id'] ?>"
                                     <?= ($jb['jobTitles_id'] == $getHrData['jobTitles_id']) ? 'selected' : '' ?>>
@@ -361,33 +364,121 @@
                                 <?php endforeach; ?>
                             </select>
                         </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Unit/Section</label>
+                            <select name="unit_section_id" id="" class="form-select" required>
+                                <option value="">Select Unit/Section</option>
+                                <?php foreach($getUnit as $uniSec):  ?>
+                                    <option value="<?= $uniSec['unit_section_id'] ?>"
+                                    <?= ($uniSec['unit_section_id'] == $getHrData['unit_section_id']) ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($uniSec['unit_section_name']) ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                         <strong class="w-100 text-start fs-5 mt-3">
-                            Schedulin'g information
+                            Scheduling information
                         </strong>
-                        <div class="col-md-4">
-                            <label class="form-label">Work Schedule</label>
-                            <input required readonly type="text" name="work_schedule_type" value="<?= $getHrData["work_schedule_type"] ?? '' ?>"
-                                id="work_schedule_type" class="form-control" placeholder="">
+                        <?php
+                            $stmtTemplates = $pdo->prepare("SELECT * FROM sched_template ORDER BY department, scheduleName");
+                            $stmtTemplates->execute();
+                            $templates = $stmtTemplates->fetchAll(PDO::FETCH_ASSOC);
+
+                            $groupedTemplates = [];
+                            foreach ($templates as $template) {
+                                $groupedTemplates[$template['department']][] = $template;
+                            }
+                            ?>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Schedule Template</label>
+                            <select name="schedule_template" id="schedule_template" class="form-select">
+                                <option value="">Select Schedule </option>
+                                <?php foreach ($groupedTemplates as $department => $deptTemplates): ?>
+                                <optgroup label="<?= $department ?>">
+                                    <?php foreach ($deptTemplates as $template): ?>
+                                    <option value="<?= $template['template_id'] ?>"
+                                        data-from="<?= $template['schedule_from'] ?>"
+                                        data-to="<?= $template['schedule_to'] ?>" data-shift="<?= $template['shift'] ?>"
+                                        data-days="<?= $template['day'] ?>"
+                                        data-name="<?= htmlspecialchars($template['scheduleName']) ?>">
+                                        <?= htmlspecialchars($template['scheduleName']) ?>
+                                        (<?= $template['schedule_from'] ?> - <?= $template['schedule_to'] ?>)
+                                    </option>
+                                    <?php endforeach; ?>
+                                </optgroup>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
-                        <div class="col-md-4"> 
+
+                        <div class="col-md-3">
                             <label class="form-label">Shift Type</label>
-                            <input required readonly type="text" name="shift_type" value="<?= $getHrData["shift_type"] ?? '' ?>"
-                                id="shift_type" class="form-control" placeholder="ex. Morning shift, night shift">
+                            <input type="text" name="shift_type" value="<?= $getHrData["shift_type"] ?? '' ?>"
+                                id="shift_type" class="form-control" placeholder="Auto-filled from template" readonly>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label class="form-label">Work Days</label>
-                            <input required readonly type="text" name="work_days" value="<?= $getHrData["work_days"] ?? '' ?>"
-                                id="work_days" class="form-control">
+                            <input type="text" name="work_days" value="<?= $getHrData["work_days"] ?? '' ?>"
+                                id="work_days" class="form-control" placeholder="Auto-filled from template" readonly>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label class="form-label">Schedule From</label>
-                            <input required readonly type="time" name="scheduleFrom" value="<?= $getHrData["scheduleFrom"] ?? '' ?>"
-                                id="scheduleFrom" class="form-control">
+                            <input type="time" name="scheduleFrom" value="<?= $getHrData["scheduleFrom"] ?? '' ?>"
+                                id="scheduleFrom" class="form-control" readonly>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label class="form-label">Schedule To</label>
-                            <input required readonly type="time" name="scheduleTo" id="scheduleTo"
-                                value="<?= $getHrData["scheduleTo"] ?? '' ?>" class="form-control">
+                            <input type="time" name="scheduleTo" id="scheduleTo"
+                                value="<?= $getHrData["scheduleTo"] ?? '' ?>" class="form-control" readonly>
+                        </div>
+
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const scheduleTemplate = document.getElementById('schedule_template');
+                            const shiftType = document.getElementById('shift_type');
+                            const workDays = document.getElementById('work_days');
+                            const scheduleFrom = document.getElementById('scheduleFrom');
+                            const scheduleTo = document.getElementById('scheduleTo');
+
+                            scheduleTemplate.addEventListener('change', function() {
+                                if (this.value) {
+                                    const selectedOption = this.options[this.selectedIndex];
+
+                                    // Auto-fill all fields
+                                    shiftType.value = selectedOption.getAttribute('data-shift');
+                                    workDays.value = selectedOption.getAttribute('data-days');
+                                    scheduleFrom.value = selectedOption.getAttribute('data-from');
+                                    scheduleTo.value = selectedOption.getAttribute('data-to');
+
+                                    // Optional: Add visual feedback
+                                    this.classList.add('is-valid');
+                                } else {
+                                    // Clear fields if no template selected
+                                    clearScheduleFields();
+                                }
+                            });
+
+                            function clearScheduleFields() {
+                                shiftType.value = '';
+                                workDays.value = '';
+                                scheduleFrom.value = '';
+                                scheduleTo.value = '';
+                                scheduleTemplate.classList.remove('is-valid');
+                            }
+
+                            // Optional: Allow manual editing by double-clicking fields
+                            [shiftType, workDays, scheduleFrom, scheduleTo].forEach(field => {
+                                field.addEventListener('dblclick', function() {
+                                    this.readOnly = !this.readOnly;
+                                    if (!this.readOnly) {
+                                        this.focus();
+                                    }
+                                });
+                            });
+                        });
+                        </script>
+                        <div class="col-md-12 d-flex mt-3 justify-content-end me-0">
+                            <button type="submit" class="btn  btn-danger px-5 mt-3 me-2">Update</button>
                         </div>
                     </div>
                 </div>

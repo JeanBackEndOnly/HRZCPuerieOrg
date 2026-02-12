@@ -394,7 +394,7 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Unit/Section</label>
-                            <select name="unit_section_id" id="" class="form-select">
+                            <select name="unit_section_id" id="" class="form-select" required>
                                 <option value="">Select Unit/Section</option>
                                 <?php foreach($getUnit as $uniSec):  ?>
                                     <option value="<?= $uniSec["unit_section_id"] ?>"><?= htmlspecialchars($uniSec["unit_section_name"]) ?></option>

@@ -59,7 +59,7 @@ initInstaller()
         // Create show password toggle for password field
         const passwordToggle = document.createElement('button');
         passwordToggle.type = 'button';
-        passwordToggle.innerHTML = 'Show';
+        passwordToggle.innerHTML = '<i class="fa-solid fa-eye"></i>';
         passwordToggle.style.position = 'absolute';
         passwordToggle.style.right = '10px';
         passwordToggle.style.top = '50%';
@@ -67,7 +67,7 @@ initInstaller()
         passwordToggle.style.background = 'none';
         passwordToggle.style.border = 'none';
         passwordToggle.style.cursor = 'pointer';
-        passwordToggle.style.fontSize = '12px';
+        passwordToggle.style.fontSize = '15px';
         
         // Add toggle buttons to password fields
         passwordInput.parentNode.style.position = 'relative';
@@ -78,7 +78,7 @@ initInstaller()
         passwordToggle.addEventListener('click', function() {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
-            passwordToggle.innerHTML = type === 'password' ? 'Show' : 'Hide';
+            passwordToggle.innerHTML = type === 'password' ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
         });
     });
 </script>

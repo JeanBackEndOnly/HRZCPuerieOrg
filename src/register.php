@@ -34,15 +34,6 @@
                                     <option value="III">III</option>
                                 </select>
                             </div>
-                            <!-- Reference ID -->
-                            <div class="col-md-3">
-                                <label class="form-label">Employee ID <span class="text-danger">*</span></label>
-                                <?php 
-                                    $randogs = str_pad(random_int(0, 999999), 9, '0', STR_PAD_LEFT);
-                                ?>
-                                <input required readonly type="number" value="<?= htmlspecialchars($randogs) ?>"
-                                    class="form-control" name="employeeID" id="employeeID">
-                            </div>
                             <?php
                                 // Get all departments
                                 $stmt_departments = $pdo->prepare("SELECT * FROM departments ORDER BY Department_name ASC");
@@ -57,7 +48,7 @@
                                 $all_jobtitles = $stmt_jobtitles->fetchAll(PDO::FETCH_ASSOC);
                             ?>
 
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label for="Department_id" class="form-label">Department</label>
                                 <select class="form-select" id="Department_id" name="Department_id">
                                     <option value="">Select Department</option>
@@ -69,7 +60,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label for="jobTitleSelect" class="form-label">Job Title</label>
                                 <select class="form-select" id="jobTitleSelect" name="jobTitle_id">
                                     <option value="">Select Job Title</option>
@@ -85,7 +76,7 @@
                                     <?php endforeach ?>
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label class="form-label">Sex <span class="text-danger">*</span></label>
                                 <select required class="form-select" name="gender" id="gender">
                                     <option value="">Select</option>

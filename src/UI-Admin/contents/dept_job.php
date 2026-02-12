@@ -12,7 +12,7 @@
     $stmtUnitSections->execute();
     $unitSections = $stmtUnitSections->fetchAll(PDO::FETCH_ASSOC);
 
-    $stmtJobtitles = $pdo->prepare("SELECT j.jobTitles_id, j.jobTitle, j.salary, j.addAt, d.Department_name
+    $stmtJobtitles = $pdo->prepare("SELECT j.jobTitles_id, j.jobTitle, j.jobTitle_code, j.salary, j.addAt, d.Department_name
                     FROM jobTitles j
                     INNER JOIN departments d ON j.department_id = d.Department_id
                     ORDER BY d.Department_name ASC");
@@ -51,7 +51,7 @@
         <div class="col-md-6">
             <div class="card-header shadow bg-white text-center p-4 ">
                 <h5 id="approvedEnrollments"><?= $jobtitles ?></h5>
-                <small>Job Titles</small>
+                <small>Designation</small>
             </div>
         </div>
     </div>
@@ -68,7 +68,7 @@
                 </li>
                 <li class="nav-item cursor-pointer col-md-2">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#JobTitlesInfno"><i
-                            class="fa-solid me-2 fa-user-doctor"></i>Job Titles</a>
+                            class="fa-solid me-2 fa-user-doctor"></i>Designation</a>
                 </li>
                 <li class="nav-item cursor-pointer col-md-2">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#CareerPathsInfo"><i
@@ -404,7 +404,7 @@
                         <div class="col-md-3 d-flex col-6 justify-content-end">
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                 data-bs-target="#addJobTitles" id="add_new">
-                                <i class="fa fa-plus"></i> Add new Job Titles
+                                <i class="fa fa-plus"></i> Add new Designation
                             </button>
                         </div>
                     </div>
@@ -414,7 +414,7 @@
                         <div class="modal-dialog modal-md">
                             <div class="modal-content">
                                 <div class="modal-header bg-danger text-white">
-                                    <h5 class="modal-title text-white" id="createAccountsLabel">Add New Job Titles
+                                    <h5 class="modal-title text-white" id="createAccountsLabel">Add New Desgination
                                     </h5>
                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                                         aria-label="Close" onclick="location.reload()"></button>
@@ -422,8 +422,12 @@
                                 <div class="modal-body">
                                     <form class="row g-3" id="jobtitle-form">
                                         <div class="m-2">
-                                            <label class="form-label">Job Title</label>
+                                            <label class="form-label">Designation</label>
                                             <input required type="text" class="form-control" name="jobTitle">
+                                        </div>
+                                        <div class="m-2">
+                                            <label class="form-label">Designation Code</label>
+                                            <input required type="text" class="form-control" name="jobTitle_code">
                                         </div>
                                         <div class="m-2">
                                             <label class="form-label">Official Salary</label>
@@ -473,11 +477,15 @@
                                         <input type="hidden" name="jobTitles_id" id="editUserIdEdit">
 
                                         <div class="mb-3">
-                                            <label for="jobTitle" class="form-label">Job Title</label>
+                                            <label for="jobTitle" class="form-label">Designation</label>
                                             <input type="text" class="form-control" id="jobTitle" value=""
                                                 name="jobTitle">
                                         </div>
-
+                                        <div class="mb-3">
+                                            <label for="jobTitle_code" class="form-label">Designation Code</label>
+                                            <input type="text" class="form-control" id="jobTitle_code" value=""
+                                                name="jobTitle_code">
+                                        </div>
                                         <div class="mb-3">
                                             <label for="salary" class="form-label">Official Salary</label>
                                             <input type="text" class="form-control" id="salary" value="" name="salary">
@@ -498,10 +506,6 @@
                         aria-hidden="true">
                         <div class="modal-dialog">
                             <form id="jobtitle-delete-form" class="modal-content">
-                                <!-- <?php $csrf = $_SESSION["csrf_token"] ?? ''?>
-                                <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
-                                <input type="hidden" name="jobTitle_auth" value="true">
-                                <input type="hidden" name="job_auth_type" value="delete"> -->
                                 <div class="modal-header bg-gradient-primary text-white">
                                     <h5 class="modal-title text-white" id="deleteJobModalLabel">Confirmation Delete</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -524,7 +528,8 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Job Title</th>
+                                    <th>Position</th>
+                                    <th>Position Code</th>
                                     <th>Salary</th>
                                     <th>Department</th>
                                     <th>Created At</th>
@@ -536,6 +541,7 @@
                                 <tr>
                                     <th><?= $countsjob++ ?></th>
                                     <th><?= htmlspecialchars($job["jobTitle"]) ?></th>
+                                    <th><?= htmlspecialchars($job["jobTitle_code"]) ?></th>
                                     <th><?= htmlspecialchars($job["salary"]) ?></th>
                                     <th><?= htmlspecialchars($job["Department_name"]) ?></th>
                                     <th><?= htmlspecialchars($job["addAt"]) ?></th>
@@ -543,6 +549,7 @@
                                         <button type="button" class="btn m-0 btn-sm btn-danger" onclick="edit_jobTitle(
                                                     <?= $job['jobTitles_id'] ?>,
                                                     '<?= addslashes($job['jobTitle']) ?>',
+                                                    '<?= addslashes($job['jobTitle_code']) ?>',
                                                     '<?= $job['salary'] ?>'
                                                 )">
                                             <i class="fas fa-eye"></i> Edit

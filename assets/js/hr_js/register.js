@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Create show password toggle for password field
     const passwordToggle = document.createElement('button');
     passwordToggle.type = 'button';
-    passwordToggle.innerHTML = 'Show';
+    passwordToggle.innerHTML = '<i class="fa-solid fa-eye"></i>';
     passwordToggle.style.position = 'absolute';
     passwordToggle.style.right = '10px';
     passwordToggle.style.top = '50%';
@@ -41,12 +41,12 @@ document.addEventListener('DOMContentLoaded', function() {
     passwordToggle.style.background = 'none';
     passwordToggle.style.border = 'none';
     passwordToggle.style.cursor = 'pointer';
-    passwordToggle.style.fontSize = '12px';
+    passwordToggle.style.fontSize = '15px';
 
     // Create show password toggle for confirm password field
     const confirmPasswordToggle = document.createElement('button');
     confirmPasswordToggle.type = 'button';
-    confirmPasswordToggle.innerHTML = 'Show';
+    confirmPasswordToggle.innerHTML = '<i class="fa-solid fa-eye"></i>';
     confirmPasswordToggle.style.position = 'absolute';
     confirmPasswordToggle.style.right = '10px';
     confirmPasswordToggle.style.top = '50%';
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     confirmPasswordToggle.style.background = 'none';
     confirmPasswordToggle.style.border = 'none';
     confirmPasswordToggle.style.cursor = 'pointer';
-    confirmPasswordToggle.style.fontSize = '12px';
+    confirmPasswordToggle.style.fontSize = '15px';
 
     // Add toggle buttons to password fields
     passwordInput.parentNode.style.position = 'relative';
@@ -67,13 +67,13 @@ document.addEventListener('DOMContentLoaded', function() {
     passwordToggle.addEventListener('click', function() {
         const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
         passwordInput.setAttribute('type', type);
-        passwordToggle.innerHTML = type === 'password' ? 'Show' : 'Hide';
+        passwordToggle.innerHTML = type === 'password' ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
     });
 
     confirmPasswordToggle.addEventListener('click', function() {
         const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
         confirmPasswordInput.setAttribute('type', type);
-        confirmPasswordToggle.innerHTML = type === 'password' ? 'Show' : 'Hide';
+        confirmPasswordToggle.innerHTML = type === 'password' ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
     });
 
     // Password validation

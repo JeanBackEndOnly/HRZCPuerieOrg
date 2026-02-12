@@ -1116,12 +1116,13 @@ class Action
     function update_jobInfo(){
         $jobTitles_id = htmlspecialchars($_POST["jobTitles_id"] ?? '');
         $jobTitle = htmlspecialchars($_POST["jobTitle"] ?? '');
+        $jobTitle_code = htmlspecialchars($_POST["jobTitle_code"] ?? '');
         $salary = htmlspecialchars($_POST["salary"] ?? '');
 
         try {
 
-            $stmt = $this->db->prepare("UPDATE jobTitles SET jobTitle = :jobTitle, salary = :salary WHERE jobTitles_id = :jobTitles_id ");
-            $stmt->execute(['jobTitle' => $jobTitle, 'salary' => $salary, 'jobTitles_id' => $jobTitles_id]);
+            $stmt = $this->db->prepare("UPDATE jobTitles SET jobTitle = :jobTitle, jobTitle_code = :jobTitle_code,salary = :salary WHERE jobTitles_id = :jobTitles_id ");
+            $stmt->execute(['jobTitle' => $jobTitle, 'jobTitle_code' => $jobTitle_code, 'salary' => $salary, 'jobTitles_id' => $jobTitles_id]);
 
             return json_encode([
                 'status' => 1,
@@ -1173,6 +1174,7 @@ class Action
     }
     function jobtitle_form(){
         $jobTitle = htmlspecialchars(trim($_POST["jobTitle"]));
+        $jobTitle_code = htmlspecialchars(trim($_POST["jobTitle_code"]));
         $salary = htmlspecialchars(trim($_POST["salary"]));
         $department_id = ($_POST["department_id"]) ?? '';
 
@@ -1189,9 +1191,10 @@ class Action
                 ]);
             }
 
-            $stmt = $this->db->prepare("INSERT INTO jobTitles (jobTitle, salary, Department_id) VALUES (:jobTitle, :salary, :Department_id)");
+            $stmt = $this->db->prepare("INSERT INTO jobTitles (jobTitle, jobTitle_code, salary, Department_id) VALUES (:jobTitle, :jobTitle_code, :salary, :Department_id)");
             $stmt->execute([
                 'jobTitle' => $jobTitle,
+                'jobTitle_code' => $jobTitle_code,
                 'salary' => $salary,
                 'Department_id' => $department_id
             ]);
@@ -1216,7 +1219,6 @@ class Action
         $firstName = htmlspecialchars(trim($_POST["firstName"]));
         $middleName = htmlspecialchars(trim($_POST["middleName"] ?? ''));
         $suffix = htmlspecialchars(trim($_POST["suffix"] ?? ''));
-        $employeeID = htmlspecialchars(trim($_POST["employeeID"]));
         $jobTitle_id  = htmlspecialchars(trim($_POST["jobTitle_id"]));
         $Department_id = filter_var(trim($_POST["Department_id"]), FILTER_SANITIZE_EMAIL);
         $gender = htmlspecialchars(trim($_POST["gender"]));
@@ -1244,17 +1246,6 @@ class Action
                 return json_encode([
                     'status' => 0,
                     'message' => 'Username ' . $usernameTaken["username"] . ' already taken please try another username'
-                ]);
-            }
-
-            $stmt = $this->db->prepare("SELECT employeeID FROM hr_data WHERE employeeID = ?");
-            $stmt->execute([$employeeID]);
-            $employeeIDTaken = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($employeeIDTaken) {
-                return json_encode([
-                    'status' => 0,
-                    'message' => 'employee ID:  ' . $employeeIDTaken["employeeID"] . ' already taken please try another Employee ID'
                 ]);
             }
 
@@ -1290,8 +1281,16 @@ class Action
             ]);
 
             $employee_id = $this->db->lastInsertId();
+            $plusOne = $employee_id + 1;
+            $employeeID = sprintf("%04d", $plusOne);
+            
+            $stmtUpdate = $this->db->prepare("UPDATE employee_data SET employeeID = :employeeID WHERE employee_id = :employee_id");
+            $stmtUpdate->execute([
+                'employeeID' => $employeeID,
+                'employee_id' => $employee_id,
+            ]);
 
-                $stmtLeaveCounts = $this->db->prepare("
+            $stmtLeaveCounts = $this->db->prepare("
                 INSERT INTO leaveCounts (employee_id, last_updated) 
                 VALUES (:employee_id, CURDATE())
             ");
@@ -1366,7 +1365,6 @@ class Action
         $firstName = htmlspecialchars(trim($_POST["firstName"]));
         $middleName = htmlspecialchars(trim($_POST["middleName"] ?? ''));
         $suffix = htmlspecialchars(trim($_POST["suffix"] ?? ''));
-        $employeeID = htmlspecialchars(trim($_POST["employeeID"]));
         $jobTitle_id = htmlspecialchars(trim($_POST["jobTitle_id"]));
         $Department_id = htmlspecialchars(trim($_POST["Department_id"]));
         $gender = htmlspecialchars(trim($_POST["gender"]));
@@ -1390,7 +1388,6 @@ class Action
             "firstName" => $firstName,
             "middleName" => $middleName,
             "suffix" => $suffix,
-            "employeeID" => $employeeID,
             "jobTitle_id" => $jobTitle_id,
             "Department_id" => $Department_id,
             "gender" => $gender,
@@ -1407,13 +1404,6 @@ class Action
             $stmt->execute([$username]);
             if ($stmt->fetch(PDO::FETCH_ASSOC)) {
                 return json_encode(['status' => 0, 'message' => 'Username already taken']);
-            }
-
-            // ------------------ Check if employeeID exists ------------------
-            $stmt = $this->db->prepare("SELECT employeeID FROM hr_data WHERE employeeID = ?");
-            $stmt->execute([$employeeID]);
-            if ($stmt->fetch(PDO::FETCH_ASSOC)) {
-                return json_encode(['status' => 0, 'message' => 'Employee ID already taken']);
             }
 
             // ------------------ Check if email exists ------------------
@@ -1493,7 +1483,6 @@ class Action
             $firstName = $data["firstName"];
             $middleName = $data["middleName"];
             $suffix = $data["suffix"];
-            $employeeID = $data["employeeID"];
             $jobTitle_id = $data["jobTitle_id"];
             $Department_id = $data["Department_id"];
             $gender = $data["gender"];
@@ -1514,13 +1503,21 @@ class Action
             // Insert into employee_data
             $stmt = $this->db->prepare("
                 INSERT INTO employee_data 
-                (firstname, middlename, lastname, suffix, email, contact, gender, username, password, user_role, employeeID)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (firstname, middlename, lastname, suffix, email, contact, gender, username, password, user_role)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
-            $stmt->execute([$firstName, $middleName, $lastName, $suffix, $email, $contact, $gender, $username, $hashedPassword, $user_role, $employeeID]);
+            $stmt->execute([$firstName, $middleName, $lastName, $suffix, $email, $contact, $gender, $username, $hashedPassword, $user_role]);
 
             
             $employee_id = $this->db->lastInsertId();
+            $plusOne = $employee_id + 1;
+            $employeeID = sprintf("%04d", $plusOne);
+            
+            $stmtUpdate = $this->db->prepare("UPDATE employee_data SET employeeID = :employeeID WHERE employee_id = :employee_id");
+            $stmtUpdate->execute([
+                'employeeID' => $employeeID,
+                'employee_id' => $employee_id,
+            ]);
 
             $stmtLeaveCounts = $this->db->prepare("
                 INSERT INTO leaveCounts (employee_id, last_updated) 
@@ -1575,6 +1572,34 @@ class Action
             return json_encode([
                 'status' => 0,
                 'message' => 'Database error: ' . $e->getMessage()
+            ]);
+        }
+    }
+    function delete_employee_form(){
+        $employee_id = htmlspecialchars($_POST["employee_id"] ?? '');
+
+        if (empty($employee_id)) {
+            return json_encode([
+                'status' => 0,
+                'message' => 'Employee ID is required.'
+            ]);
+        }
+
+        try {
+
+            $stmt = $this->db->prepare("DELETE FROM employee_data WHERE employee_id = ?");
+            $stmt->execute([$employee_id]);
+
+            return json_encode([
+                'status' => 1,
+                'message' => 'Account deleted successfully!'
+            ]);
+
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+            return json_encode([
+                'status' => 0,
+                'message' => 'An error occurred. Please try again later.'
             ]);
         }
     }
@@ -1874,7 +1899,7 @@ class Action
             if($unit_section_id == ''){
                 return json_encode([
                     'status' => 0,
-                    'message' => 'NO ID man'
+                    'message' => 'Unit'
                 ]);
             }
             if($admin_update == 'true'){
@@ -2887,7 +2912,7 @@ class Action
                 INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
                 LEFT JOIN departments d ON hd.Department_id = d.Department_id
                 LEFT JOIN jobTitles jt ON hd.jobtitle_id = jt.jobTitles_id
-                WHERE ed.status = 'Active' AND ed.user_role = 'EMPLOYEE'
+                WHERE ed.status = 'Active' AND ed.user_role = 'EMPLOYEE' OR ed.user_role = 'HRSM'
                 ORDER BY ed.lastname, ed.firstname";
 
             $stmt = $this->db->prepare($sql);
@@ -2906,7 +2931,6 @@ class Action
             
         } catch (Exception $e) {
             error_log("Error in fetch_careerPaths_data: " . $e->getMessage());
-            header('Content-Type: application/json');
             return json_encode([
                 'status' => 0,
                 'message' => 'Error: ' . $e->getMessage(),

@@ -123,16 +123,6 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
                                 <option value="III">III</option>
                             </select>
                         </div>
-
-                        <!-- Employee Details -->
-                        <div class="col-md-3">
-                            <label class="form-label">Employee ID <span class="text-danger">*</span></label>
-                            <?php 
-                                    $randogs = str_pad(random_int(0, 999999), 9, '0', STR_PAD_LEFT);
-                                ?>
-                            <input required readonly type="number" value="<?= htmlspecialchars($randogs) ?>"
-                                class="form-control" name="employeeID" id="employeeID">
-                        </div>
                         <?php
                             // Get all departments
                             $stmt_departments = $pdo->prepare("SELECT * FROM departments ORDER BY Department_name ASC");
@@ -149,7 +139,7 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
                             $all_jobtitles = $stmt_jobtitles->fetchAll(PDO::FETCH_ASSOC);
                         ?>
 
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="Department_id" class="form-label">Department</label>
                             <select class="form-select" id="Department_id" name="Department_id">
                                 <option value="">Select Department</option>
@@ -161,7 +151,7 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
                             </select>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="jobTitleSelect" class="form-label">Job Title</label>
                             <select class="form-select" id="jobTitleSelect" name="jobTitle_id">
                                 <option value="">Select Job Title</option>
@@ -177,7 +167,7 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
                                 <?php endforeach ?>
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label class="form-label">Sex <span class="text-danger">*</span></label>
                             <select class="form-select" name="gender" required>
                                 <option value="" disabled selected>Select</option>
@@ -273,6 +263,26 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
             </form>
         </div>
     </div>
+    <!-- Deletion employee -->
+    <div class="modal fade" id="deleteEmployeeModal" tabindex="-1" aria-labelledby="deleteEmployeeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" id="delete-employee-form">
+                <div class="modal-header bg-gradient-primary text-white">
+                    <h5 class="modal-title text-white" id="deleteEmployeeModalLabel">Confirmation Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to Delete this employee Account?
+                    <input type="hidden" name="employee_id" id="deletion_employeeID">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- EMPLOYEE COUNTS DISPLAYS ================================================================================================ -->
     <div class="row mb-2">
@@ -320,8 +330,17 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
                         position: absolute !important;
                         transform: translateX(11.8rem) !important;
                         border-radius: 50% !important;
+                        font-size: 11px !mportant;
                         ">
-                        <strong class="px-1 text-white"><?php echo $pending ?></strong>
+                        <strong class="text-white"
+                        style="
+                            padding-top: -1rem !important;
+                            padding-bottom: -1rem !important;
+                            padding-right: .4rem !important;
+                            padding-left: .4rem !important;
+                            margin: 0 !important;
+                            "
+                            ><?php echo $pending ?></strong>
                     </div>
                     <button class="nav-link w-100 h-100" id="pending-tab" data-bs-toggle="tab"
                         data-bs-target="#Pending_Accounts" type="button" role="tab" aria-controls="Pending_Accounts"
@@ -494,10 +513,17 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
                                     <td class="d-flex justify-content-center flex-wrap gap-1">
                                         <a
                                             href="index.php?page=contents/profile&id=<?= htmlspecialchars($inactive["employee_id"]) ?>">
-                                            <button class="btn btn-sm m-0 btn-danger px-3 m-0">
+                                            <button class="btn btn-sm m-0 btn-info px-3 m-0">
                                                 <i class="fas fa-eye"></i> Review Account
                                             </button>
                                         </a>
+                                        <button class="btn btn-sm m-0 btn-danger px-3 m-0"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteEmployeeModal"
+                                        data-id="<?= $inactive["employee_id"] ?>"
+                                        id="getDeletionEmployee_id">
+                                            <i class="fas fa-eye"></i> Delete
+                                        </button>
                                     </td>
                                 </tr>
                                 <?php 

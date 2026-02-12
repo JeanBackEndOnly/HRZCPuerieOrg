@@ -195,10 +195,11 @@
     }
     // JOB TITLES ============================================
 
-    function edit_jobTitle(id, title, salary) {
+    function edit_jobTitle(id, title, code, salary) {
         // Set the values in the modal
         document.getElementById('editUserIdEdit').value = id;
         document.getElementById('jobTitle').value = title;
+        document.getElementById('jobTitle_code').value = code;
         document.getElementById('salary').value = salary;
         
         var editModal = new bootstrap.Modal(document.getElementById('editJobTitlesModal'));

@@ -139,6 +139,12 @@ if ($action === 'verification_form') {
         echo $registration;
     }
 }
+if ($action === 'delete_employee_form') {
+    $employees = $crud->delete_employee_form();
+    if ($employees) {
+        echo $employees;
+    }
+} 
 if ($action === 'approval-form') {
     $employees = $crud->approval_form();
     if ($employees) {

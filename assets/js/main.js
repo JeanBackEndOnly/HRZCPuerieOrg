@@ -46,6 +46,11 @@ $(document).ready(function () {
       document.getElementById('deleteUnitSectionsId').value = unitSectionId;
       document.getElementById('editUnitSectionsId').value = unitSectionId;
     });
+    $(document).on("click", "#getDeletionEmployee_id", function (){
+      const employee_id = $(this).data('id');
+      // alert(employee_id);
+      document.getElementById('deletion_employeeID').value = employee_id;
+    });
 
   // Login Forms here ===========================================================
       // $(document).on("submit", "#login-form", function (e) {
@@ -1143,24 +1148,6 @@ $(document).ready(function () {
       if ($form.data("isSubmitted")) return;
       $form.data("isSubmitted", true);
       
-      // Validate passwords match
-      const password = $form.find('[name="password"]').val();
-      const cpassword = $form.find('[name="cpassword"]').val();
-      
-      if (password !== cpassword) {
-          Swal.fire({
-              title: "Error",
-              text: "Passwords do not match!",
-              icon: "error",
-              toast: true,
-              position: "top-end",
-              timer: 3000,
-              showConfirmButton: false
-          });
-          $form.data("isSubmitted", false);
-          return;
-      }
-      
       const formData = new FormData(this);
       const $btn = $form.find("button[type='submit']");
       $btn.prop("disabled", true);
@@ -1510,6 +1497,67 @@ $(document).ready(function () {
 
     $.ajax({
       url: base_url + "authentication/action.php?action=approval-form",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      dataType: "json",
+      success: function (response) {
+        if (response.status === 1) {
+          Swal.fire({
+            title: "Success!",
+            text: response.message,
+            icon: "success",
+            toast: true,
+            position: "top-end",
+            timer: 1000,
+            showConfirmButton: false,
+          }).then(() => {
+            location.reload();
+          });
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: response.message,
+            icon: "error",
+            toast: true,
+            position: "top-end",
+            timer: 1000,
+            showConfirmButton: false,
+          });
+        }
+      },
+      error: function (jqXHR, textStatus, err) {
+        console.error("AJAX error:", textStatus, err);
+        Swal.fire({
+          title: "Connection Error",
+          text: "Please check your connection and try again.",
+          icon: "error",
+          toast: true,
+          position: "top-end",
+          timer: 1000,
+          showConfirmButton: false,
+        });
+      },
+      complete: function () {
+        $form.data("isSubmitted", false);
+        $btn.prop("disabled", false).html("Create Account");
+      },
+    });
+  });
+  $(document).on("submit", "#delete-employee-form", function (e) {
+    e.preventDefault();
+    const $form = $(this);
+    if ($form.data("isSubmitted")) return;
+    $form.data("isSubmitted", true);
+
+    const formData = new FormData(this);
+    const $btn = $form.find("button[type='submit']");
+    $btn.prop("disabled", true);
+    $btn.html('<i class="fas fa-spinner fa-spin me-1"></i> Processing...');
+
+    $.ajax({
+      url: base_url + "authentication/action.php?action=delete_employee_form",
       type: "POST",
       data: formData,
       processData: false,

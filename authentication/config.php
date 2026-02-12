@@ -36,6 +36,7 @@ function db_connect()
             "CREATE TABLE IF NOT EXISTS jobTitles(
                 jobTitles_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
                 jobTitle VARCHAR(50) NOT NULL,
+                jobTitle_code VARCHAR(10) NOT NULL,
                 salary DECIMAL(12,2) NOT NULL,
                 department_id INT,
                 addAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -106,7 +107,7 @@ function db_connect()
                 lastname VARCHAR(50) NOT NULL,
                 suffix VARCHAR(5),
                 nickname VARCHAR(7),
-                employeeID VARCHAR(150) NOT NULL,
+                employeeID VARCHAR(10) UNIQUE,
                 citizenship VARCHAR(50),
                 gender ENUM('MALE', 'FEMALE'),
                 civil_status VARCHAR(50),
@@ -501,7 +502,7 @@ function db_connect()
 
                 $stmtInfo->execute([
                     $admin_id,
-                    'EMP-001',
+                    '0001',
                     'Metro Manila',
                     'Manila',
                     'Barangay 123',

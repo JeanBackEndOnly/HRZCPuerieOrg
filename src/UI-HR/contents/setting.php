@@ -1,15 +1,5 @@
 <section>
-    <?php
-        $query = "SELECT jobtitles.*, employee_data.*, departments.*, hr_data.*, us.unit_section_id, us.unit_section_name FROM employee_data
-        INNER JOIN hr_data ON employee_data.employee_id = hr_data.employee_id
-        INNER JOIN jobtitles ON hr_data.jobtitle_id = jobtitles.jobtitles_id
-        INNER JOIN departments ON hr_data.Department_id = departments.Department_id
-        LEFT JOIN unit_section us ON hr_data.unit_section_id = us.unit_section_id
-        WHERE employee_data.employee_id = '$hr_id'";
-        $stmt = $pdo->prepare($query);
-        $stmt->execute();
-        $getHrData = $stmt->fetch(PDO::FETCH_ASSOC);
-    ?>
+    <?php  ?>
     <div class="d-flex justify-content-between align-items-center mb-3 col-md-12 col-12">
         <div class="col-md-5 col-7">
             <h4 class="mb-0 label-media-name"><i class="fa fa-cog text-dark me-2"></i>Account Settings</h4>

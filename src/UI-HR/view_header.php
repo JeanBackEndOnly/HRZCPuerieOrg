@@ -15,4 +15,9 @@ if (!$getEmployee) {
     $_SESSION['error'] = isset($_GET["id"]) ? "Employee not found" : "No employee ID provided";
     $getEmployee = null; 
 }
+
+$hr_data = getHrData();
+if(!$hr_data){
+    $hr_data = null;
+}
 ?>

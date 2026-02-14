@@ -2425,19 +2425,15 @@ class Action
             $schedule_from = $_POST["schedule_from"];
             $schedule_to = $_POST["schedule_to"];
             $shift = $_POST["shift"];
-            $day = $_POST["day"];
-            $department = $_POST["department"];
 
             $stmt = $this->db->prepare("INSERT INTO sched_template 
-                (scheduleName, schedule_from, schedule_to, shift, day, department) VALUES
-                (:scheduleName, :schedule_from, :schedule_to, :shift, :day, :department)");
+                (scheduleName, schedule_from, schedule_to, shift) VALUES
+                (:scheduleName, :schedule_from, :schedule_to, :shift)");
             $stmt->execute([
                 'scheduleName' => $scheduleName,
                 'schedule_from' => $schedule_from,
                 'schedule_to' => $schedule_to,
-                'shift' => $shift,
-                'day' => $day,
-                'department' => $department
+                'shift' => $shift
             ]);
             return json_encode([
                 'status' => 1,
@@ -2492,12 +2488,10 @@ class Action
             $schedule_from = $_POST["schedule_from"];
             $schedule_to = $_POST["schedule_to"];
             $shift = $_POST["shift"];
-            $day = $_POST["day"];
-            $department = $_POST["department"];
 
             $stmt = $this->db->prepare("UPDATE sched_template SET 
             scheduleName= :scheduleName, schedule_from = :schedule_from,
-            schedule_to = :schedule_to, shift = :shift, day = :day, department = :department 
+            schedule_to = :schedule_to, shift = :shift
             WHERE template_id = :template_id");
 
              $stmt->execute([
@@ -2505,9 +2499,7 @@ class Action
                 'scheduleName' => $scheduleName,
                 'schedule_from' => $schedule_from,
                 'schedule_to' => $schedule_to,
-                'shift' => $shift,
-                'day' => $day,
-                'department' => $department
+                'shift' => $shift
             ]);
             return json_encode([
                 'status' => 1,

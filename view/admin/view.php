@@ -62,7 +62,11 @@
     // HR data fetching ==================================================================================
     function getHrData(){
         $pdo = db_connect();
-        $hr_id = $_SESSION["hrData"]["employee_id"] ?? null;
+        if($_SESSION["hrData"]["employee_id"]){
+            $hr_id = $_SESSION["hrData"]["employee_id"];
+        }else{
+            $hr_id = null;
+        }
         $query = "SELECT jobtitles.*, employee_data.*, departments.*, hr_data.*, us.unit_section_id, us.unit_section_name FROM employee_data
         INNER JOIN hr_data ON employee_data.employee_id = hr_data.employee_id
         INNER JOIN jobtitles ON hr_data.jobtitle_id = jobtitles.jobtitles_id
@@ -70,7 +74,7 @@
         LEFT JOIN unit_section us ON hr_data.unit_section_id = us.unit_section_id
         WHERE employee_data.employee_id = :employee_id";
         $stmt = $pdo->prepare($query);
-        $stmt->execute([$hr_id]);
+        $stmt->execute(['employee_id' => $hr_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
         

@@ -1,5 +1,5 @@
 <section>
-    <?php  ?>
+    <?php $getHrData = getHrData();   ?>
     <div class="d-flex justify-content-between align-items-center mb-3 col-md-12 col-12">
         <div class="col-md-5 col-7">
             <h4 class="mb-0 label-media-name"><i class="fa fa-cog text-dark me-2"></i>Account Settings</h4>

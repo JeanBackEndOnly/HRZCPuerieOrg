@@ -2365,7 +2365,7 @@ $(document).ready(function () {
             timer: 1000,
             showConfirmButton: false,
           }).then(() => {
-            $form[0].reset(); // Reset form on success
+            location.reload();
           });
         } else {
           Swal.fire({

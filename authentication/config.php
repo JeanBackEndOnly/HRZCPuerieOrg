@@ -288,8 +288,8 @@ function db_connect()
                 schedule_from time NOT NULL,
                 schedule_to time NOT NULL,
                 shift ENUM('night', 'day') NOT NULL,
-                day VARCHAR(7) NOT NULL,
-                department ENUM('HOSPITAL', 'ADMIN', 'SCHOOL', 'HR') NOT NULL,
+                -- day VARCHAR(7) NOT NULL,
+                -- department ENUM('HOSPITAL', 'ADMIN', 'SCHOOL', 'HR') NOT NULL,
                 created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
             )",
 
@@ -427,7 +427,7 @@ function db_connect()
                 files_id     INT          AUTO_INCREMENT PRIMARY KEY,
                 employee_id INT(11) NOT NULL,
                 file_title VARCHAR(100) NOT NULL,
-                type ENUM('A', 'B' ,'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J') NOT NULL,
+                type ENUM('communication', 'certifications' ,'training_certificates', 'license_eligibility', 'academic_credentials', 'preScreening_requirements', 'medical_certificates') NOT NULL,
                 201file VARCHAR(255) NOT NULL,
                 added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id) ON DELETE CASCADE

@@ -346,21 +346,23 @@ function db_connect()
                 leaveDate    DATE NOT NULL,
                 Others VARCHAR(255),
                 Purpose VARCHAR(255) NOT NULL,
-                InclusiveFrom date NOT NULL,
-                InclusiveTo date NOT NULL,
+                -- InclusiveFrom date NOT NULL,
+                -- InclusiveTo date NOT NULL,
                 numberOfDays INT NOT NULL,
                 contact VARCHAR(13) NOT NULL,
                 sectionHead VARCHAR(120),
                 departmentHead VARCHAR(120),
+                medical_proof VARCHAR(255),
                 request_date DATE NOT NULL DEFAULT CURRENT_DATE,
                 PRIMARY KEY (leave_id),
                 FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id) ON DELETE CASCADE
             )",
-            "CREATE TABLE IF NOT EXISTS leaves (
-                leaves_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                leave_type VARCHAR(20) NOT NULL,
-                leave_description TEXT,
-                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP 
+            "CREATE TABLE IF NOT EXISTS leave_date(
+                leave_date_id INT(11) NOT NULL AUTO_INCREMENT,
+                leave_id INT,
+                inclusive_date date NOT NULL,
+                PRIMARY KEY (leave_date_id),
+                FOREIGN KEY (leave_id) REFERENCES leaveReq(leave_id) ON DELETE CASCADE
             )",
             "CREATE TABLE IF NOT EXISTS activities (
                 activities_id     INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,

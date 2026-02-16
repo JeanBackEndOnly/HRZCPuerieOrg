@@ -2792,16 +2792,15 @@ class Action
         $sectionHead = htmlspecialchars($_POST["sectionHead"]);
         $departmentHead = htmlspecialchars($_POST["departmentHead"]);
 
-        if($leaveType == 'Vacation Leave'){
-                $leaveType = 'Vacation_leave';
-            }else if($leaveType == 'Sick Leave'){
-                $leaveType = 'Sick_leave';
-            }else if($leaveType == 'Special Leave'){
-                $leaveType = 'Special_leave';
-            }else{
-                $Others = $leaveType;
-                $leaveType = 'Others';
+        if(!empty($_POST["medical_proof"])){
+            if(isset($_FILES["medical_proof"]) && $_FILES["medical_proof"]["error"] == 0){
+                $filename = $_FILES["medical_proof"]["name"];
+                $tmpname = $_FILES["medical_proof"]["tmp_name"];
+                $destination = 'uploads/' . $filename;
             }
+        }else{
+            $filename = '';
+        }
 
         try {
 
@@ -2830,7 +2829,7 @@ class Action
                 FROM leaveCounts 
                 WHERE employee_id = :employee_id
             ");
-            $stmt->execute(['employee_id' => $employee_id]);
+            $stmt->execute([':employee_id' => $employee_id]);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             $currentCredits = floatval($row["credits"] ?? 0);
@@ -2846,9 +2845,9 @@ class Action
             // Insert into leaveReq table
             $stmt = $this->db->prepare("
                 INSERT INTO leaveReq 
-                (employee_id, leaveStatus, leaveType, Others, leaveDate, Purpose, InclusiveFrom, InclusiveTo, numberOfDays, contact, sectionHead, departmentHead)
+                (employee_id, leaveStatus, leaveType, Others, leaveDate, Purpose, InclusiveFrom, InclusiveTo, numberOfDays, contact, sectionHead, departmentHead, medical_proof)
                 VALUES 
-                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
 
             $stmt->execute([
@@ -2863,7 +2862,8 @@ class Action
                 $numberOfDays,
                 $contact,
                 $sectionHead,
-                $departmentHead
+                $departmentHead,
+                $filename
             ]);
 
             // Activity log

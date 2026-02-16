@@ -2576,7 +2576,6 @@ $(document).ready(function () {
       dataType: "json",
 
       success: function (response) {
-        // 🔴 NOT ENOUGH CREDITS — highlight input
         if (
           response.status === 0 &&
           response.message.includes("Not enough leave credits")
@@ -2587,7 +2586,7 @@ $(document).ready(function () {
           $form.data("isSubmitted", false);
           $btn.prop("disabled", false).html(originalBtnText);
 
-          return; // STOP reload
+          return;
         }
 
         // 🟢 SUCCESS
@@ -2774,7 +2773,7 @@ $(document).ready(function () {
       },
       complete: function () {
         $form.data("isSubmitted", false);
-        $btn.prop("disabled", false).html("Update");
+        $btn.prop("disabled", false).html("Cancelled");
       },
     });
   });

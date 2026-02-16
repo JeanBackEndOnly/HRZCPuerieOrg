@@ -2785,12 +2785,19 @@ class Action
         $Others = htmlspecialchars($_POST["Others"] ?? '');
         $leaveDate = htmlspecialchars($_POST["leaveDate"]);
         $Purpose = htmlspecialchars($_POST["Purpose"]);
-        $InclusiveFrom = htmlspecialchars($_POST["InclusiveFrom"]);
-        $InclusiveTo = htmlspecialchars($_POST["InclusiveTo"]);
         $numberOfDays = floatval($_POST["numberOfDays"]);
         $contact = htmlspecialchars($_POST["contact"]);
         $sectionHead = htmlspecialchars($_POST["sectionHead"]);
         $departmentHead = htmlspecialchars($_POST["departmentHead"]);
+
+        $inclusive_dates = [];
+
+        if (isset($_POST['inclusive_date']) && is_array($_POST['inclusive_date'])) {
+            foreach ($_POST['inclusive_date'] as $date) {
+                $inclusive_dates[] = htmlspecialchars($date);
+            }
+        }
+
 
         if(!empty($_POST["medical_proof"])){
             if(isset($_FILES["medical_proof"]) && $_FILES["medical_proof"]["error"] == 0){
@@ -2845,9 +2852,9 @@ class Action
             // Insert into leaveReq table
             $stmt = $this->db->prepare("
                 INSERT INTO leaveReq 
-                (employee_id, leaveStatus, leaveType, Others, leaveDate, Purpose, InclusiveFrom, InclusiveTo, numberOfDays, contact, sectionHead, departmentHead, medical_proof)
+                (employee_id, leaveStatus, leaveType, Others, leaveDate, Purpose, numberOfDays, contact, sectionHead, departmentHead, medical_proof)
                 VALUES 
-                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
 
             $stmt->execute([
@@ -2857,14 +2864,23 @@ class Action
                 $Others,
                 $leaveDate,
                 $Purpose,
-                $InclusiveFrom,
-                $InclusiveTo,
                 $numberOfDays,
                 $contact,
                 $sectionHead,
                 $departmentHead,
                 $filename
             ]);
+
+            $leave_id = $this->db->lastInsertId();
+
+            $dates = $this->db->prepare("INSERT INTO leave_date (leave_id, inclusive_date) VALUES (?, ?)");
+
+            foreach ($inclusive_dates as $date) {
+                $dates->execute([
+                    $leave_id,
+                    $date
+                ]);
+            }
 
             // Activity log
             $activity_type = "Requested a " . str_replace("_", " ", strtolower($leaveType));
@@ -3594,4 +3610,4 @@ class Action
         }
     }
     
-}
+} 

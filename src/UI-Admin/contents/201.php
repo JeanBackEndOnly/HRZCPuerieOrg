@@ -39,7 +39,7 @@ $countOfficials = 1;
     <!-- EMPLOYEE ACCOUNT DISPLAYS =============================================================================================== -->
     <div class="card">
         <div class="table-responsive table-body-201">
-            <table class="text-center table table-bordered text-center table-sm">
+            <table class="table-body-file text-center table table-bordered text-center table-sm">
                 <thead class="table-light col-md-12">
                     <tr class="col-md-12">
                         <th>#</th>
@@ -68,7 +68,7 @@ $countOfficials = 1;
                                     <i class="fas fa-eye"></i> View
                                 </button>
                             </a>
-                            <button class="btn btn-success btn-sm" data-bs-toggle="modal" id="getID" data-bs-target="#createAccounts" data-id="<?= htmlspecialchars($officials["employee_id"]) ?>">Add file</button>
+                            <button class="btn btn-success btn-sm" data-bs-toggle="modal" id="getID" data-bs-target="#create201" data-id="<?= htmlspecialchars($officials["employee_id"]) ?>">Add file</button>
                         </td>
                     </tr>
                     <?php 
@@ -80,12 +80,13 @@ $countOfficials = 1;
                 </tbody>
             </table>
         </div>
-        <div class="modal fade" id="createAccounts" tabindex="-1" aria-labelledby="createAccountsLabel"
+        <!-- Create 201 files modal -->
+        <div class="modal fade" id="create201" tabindex="-1" aria-labelledby="create201Label"
             aria-hidden="true">
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header bg-danger text-white">
-                        <h5 class="modal-title text-white" id="createAccountsLabel">Add employee 201 file</h5>
+                        <h5 class="modal-title text-white" id="create201Label">Add employee 201 file</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close" onclick="location.reload()"></button>
                     </div>
@@ -99,16 +100,14 @@ $countOfficials = 1;
                                 <label class="form-label">201 type</label>
                                 <select required name="type" id="" class="form-select">
                                     <option value="">Select Type</option>
-                                    <option value="A">A. Personal Information Documents</option>
-                                    <option value="B">B. Pre-Employment Requirements</option>
-                                    <option value="C">C. Employment Documents</option>
-                                    <option value="D">D. Payroll & Compensation Documents</option>
-                                    <option value="E">E. Attendance & Leave Documents</option>
-                                    <option value="F">F. Training & Development</option>
-                                    <option value="G">G. Performance Management</option>
-                                    <option value="H">H. Disciplinary Records</option>
-                                    <option value="I">I. Benefits & Company Property</option>
-                                    <option value="J">J. Separation / Offboarding Documents</option>
+                                    <option value="communication">Communication</option>
+                                    <option value="certifications">Certifications</option>
+                                    <option value="training_certificates">Training Certificates</option>
+                                    <option value="license_eligibility">License Eligibility</option>
+                                    <option value="academic_credentials">Academic Credentials</option>
+                                    <option value="preScreening_requirements">Pre-screening Requirements</option>
+                                    <option value="medical_certificates">Medical Certificates</option>
+                                    
                                 </select>
                             </div>
                             <div class="mx-2">

@@ -48,7 +48,7 @@
                 <a href="index.php?page=contents/dept_job" class="nav-item nav-dept_job my-1 rounded-2">
                     <span class=""><i class=""></i></span> Departments & Jobs
                 </a>
-                <a href="index.php?page=contents/201" class="nav-item nav-201 my-1 rounded-2">
+                <a href="index.php?page=contents/201" class="nav-item nav-201 nav-files my-1 rounded-2">
                     <span class=""><i class=""></i></span> 201 Files
                 </a>
                 <a href="index.php?page=contents/hr_settings" class="nav-item nav-hr_settings my-1 rounded-2">

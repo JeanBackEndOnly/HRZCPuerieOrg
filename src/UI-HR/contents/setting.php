@@ -370,33 +370,23 @@
                             Scheduling information
                         </strong>
                         <?php
-                            $stmtTemplates = $pdo->prepare("SELECT * FROM sched_template ORDER BY department, scheduleName");
+                            $stmtTemplates = $pdo->prepare("SELECT * FROM sched_template ORDER BY scheduleName");
                             $stmtTemplates->execute();
                             $templates = $stmtTemplates->fetchAll(PDO::FETCH_ASSOC);
-
-                            $groupedTemplates = [];
-                            foreach ($templates as $template) {
-                                $groupedTemplates[$template['department']][] = $template;
-                            }
                             ?>
 
                         <div class="col-md-3">
                             <label class="form-label">Schedule Template</label>
                             <select name="schedule_template" id="schedule_template" class="form-select">
                                 <option value="">Select Schedule </option>
-                                <?php foreach ($groupedTemplates as $department => $deptTemplates): ?>
-                                <optgroup label="<?= $department ?>">
-                                    <?php foreach ($deptTemplates as $template): ?>
+                                <?php foreach ($templates as $template): ?>
                                     <option value="<?= $template['template_id'] ?>"
                                         data-from="<?= $template['schedule_from'] ?>"
                                         data-to="<?= $template['schedule_to'] ?>" data-shift="<?= $template['shift'] ?>"
-                                        data-days="<?= $template['day'] ?>"
                                         data-name="<?= htmlspecialchars($template['scheduleName']) ?>">
                                         <?= htmlspecialchars($template['scheduleName']) ?>
                                         (<?= $template['schedule_from'] ?> - <?= $template['schedule_to'] ?>)
                                     </option>
-                                    <?php endforeach; ?>
-                                </optgroup>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -405,11 +395,6 @@
                             <label class="form-label">Shift Type</label>
                             <input type="text" name="shift_type" value="<?= $getHrData["shift_type"] ?? '' ?>"
                                 id="shift_type" class="form-control" placeholder="Auto-filled from template" readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Work Days</label>
-                            <input type="text" name="work_days" value="<?= $getHrData["work_days"] ?? '' ?>"
-                                id="work_days" class="form-control" placeholder="Auto-filled from template" readonly>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Schedule From</label>
@@ -426,7 +411,6 @@
                         document.addEventListener('DOMContentLoaded', function() {
                             const scheduleTemplate = document.getElementById('schedule_template');
                             const shiftType = document.getElementById('shift_type');
-                            const workDays = document.getElementById('work_days');
                             const scheduleFrom = document.getElementById('scheduleFrom');
                             const scheduleTo = document.getElementById('scheduleTo');
 
@@ -436,7 +420,6 @@
 
                                     // Auto-fill all fields
                                     shiftType.value = selectedOption.getAttribute('data-shift');
-                                    workDays.value = selectedOption.getAttribute('data-days');
                                     scheduleFrom.value = selectedOption.getAttribute('data-from');
                                     scheduleTo.value = selectedOption.getAttribute('data-to');
 
@@ -450,14 +433,13 @@
 
                             function clearScheduleFields() {
                                 shiftType.value = '';
-                                workDays.value = '';
                                 scheduleFrom.value = '';
                                 scheduleTo.value = '';
                                 scheduleTemplate.classList.remove('is-valid');
                             }
 
                             // Optional: Allow manual editing by double-clicking fields
-                            [shiftType, workDays, scheduleFrom, scheduleTo].forEach(field => {
+                            [shiftType, scheduleFrom, scheduleTo].forEach(field => {
                                 field.addEventListener('dblclick', function() {
                                     this.readOnly = !this.readOnly;
                                     if (!this.readOnly) {

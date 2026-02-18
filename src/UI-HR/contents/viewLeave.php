@@ -125,6 +125,10 @@ $employee_id = $leave["employee_id"] ?? '';
                 </div>
             </div>
             <div class="col-md-12">
+                <label class="form-label">Medical Proof</label>
+                <a href="../../authentication/uploads/<?= $leave["medical_proof"] ?>" class="form-control" target="_blank"><?= $leave["medical_proof"] ?></a>
+            </div>
+            <div class="col-md-12">
                 <label class="form-label">Others Specify</label>
                 <input type="text" readonly name="Others" value="<?= htmlspecialchars($leave["Others"]) ?>"
                     class="form-control">

@@ -2799,14 +2799,20 @@ class Action
         }
 
 
-        if(!empty($_POST["medical_proof"])){
-            if(isset($_FILES["medical_proof"]) && $_FILES["medical_proof"]["error"] == 0){
-                $filename = $_FILES["medical_proof"]["name"];
-                $tmpname = $_FILES["medical_proof"]["tmp_name"];
+        $filename = '';
+        if(isset($_FILES["medical_proof"]) && $_FILES["medical_proof"]["error"] == 0){
+            $allowed = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
+            $ext = strtolower(pathinfo($_FILES["medical_proof"]["name"], PATHINFO_EXTENSION));
+            
+            if(in_array($ext, $allowed)) {
+                $filename = time() . '_' . basename($_FILES["medical_proof"]["name"]);
                 $destination = 'uploads/' . $filename;
+                
+                if(!move_uploaded_file($_FILES["medical_proof"]["tmp_name"], $destination)) {
+                    // Handle upload error
+                    $filename = '';
+                }
             }
-        }else{
-            $filename = '';
         }
 
         try {
@@ -3036,20 +3042,20 @@ class Action
                 $credits = $_POST[$baseType."Credits"] ?? 0;
                 $lessLeave = $_POST[$baseType."LessLeave"] ?? 0;
                 
-                // Determine which balance to use
-                switch($baseType) {
-                    case 'vacation':
-                        $balanceToDate = $vacationBalanceToDate;
-                        break;
-                    case 'sick':
-                        $balanceToDate = $sickBalanceToDate;
-                        break;
-                    case 'special':
-                        $balanceToDate = $specialBalanceToDate;
-                        break;
-                    default:
-                        $balanceToDate = 0;
-                }
+                // // Determine which balance to use
+                // switch($baseType) {
+                //     case 'vacation':
+                //         $balanceToDate = $vacationBalanceToDate;
+                //         break;
+                //     case 'sick':
+                //         $balanceToDate = $sickBalanceToDate;
+                //         break;
+                //     case 'special':
+                //         $balanceToDate = $specialBalanceToDate;
+                //         break;
+                //     default:
+                //         $balanceToDate = 0;
+                // }
                 
                 $stmtLeave_details = $this->db->prepare("UPDATE leave_details SET disapprovalDetails = :disapprovalDetails, disapproved_at = NOW()
                     WHERE leave_id = :leave_id");

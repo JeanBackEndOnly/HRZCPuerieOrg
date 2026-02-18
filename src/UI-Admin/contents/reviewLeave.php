@@ -134,6 +134,14 @@ echo "<!-- Debug: " . print_r($leave, true) . " -->";
                 <input type="text" readonly name="Others" value="<?= htmlspecialchars($leave["Others"]) ?>"
                     class="form-control">
             </div>
+            <?php 
+                if($leave["leaveType"] == "Sick_leave"){
+            ?>
+            <div class="col-md-12 my-2">
+                <label class="form-label">Medical Proof</label>
+                <a href="../../authentication/uploads/<?= $leave["medical_proof"] ?>" class="form-control" target="_blank"><?= $leave["medical_proof"] ?></a>
+            </div>  
+            <?php }else{} ?>
             <div class="col-md-12">
                 <label class="form-label">COURSE/PURPOSE <span class="text-danger">(required)</span></label>
                 <input type="text" readonly name="Purpose" value="<?= htmlspecialchars($leave["Purpose"]) ?>"

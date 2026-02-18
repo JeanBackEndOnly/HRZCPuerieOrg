@@ -44,7 +44,7 @@
                 <a href="index.php?page=contents/recruitment" class="nav-item nav-recruitment nav-profile nav-pds my-1 rounded-2">
                     <span class=""><i class=""></i></span> Employees
                 </a>
-                <a href="index.php?page=contents/leave" class="nav-item nav-leave my-1 rounded-2">
+                <a href="index.php?page=contents/leave" class="nav-item nav-leave nav-reviewLeave nav-viewLeave my-1 rounded-2">
                     <span class=""><i class=""></i></span> Leave
                 </a>
                 <a href="index.php?page=contents/dept_job" class="nav-item nav-dept_job my-1 rounded-2">

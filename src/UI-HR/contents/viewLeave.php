@@ -52,7 +52,7 @@ $employee_id = $leave["employee_id"] ?? '';
     <form class="row g-3 w-100" id="leaveProcess-form" method="POST">
         <div class="modal-header bg-primary text-white ms-2">
             <h5 class="modal-title text-white" id="leaveDetailsModalLabel">Leave Request Details</h5>
-           
+
         </div>
 
         <div class="modal-body row w-100 scroll leave-height ms-2">
@@ -135,17 +135,48 @@ $employee_id = $leave["employee_id"] ?? '';
                     class="form-control">
             </div>
             <div class="w-100 p-0 m-0 row name-section">
-                <div class="col-md-4">
-                    <label class="form-label">INCLUSIVE DATE FROM: <span class="text-danger">(required)</span></label>
-                    <input type="date" readonly name="InclusiveFrom"
-                        value="<?= htmlspecialchars($leave["InclusiveFrom"]) ?>" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">INCLUSIVE DATES TO: <span class="text-danger">(required)</span></label>
-                    <input type="date" readonly name="InclusiveTo" value="<?= htmlspecialchars($leave["InclusiveTo"]) ?>"
-                        class="form-control">
-                </div>
-                <div class="col-md-4">
+                <?php 
+                                            $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
+                                            LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
+                                            WHERE lr.employee_id = :employee_id AND lr.leave_id = :leave_id");
+                                            $stmt->execute(['employee_id' => $leave["employee_id"], 'leave_id' => $leave["leave_id"]]);
+                                            $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                        ?>
+                <?php
+                                            if (!empty($getDate)) {
+
+                                                $timestamps = array_map(fn($d) => strtotime($d['inclusive_date']), $getDate);
+
+                                                sort($timestamps);
+
+                                                $months = [];
+                                                foreach ($timestamps as $ts) {
+                                                    $month = strtoupper(date('M', $ts));
+                                                    $day   = date('j', $ts); 
+                                                    $months[$month][] = $day;
+                                                }
+
+                                                $year = date('Y', $timestamps[0]);
+
+                                                $parts = [];
+                                                foreach ($months as $month => $days) {
+                                                    if (count($days) > 1) {
+                                                        $lastDay = array_pop($days);
+                                                        $parts[] = $month . ' ' . implode(', ', $days) . ', ' . $lastDay;
+                                                    } else {
+                                                        $parts[] = $month . ' ' . $days[0];
+                                                    }
+                                                }
+
+                                             echo '<div class="col-md-6 d-flex align-items-center justify-content-center flex-column">
+                                                <label class="form-label w-100 text-start">
+                                                    Inclusive Date <span class="text-danger">(required)</span>
+                                                </label>
+                                                <strong class="form-control" readonly>' . implode(' ', $parts) . ' ' . $year . '</strong>
+                                             </div>';
+                                            }
+                                        ?>
+                <div class="col-md-6">
                     <label class="form-label">NO. OF DAYS <span class="text-danger">(required)</span></label>
                     <input type="number" readonly name="numberOfDays"
                         value="<?= htmlspecialchars($leave["numberOfDays"]) ?>" class="form-control">
@@ -204,9 +235,11 @@ $employee_id = $leave["employee_id"] ?? '';
                         </tr>
                         <tr>
                             <td>Leave Earned</td>
-                            <td><input readonly type="text" name="vacationEarned" class="form-control p-1" value="+0"></td>
+                            <td><input readonly type="text" name="vacationEarned" class="form-control p-1" value="+0">
+                            </td>
                             <td><input readonly type="text" name="sickEarned" class="form-control p-1" value="+0"></td>
-                            <td><input readonly type="text" name="specialEarned" class="form-control p-1" value="+0"></td>
+                            <td><input readonly type="text" name="specialEarned" class="form-control p-1" value="+0">
+                            </td>
                         </tr>
                         <tr>
                             <td>Total Leave Credits as of</td>
@@ -219,9 +252,12 @@ $employee_id = $leave["employee_id"] ?? '';
                         </tr>
                         <tr>
                             <td>Less this Leave</td>
-                            <td><input readonly type="text" name="vacationLessLeave" class="form-control p-1" value="0"></td>
-                            <td><input readonly type="text" name="sickLessLeave" class="form-control p-1" value="0"></td>
-                            <td><input readonly type="text" name="specialLessLeave" class="form-control p-1" value="0"></td>
+                            <td><input readonly type="text" name="vacationLessLeave" class="form-control p-1" value="0">
+                            </td>
+                            <td><input readonly type="text" name="sickLessLeave" class="form-control p-1" value="0">
+                            </td>
+                            <td><input readonly type="text" name="specialLessLeave" class="form-control p-1" value="0">
+                            </td>
                         </tr>
                         <tr>
                             <td>Balance to Date</td>
@@ -249,7 +285,8 @@ $employee_id = $leave["employee_id"] ?? '';
                             <input type="radio" class="col-md-1 col-1" id="Disapproval" name="leaveStatus"
                                 value="Disapproved" <?= $leave["leaveStatus"] == "Disapproved" ? "checked" : "" ?>>
                             <label class="col-md-7 col-9 text-start" for="Disapproval">Disapproval due to:</label>
-                            <textarea class="form-control ms-3" name="disapprovalDetails"><?= htmlspecialchars($leave["disapprovalDetails"] ?? '') ?></textarea>
+                            <textarea class="form-control ms-3"
+                                name="disapprovalDetails"><?= htmlspecialchars($leave["disapprovalDetails"] ?? '') ?></textarea>
                         </div>
                     </div>
                     <div class="col-md-12 d-flex justify-content-end">
@@ -257,7 +294,7 @@ $employee_id = $leave["employee_id"] ?? '';
                             Submit
                         </button>
                     </div>
-                    
+
                 </div>
             </div>
         </div>

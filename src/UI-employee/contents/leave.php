@@ -284,41 +284,34 @@
                                         $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     ?>
                                     <?php
-if (!empty($getDate)) {
+                                        if (!empty($getDate)) {
 
-    // Convert all dates to timestamps
-    $timestamps = array_map(fn($d) => strtotime($d['inclusive_date']), $getDate);
+                                            $timestamps = array_map(fn($d) => strtotime($d['inclusive_date']), $getDate);
 
-    // Sort timestamps ascending
-    sort($timestamps);
+                                            sort($timestamps);
 
-    // Group days by month
-    $months = [];
-    foreach ($timestamps as $ts) {
-        $month = strtoupper(date('M', $ts));
-        $day   = date('j', $ts); // day without leading zero
-        $months[$month][] = $day;
-    }
+                                            $months = [];
+                                            foreach ($timestamps as $ts) {
+                                                $month = strtoupper(date('M', $ts));
+                                                $day   = date('j', $ts); 
+                                                $months[$month][] = $day;
+                                            }
 
-    // Get the year from the first date
-    $year = date('Y', $timestamps[0]);
+                                            $year = date('Y', $timestamps[0]);
 
-    // Build output string
-    $parts = [];
-    foreach ($months as $month => $days) {
-        if (count($days) > 1) {
-            // Join all but last with comma, last with 'and'
-            $lastDay = array_pop($days);
-            $parts[] = $month . ' ' . implode(', ', $days) . ', ' . $lastDay;
-        } else {
-            $parts[] = $month . ' ' . $days[0];
-        }
-    }
+                                            $parts = [];
+                                            foreach ($months as $month => $days) {
+                                                if (count($days) > 1) {
+                                                    $lastDay = array_pop($days);
+                                                    $parts[] = $month . ' ' . implode(', ', $days) . ', ' . $lastDay;
+                                                } else {
+                                                    $parts[] = $month . ' ' . $days[0];
+                                                }
+                                            }
 
-    // Combine all months and append year
-    echo implode(' ', $parts) . ' ' . $year;
-}
-?>
+                                            echo implode(' ', $parts) . ' ' . $year;
+                                        }
+                                    ?>
 
                                 </td>
                                 <td><span class="badge bg-info"><?= htmlspecialchars($pending["leaveStatus"]) ?></span>

@@ -7,7 +7,7 @@ if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_tok
     header("Location: eror.php");
     exit;
 }
-if ($_SERVER["REQUEST_METHOD"] === "POST") 
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if(isset($_POST["update_notification"]) && $_POST["update_notification"] == "true"){
         $admin_id = $_POST["admin_id"] ?? '';
@@ -26,8 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
         }
         
     }
-
-    
 
     unset($_SESSION['csrf_token']);
 }

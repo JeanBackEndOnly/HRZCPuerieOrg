@@ -91,8 +91,6 @@
                                     lr.leaveType,
                                     lr.leaveStatus,
                                     lr.Purpose,
-                                    lr.InclusiveFrom,
-                                    lr.InclusiveTo,
                                     lr.numberOfDays,
                                     lr.contact,
                                     lr.request_date,
@@ -109,14 +107,52 @@
                                 ORDER BY lr.request_date DESC");
                             $stmt->execute();
                             $recommendedLeave = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                            if($recommendedLeave ){
+                            if($recommendedLeave){
                                 $count = 1; 
                                     foreach($recommendedLeave as $recommended) : ?>
                                     <tr>
                                         <th><?= $count++ ?></th>
                                         <th><?= htmlspecialchars($recommended["firstname"]) . " " . htmlspecialchars(substr($recommended["middlename"], 0, 1)) . ". " . htmlspecialchars($recommended["lastname"]) ?></th>
                                         <th><?= htmlspecialchars($recommended["leaveType"]) ?></th>
-                                        <th><?= htmlspecialchars($recommended["InclusiveFrom"]) . " to " . htmlspecialchars($recommended["InclusiveTo"]) ?></th>
+                                        <th>
+                                            <?php 
+                                                $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
+                                                LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
+                                                WHERE lr.employee_id = :employee_id AND lr.leave_id = :leave_id");
+                                                $stmt->execute(['employee_id' => $recommended["employee_id"], 'leave_id' => $recommended["leave_id"]]);
+                                                $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                            ?>
+                                            <?php
+                                                if (!empty($getDate)) {
+
+                                                    $timestamps = array_map(fn($d) => strtotime($d['inclusive_date']), $getDate);
+
+                                                    sort($timestamps);
+
+                                                    $months = [];
+                                                    foreach ($timestamps as $ts) {
+                                                        $month = strtoupper(date('M', $ts));
+                                                        $day   = date('j', $ts); 
+                                                        $months[$month][] = $day;
+                                                    }
+
+                                                    $year = date('Y', $timestamps[0]);
+
+                                                    $parts = [];
+                                                    foreach ($months as $month => $days) {
+                                                        if (count($days) > 1) {
+                                                            $lastDay = array_pop($days);
+                                                            $parts[] = $month . ' ' . implode(', ', $days) . ', ' . $lastDay;
+                                                        } else {
+                                                            $parts[] = $month . ' ' . $days[0];
+                                                        }
+                                                    }
+
+                                                    echo implode(' ', $parts) . ' ' . $year;
+                                                }
+                                            ?>
+
+                                        </th>
                                         <th><?= htmlspecialchars($recommended["leaveStatus"]) ?></th>
                                         <th><a href="index.php?page=contents/viewLeave&leave_id=<?= htmlspecialchars($recommended["leave_id"]) ?>" ><button class="btn btn-sm btn-danger px-3 view-leave-details" data-id="${leave.leave_id}">
                                                 <i class="fas fa-eye"></i> View
@@ -153,8 +189,6 @@
                                     lr.leaveType,
                                     lr.leaveStatus,
                                     lr.Purpose,
-                                    lr.InclusiveFrom,
-                                    lr.InclusiveTo,
                                     lr.numberOfDays,
                                     lr.contact,
                                     lr.request_date,
@@ -180,7 +214,45 @@
                                 <th><?= $countApproved++ ?></th>
                                 <th><?= htmlspecialchars($approved["firstname"]) . " " . htmlspecialchars(substr($approved["middlename"], 0, 1)) . ". " . htmlspecialchars($approved["lastname"]) ?></th>
                                 <th><?= htmlspecialchars($approved["leaveType"]) ?></th>
-                                <th><?= htmlspecialchars($approved["InclusiveFrom"]) . " to " . htmlspecialchars($approved["InclusiveTo"]) ?></th>
+                                <th>
+                                        <?php 
+                                            $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
+                                            LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
+                                            WHERE lr.employee_id = :employee_id AND lr.leave_id = :leave_id");
+                                            $stmt->execute(['employee_id' => $approved["employee_id"], 'leave_id' => $approved["leave_id"]]);
+                                            $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                        ?>
+                                        <?php
+                                            if (!empty($getDate)) {
+
+                                                $timestamps = array_map(fn($d) => strtotime($d['inclusive_date']), $getDate);
+
+                                                sort($timestamps);
+
+                                                $months = [];
+                                                foreach ($timestamps as $ts) {
+                                                    $month = strtoupper(date('M', $ts));
+                                                    $day   = date('j', $ts); 
+                                                    $months[$month][] = $day;
+                                                }
+
+                                                $year = date('Y', $timestamps[0]);
+
+                                                $parts = [];
+                                                foreach ($months as $month => $days) {
+                                                    if (count($days) > 1) {
+                                                        $lastDay = array_pop($days);
+                                                        $parts[] = $month . ' ' . implode(', ', $days) . ', ' . $lastDay;
+                                                    } else {
+                                                        $parts[] = $month . ' ' . $days[0];
+                                                    }
+                                                }
+
+                                                echo implode(' ', $parts) . ' ' . $year;
+                                            }
+                                        ?>
+
+                                    </th>
                                 <th><?= htmlspecialchars($approved["leaveStatus"]) ?></th>
                                 <th><a href="index.php?page=contents/reviewLeave&leave_id=<?= htmlspecialchars($approved["leave_id"]) ?>" ><button class="btn btn-sm btn-danger px-3 view-leave-details" data-id="${leave.leave_id}">
                                         <i class="fas fa-eye"></i> Review Leave
@@ -218,8 +290,6 @@
                                     lr.leaveType,
                                     lr.leaveStatus,
                                     lr.Purpose,
-                                    lr.InclusiveFrom,
-                                    lr.InclusiveTo,
                                     lr.numberOfDays,
                                     lr.contact,
                                     lr.request_date,
@@ -245,7 +315,45 @@
                                 <th><?= $countDisapproved++ ?></th>
                                 <th><?= htmlspecialchars($disapproved["firstname"]) . " " . htmlspecialchars(substr($disapproved["middlename"], 0, 1)) . ". " . htmlspecialchars($disapproved["lastname"]) ?></th>
                                 <th><?= htmlspecialchars($disapproved["leaveType"]) ?></th>
-                                <th><?= htmlspecialchars($disapproved["InclusiveFrom"]) . " to " . htmlspecialchars($disapproved["InclusiveTo"]) ?></th>
+                                <th>
+                                        <?php 
+                                            $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
+                                            LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
+                                            WHERE lr.employee_id = :employee_id AND lr.leave_id = :leave_id");
+                                            $stmt->execute(['employee_id' => $disapproved["employee_id"], 'leave_id' => $disapproved["leave_id"]]);
+                                            $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                        ?>
+                                        <?php
+                                            if (!empty($getDate)) {
+
+                                                $timestamps = array_map(fn($d) => strtotime($d['inclusive_date']), $getDate);
+
+                                                sort($timestamps);
+
+                                                $months = [];
+                                                foreach ($timestamps as $ts) {
+                                                    $month = strtoupper(date('M', $ts));
+                                                    $day   = date('j', $ts); 
+                                                    $months[$month][] = $day;
+                                                }
+
+                                                $year = date('Y', $timestamps[0]);
+
+                                                $parts = [];
+                                                foreach ($months as $month => $days) {
+                                                    if (count($days) > 1) {
+                                                        $lastDay = array_pop($days);
+                                                        $parts[] = $month . ' ' . implode(', ', $days) . ', ' . $lastDay;
+                                                    } else {
+                                                        $parts[] = $month . ' ' . $days[0];
+                                                    }
+                                                }
+
+                                                echo implode(' ', $parts) . ' ' . $year;
+                                            }
+                                        ?>
+
+                                    </th>
                                 <th><?= htmlspecialchars($disapproved["leaveStatus"]) ?></th>
                                 <th><a href="index.php?page=contents/reviewLeave&leave_id=<?= htmlspecialchars($disapproved["leave_id"]) ?>" ><button class="btn btn-sm btn-danger px-3 view-leave-details" data-id="${leave.leave_id}">
                                         <i class="fas fa-eye"></i> Review Leave

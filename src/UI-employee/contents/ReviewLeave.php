@@ -137,10 +137,11 @@ echo "<!-- Debug: " . print_r($leave, true) . " -->";
             <?php 
                 if($leave["leaveType"] == "Sick_leave"){
             ?>
-            <div class="col-md-12 my-2">
+            <div class="col-md-12 my-2 medical-proof">
                 <label class="form-label">Medical Proof</label>
-                <a href="../../authentication/uploads/<?= $leave["medical_proof"] ?>" class="form-control" target="_blank"><?= $leave["medical_proof"] ?></a>
-            </div>  
+                <a href="../../authentication/uploads/<?= $leave["medical_proof"] ?>" class="form-control"
+                    target="_blank"><?= $leave["medical_proof"] ?></a>
+            </div>
             <?php }else{} ?>
             <div class="col-md-12">
                 <label class="form-label">COURSE/PURPOSE <span class="text-danger">(required)</span></label>
@@ -248,9 +249,11 @@ echo "<!-- Debug: " . print_r($leave, true) . " -->";
                         </tr>
                         <tr>
                             <td>Leave Earned</td>
-                            <td><input readonly type="text" name="vacationEarned" class="form-control p-1" value="+0"></td>
+                            <td><input readonly type="text" name="vacationEarned" class="form-control p-1" value="+0">
+                            </td>
                             <td><input readonly type="text" name="sickEarned" class="form-control p-1" value="+0"></td>
-                            <td><input readonly type="text" name="specialEarned" class="form-control p-1" value="+0"></td>
+                            <td><input readonly type="text" name="specialEarned" class="form-control p-1" value="+0">
+                            </td>
                         </tr>
                         <tr>
                             <td>Total Leave Credits as of</td>
@@ -263,9 +266,12 @@ echo "<!-- Debug: " . print_r($leave, true) . " -->";
                         </tr>
                         <tr>
                             <td>Less this Leave</td>
-                            <td><input readonly type="text" name="vacationLessLeave" class="form-control p-1" value="0"></td>
-                            <td><input readonly type="text" name="sickLessLeave" class="form-control p-1" value="0"></td>
-                            <td><input readonly type="text" name="specialLessLeave" class="form-control p-1" value="0"></td>
+                            <td><input readonly type="text" name="vacationLessLeave" class="form-control p-1" value="0">
+                            </td>
+                            <td><input readonly type="text" name="sickLessLeave" class="form-control p-1" value="0">
+                            </td>
+                            <td><input readonly type="text" name="specialLessLeave" class="form-control p-1" value="0">
+                            </td>
                         </tr>
                         <tr>
                             <td>Balance to Date</td>
@@ -284,17 +290,18 @@ echo "<!-- Debug: " . print_r($leave, true) . " -->";
                         <label for="" class="fw-bold ms-3">Recommendation for:</label>
                         <div
                             class="row d-flex col-md-11 col-11 flex-row justify-content-start align-items-center m-0 p-0">
-                            <input disabled type="radio" disabled class="col-md-1 col-1" id="approved" name="leaveStatus"
-                                value="Approved" <?= $leave["leaveStatus"] == "Approved" ? "checked" : "" ?>>
+                            <input disabled type="radio" disabled class="col-md-1 col-1" id="approved"
+                                name="leaveStatus" value="Approved"
+                                <?= $leave["leaveStatus"] == "Approved" ? "checked" : "" ?>>
                             <label class="col-md-1 col-1 text-start" for="approved">Approved</label>
                         </div>
                         <div
-                        
                             class="row d-flex col-md-11 col-11 flex-row justify-content-start align-items-center m-0 p-0">
-                            <input disabled type="radio" disabled class="col-md-1 col-1" id="Disapproval" name="leaveStatus"
+                            <input disabled type="radio" class="col-md-1 col-1" id="Disapproval" name="leaveStatus"
                                 value="Disapproved" <?= $leave["leaveStatus"] == "Disapproved" ? "checked" : "" ?>>
                             <label class="col-md-7 col-9 text-start" for="Disapproval">Disapproval due to:</label>
-                            <textarea  readonly class="form-control ms-3" name="disapprovalDetails"><?= htmlspecialchars($leave["disapprovalDetails"] ?? '') ?></textarea>
+                            <textarea class="form-control ms-3"
+                                name="disapprovalDetails"><?= htmlspecialchars($leave["disapprovalDetails"] ?? '') ?></textarea>
                         </div>
                     </div>
                 </div>
@@ -422,13 +429,13 @@ $(document).ready(function() {
 });
 </script>
 <script>
-    document.getElementById('print_leave').addEventListener('click', function() {
+document.getElementById('print_leave').addEventListener('click', function() {
     // Store original content
     const originalBody = document.body.innerHTML;
-    
+
     // Get the form content
     const leaveForm = document.getElementById('leaveProcess-form').cloneNode(true);
-    
+
     // Create print wrapper
     const printWrapper = document.createElement('div');
     printWrapper.style.cssText = `
@@ -437,7 +444,7 @@ $(document).ready(function() {
         margin: 0 auto;
         padding: 20px;
     `;
-    
+
     // Add header with organization info
     const headerDiv = document.createElement('div');
     headerDiv.style.cssText = 'text-align: center; margin-bottom: 20px;';
@@ -446,21 +453,21 @@ $(document).ready(function() {
         <h5 style="margin: 5px 0 20px 0; font-weight: bold;">APPLICATION FOR LEAVE</h5>
     `;
     printWrapper.appendChild(headerDiv);
-    
+
     // Clone the form content
     const formClone = leaveForm.cloneNode(true);
-    
+
     // Remove buttons and modal classes
     const elementsToRemove = formClone.querySelectorAll(
         'button, .modal-header, .modal-footer, .modal-title, [data-bs-dismiss], .btn, #print_leave'
     );
     elementsToRemove.forEach(el => el.remove());
-    
+
     // Remove modal classes
     formClone.querySelectorAll('.modal-content, .modal-body, .scroll').forEach(el => {
         el.classList.remove('modal-content', 'modal-body', 'scroll');
     });
-    
+
     // Add signature sections
     const signatureSection = document.createElement('div');
     signatureSection.style.cssText = 'margin-top: 40px;';
@@ -493,22 +500,23 @@ $(document).ready(function() {
             </div>
         </div>
     `;
-    
+
     // Append form content and signature section
     printWrapper.appendChild(formClone);
     printWrapper.appendChild(signatureSection);
-    
+
     // Add print footer
     const footerDiv = document.createElement('div');
-    footerDiv.style.cssText = 'margin-top: 30px; text-align: center; font-size: 10px; color: #666; border-top: 1px solid #ccc; padding-top: 10px;';
+    footerDiv.style.cssText =
+        'margin-top: 30px; text-align: center; font-size: 10px; color: #666; border-top: 1px solid #ccc; padding-top: 10px;';
     footerDiv.innerHTML = `
         Printed from: Leave Management System | ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}
     `;
     printWrapper.appendChild(footerDiv);
-    
+
     // Create print window
     const printWindow = window.open('', '_blank', 'width=900,height=700');
-    
+
     printWindow.document.write(`
         <!DOCTYPE html>
         <html>
@@ -536,6 +544,9 @@ $(document).ready(function() {
                         background: transparent !important;
                         padding: 2px 5px !important;
                         box-shadow: none !important;
+                    }
+                    .medical-proof{
+                        display: none !important;
                     }
                     
                     input[readonly], textarea[readonly] {
@@ -665,7 +676,7 @@ $(document).ready(function() {
         </body>
         </html>
     `);
-    
+
     printWindow.document.close();
 });
 </script>

@@ -137,7 +137,7 @@ echo "<!-- Debug: " . print_r($leave, true) . " -->";
             <?php 
                 if($leave["leaveType"] == "Sick_leave"){
             ?>
-            <div class="col-md-12 my-2">
+            <div class="col-md-12 my-2 medical-proof">
                 <label class="form-label">Medical Proof</label>
                 <a href="../../authentication/uploads/<?= $leave["medical_proof"] ?>" class="form-control" target="_blank"><?= $leave["medical_proof"] ?></a>
             </div>  
@@ -536,7 +536,9 @@ $(document).ready(function() {
                         padding: 2px 5px !important;
                         box-shadow: none !important;
                     }
-                    
+                    .medical-proof{
+                        display: none !important;
+                    }
                     input[readonly], textarea[readonly] {
                         background-color: transparent !important;
                     }

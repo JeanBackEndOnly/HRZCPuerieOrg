@@ -124,10 +124,14 @@ $employee_id = $leave["employee_id"] ?? '';
                     <span class="d-flex align-items-center ms-2">Others</span>
                 </div>
             </div>
+            <?php 
+                if($leave["leaveType"] == "Sick_leave"){
+            ?>
             <div class="col-md-12">
                 <label class="form-label">Medical Proof</label>
                 <a href="../../authentication/uploads/<?= $leave["medical_proof"] ?>" class="form-control" target="_blank"><?= $leave["medical_proof"] ?></a>
             </div>
+            <?php }else{} ?>
             <div class="col-md-12">
                 <label class="form-label">Others Specify</label>
                 <input type="text" readonly name="Others" value="<?= htmlspecialchars($leave["Others"]) ?>"

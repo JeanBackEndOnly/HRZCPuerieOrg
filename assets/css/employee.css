@@ -1,0 +1,39 @@
+.bg-color-lr{
+    background-color: #ED555B !important;
+    transition: 0.5s ease;
+}
+a{
+    display: inline-block; 
+    border: 3px solid transparent;
+}
+.hover:hover{
+    opacity: 0.9;
+    border: solid 3px #6b6b6b;
+}
+.bg-color-mp{
+    background-color: #5592ED !important;
+    transition: 0.5s ease;
+}
+.bg-color-mf{
+    background-color: #2ca039 !important;
+    transition: 0.5s ease;
+}
+.bg-color-others{
+    background-color: #585455 !important;
+    transition: 0.5s ease;
+}
+.fa-disease{
+    font-size: 3rem !important;
+}
+.min-height{
+    height: 20vh !important;
+}
+.font-12{
+    font-size: 15px;
+}
+@media (max-width: 768px){
+    .row{
+        align-items: center !important;
+        justify-content: center !important;
+    }
+}

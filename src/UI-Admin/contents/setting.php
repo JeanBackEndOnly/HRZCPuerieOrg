@@ -279,6 +279,39 @@
                                 value="<?= htmlspecialchars($getAdminData["admin_email"] ?? '') ?>">
                         </div>
                     </div>
+                    <!-- OTHERS INFORMATION -->
+                     <div class="header ps-3 pt-3">
+                        <h5 class="m-0 p-0">
+                            <i class="fa-solid fa-circle-info me-2"></i>Other Information <span class="fw-light">(optional)</span>
+                        </h5>
+                    </div>
+                    <div class="row flex-wrap col-md-12 col-12 p-3 h-auto">
+                        <div class="col-md-4">
+                            <label class="form-label">Profession Title</label>
+                            <select name="profession_title" class="form-select">
+                                <option value="">Select Profession Title</option>
+                                <option value="Dr." <?= ($getAdminData["profession_title"] == "Dr.") ? 'selected' : '' ?>>Dr.</option>
+                                <option value="Prof." <?= ($getAdminData["profession_title"] == "Prof.") ? 'selected' : '' ?>>Prof.</option>
+                                <option value="Assoc. Prof." <?= ($getAdminData["profession_title"] == "Assoc. Prof.") ? 'selected' : '' ?>>Assoc. Prof.</option>
+                                <option value="Asst. Prof." <?= ($getAdminData["profession_title"] == "Asst. Prof.") ? 'selected' : '' ?>>Asst. Prof.</option>
+                                <option value="RN." <?= ($getAdminData["profession_title"] == "RN.") ? 'selected' : '' ?>>RN.</option>
+                                <option value="Mr." <?= ($getAdminData["profession_title"] == "Mr.") ? 'selected' : '' ?>>Mr.</option>
+                                <option value="Ms." <?= ($getAdminData["profession_title"] == "Ms.") ? 'selected' : '' ?>>Ms.</option>
+                                <option value="Mrs." <?= ($getAdminData["profession_title"] == "Mrs.") ? 'selected' : '' ?>>Mrs.</option>
+                            </select>
+
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Degree</label>
+                            <input type="text" name="degrees" id="degrees" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["degrees"] ?? '') ?>">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Certifications</label>
+                            <input type="text" name="fellowship" id="fellowship" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["fellowship"] ?? '') ?>">
+                        </div>
+                    </div>
                     <!-- ADDRESS INFORMATION HEADER -->
                     <div class="header ps-3 pt-3">
                         <h5 class="m-0 p-0">

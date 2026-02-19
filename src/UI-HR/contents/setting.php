@@ -242,6 +242,39 @@
                                 value="<?= htmlspecialchars($getHrData["email"] ?? '') ?>">
                         </div>
                     </div>
+                    <!-- OTHERS INFORMATION -->
+                     <div class="header ps-3 pt-3">
+                        <h5 class="m-0 p-0">
+                            <i class="fa-solid fa-circle-info me-2"></i>Other Information <span class="fw-light">(optional)</span>
+                        </h5>
+                    </div>
+                    <div class="row flex-wrap col-md-12 col-12 p-3 h-auto">
+                        <div class="col-md-4">
+                            <label class="form-label">Profession Title</label>
+                            <select name="profession_title" class="form-select">
+                                <option value="">Select Profession Title</option>
+                                <option value="Dr." <?= ($getHrData["profession_title"] == "Dr.") ? 'selected' : '' ?>>Dr.</option>
+                                <option value="Prof." <?= ($getHrData["profession_title"] == "Prof.") ? 'selected' : '' ?>>Prof.</option>
+                                <option value="Assoc. Prof." <?= ($getHrData["profession_title"] == "Assoc. Prof.") ? 'selected' : '' ?>>Assoc. Prof.</option>
+                                <option value="Asst. Prof." <?= ($getHrData["profession_title"] == "Asst. Prof.") ? 'selected' : '' ?>>Asst. Prof.</option>
+                                <option value="RN." <?= ($getHrData["profession_title"] == "RN.") ? 'selected' : '' ?>>RN.</option>
+                                <option value="Mr." <?= ($getHrData["profession_title"] == "Mr.") ? 'selected' : '' ?>>Mr.</option>
+                                <option value="Ms." <?= ($getHrData["profession_title"] == "Ms.") ? 'selected' : '' ?>>Ms.</option>
+                                <option value="Mrs." <?= ($getHrData["profession_title"] == "Mrs.") ? 'selected' : '' ?>>Mrs.</option>
+                            </select>
+
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Degree</label>
+                            <input type="text" name="degrees" id="degrees" class="form-control"
+                                value="<?= htmlspecialchars($getHrData["degrees"] ?? '') ?>">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Certifications</label>
+                            <input type="text" name="fellowship" id="fellowship" class="form-control"
+                                value="<?= htmlspecialchars($getHrData["fellowship"] ?? '') ?>">
+                        </div>
+                    </div>
                     <!-- ADDRESS INFORMATION HEADER -->
                     <div class="header ps-3 pt-3">
                         <h5 class="m-0 p-0">

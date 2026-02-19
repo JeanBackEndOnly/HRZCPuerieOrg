@@ -1441,6 +1441,9 @@ class Action
         $city_muntinlupa = htmlspecialchars($_POST["city_muntinlupa"]);
         $province = htmlspecialchars($_POST["province"]);
         $zip_code = htmlspecialchars($_POST["zip_code"]);
+        $profession_title        = htmlspecialchars(trim($_POST["profession_title"] ?? ''));
+        $degrees        = htmlspecialchars(trim($_POST["degrees"] ?? ''));
+        $fellowship        = htmlspecialchars(trim($_POST["fellowship"] ?? ''));
 
         try {
             // ✅ Update employee_data
@@ -1485,7 +1488,10 @@ class Action
                     barangay = :barangay,
                     city_muntinlupa = :city_muntinlupa,
                     province = :province,
-                    zip_code = :zip_code
+                    zip_code = :zip_code,
+                    profession_title = :profession_title,
+                    degrees = :degrees,
+                    fellowship = :fellowship
                 WHERE employee_id = :employee_id
             ");
             $stmtHR->execute([
@@ -1496,6 +1502,9 @@ class Action
                 'city_muntinlupa' => $city_muntinlupa,
                 'province' => $province,
                 'zip_code' => $zip_code,
+                'profession_title' => $profession_title,
+                'degrees' => $degrees,
+                'fellowship' => $fellowship,
                 'employee_id' => $employee_id
             ]);
 
@@ -1849,6 +1858,9 @@ class Action
         $admin_city = $_POST["admin_city"];
         $admin_province = $_POST["admin_province"];
         $admin_zip_code = $_POST["admin_zip_code"];
+        $profession_title = $_POST["profession_title"];
+        $degrees = $_POST["degrees"];
+        $fellowship = $_POST["fellowship"];
         $admin_id = 1;
         try {
             $admin_picture = null;
@@ -1940,7 +1952,8 @@ class Action
 
             $stmtAdminIfo = $this->db->prepare("UPDATE admin_info SET admin_province = :admin_province,
                 admin_city = :admin_city, admin_barangay = :admin_barangay, admin_subdivision = :admin_subdivision,
-                admin_house = :admin_house, admin_street = :admin_street, admin_zip_code = :admin_zip_code WHERE admin_id = :admin_id");
+                admin_house = :admin_house, admin_street = :admin_street, admin_zip_code = :admin_zip_code,
+                profession_title = :profession_title, degrees = :degrees, fellowship = :fellowship WHERE admin_id = :admin_id");
             $stmtAdminIfo->execute([
                 'admin_subdivision' => $admin_subdivision,
                 'admin_barangay' => $admin_barangay,
@@ -1949,6 +1962,9 @@ class Action
                 'admin_zip_code' => $admin_zip_code, 
                 'admin_street' => $admin_street, 
                 'admin_house' => $admin_house,
+                'profession_title' => $profession_title,
+                'degrees' => $degrees,
+                'fellowship' => $fellowship,
                 'admin_id' => $admin_id    
             ]);
             return json_encode([
@@ -1986,6 +2002,9 @@ class Action
         $city_muntinlupa = htmlspecialchars(trim($_POST["city_muntinlupa"] ?? ''));
         $province        = htmlspecialchars(trim($_POST["province"] ?? ''));
         $zip_code        = htmlspecialchars(trim($_POST["zip_code"] ?? ''));
+        $profession_title        = htmlspecialchars(trim($_POST["profession_title"] ?? ''));
+        $degrees        = htmlspecialchars(trim($_POST["degrees"] ?? ''));
+        $fellowship        = htmlspecialchars(trim($_POST["fellowship"] ?? ''));
         
         if (empty($employee_id)) {
             return json_encode([
@@ -2140,7 +2159,10 @@ class Action
                     barangay = :barangay,
                     city_muntinlupa = :city_muntinlupa,
                     province = :province,
-                    zip_code = :zip_code
+                    zip_code = :zip_code,
+                    profession_title = :profession_title,
+                    degrees = :degrees,
+                    fellowship = :fellowship
                 WHERE employee_id = :employee_id
             ");
             $stmtHrData->execute([
@@ -2151,6 +2173,9 @@ class Action
                 'city_muntinlupa' => $city_muntinlupa,
                 'province'        => $province,
                 'zip_code'        => $zip_code,
+                'profession_title'        => $profession_title,
+                'degrees'        => $degrees,
+                'fellowship'        => $fellowship,
                 'employee_id'     => $employee_id
             ]);
 

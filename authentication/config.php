@@ -81,6 +81,9 @@ function db_connect()
                 admin_zip_code VARCHAR(50),
                 salary DECIMAL(12,2),
                 admin_rating VARCHAR(10) NOT NULL,
+                profession_title ENUM('Dr.', 'Prof.', 'Assoc. Prof.', 'Asst. Prof.', 'RN', 'Mr.', 'Ms.', 'Mrs.'),
+                degrees VARCHAR(100),
+                fellowship VARCHAR(100),
                 created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 FOREIGN KEY (unit_section_id) REFERENCES unit_section(unit_section_id),
                 FOREIGN KEY (admin_id) REFERENCES admin(admin_id),
@@ -299,6 +302,12 @@ function db_connect()
                 jobtitle_id INT(11),
                 Department_id INT(11),
                 unit_section_id INT,
+
+                -- for doctors
+                profession_title ENUM('Dr.', 'Prof.', 'Assoc. Prof.', 'Asst. Prof.', 'RN', 'Mr.', 'Ms.', 'Mrs.'),
+                degrees VARCHAR(100),
+                fellowship VARCHAR(100),
+
 
                 annual_salary DECIMAL(12,2) NOT NULL,      
                 net_pay DECIMAL(12,2) NOT NULL,          

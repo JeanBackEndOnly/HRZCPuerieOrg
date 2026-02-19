@@ -21,27 +21,27 @@
     <div class="d-flex justify-content-between align-items-center mb-0 col-md-12 col-12 flex-wrap">
         <div class="card-body col-md-8 col-12">
             <ul class="nav nav-tabs justify-content-end align-items-end col-md-12 col-12" id="ProfileInfoTabs">
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Personal"><i
                             class="fa-solid fa-circle-info me-2"></i>Personal</a>
                 </li>
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Employment"><i
                             class="fa-solid me-2 fa-briefcase"></i>Employment</a>
                 </li>
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Education"><i
                             class="fa-solid me-2 fa-school"></i>Education</a>
                 </li>
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Family"><i
                             class="fa-solid me-2 fa-people-group"></i>Family</a>
                 </li>
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Leave">
                         <i class="fa-solid fa-chart-line me-2"></i>Activities</a>
                 </li>
-                <li class="nav-item col-md-2 col-12">
+                <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#history">
                         <i class="fa-solid fa-clock-rotate-left me-2"></i>Login history</a>
                 </li>
@@ -247,6 +247,39 @@
                                 value="<?= htmlspecialchars($getEmployee["email"] ?? '') ?>">
                         </div>
                     </div>
+                    <!-- OTHERS INFORMATION -->
+                     <div class="header ps-3 pt-3">
+                        <h5 class="m-0 p-0">
+                            <i class="fa-solid fa-circle-info me-2"></i>Other Information <span class="fw-light">(optional)</span>
+                        </h5>
+                    </div>
+                    <div class="row flex-wrap col-md-12 col-12 p-3 h-auto">
+                        <div class="col-md-4">
+                            <label class="form-label">Profession Title</label>
+                            <select name="profession_title" class="form-select">
+                                <option value="">Select Profession Title</option>
+                                <option value="Dr." <?= ($getEmployee["profession_title"] == "Dr.") ? 'selected' : '' ?>>Dr.</option>
+                                <option value="Prof." <?= ($getEmployee["profession_title"] == "Prof.") ? 'selected' : '' ?>>Prof.</option>
+                                <option value="Assoc. Prof." <?= ($getEmployee["profession_title"] == "Assoc. Prof.") ? 'selected' : '' ?>>Assoc. Prof.</option>
+                                <option value="Asst. Prof." <?= ($getEmployee["profession_title"] == "Asst. Prof.") ? 'selected' : '' ?>>Asst. Prof.</option>
+                                <option value="RN." <?= ($getEmployee["profession_title"] == "RN.") ? 'selected' : '' ?>>RN.</option>
+                                <option value="Mr." <?= ($getEmployee["profession_title"] == "Mr.") ? 'selected' : '' ?>>Mr.</option>
+                                <option value="Ms." <?= ($getEmployee["profession_title"] == "Ms.") ? 'selected' : '' ?>>Ms.</option>
+                                <option value="Mrs." <?= ($getEmployee["profession_title"] == "Mrs.") ? 'selected' : '' ?>>Mrs.</option>
+                            </select>
+
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Degree</label>
+                            <input type="text" name="degrees" id="degrees" class="form-control"
+                                value="<?= htmlspecialchars($getEmployee["degrees"] ?? '') ?>">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Certifications</label>
+                            <input type="text" name="fellowship" id="fellowship" class="form-control"
+                                value="<?= htmlspecialchars($getEmployee["fellowship"] ?? '') ?>">
+                        </div>
+                    </div>
                     <!-- ADDRESS INFORMATION HEADER -->
                     <div class="header ps-3 pt-3">
                         <h5 class="m-0 p-0">
@@ -291,9 +324,9 @@
                                 value="<?= htmlspecialchars($getEmployee["zip_code"] ?? '') ?>">
                         </div>
                     </div>
-                    <div class="col-md-7 hidden-button  button-margin-right no-padding-media justify-content-end me-5" style="display: none;">
-                            <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5 no-padding-media button-margin-right">Update</button>
-                        </div>
+                    <div class="col-md-12 hidden-button d-flex button-margin-right no-padding-media justify-content-end me-5">
+                        <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5 button-margin-right">Update</button>
+                    </div>
                 </div>
             </form>
         </div>

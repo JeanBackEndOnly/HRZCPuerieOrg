@@ -4,7 +4,7 @@
     }
     
     require_once '../../authentication/config.php';
-    // System Fetching ==================================================================================
+    // System Fetching ===================================================================================
     function getUnitSection(){
         try {
             $pdo = db_connect();
@@ -77,5 +77,14 @@
         $stmt->execute(['employee_id' => $hr_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-        
-
+    // Get employees for scheduling ======================================================================   
+    function getEmployeesForSchedule(){
+        $pdo = db_connect();
+        $stmt = $pdo->prepare("SELECT ed.firstname, ed.middlename, ed.lastname, ed.suffix,
+            d.Department_name, d.Department_code, ed.employee_id FROM employee_data ed
+            INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
+            LEFT JOIN departments d ON hd.Department_id = d.Department_id
+            ORDER BY ed.lastname DESC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }

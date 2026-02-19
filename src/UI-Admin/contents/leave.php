@@ -5,22 +5,6 @@
             <small class="text-muted ">Accept, Reject and Update Employee Leave Request</small>
         </div>
     </div>
-    <!-- PENDING ACCOUNT PROFILE -->
-    <div class="modal fade" id="viewAccount" tabindex="-1" aria-labelledby="viewAccountLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title text-white" id="viewAccountLabel">Employee Account Profile</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                </div>
-            </div>
-        </div>
-    </div>
-    
     <!-- EMPLOYEE COUNTS DISPLAYS ================================================================================================ -->
     <div class="row mb-2">
         <?php

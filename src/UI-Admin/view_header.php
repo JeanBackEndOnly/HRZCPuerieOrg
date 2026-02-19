@@ -15,4 +15,10 @@ if (!$getEmployee) {
     $_SESSION['error'] = isset($_GET["id"]) ? "Employee not found" : "No employee ID provided";
     $getEmployee = null; 
 }
+
+$getEmployeeForSchedules = getEmployeesForSchedule();
+if(!$getEmployeeForSchedules){
+    $_SESSION['error'] = "Failed to fetch employees data";
+    $getEmployeeForSchedules = null;
+}
 ?>

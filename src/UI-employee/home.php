@@ -9,6 +9,13 @@
             $SickBalance = $getCounts["SickBalance"];
             $SpecialBalance = $getCounts["SpecialBalance"];
             $OthersBalance = $getCounts["OthersBalance"];
+
+            $stmtSchedule = $pdo->prepare("SELECT es.schedule_at, st.scheduleName, st.schedule_from, st.schedule_to FROM employee_schedule es
+            LEFT JOIN sched_template st ON es.schedule_id = st.template_id
+            WHERE es.employee_id = ? AND es.schedule_at = CURDATE()");
+            $stmtSchedule->execute([$employee_id]);
+            $result = $stmtSchedule->fetch(PDO::FETCH_ASSOC);
+            
          ?>
    <section class="">
       <div class="mb-4">
@@ -18,6 +25,18 @@
          </div>
       </div>
 
+      <!-- SCHEDULE HERE -->
+      <?php if($result){ ?>
+         <div class="col-md-12 ms-2 d-flex flex-column mb-3">
+            <strong class="fs-3">
+               DATE TODAY: 
+               <span><?= DateTime::createFromFormat('Y-m-d', $result["schedule_at"])->format('d/m/Y'); ?></span>
+               </strong>
+            <strong class="fs-3">YOUR TIME SCHEDULE TODAY: <?= date('h:i A', strtotime($result["schedule_from"])) . ' - ' . date('h:i A', strtotime($result["schedule_to"])) ?></strong>
+         </div>
+      <?php }else{ ?>
+         <strong>You have no Schedule today!</strong>
+      <?php }?>
       <!-- Grid Row -->
       <div class="row text-center pb-2 ms-2 gap-2">
          <a href="index.php?page=contents/leave" class="col-md-2 col-5 hover min-height rounded d-flex flex-column py-4  shadow text-white align-items-center justify-content-center cursor-pointer bg-color-lr">
@@ -28,7 +47,7 @@
                <strong class="mt-2">Request a Leave</strong>
             </div>
          </a>
-         <a href="index.php?page=contents/leave" class="col-md-2 col-5 hover min-height rounded d-flex flex-column py-4 shadow text-white align-items-center justify-content-center cursor-pointer bg-color-mp">
+         <a href="index.php?page=contents/setting" class="col-md-2 col-5 hover min-height rounded d-flex flex-column py-4 shadow text-white align-items-center justify-content-center cursor-pointer bg-color-mp">
             <div class="col-md-12 text-center">
                <i class="fa-solid fa-gear fs-1"></i>
             </div>
@@ -36,7 +55,7 @@
                <strong class="mt-2">Manage Profile and settings</strong>
             </div>
          </a>
-         <a href="index.php?page=contents/leave" class="col-md-2 col-5 hover min-height rounded d-flex flex-column py-4 shadow text-white align-items-center justify-content-center cursor-pointer bg-color-mf">
+         <a href="index.php?page=contents/201" class="col-md-2 col-5 hover min-height rounded d-flex flex-column py-4 shadow text-white align-items-center justify-content-center cursor-pointer bg-color-mf">
             <div class="col-md-12 text-center">
                <i class="fa-solid fa-file fs-1"></i>
             </div>

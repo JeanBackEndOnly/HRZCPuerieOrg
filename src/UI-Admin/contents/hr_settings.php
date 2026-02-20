@@ -217,30 +217,31 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title text-white" id="createScheduleForEmployeeLabel">Create New Schedule Template</h5>
+                <h5 class="modal-title text-white" id="createScheduleForEmployeeLabel">Create Schedule</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
                     onclick="location.reload()"></button>
             </div>
             <div class="modal-body">
-                <form class="row g-3" id="schedule-template-form" method="post">
+                <form class="row g-3" id="schedule-for_employee-form" method="post">
+                    <input type="hidden" class="form-control" name="employee_id" id="employee_id_for_schedule">
                     <div class="mx-2">
-                        <label class="form-label">Schedule name</label>
-                        <input required type="text" name="scheduleName" class="form-control">
+                        <label class="form-label">Scheduled At</label>
+                        <input required type="date" name="schedule_at" class="form-control">
                     </div>
+                    <?php
+                        $stmt = $pdo->prepare("SELECT * FROM sched_template");
+                        $stmt->execute();
+                        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    ?>
                     <div class="mx-2">
-                        <label class="form-label">Schedule From</label>
-                        <input required type="time" name="schedule_from" class="form-control">
-                    </div>
-                    <div class="mx-2">
-                        <label class="form-label">Schedule to</label>
-                        <input required type="time" name="schedule_to" class="form-control">
-                    </div>
-                    <div class="mx-2">
-                        <label class="form-label">Work Shift</label>
-                        <select required name="shift" id="" class="form-select">
-                            <option value="">Select Shift</option>
-                            <option value="day">Day Shift</option>
-                            <option value="night">Night Shift</option>
+                        <label class="form-label">Schedule Type</label>
+                        <select required name="schedule_id" id="" class="form-select">
+                            <option value="">Select Schedule</option>
+                            <?php foreach($result as $schedule) : ?>
+                                <option value="<?= $schedule["template_id"] ?>"><?= htmlspecialchars(
+                                    '(' . $schedule["scheduleName"] . ') ' . date('h:i A', strtotime($schedule["schedule_from"])) . ' - ' . $schedule["schedule_to"]
+                                ) ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="col-12 text-center mt-3">

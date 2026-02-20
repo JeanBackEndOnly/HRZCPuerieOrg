@@ -2471,6 +2471,26 @@ class Action
             ]);
         }
     }
+    function schedule_for_employee_form(){
+        $schedule_at  = $_POST["schedule_at"];
+        $employee_id  = $_POST["employee_id"];
+        $schedule_id  = $_POST["schedule_id"];
+        try {
+            $stmt = $this->db->prepare("INSERT INTO employee_schedule (employee_id, schedule_id, schedule_at) 
+            VALUES (?, ?, ?)");
+            $stmt->execute([$employee_id, $schedule_id, $schedule_at]);
+
+            return json_encode([
+                'status' => 1,
+                'message' => 'Schedule successfully added!'
+            ]);
+        } catch (PDOException $e) {
+            return json_encode([
+                'status' => 0,
+                'message' => 'An error occured: ' . $e->getMessage()
+            ]);
+        }
+    }
     function delete_template_form(){
         try {
             $TemplateId = $_POST["TemplateId"];

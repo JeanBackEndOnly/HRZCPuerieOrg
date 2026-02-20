@@ -211,6 +211,12 @@ if ($action === 'schedule_template_form') {
 		echo $validation;
 	}
 }
+if ($action === 'schedule_for_employee_form') {
+	$validation = $crud->schedule_for_employee_form();
+	if ($validation) {
+		echo $validation;
+	}
+}
 if ($action === 'delete_template_form') {
     $result = $crud->delete_template_form();
     echo $result;

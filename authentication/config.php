@@ -443,6 +443,15 @@ function db_connect()
                 added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id) ON DELETE CASCADE
             )",
+            "CREATE TABLE IF NOT EXISTS employee_schedule (
+                employee_schedule_id INT  AUTO_INCREMENT PRIMARY KEY,
+                employee_id INT NOT NULL,
+                schedule_id INT NOT NULL,
+                schedule_at date NOT NULL,
+                added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id) ON DELETE CASCADE,
+                FOREIGN KEY (schedule_id) REFERENCES sched_template(template_id)
+            )",
             "CREATE TABLE IF NOT EXISTS notifications (
                 notifications_id INT AUTO_INCREMENT PRIMARY KEY,
                 type ENUM('HR', 'ADMIN') NOT NULL,

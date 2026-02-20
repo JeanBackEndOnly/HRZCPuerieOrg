@@ -31,6 +31,9 @@
             <a href="index.php?page=home" class="nav-item nav-home ">
                 <span class=""><i class=""></i></span> Dashboard
             </a>
+            <a href="index.php?page=contents/schedule" class="nav-item nav-schedule my-0">
+                <span class=""><i class=""></i></span> Schedule
+            </a>
             <a href="index.php?page=contents/leave" class="nav-item nav-leave my-0">
                 <span class=""><i class=""></i></span> Leave Request
             </a>

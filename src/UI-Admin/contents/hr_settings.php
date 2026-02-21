@@ -89,7 +89,7 @@
                                         <td><?= htmlspecialchars($emp["lastname"] . ', ' . $emp["firstname"] . ' ' . substr($emp["middlename"], 0, 1) . '.') ?></td>
                                         <td><?= htmlspecialchars($emp["Department_name"] . ' (' . $emp["Department_code"] . ')') ?></td>
                                         <td>
-                                            <a href="" class="btn btn-info">View Schedules</a>
+                                            <a href="index.php?page=contents/employee_sched&employee_id=<?= $emp["employee_id"] ?>" class="btn btn-info">View Schedules</a>
                                             <button type="button" class="btn btn-danger"
                                             data-bs-toggle="modal"
                                             data-bs-target="#createScheduleForEmployee"
@@ -239,7 +239,7 @@
                             <option value="">Select Schedule</option>
                             <?php foreach($result as $schedule) : ?>
                                 <option value="<?= $schedule["template_id"] ?>"><?= htmlspecialchars(
-                                    '(' . $schedule["scheduleName"] . ') ' . date('h:i A', strtotime($schedule["schedule_from"])) . ' - ' . $schedule["schedule_to"]
+                                    '(' . $schedule["scheduleName"] . ') ' . date('h:i A', strtotime($schedule["schedule_from"])) . ' - ' . date('h:i A', strtotime($schedule["schedule_to"]))
                                 ) ?></option>
                             <?php endforeach; ?>
                         </select>

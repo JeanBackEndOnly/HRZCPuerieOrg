@@ -31,6 +31,10 @@ a{
 .font-12{
     font-size: 15px;
 }
+.bg-employee-dashboard{
+    background-color: #585455 !important;
+    box-shadow: 5px 5px 5px #00000050;
+}
 @media (max-width: 768px){
     .row{
         align-items: center !important;

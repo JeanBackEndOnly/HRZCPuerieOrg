@@ -27,7 +27,7 @@
 
       <!-- SCHEDULE HERE -->
       <?php if($result){ ?>
-         <div class="col-md-12 ms-2 d-flex flex-column mb-3">
+         <div class="col-md-10 col-12 ms-2 d-flex flex-column mb-3 bg-employee-dashboard text-white rounded p-2 px-4">
             <strong class="fs-3">
                DATE TODAY: 
                <span><?= DateTime::createFromFormat('Y-m-d', $result["schedule_at"])->format('d/m/Y'); ?></span>
@@ -35,7 +35,9 @@
             <strong class="fs-3">YOUR TIME SCHEDULE TODAY: <?= date('h:i A', strtotime($result["schedule_from"])) . ' - ' . date('h:i A', strtotime($result["schedule_to"])) ?></strong>
          </div>
       <?php }else{ ?>
+      <div class="col-md-12 ms-2 d-flex flex-column mb-3 bg-employee-dashboard text-white rounded">
          <strong>You have no Schedule today!</strong>
+      </div>
       <?php }?>
       <!-- Grid Row -->
       <div class="row text-center pb-2 ms-2 gap-2">

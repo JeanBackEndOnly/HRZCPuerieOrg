@@ -51,7 +51,7 @@
                 <a href="index.php?page=contents/201" class="nav-item nav-201 nav-files my-1 rounded-2">
                     <span class=""><i class=""></i></span> 201 Files
                 </a>
-                <a href="index.php?page=contents/hr_settings" class="nav-item nav-hr_settings my-1 rounded-2">
+                <a href="index.php?page=contents/hr_settings" class="nav-item nav-hr_settings nav-employee_sched my-1 rounded-2">
                     <span class=""><i class=""></i></span> HR settings
                 </a>
             </div>

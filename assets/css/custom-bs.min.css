@@ -21220,7 +21220,9 @@ fieldset:disabled .btn {
 .form-select {
     transition: box-shadow .15s ease, border-color .15s ease
 }
-
+.font-8{
+    font-size: 8px !important;
+}
 .form-label,
 label {
     color: #344767;
@@ -21257,7 +21259,7 @@ label {
     color: #fff;
 }
 .bg-gradeint-fade{
-    background-image: linear-gradient(to bottom,#E32126, rgba(225,0,0,.50),rgba(225,0,0,.25), rgba(225,0,0,.25));
+    background-image: rgba(255,255,255,0.5);
 }
 .scroll{
     overflow-y: scroll !important;

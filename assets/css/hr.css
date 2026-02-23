@@ -3,6 +3,9 @@
     border-radius: 50%;
     width: auto;
 }
+.profile-nav{
+    border-bottom: solid 1px #0000003b;
+}
 .profile-contents{
     height: 76vh !important;
     overflow-y: scroll !important;

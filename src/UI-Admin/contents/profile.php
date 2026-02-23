@@ -1,39 +1,65 @@
 <?php $employee_id = $getEmployee["employee_id"]; ?>
 <section>
-    <div class="d-flex justify-content-between align-items-center mb-0 col-md-12 col-12 flex-wrap">
+    <div class="d-flex justify-content-between align-items-center mb-0 col-md-12 col-12">
         <div class="mx-2 col-md-3 col-12">
             <h4 class=""><i class="fa-regular fa-circle-user me-1"></i>Employee Profile</h4>
             <small class="text-muted ">Masnage Employee Profile</small>
         </div>
-        <div class="card-body col-md-9 col-12">
-            <ul class="nav nav-tabs justify-content-end align-items-end col-md-12 col-12" id="ProfileInfoTabs">
-                <li class="nav-item cursor-pointer col-md-2 col-12">
-                    <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Personal"><i
-                            class="fa-solid fa-circle-info me-2"></i>Personal</a>
-                </li>
-                <li class="nav-item cursor-pointer col-md-2 col-12">
-                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Employment"><i
-                            class="fa-solid me-2 fa-briefcase"></i>Employment</a>
-                </li>
-                <li class="nav-item cursor-pointer col-md-2 col-12">
-                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Leave_Credits"><i
-                            class="fa-solid fa-person-through-window me-2"></i>Leave Credits</a>
-                </li>
-                <li class="nav-item cursor-pointer col-md-2 col-12">
-                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Education"><i
-                            class="fa-solid me-2 fa-school"></i>Education</a>
-                </li>
-                <li class="nav-item cursor-pointer col-md-2 col-12">
-                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Family"><i
-                            class="fa-solid me-2 fa-people-group"></i>Family</a>
-                </li>
-                <li class="nav-item cursor-pointer col-md-2 col-12">
-                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Leave">
-                        <i class="fa-solid fa-chart-line me-2"></i>Activities</a>
-                </li>
-            </ul>
+        <div class="col-md-9 d-flex gap-1 justify-content-end align-items-end ps-e">
+            <?php if($getEmployee["status"] == 'Pending'){ ?>
+                <button class="btn px-4 py-2 btn-success"
+                data-bs-toggle="modal"
+                data-bs-target="#aprrovalEmployee"
+                data-id="<?= htmlspecialchars($employee_id) ?>"
+                id="getEmployeeId">Approve</button>
+                <button class="btn px-4 py-2 btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#rejectionEmployee"
+                data-id="<?= htmlspecialchars($employee_id) ?>"
+                id="getEmployeeId">Reject</button>
+            <?php }else if($getEmployee["status"] == 'Inactive'){?>
+                <button class="btn px-4 py-2 btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteEmployeeModal"
+                data-id="<?= htmlspecialchars($employee_id) ?>"
+                id="getEmployeeId">Delete</button>
+                <button class="btn px-4 py-2 btn-success"
+                data-bs-toggle="modal"
+                data-bs-target="#aprrovalEmployee"
+                data-id="<?= htmlspecialchars($employee_id) ?>"
+                id="getEmployeeId">Approve</button>
+            <?php }else{}?>
         </div>
     </div>
+    <div class="card-body col-md-12 col-12">
+        <ul class="nav nav-tabs justify-content-end align-items-end col-md-12 col-12" id="ProfileInfoTabs">
+            <li class="nav-item cursor-pointer col-md-2 col-12">
+                <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Personal"><i
+                        class="fa-solid fa-circle-info me-2"></i>Personal</a>
+            </li>
+            <li class="nav-item cursor-pointer col-md-2 col-12">
+                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Employment"><i
+                        class="fa-solid me-2 fa-briefcase"></i>Employment</a>
+            </li>
+            <li class="nav-item cursor-pointer col-md-2 col-12">
+                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Leave_Credits"><i
+                        class="fa-solid fa-person-through-window me-2"></i>Leave Credits</a>
+            </li>
+            <li class="nav-item cursor-pointer col-md-2 col-12">
+                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Education"><i
+                        class="fa-solid me-2 fa-school"></i>Education</a>
+            </li>
+            <li class="nav-item cursor-pointer col-md-2 col-12">
+                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Family"><i
+                        class="fa-solid me-2 fa-people-group"></i>Family</a>
+            </li>
+            <li class="nav-item cursor-pointer col-md-2 col-12">
+                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Leave">
+                    <i class="fa-solid fa-chart-line me-2"></i>Activities</a>
+            </li>
+        </ul>
+    </div>
+
     <div class="row">
         <div class="column p-2 m-0 rounded-2 col-12 col-md-4">
             <div class="card rounded-2">
@@ -976,6 +1002,66 @@
         </div>
     </div>
 </section>
+<!-- Pending accounts approval and rejection modals ================================================ -->
+<!-- PENDING APPROVAL -->
+<div class="modal fade" id="aprrovalEmployee" tabindex="-1" aria-labelledby="aprrovalEmployeeLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" id="approval-form">
+            <div class="modal-header bg-gradient-primary text-white">
+                <h5 class="modal-title text-white" id="aprrovalEmployeeLabel">Confirmation Approval</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Approved this employee Account?
+                <input type="hidden" name="employee_ID" id="approval_employeeID">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger">Yes, Approved</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- REJECTION OF EMPLOYEE -->
+<div class="modal fade" id="rejectionEmployee" tabindex="-1" aria-labelledby="rejectionEmployeeLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="rejection-form" class="modal-content">
+            <div class="modal-header bg-gradient-primary text-white">
+                <h5 class="modal-title text-white" id="rejectionEmployeeLabel">Confirmation Rejection</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Approved this employee Account?
+                <input type="hidden" name="employee_ID" id="rejection_employeeID">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger">Yes, Reject</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Deletion employee -->
+<div class="modal fade" id="deleteEmployeeModal" tabindex="-1" aria-labelledby="deleteEmployeeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" id="delete-employee-form">
+            <div class="modal-header bg-gradient-primary text-white">
+                <h5 class="modal-title text-white" id="deleteEmployeeModalLabel">Confirmation Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Delete this employee Account?
+                <input type="hidden" name="employee_id" id="deletion_employeeID">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const profileContents = document.querySelector('.profile-contents');

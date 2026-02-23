@@ -34,6 +34,7 @@ $(document).ready(function () {
     $(document).on('click', '#getEmployeeId', function () {
           const employee_id = $(this).data('id');
           document.getElementById('approval_employeeID').value = employee_id;
+          document.getElementById('deletion_employeeID').value = employee_id;
           document.getElementById('rejection_employeeID').value = employee_id;
     });
     $(document).on("click", "#scheduleTemplateId", function () {
@@ -1522,7 +1523,7 @@ $(document).ready(function () {
             timer: 1000,
             showConfirmButton: false,
           }).then(() => {
-            location.reload();
+            window.location.href = "index.php?page=contents/recruitment";
           });
         } else {
           Swal.fire({
@@ -1583,7 +1584,7 @@ $(document).ready(function () {
             timer: 1000,
             showConfirmButton: false,
           }).then(() => {
-            location.reload();
+            window.location.href = "index.php?page=contents/recruitment";
           });
         } else {
           Swal.fire({
@@ -1662,7 +1663,7 @@ $(document).ready(function () {
             timer: 1000,
             showConfirmButton: false,
           }).then(() => {
-            location.reload();
+            window.location.href = "index.php?page=contents/recruitment";
           });
         } else {
           Swal.fire({

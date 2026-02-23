@@ -223,16 +223,19 @@ label {
       overflow-y: scroll;
     }
 
-    .sidebar-list a.active {
-        color: #fff;
-    }
+.sidebar-list a.active {
+  color: #fff;
+}
 
-    .sidebar-list {
-        background-color: #fff;
-        font-size: .9rem;
-        width: 240px !important;
-        height: 100vh !important;
-        box-shadow: 5px 0 5px 0 #0e0e0e3f;
+.sidebar-list {
+  background-color: #fff;
+  font-size: .9rem;
+  width: 240px !important;
+  height: 100vh !important;
+  border-right: solid 1px #0000003b;
+}
+.sidebar-list a:hover {
+        background-color: #e3212797;
     }
 
     .sidebar-list .icon-field {

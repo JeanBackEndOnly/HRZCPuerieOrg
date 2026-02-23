@@ -32,6 +32,7 @@ $stmtPending = $pdo->prepare("
         ed.middlename, 
         ed.lastname, 
         ed.suffix,
+        ed.profile_picture,
         d.Department_name AS department,
         hd.employeeID,
         jt.jobTitle,
@@ -55,6 +56,7 @@ $stmtInactive = $pdo->prepare("
         ed.middlename, 
         ed.lastname, 
         ed.suffix,
+        ed.profile_picture,
         d.Department_name AS department,
         hd.employeeID,
         jt.jobTitle,
@@ -88,229 +90,11 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-    <!-- AUTHENTICATIONS OF EMPLOYEES HERE USING MODALS ====================================================================== -->
-
-    <!-- ADD ACCOUNTS MODAL  ================================================ ON PROCESS...........-->
-    <div class="modal fade" id="createAccounts" tabindex="-1" aria-labelledby="createAccountsLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title text-white" id="createAccountsLabel">Create New Employee Account</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
-                        onclick="location.reload()"></button>
-                </div>
-                <div class="modal-body">
-                    <form class="row g-3" id="validation-form" method="post">
-                        <!-- Name Section -->
-                        <div class="col-md-3">
-                            <label class="form-label">Last Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="lastName" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">First Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="firstName" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Middle Name</label>
-                            <input type="text" class="form-control" name="middleName">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Suffix</label>
-                            <select class="form-select" name="suffix">
-                                <option value="" disabled selected>Select suffix (optional)</option>
-                                <option value="Jr">Jr</option>
-                                <option value="Sr">Sr</option>
-                                <option value="II">II</option>
-                                <option value="III">III</option>
-                            </select>
-                        </div>
-                        <?php
-                            // Get all departments
-                            $stmt_departments = $pdo->prepare("SELECT * FROM departments ORDER BY Department_name ASC");
-                            $stmt_departments->execute();
-                            $departments = $stmt_departments->fetchAll(PDO::FETCH_ASSOC);
-
-                            // Get all job titles initially (or only when a department is selected via AJAX)
-                            // If you want to show ALL job titles initially:
-                            $stmt_jobtitles = $pdo->prepare("SELECT J.*, D.Department_name 
-                                FROM jobTitles J
-                                LEFT JOIN departments D ON J.department_id = D.Department_id
-                                ORDER BY J.jobTitle ASC");
-                            $stmt_jobtitles->execute();
-                            $all_jobtitles = $stmt_jobtitles->fetchAll(PDO::FETCH_ASSOC);
-                        ?>
-
-                        <div class="col-md-4">
-                            <label for="Department_id" class="form-label">Department</label>
-                            <select class="form-select" id="Department_id" name="Department_id">
-                                <option value="">Select Department</option>
-                                <?php foreach($departments as $dep) : ?>
-                                <option value="<?= htmlspecialchars($dep["Department_id"]) ?>">
-                                    <?= htmlspecialchars($dep["Department_name"]) . " (" . htmlspecialchars($dep["Department_code"]) . ")" ?>
-                                </option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label for="jobTitleSelect" class="form-label">Job Title</label>
-                            <select class="form-select" id="jobTitleSelect" name="jobTitle_id">
-                                <option value="">Select Job Title</option>
-                                <!-- Show all job titles initially -->
-                                <?php foreach($all_jobtitles as $jb) : ?>
-                                <option value="<?= htmlspecialchars($jb["jobTitles_id"]) ?>"
-                                    data-department-id="<?= htmlspecialchars($jb["department_id"] ?? '') ?>">
-                                    <?= htmlspecialchars($jb["jobTitle"]) . " (₱" . number_format($jb["salary"], 2) . ")" ?>
-                                    <?php if(!empty($jb["Department_name"])): ?>
-                                    - <?= htmlspecialchars($jb["Department_name"]) ?>
-                                    <?php endif; ?>
-                                </option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Sex <span class="text-danger">*</span></label>
-                            <select class="form-select" name="gender" required>
-                                <option value="" disabled selected>Select</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                        </div>
-
-                        <!-- Contact Information -->
-                        <div class="col-md-4">
-                            <label class="form-label">Account Role <span class="text-danger">*</span></label>
-                            <!-- <input type="text" readonly class="form-control" value="EMPLOYEE" name="user_role" required> -->
-                            <select name="user_role" class="form-select" id="">
-                                <option value="">Select Account Role</option>
-                                <option value="EMPLOYEE">EMPLOYEE</option>
-                                <option value="HRSM">HR</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Email <span class="text-danger">*</span></label>
-                            <input type="email" class="form-control" name="email" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Contact Number <span class="text-danger">*</span></label>
-                            <input type="tel" class="form-control" name="contact" required>
-                        </div>
-
-                        <!-- Account Credentials -->
-                        <div class="col-md-4">
-                            <label class="form-label">Username <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="username" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Password <span class="text-danger">*</span></label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
-                            <input type="password" class="form-control" id="cpassword" name="cpassword" required>
-                            <div id="password-feedback" class="password-feedback"></div>
-                        </div>
-
-                        <!-- Form Submission -->
-                        <div class="col-12 text-center mt-3">
-                            <button type="submit" class="btn btn-primary px-5">
-                                <i class="bi bi-person-plus-fill me-1"></i> Create Account
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pending accounts approval and rejection modals ================================================ -->
-    <!-- PENDING APPROVAL -->
-    <div class="modal fade" id="aprrovalEmployee" tabindex="-1" aria-labelledby="aprrovalEmployeeLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <form class="modal-content" id="approval-form">
-                <div class="modal-header bg-gradient-primary text-white">
-                    <h5 class="modal-title text-white" id="aprrovalEmployeeLabel">Confirmation Approval</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to Approved this employee Account?
-                    <input type="hidden" name="employee_ID" id="approval_employeeID">
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger">Yes, Approved</button>
-                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- REJECTION OF EMPLOYEE -->
-    <div class="modal fade" id="rejectionEmployee" tabindex="-1" aria-labelledby="rejectionEmployeeLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="rejection-form" class="modal-content">
-                <div class="modal-header bg-gradient-primary text-white">
-                    <h5 class="modal-title text-white" id="rejectionEmployeeLabel">Confirmation Rejection</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to Approved this employee Account?
-                    <input type="hidden" name="employee_ID" id="rejection_employeeID">
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger">Yes, Reject</button>
-                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- Deletion employee -->
-    <div class="modal fade" id="deleteEmployeeModal" tabindex="-1" aria-labelledby="deleteEmployeeModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <form class="modal-content" id="delete-employee-form">
-                <div class="modal-header bg-gradient-primary text-white">
-                    <h5 class="modal-title text-white" id="deleteEmployeeModalLabel">Confirmation Deletion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to Delete this employee Account?
-                    <input type="hidden" name="employee_id" id="deletion_employeeID">
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- EMPLOYEE COUNTS DISPLAYS ================================================================================================ -->
-    <div class="row mb-2">
-        <?php
-            $official = $pdo->query("SELECT COUNT(*) FROM employee_data WHERE status = 'Active' AND user_role = 'EMPLOYEE'")->fetchColumn();
+    <?php
+           
             $pending = $pdo->query("SELECT COUNT(*) FROM employee_data WHERE status = 'Pending' AND user_role = 'EMPLOYEE'")->fetchColumn();
-            $inactive = $pdo->query("SELECT COUNT(*) FROM employee_data WHERE status = 'Inactive' AND user_role = 'EMPLOYEE'")->fetchColumn();
+           
         ?>
-        <div class="col-md-4">
-            <div class="card-header shadow bg-white text-center p-4 ">
-                <h5 id="pendingEnrollments"><?php echo $pending ?></h5>
-                <strong>Pending Request</strong>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card-header shadow bg-white text-center p-4 ">
-                <h5 id="approvedEnrollments"><?php echo $official ?? 0 ?></h5>
-                <strong>Approved</strong>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card-header shadow bg-white text-center p-4 ">
-                <h5 id="rejectedEnrollments"><?php echo $inactive ?? 0 ?></h5>
-                <strong>Inactive</strong>
-            </div>
-        </div>
-    </div>
 
     <!-- EMPLOYEE ACCOUNT DISPLAYS =============================================================================================== -->
     <div class="card">
@@ -325,23 +109,20 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
                     </button>
                 </li>
                 <li class="nav-item col-md-4" role="presentation">
-                    <div
-                        style="background-color: #E32126 !important;
+                    <div style="background-color: #E32126 !important;
                         z-index: 3 !important;
                         position: absolute !important;
                         transform: translateX(11.8rem) !important;
                         border-radius: 50% !important;
-                        font-size: 11px !mportant;
                         ">
-                        <strong class="text-white"
-                        style="
+                        <strong class="text-white" style="
                             padding-top: -1rem !important;
                             padding-bottom: -1rem !important;
                             padding-right: .4rem !important;
                             padding-left: .4rem !important;
                             margin: 0 !important;
-                            "
-                            ><?php echo $pending ?></strong>
+                            font-size: 9px !mportant;
+                            "><?php echo $pending ?></strong>
                     </div>
                     <button class="nav-link w-100 h-100" id="pending-tab" data-bs-toggle="tab"
                         data-bs-target="#Pending_Accounts" type="button" role="tab" aria-controls="Pending_Accounts"
@@ -369,145 +150,254 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
                 <!-- Approved Employees -->
                 <div class="tab-pane fade show active row" id="Approved_Employees" role="tabpanel"
                     aria-labelledby="approved-tab" tabindex="0">
-                     <?php 
+                    <?php 
                         if($officialEmployees){
                             foreach ($officialEmployees as $officials) : ?>
-                            <a href="index.php?page=contents/profile&id=<?= htmlspecialchars($officials["employee_id"]) ?>" class="col-md-4 d-flex shadow p-1 rounded-3 border">
-                                <div class="col-md-2 d-flex align-items-center">
-                                    <?php if($officials["profile_picture"] == null){ ?>
-                                    <strong class="py-2 px-2 text-white" style="
-                                                border-radius: 50%;
-                                                font-weight: 500 !important;
-                                                background-color: rgba(255, 14, 14, 0.70);
-                                                font-size: 15px;
-                                                border: solid 1px #fff;
-                                            "><?= htmlspecialchars(strtoupper(substr($officials["firstname"], 0,1) . substr($officials["lastname"], 0,1))) ?></strong>
-                                    <?php }else{ ?>
-                                    <img src="../../authentication/uploads/<?= $officials["profile_picture"] ?>"
-                                        style="width: 200px; height: auto; border-radius: 50%;">
-                                    <?php } ?>
-                                </div>
-                                <div class="col-md-10 d-flex flex-column">
-                                    <strong class="font-13"><?= htmlspecialchars($officials["firstname"] . ' ' . substr($officials["middlename"], 0, 1) . '. ' . $officials["lastname"]) ?></strong>
-                                    <span class="font-12"><?= htmlspecialchars($officials["jobTitle"] . ' •' . $officials["department"]) . ' •EMP-' . $officials["employeeID"] ?></span>
-                                </div>
-                            </a>
+                    <a href="index.php?page=contents/profile&id=<?= htmlspecialchars($officials["employee_id"]) ?>"
+                        class="col-md-4">
+                        <div class="card col-md-12 d-flex flex-row shadow p-2 rounded-3 border">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <?php if($officials["profile_picture"] == null){ ?>
+                                <strong class="py-2 px-2 text-white"
+                                    style="
+                                                    border-radius: 50%;
+                                                    font-weight: 500 !important;
+                                                    background-color: rgba(255, 14, 14, 0.70);
+                                                    font-size: 15px;
+                                                    border: solid 1px #fff;
+                                                "><?= htmlspecialchars(strtoupper(substr($officials["firstname"], 0,1) . substr($officials["lastname"], 0,1))) ?></strong>
+                                <?php }else{ ?>
+                                <img src="../../authentication/uploads/<?= $officials["profile_picture"] ?>"
+                                    style="width: 200px; height: auto; border-radius: 50%;">
+                                <?php } ?>
+                            </div>
+
+                            <div class="col-md-10 d-flex flex-column">
+                                <strong
+                                    class="font-13"><?= htmlspecialchars($officials["firstname"] . ' ' . substr($officials["middlename"], 0, 1) . '. ' . $officials["lastname"]) ?></strong>
+                                <span
+                                    class="font-12"><?= htmlspecialchars($officials["jobTitle"] . ' •' . $officials["department"]) . ' •EMP-' . $officials["employeeID"] ?></span>
+                            </div>
+                        </div>
+                    </a>
                     <?php endforeach;
                         }else{ ?>
-                            <strong>no Employee found</strong>
+                    <strong class="text-center w-100">NO EMPLOYEE FOUND</strong>
                     <?php } ?>
                 </div>
 
                 <!-- Pending Accounts -->
                 <div class="tab-pane fade" id="Pending_Accounts" role="tabpanel" aria-labelledby="pending-tab"
                     tabindex="0">
-                    <div class="table-responsive table-body">
-                        <table class="text-center text-center table table-bordered table-hover align-items-center table-sm" style="font-size: 0.875rem;">
-                            <thead class="table-light">
-                                <tr style="color: #555;">
-                                    <th>#</th>
-                                    <th>Employee ID</th>
-                                    <th>Complete Name</th>
-                                    <th>Department</th>
-                                    <th>Job Title</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-center" id="Accounts_pending" style="color: #666;">
-                                <?php 
-                                    if($pendingEmployees){
-                                        foreach ($pendingEmployees as $pendings) : ?>
-                                <tr>
-                                    <th><?= $countOfficials++ ?></th>
-                                    <th><?= htmlspecialchars($pendings["employeeID"]) ?></th>
-                                    <th><?= htmlspecialchars($pendings["firstname"]) . ' ' . htmlspecialchars($pendings["lastname"]) ?>
-                                    </th>
-                                    <th><?= htmlspecialchars($pendings["department"]) ?></th>
-                                    <th><?= htmlspecialchars($pendings["jobTitle"]) ?></th>
-                                    <td class="d-flex justify-content-center flex-wrap gap-1">
-                                        <a
-                                            href="index.php?page=contents/profile&id=<?= htmlspecialchars($pendings["employee_id"]) ?>">
-                                            <button class="btn btn-sm m-0 btn-info">
-                                                <i class="fas fa-eye"></i> View
-                                            </button>
-                                        </a>
-                                        <button class="btn btn-dark m-0 btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#aprrovalEmployee" id="getEmployeeId"
-                                            data-id="<?= htmlspecialchars($pendings["employee_id"]) ?>">
-                                            Approve
-                                        </button>
-                                        <button class="btn btn-danger m-0 btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#rejectionEmployee" id="getEmployeeId"
-                                            data-id="<?= htmlspecialchars($pendings["employee_id"]) ?>">
-                                            Reject
-                                        </button>
-                                    </td>
-                                </tr>
-                                <?php 
-                                        endforeach; 
-                                    }else {
-                                        echo '<tr><td colspan="6" class="text-center">No employees found</td></tr>';
-                                    }  
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
+
+                    <?php 
+                            if($pendingEmployees){
+                                foreach ($pendingEmployees as $pendings) : ?>
+                    <a href="index.php?page=contents/profile&id=<?= htmlspecialchars($pendings["employee_id"]) ?>"
+                        class="col-md-4">
+                        <div class="card col-md-12 d-flex flex-row shadow p-2 rounded-3 border">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <?php if($pendings["profile_picture"] == null){ ?>
+                                <strong class="py-2 px-2 text-white"
+                                    style="
+                                                    border-radius: 50%;
+                                                    font-weight: 500 !important;
+                                                    background-color: rgba(255, 14, 14, 0.70);
+                                                    font-size: 15px;
+                                                    border: solid 1px #fff;
+                                                "><?= htmlspecialchars(strtoupper(substr($pendings["firstname"], 0,1) . substr($pendings["lastname"], 0,1))) ?></strong>
+                                <?php }else{ ?>
+                                <img src="../../authentication/uploads/<?= $pendings["profile_picture"] ?>"
+                                    style="width: 200px; height: auto; border-radius: 50%;">
+                                <?php } ?>
+                            </div>
+                            <div class="col-md-10 d-flex flex-column">
+                                <strong
+                                    class="font-13"><?= htmlspecialchars($pendings["firstname"] . ' ' . substr($pendings["middlename"], 0, 1) . '. ' . $pendings["lastname"]) ?></strong>
+                                <span
+                                    class="font-12"><?= htmlspecialchars($pendings["jobTitle"] . ' •' . $pendings["department"]) . ' •EMP-' . $pendings["employeeID"] ?></span>
+                            </div>
+                        </div>
+                    </a>
+                    <?php endforeach;
+                            }else{ ?>
+                    <strong class="text-center w-100">NO EMPLOYEE FOUND</strong>
+                    <?php } ?>
                 </div>
 
                 <!-- Rejected Accounts -->
                 <div class="tab-pane fade" id="Rejected_Accounts" role="tabpanel" aria-labelledby="rejected-tab"
                     tabindex="0">
-                    <div class="table-responsive table-body">
-                        <table class="text-center table table-bordered table-hover align-items-center table-sm" style="font-size: 0.875rem;">
-                            <thead class="table-light">
-                                <tr style="color: #555;">
-                                    <th>#</th>
-                                    <th>Employee ID</th>
-                                    <th>Complete Name</th>
-                                    <th>Department</th>
-                                    <th>Account Role</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-center" id="Accounts_rejected" style="color: #666;">
-                                <?php 
-                                    if($inactiveEmployees){
-                                        foreach ($inactiveEmployees as $inactive) : ?>
-                                <tr>
-                                    <th><?= $countOfficials++ ?></th>
-                                    <th><?= htmlspecialchars($inactive["employeeID"]) ?></th>
-                                    <th><?= htmlspecialchars($inactive["firstname"]) . ' ' . htmlspecialchars($inactive["lastname"]) ?>
-                                    </th>
-                                    <th><?= htmlspecialchars($inactive["department"]) ?></th>
-                                    <th><?= htmlspecialchars($inactive["user_role"]) ?></th>
-                                    <td class="d-flex justify-content-center flex-wrap gap-1">
-                                        <a
-                                            href="index.php?page=contents/profile&id=<?= htmlspecialchars($inactive["employee_id"]) ?>">
-                                            <button class="btn btn-sm m-0 btn-info px-3 m-0">
-                                                <i class="fas fa-eye"></i> Review Account
-                                            </button>
-                                        </a>
-                                        <button class="btn btn-sm m-0 btn-danger px-3 m-0"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#deleteEmployeeModal"
-                                        data-id="<?= $inactive["employee_id"] ?>"
-                                        id="getDeletionEmployee_id">
-                                            <i class="fas fa-eye"></i> Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                                <?php 
-                                        endforeach; 
-                                    }else {
-                                        echo '<tr><td colspan="6" class="text-center">No employees found</td></tr>';
-                                    }  
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
+
+                    <?php 
+                            if($inactiveEmployees){
+                                foreach ($inactiveEmployees as $inactive) : ?>
+                    <a href="index.php?page=contents/profile&id=<?= htmlspecialchars($inactive["employee_id"]) ?>"
+                        class="col-md-4">
+                        <div class="card col-md-12 d-flex flex-row shadow p-2 rounded-3 border">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <?php if($inactive["profile_picture"] == null){ ?>
+                                <strong class="py-2 px-2 text-white"
+                                    style="
+                                                    border-radius: 50%;
+                                                    font-weight: 500 !important;
+                                                    background-color: rgba(255, 14, 14, 0.70);
+                                                    font-size: 15px;
+                                                    border: solid 1px #fff;
+                                                "><?= htmlspecialchars(strtoupper(substr($inactive["firstname"], 0,1) . substr($inactive["lastname"], 0,1))) ?></strong>
+                                <?php }else{ ?>
+                                <img src="../../authentication/uploads/<?= $inactive["profile_picture"] ?>"
+                                    style="width: 200px; height: auto; border-radius: 50%;">
+                                <?php } ?>
+                            </div>
+                            <div class="col-md-10 d-flex flex-column">
+                                <strong
+                                    class="font-13"><?= htmlspecialchars($inactive["firstname"] . ' ' . substr($inactive["middlename"], 0, 1) . '. ' . $inactive["lastname"]) ?></strong>
+                                <span
+                                    class="font-12"><?= htmlspecialchars($inactive["jobTitle"] . ' •' . $inactive["department"]) . ' •EMP-' . $inactive["employeeID"] ?></span>
+                            </div>
+                        </div>
+                    </a>
+                    <?php endforeach;
+                            }else{ ?>
+                    <strong class="text-center w-100">NO EMPLOYEE FOUND</strong>
+                    <?php } ?>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<!-- ADD ACCOUNTS MODAL  ================================================ -->
+<div class="modal fade" id="createAccounts" tabindex="-1" aria-labelledby="createAccountsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title text-white" id="createAccountsLabel">Create New Employee Account</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
+                    onclick="location.reload()"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" id="validation-form" method="post">
+                    <!-- Name Section -->
+                    <div class="col-md-3">
+                        <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="lastName" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">First Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="firstName" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Middle Name</label>
+                        <input type="text" class="form-control" name="middleName">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Suffix</label>
+                        <select class="form-select" name="suffix">
+                            <option value="" disabled selected>Select suffix (optional)</option>
+                            <option value="Jr">Jr</option>
+                            <option value="Sr">Sr</option>
+                            <option value="II">II</option>
+                            <option value="III">III</option>
+                        </select>
+                    </div>
+                    <?php
+                            // Get all departments
+                            $stmt_departments = $pdo->prepare("SELECT * FROM departments ORDER BY Department_name ASC");
+                            $stmt_departments->execute();
+                            $departments = $stmt_departments->fetchAll(PDO::FETCH_ASSOC);
+
+                            // Get all job titles initially (or only when a department is selected via AJAX)
+                            // If you want to show ALL job titles initially:
+                            $stmt_jobtitles = $pdo->prepare("SELECT J.*, D.Department_name 
+                                FROM jobTitles J
+                                LEFT JOIN departments D ON J.department_id = D.Department_id
+                                ORDER BY J.jobTitle ASC");
+                            $stmt_jobtitles->execute();
+                            $all_jobtitles = $stmt_jobtitles->fetchAll(PDO::FETCH_ASSOC);
+                        ?>
+
+                    <div class="col-md-4">
+                        <label for="Department_id" class="form-label">Department</label>
+                        <select class="form-select" id="Department_id" name="Department_id">
+                            <option value="">Select Department</option>
+                            <?php foreach($departments as $dep) : ?>
+                            <option value="<?= htmlspecialchars($dep["Department_id"]) ?>">
+                                <?= htmlspecialchars($dep["Department_name"]) . " (" . htmlspecialchars($dep["Department_code"]) . ")" ?>
+                            </option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="jobTitleSelect" class="form-label">Job Title</label>
+                        <select class="form-select" id="jobTitleSelect" name="jobTitle_id">
+                            <option value="">Select Job Title</option>
+                            <!-- Show all job titles initially -->
+                            <?php foreach($all_jobtitles as $jb) : ?>
+                            <option value="<?= htmlspecialchars($jb["jobTitles_id"]) ?>"
+                                data-department-id="<?= htmlspecialchars($jb["department_id"] ?? '') ?>">
+                                <?= htmlspecialchars($jb["jobTitle"]) . " (₱" . number_format($jb["salary"], 2) . ")" ?>
+                                <?php if(!empty($jb["Department_name"])): ?>
+                                - <?= htmlspecialchars($jb["Department_name"]) ?>
+                                <?php endif; ?>
+                            </option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Sex <span class="text-danger">*</span></label>
+                        <select class="form-select" name="gender" required>
+                            <option value="" disabled selected>Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="col-md-4">
+                        <label class="form-label">Account Role <span class="text-danger">*</span></label>
+                        <!-- <input type="text" readonly class="form-control" value="EMPLOYEE" name="user_role" required> -->
+                        <select name="user_role" class="form-select" id="">
+                            <option value="">Select Account Role</option>
+                            <option value="EMPLOYEE">EMPLOYEE</option>
+                            <option value="HRSM">HR</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Email <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Contact Number <span class="text-danger">*</span></label>
+                        <input type="tel" class="form-control" name="contact" required>
+                    </div>
+
+                    <!-- Account Credentials -->
+                    <div class="col-md-4">
+                        <label class="form-label">Username <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="username" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Password <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="cpassword" name="cpassword" required>
+                        <div id="password-feedback" class="password-feedback"></div>
+                    </div>
+
+                    <!-- Form Submission -->
+                    <div class="col-12 text-center mt-3">
+                        <button type="submit" class="btn btn-primary px-5">
+                            <i class="bi bi-person-plus-fill me-1"></i> Create Account
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="../../assets/js/hr_js/recruitment.js" defer></script>

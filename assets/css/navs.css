@@ -1,6 +1,6 @@
 
     .sidebar-list a.active {
-        background: linear-gradient(40deg, #E32126, #E53935, #e3212797, #e5383518);
+        background: #e3212797;
         font-weight: bold;
         color: snow;
     }
@@ -12,7 +12,7 @@
         transition: all 0.3s ease;
     }
     .sidebar-list a:hover {
-        background-color: #f5f5f5;
+        background-color: #e3212797;
     }
     
     .toggle-section {

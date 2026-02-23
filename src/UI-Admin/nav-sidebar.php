@@ -1,63 +1,61 @@
 <nav id="sidebar" class="navbarHide">
     <div style="width: 240px; border-radius: 5px;">
         <div class="sidebar-list">
-            <div
-                class="profile-nav bg-gradeint-fade w-100 d-flex align-items-start justify-content-center flex-column p-2">
-                <div class="w-100 d-flex align-items-center justify-content-center">
+            <div class="profile-nav mb-1 p-3 bg-gradeint-fade w-100 d-flex align-items-start justify-content-center p-2">
+                <div class="col-md-4 d-flex align-items-center justify-content-center">
                     <?php if($profile_picture == null){ ?>
-                    <strong class="py-1 px-5 text-dark mb-2" style="
+                    <strong class="py-2 px-3 text-white" style="
                                     border-radius: 50%;
-                                    font-size: 4rem;
-                                    background-color: #FEFEFE;
-                                "><?= htmlspecialchars(substr($admin_lastname, 0,1)) ?>
+                                    font-weight: 500 !important;
+                                    background-color: rgba(255, 14, 14, 0.70);
+                                    font-size: 20px;
+                                    border: solid 1px #000000;
+                                "><?= htmlspecialchars(substr($admin_firstname, 0,1) . substr($admin_lastname, 0,1)) ?>
                     </strong>
                     <?php } else {?>
                     <img src="../../authentication/uploads<?= $profile_picture ?>" class="image-profile"
                         alt="This is the admin profile picture">
                     <?php } ?>
                 </div>
-                <strong class="text-center text-dark fw-bolder col-md-12 m-0">
-                    <span class="w-100 text-start text-dark fw-bolder"><?= htmlspecialchars($admin_firstname) . ' '
-                        . htmlspecialchars(substr($admin_middelname,0,1)) . ' ' . htmlspecialchars($admin_lastname) ?>
-                    </span>
-                </strong>
-                <strong class="w-100 text-center text-dark fw-bolder">
-                    <span
-                        class="w-100 text-start text-dark fw-bolder"><?= htmlspecialchars($admin_employee_id) ?></span>
-                </strong>
-                <strong class="w-100 text-center text-dark fw-bolder">
-                    <span class="w-100 text-start text-dark fw-bolder"><?= htmlspecialchars($admin_position) ?></span>
-                </strong>
-                <strong class="w-100 text-center text-dark fw-bolder">
-                    <span class="w-100 text-start text-dark fw-bolder"><?= htmlspecialchars($admin_department) ?></span>
-                </strong>
+                <div class="col-md-8 d-flex flex-column ps-2">
+                    <strong class="text-start text-dark fw-bolder col-md-12 m-0">
+                        <span class="w-100 text-start text-dark fw-bolder"><?= htmlspecialchars($admin_firstname) . ' '
+                            . htmlspecialchars(substr($admin_middelname,0,1)) . '. ' . htmlspecialchars($admin_lastname) ?>
+                        </span>
+                    </strong>
+                    <strong class="w-100 text-start text-dark d-flex align-items-center">
+                        <i class="fa-solid fa-circle text-danger font-8 me-1"></i><span class="w-100 text-start text-dark fw-bolder"><?= htmlspecialchars($admin_position) ?></span>
+                    </strong>
+                </div>
+                
             </div>
-            <a href="index.php?page=home" class="nav-item nav-home rounded-2 m-0">
-                <span class=""><i class=""></i></span> Dashboard
+            <span class="w-100 text-gray text-start ms-1 mt-5">Menu</span>
+            <a href="index.php?page=home" class="nav-item nav-home m-0">
+                <span class="me-1"><i class="fa-solid fa-gauge"></i></span> Dashboard
             </a>
             <a href="index.php?page=contents/recruitment"
-                class="nav-item nav-recruitment nav-profile nav-pds rounded-2">
-                <span class=""><i class=""></i></span> Employees
+                class="nav-item nav-recruitment nav-profile nav-pds">
+                <span class="me-1"><i class="fa-solid fa-users"></i></span> Employees
             </a>
             <a href="index.php?page=contents/leave"
-                class="nav-item nav-leave nav-viewLeave nav-reviewLeave rounded-2">
-                <span class=""><i class=""></i></span> Leave
+                class="nav-item nav-leave nav-viewLeave nav-reviewLeave">
+                <span class="me-1"><i class="fa-solid fa-person-through-window"></i></span> Leave
             </a>
-            <a href="index.php?page=contents/dept_job" class="nav-item nav-dept_job rounded-2">
-                <span class=""><i class=""></i></span> Departments & Jobs
+            <a href="index.php?page=contents/dept_job" class="nav-item nav-dept_job">
+                <span class="me-1"><i class="fa-solid fa-building-user"></i></span> Departments & Jobs
             </a>
-            <a href="index.php?page=contents/201" class="nav-item nav-201 nav-files rounded-2">
-                <span class=""><i class=""></i></span> 201 Files
+            <a href="index.php?page=contents/201" class="nav-item nav-201 nav-files">
+                <span class="me-1"><i class="fa-solid fa-file-pdf"></i></span> 201 Files
             </a>
             <a href="index.php?page=contents/hr_settings"
-                class="nav-item nav-hr_settings nav-employee_sched rounded-2">
-                <span class=""><i class=""></i></span> HR settings
+                class="nav-item nav-hr_settings nav-employee_sched">
+                <span class="me-1"><i class="fa-solid fa-gears"></i></span> HR settings
             </a>
-            <a href="index.php?page=contents/form" class="nav-item nav-form rounded-2 m-0">
-                <span class=""><i class=""></i></span> Forms
-            </a>
-            <a href="index.php?page=contents/setting" class="nav-item nav-setting rounded-2 ">
-                <span class=""><i class=""></i></span> Account Settings
+            <!-- <a href="index.php?page=contents/form" class="nav-item nav-form m-0">
+                <span class="me-1"><i class="me-1"></i></span> Forms
+            </a> -->
+            <a href="index.php?page=contents/setting" class="nav-item nav-setting ">
+                <span class="me-1"><i class="fa-solid fa-user-gear"></i></span> Account Settings
             </a>
         </div>
     </div>

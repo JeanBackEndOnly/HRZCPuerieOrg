@@ -61,7 +61,12 @@
 :before {
     box-sizing: border-box
 }
-
+.font-13{
+    font-size: 13px !important;
+}
+.font-12{
+    font-size: 12px !important;
+}
 @media(prefers-reduced-motion:no-preference) {
     :root {
         scroll-behavior: smooth

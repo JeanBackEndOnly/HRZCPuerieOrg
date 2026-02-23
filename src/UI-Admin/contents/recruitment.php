@@ -7,6 +7,7 @@ $stmtOfficial = $pdo->prepare("
         ed.middlename, 
         ed.lastname, 
         ed.suffix,
+        ed.profile_picture,
         d.Department_name AS department,
         hd.employeeID,
         jt.jobTitle,
@@ -366,66 +367,35 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
         <div class="card-body pt-0">
             <div class="tab-content" id="employeesTabContent">
                 <!-- Approved Employees -->
-                <div class="tab-pane fade show active" id="Approved_Employees" role="tabpanel"
+                <div class="tab-pane fade show active row" id="Approved_Employees" role="tabpanel"
                     aria-labelledby="approved-tab" tabindex="0">
-                    <div class="table-responsive table-body">
-                        <table class="text-center table table-bordered table-hover align-items-center text-center table-sm" style="font-size: 0.875rem;">
-                            <thead class="table-light col-md-12">
-                                <tr class="col-md-12">
-                                    <th>#</th>
-                                    <th>Employee ID</th>
-                                    <th>Complete Name</th>
-                                    <th>Department</th>
-                                    <th>Account Role</th>
-                                    <th class="text-center">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-center" id="Accounts_approved" style="color: #666;">
-                                <?php 
-                                    if($officialEmployees){
-                                        foreach ($officialEmployees as $officials) : ?>
-                                <tr>
-                                    <th><?= $countOfficials++ ?></th>
-                                    <th><?= htmlspecialchars($officials["employeeID"]) ?></th>
-                                    <th><?= htmlspecialchars($officials["firstname"]) . ' ' . htmlspecialchars($officials["lastname"]) ?>
-                                    </th>
-                                    <th><?= htmlspecialchars($officials["department"]) ?></th>
-                                    <th><?= htmlspecialchars($officials["user_role"]) ?></th>
-                                    <td class="d-flex justify-content-center flex-wrap gap-1">
-                                        <a
-                                            href="index.php?page=contents/profile&id=<?= htmlspecialchars($officials["employee_id"]) ?>">
-                                            <button class="btn btn-sm btn-danger m-0">
-                                                <i class="fas fa-eye"></i> View
-                                            </button>
-                                        </a>
-
-                                        <form class="form_select d-flex align-items-center">
-                                            <input type="hidden" name="employee_id"
-                                                value="<?= htmlspecialchars($officials['employee_id']) ?>">
-                                            <select class="form-select m-0 select_status" name="status">
-                                                <option value="" disabled>Select Status</option>
-                                                <option value="Active"
-                                                    <?= ($officials['status'] === 'Active') ? 'selected' : '' ?>>Active
-                                                </option>
-                                                <option value="Inactive"
-                                                    <?= ($officials['status'] === 'Inactive') ? 'selected' : '' ?>>
-                                                    Inactive</option>
-                                                <option value="Pending"
-                                                    <?= ($officials['status'] === 'Pending') ? 'selected' : '' ?>>
-                                                    Pending</option>
-                                            </select>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <?php 
-                                        endforeach; 
-                                    }else {
-                                        echo '<tr><td colspan="6" class="text-center">No employees found</td></tr>';
-                                    }  
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
+                     <?php 
+                        if($officialEmployees){
+                            foreach ($officialEmployees as $officials) : ?>
+                            <a href="index.php?page=contents/profile&id=<?= htmlspecialchars($officials["employee_id"]) ?>" class="col-md-4 d-flex shadow p-1 rounded-3 border">
+                                <div class="col-md-2 d-flex align-items-center">
+                                    <?php if($officials["profile_picture"] == null){ ?>
+                                    <strong class="py-2 px-2 text-white" style="
+                                                border-radius: 50%;
+                                                font-weight: 500 !important;
+                                                background-color: rgba(255, 14, 14, 0.70);
+                                                font-size: 15px;
+                                                border: solid 1px #fff;
+                                            "><?= htmlspecialchars(strtoupper(substr($officials["firstname"], 0,1) . substr($officials["lastname"], 0,1))) ?></strong>
+                                    <?php }else{ ?>
+                                    <img src="../../authentication/uploads/<?= $officials["profile_picture"] ?>"
+                                        style="width: 200px; height: auto; border-radius: 50%;">
+                                    <?php } ?>
+                                </div>
+                                <div class="col-md-10 d-flex flex-column">
+                                    <strong class="font-13"><?= htmlspecialchars($officials["firstname"] . ' ' . substr($officials["middlename"], 0, 1) . '. ' . $officials["lastname"]) ?></strong>
+                                    <span class="font-12"><?= htmlspecialchars($officials["jobTitle"] . ' •' . $officials["department"]) . ' •EMP-' . $officials["employeeID"] ?></span>
+                                </div>
+                            </a>
+                    <?php endforeach;
+                        }else{ ?>
+                            <strong>no Employee found</strong>
+                    <?php } ?>
                 </div>
 
                 <!-- Pending Accounts -->

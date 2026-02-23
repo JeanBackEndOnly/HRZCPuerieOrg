@@ -27,21 +27,26 @@
 
       <!-- SCHEDULE HERE -->
       <?php if($result){ ?>
-         <div class="col-md-10 col-12 ms-2 d-flex flex-column mb-3 bg-employee-dashboard text-white rounded p-2 px-4">
-            <strong class="fs-3">
-               DATE TODAY: 
-               <span><?= DateTime::createFromFormat('Y-m-d', $result["schedule_at"])->format('d/m/Y'); ?></span>
-               </strong>
-            <strong class="fs-3">YOUR TIME SCHEDULE TODAY: <?= date('h:i A', strtotime($result["schedule_from"])) . ' - ' . date('h:i A', strtotime($result["schedule_to"])) ?></strong>
+         <div class="col-md-8 d-flex mb-3 ms-2">
+            <div class="try rounded bg-employee-dashboard"></div>
+            <div class="col-md-10 col-12 ms-2 m-0 d-flex flex-column bw text-dark p-2 px-2 shadow">
+               <strong class="fs-5">
+                  DATE TODAY: 
+                  <span><?= date('M d Y', strtotime($result["schedule_at"])); ?></span>
+                  </strong>
+               <strong class="fs-6">YOUR TIME SCHEDULE TODAY: <?= date('h:i A', strtotime($result["schedule_from"])) . ' - ' . date('h:i A', strtotime($result["schedule_to"])) ?></strong>
+            </div>
          </div>
       <?php }else{ ?>
-      <div class="col-md-12 ms-2 d-flex flex-column mb-3 bg-employee-dashboard text-white rounded">
-         <strong>You have no Schedule today!</strong>
+      <div class="col-md-12 d-flex mb-3 bw">
+         <div class="try rounded me-1 bg-employee-dashboard"></div>
+            <strong>You have no Schedule today!</strong>
+         </div>
       </div>
       <?php }?>
       <!-- Grid Row -->
       <div class="row text-center pb-2 ms-2 gap-2">
-         <a href="index.php?page=contents/leave" class="col-md-2 col-5 hover min-height rounded d-flex flex-column py-4  shadow text-white align-items-center justify-content-center cursor-pointer bg-color-lr">
+         <a href="index.php?page=contents/leave" class="col-md-3 col-5 hover min-height rounded d-flex flex-column py-4  shadow text-white align-items-center justify-content-center cursor-pointer bg-color-lr">
             <div class="col-md-12 text-center">
                <i class="fa-solid fa-person-through-window fs-1"></i>
             </div>
@@ -49,7 +54,7 @@
                <strong class="mt-2">Request a Leave</strong>
             </div>
          </a>
-         <a href="index.php?page=contents/setting" class="col-md-2 col-5 hover min-height rounded d-flex flex-column py-4 shadow text-white align-items-center justify-content-center cursor-pointer bg-color-mp">
+         <a href="index.php?page=contents/setting" class="col-md-3 col-5 hover min-height rounded d-flex flex-column py-4 shadow text-white align-items-center justify-content-center cursor-pointer bg-color-mp">
             <div class="col-md-12 text-center">
                <i class="fa-solid fa-gear fs-1"></i>
             </div>
@@ -57,7 +62,7 @@
                <strong class="mt-2">Manage Profile and settings</strong>
             </div>
          </a>
-         <a href="index.php?page=contents/201" class="col-md-2 col-5 hover min-height rounded d-flex flex-column py-4 shadow text-white align-items-center justify-content-center cursor-pointer bg-color-mf">
+         <a href="index.php?page=contents/201" class="col-md-3 col-5 hover min-height rounded d-flex flex-column py-4 shadow text-white align-items-center justify-content-center cursor-pointer bg-color-mf">
             <div class="col-md-12 text-center">
                <i class="fa-solid fa-file fs-1"></i>
             </div>

@@ -12,7 +12,7 @@
     $stmtSchedule = $pdo->prepare("SELECT es.*, st.* FROM employee_schedule es
     INNER JOIN sched_template st ON es.schedule_id = st.template_id
     WHERE es.employee_id = ? AND es.schedule_at <= CURDATE()
-    ORDER BY es.schedule_at ASC");
+    ORDER BY es.schedule_at DESC");
     $stmtSchedule->execute([$employee_id]);
     $scheduleResult = $stmtSchedule->fetchAll(PDO::FETCH_ASSOC);
 
@@ -110,7 +110,8 @@
                                             <button class="m-0 btn btn-outline-danger"
                                             data-bs-toggle="modal"
                                             data-bs-target="#deleteSchedule"
-                                            id="getScheduleIdAndDelete">delete</button>
+                                            id="getScheduleIdAndDelete"
+                                            data-id="<?= $sched["employee_schedule_id"] ?>">delete</button>
                                         </td>
                                     </tr>
                                     <?php endforeach;
@@ -156,7 +157,8 @@
                                             <button class="m-0 btn btn-outline-danger"
                                             data-bs-toggle="modal"
                                             data-bs-target="#deleteSchedule"
-                                            id="getScheduleIdAndDelete">delete</button>
+                                            id="getScheduleIdAndDelete"
+                                            data-id="<?= $sched["employee_schedule_id"] ?>">delete</button>
                                         </td>
                                     </tr>
                                     <?php endforeach;

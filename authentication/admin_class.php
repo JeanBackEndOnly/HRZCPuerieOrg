@@ -2584,6 +2584,23 @@ class Action
             ]);
         }
     }
+    function delete_schedule_for_employee_form(){
+        $schedule_id = $_POST["schedule_id"];
+        try {
+            $stmt = $this->db->prepare("DELETE FROM employee_schedule WHERE employee_schedule_id = ?");
+            $stmt->execute([$schedule_id]);
+
+            return json_encode([
+                'status' => 1,
+                'message' => 'Schedule deleted successfully!'
+            ]);
+        } catch (PDOException $e) {
+            return json_encode([
+                'status' => 0,
+                'message' => 'An error occured: ' . $e->getMessage()
+            ]);
+        }
+    }
 
 // CAREER PATHS =========================================================================
     function fetch_careerPaths_data(){

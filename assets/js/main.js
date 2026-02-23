@@ -56,6 +56,10 @@ $(document).ready(function () {
       // alert(employee_id);
       document.getElementById('employee_id_for_schedule').value = employee_id;
     });
+    $(document).on("click", "#getScheduleIdAndDelete", function (){
+      const id = $(this).data('id');
+      document.getElementById('delete_schedule_id').value = id;
+    })
 
 // Login Forms here ===========================================================
       // $(document).on("submit", "#login-form", function (e) {
@@ -2628,6 +2632,66 @@ $(document).ready(function () {
 
     $.ajax({
       url: base_url + "authentication/action.php?action=edit_schedule_for_employee_form",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      dataType: "json",
+      success: function (response) {
+        if (response.status === 1) {
+          Swal.fire({
+            title: "Success!",
+            text: response.message,
+            icon: "success",
+            toast: true,
+            position: "top-end",
+            timer: 1000,
+            showConfirmButton: false,
+          }).then(() => {
+            location.reload();
+          });
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: response.message,
+            icon: "error",
+            toast: true,
+            position: "top-end",
+            timer: 1000,
+            showConfirmButton: false,
+          });
+        }
+      },
+      error: function (jqXHR, textStatus, err) {
+        console.error("AJAX error:", textStatus, err);
+        Swal.fire({
+          title: "Connection Error",
+          text: "Please check your connection and try again.",
+          icon: "error",
+          toast: true,
+          position: "top-end",
+          timer: 1000,
+          showConfirmButton: false,
+        });
+      },
+      complete: function () {
+        $form.data("isSubmitted", false);
+        $btn.prop("disabled", false).html("Schedule Deleted");
+      },
+    });
+  });
+  $(document).on("submit", "#delete_schedule-for_employee-form", function (e) {
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    let $btn = $(this).find("button[type='submit']");
+
+    $btn
+      .prop("disabled", true)
+      .html('<i class="fas fa-spinner fa-spin"></i> Updating...');
+
+    $.ajax({
+      url: base_url + "authentication/action.php?action=delete_schedule_for_employee_form",
       type: "POST",
       data: formData,
       processData: false,

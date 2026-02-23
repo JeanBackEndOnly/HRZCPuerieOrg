@@ -2,6 +2,28 @@
     background-color: #ED555B !important;
     transition: 0.5s ease;
 }
+.try {
+    position: relative;
+}
+
+.try::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 5px;         
+    background-color: rgb(0,0,0);
+    border-radius: inherit;
+
+}
+.bw{
+ background-color: #EFEFEF;
+}
+.try > * {
+    position: relative;
+    z-index: 2;
+}
 a{
     display: inline-block; 
     border: 3px solid transparent;

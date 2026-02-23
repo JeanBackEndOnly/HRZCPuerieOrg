@@ -233,6 +233,10 @@ if ($action === "edit_schedule_for_employee_form") {
      $result = $crud->edit_schedule_for_employee_form();
     echo $result;
 }
+if ($action === "delete_schedule_for_employee_form") {
+     $result = $crud->delete_schedule_for_employee_form();
+    echo $result;
+}
 
 // CAREER PATHS =========================================================================
 if ($action === 'fetch_careerPaths_data') {

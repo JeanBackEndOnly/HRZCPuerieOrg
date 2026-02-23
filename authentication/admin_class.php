@@ -2555,6 +2555,35 @@ class Action
             ]);
         }
     }
+    function edit_schedule_for_employee_form(){
+        $schedule_id = $_POST["schedule_id"];
+        $template_id = $_POST["template_id"];
+        $schedule_at = $_POST["schedule_at"];
+        try {
+            if(empty($schedule_id) || empty($template_id) || empty($schedule_at)) {
+                return json_encode([
+                    'status' => 0,
+                    'message' => $schedule_id . '\n' . $template_id . '\n' . $schedule_at
+                ]);
+            }
+            $stmt = $this->db->prepare("UPDATE employee_schedule SET schedule_id = :schedule_id, schedule_at = :schedule_at
+            WHERE employee_schedule_id = :employee_schedule_id");
+            $stmt->execute([
+                'schedule_id' => $template_id,
+                'schedule_at' => $schedule_at,
+                'employee_schedule_id' => $schedule_id
+            ]);
+            return json_encode([
+                'status' => 1,
+                'message' => 'Employee Schedule updated successfully!'
+            ]);
+        } catch (PDOException $e) {
+            return json_encode([
+                'status' => 0,
+                'message' => 'An error occured: ' . $e->getMessage()
+            ]);
+        }
+    }
 
 // CAREER PATHS =========================================================================
     function fetch_careerPaths_data(){

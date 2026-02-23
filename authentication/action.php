@@ -229,6 +229,10 @@ if ($action === "update_template") {
      $result = $crud->update_template();
     echo $result;
 }
+if ($action === "edit_schedule_for_employee_form") {
+     $result = $crud->edit_schedule_for_employee_form();
+    echo $result;
+}
 
 // CAREER PATHS =========================================================================
 if ($action === 'fetch_careerPaths_data') {

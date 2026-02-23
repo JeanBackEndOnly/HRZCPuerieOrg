@@ -101,7 +101,7 @@
                                             <button class="m-0 btn btn-outline-success"
                                             id="getScheduleId"
                                             onclick="getScheduleData(
-                                                <?= $sched['schedule_id'] ?>,
+                                                <?= $sched['employee_schedule_id'] ?>,
                                                 <?= $sched['template_id'] ?>,
                                                 '<?= addslashes($sched['schedule_at']) ?>'
                                             )"
@@ -147,7 +147,7 @@
                                             <button class="m-0 btn btn-outline-success"
                                             id="getScheduleId"
                                             onclick="getScheduleData(
-                                                <?= $sched['schedule_id'] ?>,
+                                                <?= $sched['employee_schedule_id'] ?>,
                                                 <?= $sched['template_id'] ?>,
                                                 '<?= addslashes($sched['schedule_at']) ?>'
                                             )"
@@ -198,7 +198,7 @@
                     ?>
                     <div class="mx-2">
                         <label class="form-label">Schedule Type</label>
-                        <select required name="schedule_id" id="template_id_data" class="form-select">
+                        <select required name="template_id" id="template_id_data" class="form-select">
                             <option value="">Select Schedule</option>
                             <?php foreach($result as $schedule) : ?>
                                 <option value="<?= $schedule["template_id"] ?>"><?= htmlspecialchars(
@@ -244,7 +244,7 @@
 <script>
     function getScheduleData(schedule_id, template_id, schedule_at){
         document.getElementById('edit_schedule_id').value = schedule_id;
-        document.getElementById('schedule_at_data').value = schedule_at;
         document.getElementById('template_id_data').value = template_id;
+        document.getElementById('schedule_at_data').value = schedule_at;
     }
 </script>

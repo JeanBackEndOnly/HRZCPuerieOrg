@@ -43,14 +43,14 @@
                                 class="fa-solid fa-arrow-left me-1"></i> Back</a>
                     </div>
                     <?php if($getEmployee["profile_picture"] == null){ ?>
-                            <strong class="py-1 px-5 text-white mb-2" style="
+                    <strong class="py-1 px-5 text-white mb-2" style="
                                 border-radius: 50%;
                                 background-color: #303030ff;
                                 font-size: 5rem;
                             "><?= htmlspecialchars(substr($getEmployee["firstname"], 0,1)) ?></strong>
                     <?php }else{ ?>
-                            <img src="../../authentication/uploads/<?= $getEmployee["profile_picture"] ?>" 
-                                style="width: 200px; height: auto; border-radius: 50%;">
+                    <img src="../../authentication/uploads/<?= $getEmployee["profile_picture"] ?>"
+                        style="width: 200px; height: auto; border-radius: 50%;">
                     <?php } ?>
                     <span id="employeeID"
                         class="text-muted fw-bold"><?= htmlspecialchars($getEmployee["employeeID"]) ?></span>
@@ -58,12 +58,12 @@
                         id="employeeName"><?= htmlspecialchars($getEmployee["firstname"]) . " " .  substr(htmlspecialchars($getEmployee["middlename"]), 0, 1) . ". " . htmlspecialchars($getEmployee["lastname"]) ?></span>
                     <span class="text-center"
                         id="employeeDept"><?= htmlspecialchars($getEmployee["Department_name"]) ?></span>
-                        <span class="text-center"><?= isset($getEmployee["unit_section_name"]) ? ' (' . htmlspecialchars($getEmployee["unit_section_name"]) . ')' : '' ?></span>
+                    <span
+                        class="text-center"><?= isset($getEmployee["unit_section_name"]) ? ' (' . htmlspecialchars($getEmployee["unit_section_name"]) . ')' : '' ?></span>
                     <span id="employeeJobTitle"><?= htmlspecialchars($getEmployee["jobTitle"]) ?></span>
                     <span id="employeeSchedule" class="fw-bold"></span>
-                    <a href="index.php?page=contents/pds&employee_id=<?= $employee_id ?>"
-                        class="mt-2"><strong>View Personal Data Sheet <i
-                                class="fa-solid fa-arrow-up-right-from-square ms-2"></i></strong></a>
+                    <a href="index.php?page=contents/pds&employee_id=<?= $employee_id ?>" class="mt-2"><strong>View
+                            Personal Data Sheet <i class="fa-solid fa-arrow-up-right-from-square ms-2"></i></strong></a>
                 </div>
             </div>
         </div>
@@ -239,9 +239,10 @@
                         </div>
                     </div>
                     <!-- OTHERS INFORMATION -->
-                     <div class="header ps-3 pt-3">
+                    <div class="header ps-3 pt-3">
                         <h5 class="m-0 p-0">
-                            <i class="fa-solid fa-circle-info me-2"></i>Other Information <span class="fw-light">(optional)</span>
+                            <i class="fa-solid fa-circle-info me-2"></i>Other Information <span
+                                class="fw-light">(optional)</span>
                         </h5>
                     </div>
                     <div class="row flex-wrap col-md-12 col-12 p-3 h-auto">
@@ -249,14 +250,25 @@
                             <label class="form-label">Profession Title</label>
                             <select name="profession_title" class="form-select">
                                 <option value="">Select Profession Title</option>
-                                <option value="Dr." <?= ($getEmployee["profession_title"] == "Dr.") ? 'selected' : '' ?>>Dr.</option>
-                                <option value="Prof." <?= ($getEmployee["profession_title"] == "Prof.") ? 'selected' : '' ?>>Prof.</option>
-                                <option value="Assoc. Prof." <?= ($getEmployee["profession_title"] == "Assoc. Prof.") ? 'selected' : '' ?>>Assoc. Prof.</option>
-                                <option value="Asst. Prof." <?= ($getEmployee["profession_title"] == "Asst. Prof.") ? 'selected' : '' ?>>Asst. Prof.</option>
-                                <option value="RN." <?= ($getEmployee["profession_title"] == "RN.") ? 'selected' : '' ?>>RN.</option>
-                                <option value="Mr." <?= ($getEmployee["profession_title"] == "Mr.") ? 'selected' : '' ?>>Mr.</option>
-                                <option value="Ms." <?= ($getEmployee["profession_title"] == "Ms.") ? 'selected' : '' ?>>Ms.</option>
-                                <option value="Mrs." <?= ($getEmployee["profession_title"] == "Mrs.") ? 'selected' : '' ?>>Mrs.</option>
+                                <option value="Dr."
+                                    <?= ($getEmployee["profession_title"] == "Dr.") ? 'selected' : '' ?>>Dr.</option>
+                                <option value="Prof."
+                                    <?= ($getEmployee["profession_title"] == "Prof.") ? 'selected' : '' ?>>Prof.
+                                </option>
+                                <option value="Assoc. Prof."
+                                    <?= ($getEmployee["profession_title"] == "Assoc. Prof.") ? 'selected' : '' ?>>Assoc.
+                                    Prof.</option>
+                                <option value="Asst. Prof."
+                                    <?= ($getEmployee["profession_title"] == "Asst. Prof.") ? 'selected' : '' ?>>Asst.
+                                    Prof.</option>
+                                <option value="RN."
+                                    <?= ($getEmployee["profession_title"] == "RN.") ? 'selected' : '' ?>>RN.</option>
+                                <option value="Mr."
+                                    <?= ($getEmployee["profession_title"] == "Mr.") ? 'selected' : '' ?>>Mr.</option>
+                                <option value="Ms."
+                                    <?= ($getEmployee["profession_title"] == "Ms.") ? 'selected' : '' ?>>Ms.</option>
+                                <option value="Mrs."
+                                    <?= ($getEmployee["profession_title"] == "Mrs.") ? 'selected' : '' ?>>Mrs.</option>
                             </select>
 
                         </div>
@@ -394,7 +406,7 @@
                             <select name="unit_section_id" id="" class="form-select" required>
                                 <option value="">Select Unit/Section</option>
                                 <?php foreach($getUnit as $uniSec):  ?>
-                                    <option value="<?= $uniSec['unit_section_id'] ?>"
+                                <option value="<?= $uniSec['unit_section_id'] ?>"
                                     <?= ($uniSec['unit_section_id'] == $getEmployee['unit_section_id']) ? 'selected' : '' ?>>
                                     <?= htmlspecialchars($uniSec['unit_section_name']) ?>
                                 </option>
@@ -407,123 +419,7 @@
                             <input type="number" step="0.01" name="salary" value="<?= $getEmployee["salary"] ?>"
                                 id="salary" class="form-control">
                         </div>
-                       
-
-                        <strong class="w-100 text-start fs-5 mt-3">
-                            Scheduling information
-                        </strong>
-                        <!-- <div class="col-md-4">
-                            <label class="form-label">Work Schedule</label>
-                            <input type="text" name="work_schedule_type" value="<?= $getEmployee["work_schedule_type"] ?? '' ?>"
-                                id="work_schedule_type" class="form-control" placeholder="">
-                        </div> -->
-                        <?php
-                            // Fetch schedule templates grouped by department
-                            $stmtTemplates = $pdo->prepare("SELECT * FROM sched_template ORDER BY department, scheduleName");
-                            $stmtTemplates->execute();
-                            $templates = $stmtTemplates->fetchAll(PDO::FETCH_ASSOC);
-
-                            // Group templates by department
-                            $groupedTemplates = [];
-                            foreach ($templates as $template) {
-                                $groupedTemplates[$template['department']][] = $template;
-                            }
-                            ?>
-
-                        <div class="col-md-3">
-                            <label class="form-label">Schedule Template</label>
-                            <select name="schedule_template" id="schedule_template" class="form-select">
-                                <option value="">Select Schedule </option>
-                                <?php foreach ($groupedTemplates as $department => $deptTemplates): ?>
-                                <optgroup label="<?= $department ?>">
-                                    <?php foreach ($deptTemplates as $template): ?>
-                                    <option value="<?= $template['template_id'] ?>"
-                                        data-from="<?= $template['schedule_from'] ?>"
-                                        data-to="<?= $template['schedule_to'] ?>" data-shift="<?= $template['shift'] ?>"
-                                        data-days="<?= $template['day'] ?>"
-                                        data-name="<?= htmlspecialchars($template['scheduleName']) ?>">
-                                        <?= htmlspecialchars($template['scheduleName']) ?>
-                                        (<?= $template['schedule_from'] ?> - <?= $template['schedule_to'] ?>)
-                                    </option>
-                                    <?php endforeach; ?>
-                                </optgroup>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label class="form-label">Shift Type</label>
-                            <input type="text" name="shift_type" value="<?= $getEmployee["shift_type"] ?? '' ?>"
-                                id="shift_type" class="form-control" placeholder="Auto-filled from template" readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Work Days</label>
-                            <input type="text" name="work_days" value="<?= $getEmployee["work_days"] ?? '' ?>"
-                                id="work_days" class="form-control" placeholder="Auto-filled from template" readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Schedule From</label>
-                            <input type="time" name="scheduleFrom" value="<?= $getEmployee["scheduleFrom"] ?? '' ?>"
-                                id="scheduleFrom" class="form-control" readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Schedule To</label>
-                            <input type="time" name="scheduleTo" id="scheduleTo"
-                                value="<?= $getEmployee["scheduleTo"] ?? '' ?>" class="form-control" readonly>
-                        </div>
-
-                        <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const scheduleTemplate = document.getElementById('schedule_template');
-                            const shiftType = document.getElementById('shift_type');
-                            const workDays = document.getElementById('work_days');
-                            const scheduleFrom = document.getElementById('scheduleFrom');
-                            const scheduleTo = document.getElementById('scheduleTo');
-
-                            scheduleTemplate.addEventListener('change', function() {
-                                if (this.value) {
-                                    const selectedOption = this.options[this.selectedIndex];
-
-                                    // Auto-fill all fields
-                                    shiftType.value = selectedOption.getAttribute('data-shift');
-                                    workDays.value = selectedOption.getAttribute('data-days');
-                                    scheduleFrom.value = selectedOption.getAttribute('data-from');
-                                    scheduleTo.value = selectedOption.getAttribute('data-to');
-
-                                    // Optional: Add visual feedback
-                                    this.classList.add('is-valid');
-                                } else {
-                                    // Clear fields if no template selected
-                                    clearScheduleFields();
-                                }
-                            });
-
-                            function clearScheduleFields() {
-                                shiftType.value = '';
-                                workDays.value = '';
-                                scheduleFrom.value = '';
-                                scheduleTo.value = '';
-                                scheduleTemplate.classList.remove('is-valid');
-                            }
-
-                            // Optional: Allow manual editing by double-clicking fields
-                            [shiftType, workDays, scheduleFrom, scheduleTo].forEach(field => {
-                                field.addEventListener('dblclick', function() {
-                                    this.readOnly = !this.readOnly;
-                                    if (!this.readOnly) {
-                                        this.focus();
-                                    }
-                                });
-                            });
-                        });
-                        </script>
-                        <?php if($getEmployee["status"] == 'Active'){ ?>
-                        <div class="col-md-12 d-flex mt-3 justify-content-end me-0">
-                            <button type="submit" class="btn  btn-danger px-5 mt-3 me-2">Update</button>
-                        </div>
-                        <?php } else {} ?>
                     </div>
-
                 </div>
             </form>
         </div>
@@ -1087,7 +983,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Override the scrollbar display property
         profileContents.style.setProperty('scrollbar-width', 'thin', 'important');
         profileContents.style.setProperty('-webkit-scrollbar', 'auto', 'important');
-        
+
         // Add custom scrollbar styling
         const style = document.createElement('style');
         style.textContent = `

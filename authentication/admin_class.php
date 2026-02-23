@@ -1575,14 +1575,12 @@ class Action
                 $Department_id = htmlSpecialChars($_POST["Department_id"]);
 
                 $stmt = $this->db->prepare("UPDATE hr_data SET employeeID = :employeeID, Department_id = :Department_id, salary = :salary, 
-                scheduleFrom = :scheduleFrom, scheduleTo = :scheduleTo, joined_at = :joined_at, unit_section_id = :unit_section_id WHERE employee_id = :employee_id");
+                    joined_at = :joined_at, unit_section_id = :unit_section_id WHERE employee_id = :employee_id");
                 $stmt->execute([
                     'employee_id' => $employee_id,
                     'employeeID' => $employeeID,
                     'Department_id' => $Department_id,
                     'salary' => $salary,
-                    'scheduleFrom' => $scheduleFrom,
-                    'scheduleTo' => $scheduleTo,
                     'joined_at' => $joined_at,
                     'unit_section_id' => $unit_section_id
                 ]);

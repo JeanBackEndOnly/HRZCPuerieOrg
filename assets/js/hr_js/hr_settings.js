@@ -181,19 +181,40 @@ function generateScheduleCSV() {
     const table = document.getElementById('scheduleTable');
     if (!table) return null;
     
+    const selectedDept = document.getElementById('selected-department').innerText;
+    const scheduleFrom = document.getElementById('scheduleFrom').value;
+    const scheduleTo = document.getElementById('scheduleTo').value;
+    
     const rows = table.querySelectorAll('tr');
     if (rows.length === 0) return null;
     
     const csv = [];
     
-    // Process each row
-    rows.forEach(row => {
+    // Add header information
+    csv.push(`"Department: ${selectedDept}"`);
+    csv.push(`"Date Range: ${scheduleFrom} to ${scheduleTo}"`);
+    csv.push(''); // Empty line for spacing
+    
+    // Get headers from the first row
+    const headerRow = rows[0];
+    const headerData = [];
+    headerRow.querySelectorAll('th').forEach(cell => {
+        let cellText = cell.innerText.trim();
+        headerData.push('"' + cellText.replace(/"/g, '""') + '"');
+    });
+    if (headerData.length > 0) {
+        csv.push(headerData.join(','));
+    }
+    
+    // Process data rows (skip header row)
+    for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
         const rowData = [];
-        const cells = row.querySelectorAll('th, td');
+        const cells = row.querySelectorAll('td');
         
         // Skip if this is the "no data" message row
         if (cells.length === 1 && cells[0].colSpan > 1) {
-            return;
+            continue;
         }
         
         cells.forEach(cell => {
@@ -215,7 +236,7 @@ function generateScheduleCSV() {
         if (rowData.length > 0) {
             csv.push(rowData.join(','));
         }
-    });
+    }
     
     return csv.join('\n');
 }
@@ -381,3 +402,24 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
+
+// Department display as selected =============================================
+$(document).on("change", "#filter_department", function() {
+    let selectedDept = $(this).find("option:selected").text();
+    
+    if ($(this).val() === "") {
+        $("#selected-department").text("All Departments");
+    } else {
+        $("#selected-department").text(selectedDept);
+    }
+});
+
+// Trigger on page load to set initial value
+$(document).ready(function() {
+    let initialDept = $("#filter_department").find("option:selected").text();
+    if ($("#filter_department").val() === "") {
+        $("#selected-department").text("All Departments");
+    } else {
+        $("#selected-department").text(initialDept);
+    }
+});

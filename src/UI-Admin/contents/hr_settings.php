@@ -145,6 +145,9 @@
                 </style>
                 <div class="tab-pane text-center table-body col-md-12 fade" id="print_schedule" role="tabpanel">
                     <div class="responsive-table w-100">
+                        <div class="col-md-12">
+                            <strong id="selected-department"></strong>
+                        </div>
                         <table class="table table-bordered table-sm w-100" id="scheduleTable">
                             <thead>
                                 <tr>
@@ -167,7 +170,7 @@
 </section>
 <!-- ===================================== MODAL SECTION ===================================== -->
 
-<!-- =================================== SCHEDULE TEMPLATE =================================== -->
+<!-- add modal  -->
 <div class="modal fade" id="createSchedules" tabindex="-1" aria-labelledby="createSchedulesLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">

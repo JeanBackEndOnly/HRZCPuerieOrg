@@ -30,6 +30,10 @@
         </h4>
         <small class="text-muted ">Manage employee schedules</small>
     </div>
+    <div class="col-md-3 d-flex justify-content-end">
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#createScheduleForEmployee"
+            data-id="<?= $employee_id ?>" id="getEmployeeIdForSchedule">Create Schedule</button>
+    </div>
 </div>
 <main class="col-md-12 d-flex justify-content-start align-items-start">
     <div class="column p-2 m-0 rounded-2 col-12 col-md-4 col-12">
@@ -98,20 +102,14 @@
                                         <td><?= htmlspecialchars('(' . $sched["scheduleName"] . ') '.date('h:i A', strtotime($sched["schedule_from"])) . ' - ' . date('h:i A', strtotime($sched["schedule_to"]))) ?>
                                         </td>
                                         <td>
-                                            <button class="m-0 btn btn-outline-success"
-                                            id="getScheduleId"
-                                            onclick="getScheduleData(
+                                            <button class="m-0 btn btn-outline-success" id="getScheduleId" onclick="getScheduleData(
                                                 <?= $sched['employee_schedule_id'] ?>,
                                                 <?= $sched['template_id'] ?>,
                                                 '<?= addslashes($sched['schedule_at']) ?>'
-                                            )"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#editSchedule">edit</button>
-                                            <button class="m-0 btn btn-outline-danger"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#deleteSchedule"
-                                            id="getScheduleIdAndDelete"
-                                            data-id="<?= $sched["employee_schedule_id"] ?>">delete</button>
+                                            )" data-bs-toggle="modal" data-bs-target="#editSchedule">edit</button>
+                                            <button class="m-0 btn btn-outline-danger" data-bs-toggle="modal"
+                                                data-bs-target="#deleteSchedule" id="getScheduleIdAndDelete"
+                                                data-id="<?= $sched["employee_schedule_id"] ?>">delete</button>
                                         </td>
                                     </tr>
                                     <?php endforeach;
@@ -145,26 +143,21 @@
                                         <td><?= htmlspecialchars('(' . $sched["scheduleName"] . ') '.date('h:i A', strtotime($sched["schedule_from"])) . ' - ' . date('h:i A', strtotime($sched["schedule_to"]))) ?>
                                         </td>
                                         <td>
-                                            <button class="m-0 btn btn-outline-success"
-                                            id="getScheduleId"
-                                            onclick="getScheduleData(
+                                            <button class="m-0 btn btn-outline-success" id="getScheduleId" onclick="getScheduleData(
                                                 <?= $sched['employee_schedule_id'] ?>,
                                                 <?= $sched['template_id'] ?>,
                                                 '<?= addslashes($sched['schedule_at']) ?>'
-                                            )"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#editSchedule">edit</button>
-                                            <button class="m-0 btn btn-outline-danger"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#deleteSchedule"
-                                            id="getScheduleIdAndDelete"
-                                            data-id="<?= $sched["employee_schedule_id"] ?>">delete</button>
+                                            )" data-bs-toggle="modal" data-bs-target="#editSchedule">edit</button>
+                                            <button class="m-0 btn btn-outline-danger" data-bs-toggle="modal"
+                                                data-bs-target="#deleteSchedule" id="getScheduleIdAndDelete"
+                                                data-id="<?= $sched["employee_schedule_id"] ?>">delete</button>
                                         </td>
                                     </tr>
                                     <?php endforeach;
                                         }else { ?>
                                     <tr>
-                                        <td colspan="4" class="fw-bold">This Employee doesn't have any upcoming schedule</td>
+                                        <td colspan="4" class="fw-bold">This Employee doesn't have any upcoming schedule
+                                        </td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
@@ -177,8 +170,7 @@
     </div>
 </main>
 <!-- ========================================== MODAL SECTIONS ========================================== -->
-<div class="modal fade" id="editSchedule" tabindex="-1" aria-labelledby="editScheduleLabel"
-    aria-hidden="true">
+<div class="modal fade" id="editSchedule" tabindex="-1" aria-labelledby="editScheduleLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
@@ -203,7 +195,7 @@
                         <select required name="template_id" id="template_id_data" class="form-select">
                             <option value="">Select Schedule</option>
                             <?php foreach($result as $schedule) : ?>
-                                <option value="<?= $schedule["template_id"] ?>"><?= htmlspecialchars(
+                            <option value="<?= $schedule["template_id"] ?>"><?= htmlspecialchars(
                                     '(' . $schedule["scheduleName"] . ') ' . date('h:i A', strtotime($schedule["schedule_from"])) . ' - ' . date('h:i A', strtotime($schedule["schedule_to"]))
                                 ) ?></option>
                             <?php endforeach; ?>
@@ -219,8 +211,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="deleteSchedule" tabindex="-1" aria-labelledby="deleteScheduleLabel"
-    aria-hidden="true">
+<div class="modal fade" id="deleteSchedule" tabindex="-1" aria-labelledby="deleteScheduleLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
@@ -242,11 +233,53 @@
         </div>
     </div>
 </div>
+<!-- =================================== SCHEDULE FOR EMPLOYEE =================================== -->
+<div class="modal fade" id="createScheduleForEmployee" tabindex="-1" aria-labelledby="createScheduleForEmployeeLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title text-white" id="createScheduleForEmployeeLabel">Create Schedule</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
+                    onclick="location.reload()"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" id="schedule-for_employee-form" method="post">
+                    <input type="hidden" class="form-control" name="employee_id" id="employee_id_for_schedule">
+                    <div class="mx-2">
+                        <label class="form-label">Scheduled At</label>
+                        <input required type="date" name="schedule_at" class="form-control">
+                    </div>
+                    <?php
+                        $stmt = $pdo->prepare("SELECT * FROM sched_template");
+                        $stmt->execute();
+                        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    ?>
+                    <div class="mx-2">
+                        <label class="form-label">Schedule Type</label>
+                        <select required name="schedule_id" id="" class="form-select">
+                            <option value="">Select Schedule</option>
+                            <?php foreach($result as $schedule) : ?>
+                                <option value="<?= $schedule["template_id"] ?>"><?= htmlspecialchars(
+                                    '(' . $schedule["scheduleName"] . ') ' . date('h:i A', strtotime($schedule["schedule_from"])) . ' - ' . date('h:i A', strtotime($schedule["schedule_to"]))
+                                ) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="col-12 text-center mt-3">
+                        <button type="submit" class="btn btn-primary px-5">
+                            <i class="bi bi-person-plus-fill me-1"></i> Create Schedule
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- ========================================== JAVASCRIPT ========================================== -->
 <script>
-    function getScheduleData(schedule_id, template_id, schedule_at){
-        document.getElementById('edit_schedule_id').value = schedule_id;
-        document.getElementById('template_id_data').value = template_id;
-        document.getElementById('schedule_at_data').value = schedule_at;
-    }
+function getScheduleData(schedule_id, template_id, schedule_at) {
+    document.getElementById('edit_schedule_id').value = schedule_id;
+    document.getElementById('template_id_data').value = template_id;
+    document.getElementById('schedule_at_data').value = schedule_at;
+}
 </script>

@@ -5,7 +5,7 @@
             <h4><i class="fas fa-calendar-check"></i> HR Settings</h4>
             <small class="text-muted">Create Template for schedules</small>
         </div>
-        <div>
+        <div id="displayButton">
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSchedules">
                 <i class="fas fa-plus me-1"></i> add schedules
             </button>
@@ -14,7 +14,7 @@
     <div class="card">
         <!-- NAVIAGATIONS OF TABS -->
         <div class="card-body col-md-12 col-12 d-flex justify-content-between pb-4">
-            <ul class="nav nav-tabs col-md-7 col-12" id="LeaveRequestTabs">
+            <ul class="nav nav-tabs col-md-7 col-12" id="hr_settingsTabs">
                 <li class="nav-item cursor-pointer col-md-4">
                     <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#schedule_template"><i
                             class="fa-solid fa-user-tie me-2"></i>Schedule Template</a>
@@ -23,7 +23,39 @@
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#employee_schedule"><i
                             class="fa-solid fa-user-plus me-2"></i>Employee Schedules</a>
                 </li>
+                <li class="nav-item cursor-pointer col-md-4">
+                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#print_schedule"><i
+                            class="fa-solid fa-user-plus me-2"></i>Print Schedules</a>
+                </li>
             </ul>
+            <div class="col-md-4 justify-content-end gap-1 pb-2" id="displayFilter" style="display: none;">
+                <div class="col-md-6">
+                    <label class="form-label m-0">Departments</label>
+                    <select name="" id="" class="form-select">
+                        <option value="">Select Department</option>
+                        <?php 
+                            $stmt = $pdo->prepare("SELECT * FROM departments");
+                            $stmt->execute();
+                            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            foreach($result as $dept) :
+                        ?>
+                            <option value="<?= $dept["Department_id"] ?>"><?= $dept["Department_name"] . ' (' . $dept["Department_code"] . ')' ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label m-0">From</label>
+                    <input type="date" class="form-control" name="scheduleFrom">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label m-0">To</label>
+                    <input type="date" class="form-control" name="scheduleTo">
+                </div>
+            </div>
+            <div class="col-md-4 justify-content-end pb-2" id="displaySearch" style="display: none;">
+                <input type="text" name="search" id="searchEmployee" class="form-control"
+                    placeholder="Search by name and id.....">
+            </div>
         </div>
         <div class="card-body pt-0 p-0">
             <div class="tab-content" id="employeesTabContent">
@@ -73,7 +105,7 @@
                 </div>
                 <div class="tab-pane text-center table-body fade" id="employee_schedule" role="tabpanel">
                     <div class="responsive-table">
-                        <table class="table table-responsive table-bordered table-sm">
+                        <table class="table table-responsive table-bordered table-sm" id="employeeTable">
                             <thead>
                                 <tr>
                                     <td>#</td>
@@ -90,13 +122,28 @@
                                         <td><?= htmlspecialchars($emp["Department_name"] . ' (' . $emp["Department_code"] . ')') ?></td>
                                         <td>
                                             <a href="index.php?page=contents/employee_sched&employee_id=<?= $emp["employee_id"] ?>" class="btn btn-info">View Schedules</a>
-                                            <button type="button" class="btn btn-danger"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#createScheduleForEmployee"
-                                            data-id="<?= $emp["employee_id"] ?>"
-                                            id="getEmployeeIdForSchedule">Create Schedule</button>
                                         </td>
                                     </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane text-center table-body fade" id="print_schedule" role="tabpanel">
+                    <div class="responsive-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>name</td>
+                                    <td id="dates"></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach($getEmployeeForSchedules as $emp) : ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($emp["lastname"] . ', ' . $emp["firstname"] . ' ' . substr($emp["middlename"], 0, 1) . '.') ?></td>
+                                    
+                                </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
@@ -211,46 +258,4 @@
         </form>
     </div>
 </div>
-
-<!-- =================================== SCHEDULE FOR EMPLOYEE =================================== -->
-<div class="modal fade" id="createScheduleForEmployee" tabindex="-1" aria-labelledby="createScheduleForEmployeeLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title text-white" id="createScheduleForEmployeeLabel">Create Schedule</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
-                    onclick="location.reload()"></button>
-            </div>
-            <div class="modal-body">
-                <form class="row g-3" id="schedule-for_employee-form" method="post">
-                    <input type="hidden" class="form-control" name="employee_id" id="employee_id_for_schedule">
-                    <div class="mx-2">
-                        <label class="form-label">Scheduled At</label>
-                        <input required type="date" name="schedule_at" class="form-control">
-                    </div>
-                    <?php
-                        $stmt = $pdo->prepare("SELECT * FROM sched_template");
-                        $stmt->execute();
-                        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    ?>
-                    <div class="mx-2">
-                        <label class="form-label">Schedule Type</label>
-                        <select required name="schedule_id" id="" class="form-select">
-                            <option value="">Select Schedule</option>
-                            <?php foreach($result as $schedule) : ?>
-                                <option value="<?= $schedule["template_id"] ?>"><?= htmlspecialchars(
-                                    '(' . $schedule["scheduleName"] . ') ' . date('h:i A', strtotime($schedule["schedule_from"])) . ' - ' . date('h:i A', strtotime($schedule["schedule_to"]))
-                                ) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="col-12 text-center mt-3">
-                        <button type="submit" class="btn btn-primary px-5">
-                            <i class="bi bi-person-plus-fill me-1"></i> Create Schedule
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+<script src="../../assets/js/hr_js/hr_settings.js" defer></script>

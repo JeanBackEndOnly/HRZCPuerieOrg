@@ -22,9 +22,9 @@ if(!$getEmployeeForSchedules){
     $getEmployeeForSchedules = null;
 }
 
-$get_Employee_Schedules = getEmployeesSchedule();
-if(!$get_Employee_Schedules){
+$ActiveEmployees = getActiveEmployees();
+if(!$ActiveEmployees){
     $_SESSION['error'] = "Failed to fetch employees data";
-    $get_Employee_Schedules = null;
+    $ActiveEmployees = null;
 }
 ?>

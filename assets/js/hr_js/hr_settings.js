@@ -350,7 +350,7 @@ function updateScheduleTable(data, fromDate, toDate) {
             if (scheduleMap[date]) {
                 const sched = scheduleMap[date];
                 bodyHtml += `<td class="text-center">
-                    <small>${escapeHtml(sched.scheduleName)}<br>
+                    <small>(${escapeHtml(sched.scheduleName)})
                     ${formatTime(sched.schedule_from)} - ${formatTime(sched.schedule_to)}</small>
                 </td>`;
             } else {

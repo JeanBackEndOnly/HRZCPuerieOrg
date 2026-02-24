@@ -1,29 +1,4 @@
 <?php
-   // Fetch Active Employees
-$stmtOfficial = $pdo->prepare("
-    SELECT 
-        ed.employee_id, 
-        ed.firstname, 
-        ed.middlename, 
-        ed.lastname, 
-        ed.suffix,
-        ed.profile_picture,
-        d.Department_name AS department,
-        hd.employeeID,
-        jt.jobTitle,
-        jt.salary,
-        ed.status,
-        ed.user_role
-    FROM employee_data ed
-    INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-    LEFT JOIN jobTitles jt ON hd.jobtitle_id = jt.jobTitles_id
-    LEFT JOIN departments d ON hd.Department_id = d.Department_id
-    WHERE ed.status = 'Active' AND ed.user_role = 'EMPLOYEE'
-    ORDER BY ed.status
-");
-$stmtOfficial->execute();
-$officialEmployees = $stmtOfficial->fetchAll(PDO::FETCH_ASSOC);
-
 // Fetch Pending Employees
 $stmtPending = $pdo->prepare("
     SELECT 
@@ -115,13 +90,7 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
                         transform: translateX(11.8rem) !important;
                         border-radius: 50% !important;
                         ">
-                        <strong class="text-white" style="
-                            padding-top: -1rem !important;
-                            padding-bottom: -1rem !important;
-                            padding-right: .4rem !important;
-                            padding-left: .4rem !important;
-                            margin: 0 !important;
-                            font-size: 9px !mportant;
+                        <label class="form-label m-0 px-2 text-white font-10" style="
                             "><?php echo $pending ?></strong>
                     </div>
                     <button class="nav-link w-100 h-100" id="pending-tab" data-bs-toggle="tab"
@@ -151,8 +120,8 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
                 <div class="tab-pane fade show active row" id="Approved_Employees" role="tabpanel"
                     aria-labelledby="approved-tab" tabindex="0">
                     <?php 
-                        if($officialEmployees){
-                            foreach ($officialEmployees as $officials) : ?>
+                        if($ActiveEmployees){
+                            foreach ($ActiveEmployees as $officials) : ?>
                     <a href="index.php?page=contents/profile&id=<?= htmlspecialchars($officials["employee_id"]) ?>"
                         class="col-md-4">
                         <div class="card col-md-12 d-flex flex-row shadow p-2 rounded-3 border">

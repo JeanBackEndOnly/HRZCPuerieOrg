@@ -88,15 +88,31 @@
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    function getEmployeesSchedule(){
+
+    // Get employees via recruitiment module =============================================================
+    function getActiveEmployees(){
         $pdo = db_connect();
-        $stmt = $pdo->prepare("SELECT ed.employee_id, ed.firstname, ed.middlename, ed.lastname, ed.suffix,
-            d.Department_name, d.Department_code, ed.employee_id FROM employee_data ed
+        $stmtOfficial = $pdo->prepare("
+            SELECT 
+                ed.employee_id, 
+                ed.firstname, 
+                ed.middlename, 
+                ed.lastname, 
+                ed.suffix,
+                ed.profile_picture,
+                d.Department_name AS department,
+                hd.employeeID,
+                jt.jobTitle,
+                jt.salary,
+                ed.status,
+                ed.user_role
+            FROM employee_data ed
             INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
+            LEFT JOIN jobTitles jt ON hd.jobtitle_id = jt.jobTitles_id
             LEFT JOIN departments d ON hd.Department_id = d.Department_id
-            LEFT JOIN employee_schedule es ON ed.employee_id = es.employee_id
-            LEFT JOIN sched_template st ON es.schedule_id = st.template_id
-            ORDER BY ed.lastname DESC");
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            WHERE ed.status = 'Active' AND ed.user_role = 'EMPLOYEE'
+            ORDER BY ed.status
+        ");
+        $stmtOfficial->execute();
+        return $stmtOfficial->fetchAll(PDO::FETCH_ASSOC);
     }

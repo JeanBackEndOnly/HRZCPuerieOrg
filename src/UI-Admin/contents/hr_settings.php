@@ -2,8 +2,11 @@
 <section>
     <div class="d-flex justify-content-between align-items-center mb-2">
         <div class="mx-2">
-            <h4><i class="fas fa-calendar-check"></i> HR Settings</h4>
+            <h4><i class="fas fa-calendar-check"></i> Schedule Settings</h4>
             <small class="text-muted">Create Template for schedules</small>
+        </div>
+        <div class="col-md-3" style="display: none;" id="display-csv">
+            <button class="btn btn-success m-0 py-2 px-3" id="download-csv">Download csv</button>
         </div>
         <div id="displayButton">
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSchedules">
@@ -12,44 +15,45 @@
         </div>
     </div>
     <div class="card">
-        <!-- NAVIAGATIONS OF TABS -->
-        <div class="card-body col-md-12 col-12 d-flex justify-content-between pb-4">
+        <div class="card-body col-md-12 col-12 d-flex justify-content-between pb-4 max-width-hr-settings">
             <ul class="nav nav-tabs col-md-7 col-12" id="hr_settingsTabs">
                 <li class="nav-item cursor-pointer col-md-4">
-                    <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#schedule_template"><i
-                            class="fa-solid fa-user-tie me-2"></i>Schedule Template</a>
+                    <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#schedule_template">
+                        <i class="fa-solid fa-calendar-plus me-2"></i>Schedule Template</a>
                 </li>
                 <li class="nav-item cursor-pointer col-md-4">
-                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#employee_schedule"><i
-                            class="fa-solid fa-user-plus me-2"></i>Employee Schedules</a>
+                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#employee_schedule">
+                        <i class="fa-solid fa-user-clock me-2"></i>Employee Schedules</a>
                 </li>
                 <li class="nav-item cursor-pointer col-md-4">
-                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#print_schedule"><i
-                            class="fa-solid fa-user-plus me-2"></i>Print Schedules</a>
+                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#print_schedule">
+                        <i class="fa-solid fa-calendar-days me-2"></i>CSV Schedules
+                    </a>
                 </li>
             </ul>
             <div class="col-md-4 justify-content-end gap-1 pb-2" id="displayFilter" style="display: none;">
                 <div class="col-md-6">
-                    <label class="form-label m-0">Departments</label>
-                    <select name="" id="" class="form-select">
-                        <option value="">Select Department</option>
+                    <label class="form-label m-0">Departments</label> <select name="filter_department"
+                        id="filter_department" class="form-select">
+                        <option value="">All Departments</option>
                         <?php 
-                            $stmt = $pdo->prepare("SELECT * FROM departments");
+                            $stmt = $pdo->prepare("SELECT * FROM departments ORDER BY Department_name");
                             $stmt->execute();
                             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             foreach($result as $dept) :
                         ?>
-                            <option value="<?= $dept["Department_id"] ?>"><?= $dept["Department_name"] . ' (' . $dept["Department_code"] . ')' ?></option>
+                        <option value="<?= $dept["Department_id"] ?>">
+                            <?= $dept["Department_name"] . ' (' . $dept["Department_code"] . ')' ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label m-0">From</label>
-                    <input type="date" class="form-control" name="scheduleFrom">
+                    <input type="date" class="form-control" name="scheduleFrom" id="scheduleFrom">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label m-0">To</label>
-                    <input type="date" class="form-control" name="scheduleTo">
+                    <input type="date" class="form-control" name="scheduleTo" id="scheduleTo">
                 </div>
             </div>
             <div class="col-md-4 justify-content-end pb-2" id="displaySearch" style="display: none;">
@@ -59,10 +63,10 @@
         </div>
         <div class="card-body pt-0 p-0">
             <div class="tab-content" id="employeesTabContent">
-                <div class="tab-pane fade show active" id="schedule_template" role="tabpanel"
+                <div class="tab-pane col-md-12 fade show active" id="schedule_template" role="tabpanel"
                     aria-labelledby="approved-tab" tabindex="0">
-                    <div class="table-responsive table-body">
-                        <table class="table table-bordered table-hover table-sm text-center">
+                    <div class="table-responsive table-body w-100">
+                        <table class="table table-bordered table-hover table-sm text-center w-100">
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
@@ -103,48 +107,56 @@
                         </table>
                     </div>
                 </div>
-                <div class="tab-pane text-center table-body fade" id="employee_schedule" role="tabpanel">
-                    <div class="responsive-table">
-                        <table class="table table-responsive table-bordered table-sm" id="employeeTable">
-                            <thead>
-                                <tr>
-                                    <td>#</td>
-                                    <td>Name</td>
-                                    <td>Department</td>
-                                    <td>Action</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach($getEmployeeForSchedules as $emp) : ?>
-                                    <tr>
-                                        <td><?= $countEmployee++ ?></td>
-                                        <td><?= htmlspecialchars($emp["lastname"] . ', ' . $emp["firstname"] . ' ' . substr($emp["middlename"], 0, 1) . '.') ?></td>
-                                        <td><?= htmlspecialchars($emp["Department_name"] . ' (' . $emp["Department_code"] . ')') ?></td>
-                                        <td>
-                                            <a href="index.php?page=contents/employee_sched&employee_id=<?= $emp["employee_id"] ?>" class="btn btn-info">View Schedules</a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="tab-pane row fade col-md-12" id="employee_schedule" role="tabpanel">
+                    <?php foreach($getEmployeeForSchedules as $emp) : ?>
+                    <a href="index.php?page=contents/employee_sched&employee_id=<?= $emp["employee_id"] ?>"
+                        class="col-md-4">
+                        <div class="card col-md-12 d-flex flex-row shadow p-2 rounded-3 border">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <?php if($emp["profile_picture"] == null){ ?>
+                                <strong class="py-2 px-2 text-white"
+                                    style="
+                                                    border-radius: 50%;
+                                                    font-weight: 500 !important;
+                                                    background-color: rgba(255, 14, 14, 0.70);
+                                                    font-size: 15px;
+                                                    border: solid 1px #fff;
+                                                "><?= htmlspecialchars(strtoupper(substr($emp["firstname"], 0,1) . substr($emp["lastname"], 0,1))) ?></strong>
+                                <?php }else{ ?>
+                                <img src="../../authentication/uploads/<?= $emp["profile_picture"] ?>"
+                                    style="width: 200px; height: auto; border-radius: 50%;">
+                                <?php } ?>
+                            </div>
+                            <div class="col-md-10 d-flex flex-column">
+                                <strong
+                                    class="font-13"><?= htmlspecialchars($emp["firstname"] . ' ' . substr($emp["middlename"], 0, 1) . '. ' . $emp["lastname"]) ?></strong>
+                                <span
+                                    class="font-12"><?= htmlspecialchars($emp["Department_name"]) . ' •EMP-' . $emp["employeeID"] ?></span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <?php endforeach; ?>
                 </div>
-                <div class="tab-pane text-center table-body fade" id="print_schedule" role="tabpanel">
-                    <div class="responsive-table">
-                        <table>
+                <style>
+                #print_schedule {
+                    max-width: 80vw !important;
+                }
+                </style>
+                <div class="tab-pane text-center table-body col-md-12 fade" id="print_schedule" role="tabpanel">
+                    <div class="responsive-table w-100">
+                        <table class="table table-bordered table-sm w-100" id="scheduleTable">
                             <thead>
                                 <tr>
-                                    <td>name</td>
-                                    <td id="dates"></td>
+                                    <th>Employee Name</th>
+                                    <th id="dates-header">Select dates to view schedules</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <?php foreach($getEmployeeForSchedules as $emp) : ?>
+                            <tbody id="scheduleTableBody">
                                 <tr>
-                                    <td><?= htmlspecialchars($emp["lastname"] . ', ' . $emp["firstname"] . ' ' . substr($emp["middlename"], 0, 1) . '.') ?></td>
-                                    
+                                    <td colspan="2" class="text-center text-muted">Please select department and date
+                                        range to view schedules</td>
                                 </tr>
-                                <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>

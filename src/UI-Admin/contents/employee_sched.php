@@ -36,19 +36,21 @@
     </div>
 </div>
 <main class="col-md-12 d-flex justify-content-start align-items-start">
-    <div class="column p-2 m-0 rounded-2 col-12 col-md-4 col-12">
+    <div class="column p-2 m-0 rounded-2 col-12 col-md-3 col-12">
         <div class="card rounded-2">
             <div class="d-flex flex-column w-100 align-items-center justify-content-center p-2">
                 <div class="w-100 d-flex justify-content-start ps-3 pt-1">
-                    <a href="index.php?page=contents/hr_settings" class="btn btn-danger btn-sm"><i
+                    <a href="index.php?page=contents/hr_settings" class="btn btn-danger py-1 px-2 btn-sm"><i
                             class="fa-solid fa-arrow-left me-1"></i> Back</a>
                 </div>
                 <?php if($employeeData["profile_picture"] == null){ ?>
-                <strong class="py-1 px-5 text-white mb-2" style="
+                <strong class="py-2 px-3 text-white mb-2" style="
                                 border-radius: 50%;
-                                background-color: #303030ff;
-                                font-size: 5rem;
-                            "><?= htmlspecialchars(substr($employeeData["firstname"], 0,1)) ?></strong>
+                                font-weight: 500;
+                                background-color: rgba(255, 14, 14, 0.70);
+                                font-size: 2.5rem;
+                                border: solid 2px rgb(255, 14, 14);
+                            "><?= htmlspecialchars(strtoupper(substr($employeeData["firstname"], 0,1) . substr($employeeData["lastname"], 0,1))) ?></strong>
                 <?php }else{ ?>
                 <img src="../../authentication/uploads/<?= $employeeData["profile_picture"] ?>"
                     style="width: 200px; height: auto; border-radius: 50%;">
@@ -66,18 +68,18 @@
             </div>
         </div>
     </div>
-    <div class="col-md-8 col-12 d-flex justify-content-start align-items-start p-2">
+    <div class="col-md-9 col-12 d-flex justify-content-start align-items-start p-2">
         <div class="card col-md-12 col-12">
             <!-- NAVIAGATIONS OF TABS -->
             <div class="card-body col-md-12 col-12 d-flex justify-content-between pb-4">
                 <ul class="nav nav-tabs col-md-8 col-12" id="LeaveRequestTabs">
                     <li class="nav-item cursor-pointer col-md-6">
-                        <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#active"><i
-                                class="fa-solid fa-user-tie me-2"></i>Current Schedules</a>
+                        <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#active">
+                            <i class="fa-solid fa-calendar-days me-2"></i>Current Schedules</a>
                     </li>
                     <li class="nav-item cursor-pointer col-md-6">
-                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#inactive"><i
-                                class="fa-solid fa-user-plus me-2"></i>Upcoming Schedules</a>
+                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#inactive">
+                            <i class="fa-solid fa-calendar me-2"></i>Upcoming Schedules</a>
                     </li>
                 </ul>
             </div>
@@ -89,25 +91,25 @@
                             <table class="table table-responssive table-bordered table-sm text-center">
                                 <thead>
                                     <tr>
-                                        <td>Scheule at</td>
-                                        <td>Schedule From and To</td>
-                                        <td>Action</td>
+                                        <td class="font-15 fw-bold">Schedule at</td>
+                                        <td class="font-15 fw-bold">Schedule From and To</td>
+                                        <td class="font-15 fw-bold">Action</td>
                                     </tr>
                                 </thead>
                                 <tbody class="text-center">
                                     <?php if($scheduleResult){ 
                                         foreach($scheduleResult as $sched) :?>
                                     <tr>
-                                        <td><?= date('M d Y', strtotime($sched["schedule_at"])) ?></td>
-                                        <td><?= htmlspecialchars('(' . $sched["scheduleName"] . ') '.date('h:i A', strtotime($sched["schedule_from"])) . ' - ' . date('h:i A', strtotime($sched["schedule_to"]))) ?>
+                                        <td class="font-13"><?= date('M d Y', strtotime($sched["schedule_at"])) ?></td>
+                                        <td class="font-13"><?= htmlspecialchars('(' . $sched["scheduleName"] . ') '.date('h:i A', strtotime($sched["schedule_from"])) . ' - ' . date('h:i A', strtotime($sched["schedule_to"]))) ?>
                                         </td>
-                                        <td>
-                                            <button class="m-0 btn btn-outline-success" id="getScheduleId" onclick="getScheduleData(
+                                        <td class="font-13">
+                                            <button class="m-0 btn btn-outline-success py-2 px-3" id="getScheduleId" onclick="getScheduleData(
                                                 <?= $sched['employee_schedule_id'] ?>,
                                                 <?= $sched['template_id'] ?>,
                                                 '<?= addslashes($sched['schedule_at']) ?>'
                                             )" data-bs-toggle="modal" data-bs-target="#editSchedule">edit</button>
-                                            <button class="m-0 btn btn-outline-danger" data-bs-toggle="modal"
+                                            <button class="m-0 btn btn-outline-danger py-2 px-3" data-bs-toggle="modal"
                                                 data-bs-target="#deleteSchedule" id="getScheduleIdAndDelete"
                                                 data-id="<?= $sched["employee_schedule_id"] ?>">delete</button>
                                         </td>
@@ -130,25 +132,25 @@
                             <table class="table table-responssive table-bordered table-sm text-center">
                                 <thead>
                                     <tr>
-                                        <td>Scheule at</td>
-                                        <td>Schedule From and To</td>
-                                        <td>Action</td>
+                                        <td class="font-15 fw-bold">Schedule at</td>
+                                        <td class="font-15 fw-bold">Schedule From and To</td>
+                                        <td class="font-15 fw-bold">Action</td>
                                     </tr>
                                 </thead>
                                 <tbody class="text-center">
                                     <?php if($scheduleResultUpcoming){ 
                                         foreach($scheduleResultUpcoming as $sched) :?>
                                     <tr>
-                                        <td><?= date('M d Y', strtotime($sched["schedule_at"])) ?></td>
-                                        <td><?= htmlspecialchars('(' . $sched["scheduleName"] . ') '.date('h:i A', strtotime($sched["schedule_from"])) . ' - ' . date('h:i A', strtotime($sched["schedule_to"]))) ?>
+                                        <td class="font-13"><?= date('M d Y', strtotime($sched["schedule_at"])) ?></td>
+                                        <td class="font-13"><?= htmlspecialchars('(' . $sched["scheduleName"] . ') '.date('h:i A', strtotime($sched["schedule_from"])) . ' - ' . date('h:i A', strtotime($sched["schedule_to"]))) ?>
                                         </td>
-                                        <td>
-                                            <button class="m-0 btn btn-outline-success" id="getScheduleId" onclick="getScheduleData(
+                                        <td class="font-13">
+                                            <button class="m-0 btn btn-outline-success py-2 px-3" id="getScheduleId" onclick="getScheduleData(
                                                 <?= $sched['employee_schedule_id'] ?>,
                                                 <?= $sched['template_id'] ?>,
                                                 '<?= addslashes($sched['schedule_at']) ?>'
                                             )" data-bs-toggle="modal" data-bs-target="#editSchedule">edit</button>
-                                            <button class="m-0 btn btn-outline-danger" data-bs-toggle="modal"
+                                            <button class="m-0 btn btn-outline-danger py-2 px-3" data-bs-toggle="modal"
                                                 data-bs-target="#deleteSchedule" id="getScheduleIdAndDelete"
                                                 data-id="<?= $sched["employee_schedule_id"] ?>">delete</button>
                                         </td>

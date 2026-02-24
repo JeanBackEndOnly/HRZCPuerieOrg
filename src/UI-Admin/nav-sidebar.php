@@ -49,7 +49,7 @@
             </a>
             <a href="index.php?page=contents/hr_settings"
                 class="nav-item nav-hr_settings nav-employee_sched">
-                <span class="me-1"><i class="fa-solid fa-gears"></i></span> HR settings
+                <span class="me-1"><i class="fa-solid fa-gears"></i></span> Schedule settings
             </a>
             <!-- <a href="index.php?page=contents/form" class="nav-item nav-form m-0">
                 <span class="me-1"><i class="me-1"></i></span> Forms

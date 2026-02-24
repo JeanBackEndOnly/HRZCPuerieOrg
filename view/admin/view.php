@@ -80,7 +80,7 @@
     // Get employees for scheduling ======================================================================   
     function getEmployeesForSchedule(){
         $pdo = db_connect();
-        $stmt = $pdo->prepare("SELECT ed.employee_id, ed.firstname, ed.middlename, ed.lastname, ed.suffix,
+        $stmt = $pdo->prepare("SELECT ed.profile_picture, hd.employeeID, ed.employee_id, ed.firstname, ed.middlename, ed.lastname, ed.suffix,
             d.Department_name, d.Department_code, ed.employee_id FROM employee_data ed
             INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
             LEFT JOIN departments d ON hd.Department_id = d.Department_id
@@ -94,6 +94,8 @@
             d.Department_name, d.Department_code, ed.employee_id FROM employee_data ed
             INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
             LEFT JOIN departments d ON hd.Department_id = d.Department_id
+            LEFT JOIN employee_schedule es ON ed.employee_id = es.employee_id
+            LEFT JOIN sched_template st ON es.schedule_id = st.template_id
             ORDER BY ed.lastname DESC");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -21,4 +21,10 @@ if(!$getEmployeeForSchedules){
     $_SESSION['error'] = "Failed to fetch employees data";
     $getEmployeeForSchedules = null;
 }
+
+$get_Employee_Schedules = getEmployeesSchedule();
+if(!$get_Employee_Schedules){
+    $_SESSION['error'] = "Failed to fetch employees data";
+    $get_Employee_Schedules = null;
+}
 ?>

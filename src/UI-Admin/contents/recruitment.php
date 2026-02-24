@@ -311,4 +311,4 @@
         </div>
     </div>
 </div>
-<script src="../../assets/js/hr_js/recruitment.js" defer></script>
+<script src="../../assets/js/hr_js/admin/recruitment.js" defer></script>

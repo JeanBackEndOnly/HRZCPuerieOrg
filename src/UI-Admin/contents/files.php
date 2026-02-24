@@ -176,4 +176,4 @@ foreach ($all_files as $file) {
         </form>
     </div>
 </div>
-<script src="../../assets/js/hr_js/files.js" defer></script>
+<script src="../../assets/js/hr_js/admin/files.js" defer></script>

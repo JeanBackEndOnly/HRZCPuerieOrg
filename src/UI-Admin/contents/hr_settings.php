@@ -273,4 +273,4 @@
         </form>
     </div>
 </div>
-<script src="../../assets/js/hr_js/hr_settings.js" defer></script>
+<script src="../../assets/js/hr_js/admin/hr_settings.js" defer></script>

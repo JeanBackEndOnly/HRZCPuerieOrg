@@ -5,34 +5,6 @@
             <small class="text-muted ">Accept, Reject and Update Employee Leave Request</small>
         </div>
     </div>
-    <!-- EMPLOYEE COUNTS DISPLAYS ================================================================================================ -->
-    <div class="row mb-2">
-        <?php
-            $official = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Approved'")->fetchColumn();
-            $pending = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Recommended'")->fetchColumn();
-            $inactive = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Disapproved'")->fetchColumn();
-        ?>
-        <div class="col-md-4">
-            <div class="card-header shadow bg-white text-center p-4 ">
-
-                <h5 id="pendingEnrollments"><?= $pending ?></h5>
-                <small>Recommended Leave</small>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card-header shadow bg-white text-center p-4 ">
-                <h5 id="approvedEnrollments"><?= $official ?></h5>
-                <small>Approved Leaves</small>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card-header shadow bg-white text-center p-4 ">
-                <h5 id="rejectedEnrollments"><?= $inactive ?></h5>
-                <small>Disapproved Leaves</small>
-            </div>
-        </div>
-    </div>
-
     <!-- EMPLOYEE ACCOUNT DISPLAYS =============================================================================================== -->
     <div class="card">
         <!-- NAVIAGATIONS OF TABS -->

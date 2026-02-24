@@ -4,7 +4,7 @@
     }
     
     require_once '../../authentication/config.php';
-    // System Fetching ===================================================================================
+// System Fetching (GLOBAL) ===================================================================================
     function getUnitSection(){
         try {
             $pdo = db_connect();
@@ -15,7 +15,20 @@
             echo 'An error occured: ' . $e->getMessage();
         }
     }
-    // employee fetching =================================================================================
+    function getJobtitles(){
+        $pdo = db_connect();
+        $stmt = $pdo->prepare("SELECT * FROM jobtitles");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    function getDedpartments(){
+        $pdo = db_connect();
+        $stmt = $pdo->prepare("SELECT * FROM departments");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+// employee fetching =================================================================================
     function getEmployees(){
         $pdo = db_connect();
         
@@ -59,7 +72,8 @@
         return $stmt->fetch(PDO::FETCH_ASSOC);
 
     }
-    // HR data fetching ==================================================================================
+
+// HR data fetching ==================================================================================
     function getHrData(){
         $pdo = db_connect();
         if($_SESSION["hrData"]["employee_id"]){
@@ -77,7 +91,8 @@
         $stmt->execute(['employee_id' => $hr_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    // Get employees for scheduling ======================================================================   
+
+// Get employees for scheduling ======================================================================   
     function getEmployeesForSchedule(){
         $pdo = db_connect();
         $stmt = $pdo->prepare("SELECT ed.profile_picture, hd.employeeID, ed.employee_id, ed.firstname, ed.middlename, ed.lastname, ed.suffix,
@@ -89,7 +104,7 @@
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Get employees via recruitiment module =============================================================
+// Get employees via recruitiment module =============================================================
     function getActiveEmployees(){
         $pdo = db_connect();
         $stmtOfficial = $pdo->prepare("
@@ -115,4 +130,55 @@
         ");
         $stmtOfficial->execute();
         return $stmtOfficial->fetchAll(PDO::FETCH_ASSOC);
+    }
+    function getPendingEmployees(){
+        $pdo = db_connect();
+        $stmtPending = $pdo->prepare("
+            SELECT 
+                ed.employee_id, 
+                ed.firstname, 
+                ed.middlename, 
+                ed.lastname, 
+                ed.suffix,
+                ed.profile_picture,
+                d.Department_name AS department,
+                hd.employeeID,
+                jt.jobTitle,
+                jt.salary,
+                ed.status
+            FROM employee_data ed
+            INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
+            LEFT JOIN jobTitles jt ON hd.jobtitle_id = jt.jobTitles_id
+            LEFT JOIN departments d ON hd.Department_id = d.Department_id
+            WHERE ed.status = 'Pending' AND ed.user_role = 'EMPLOYEE'
+            ORDER BY ed.lastname, ed.firstname
+        ");
+        $stmtPending->execute();
+        return $stmtPending->fetchAll(PDO::FETCH_ASSOC);
+    }
+    function getInactiveEmployees(){
+        $pdo = db_connect();
+        $stmtInactive = $pdo->prepare("
+            SELECT 
+                ed.employee_id, 
+                ed.firstname, 
+                ed.middlename, 
+                ed.lastname, 
+                ed.suffix,
+                ed.profile_picture,
+                d.Department_name AS department,
+                hd.employeeID,
+                jt.jobTitle,
+                jt.salary,
+                ed.status,
+                ed.user_role
+            FROM employee_data ed
+            INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
+            LEFT JOIN jobTitles jt ON hd.jobtitle_id = jt.jobTitles_id
+            LEFT JOIN departments d ON hd.Department_id = d.Department_id
+            WHERE ed.status = 'Inactive' AND ed.user_role = 'EMPLOYEE'
+            ORDER BY ed.lastname, ed.firstname
+        ");
+        $stmtInactive->execute();
+        return $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
     }

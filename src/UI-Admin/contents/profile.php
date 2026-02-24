@@ -1,5 +1,6 @@
 <?php $employee_id = $getEmployee["employee_id"]; ?>
 <section>
+    <!-- Header and buttons for account approval ================================================================ -->
     <div class="d-flex justify-content-between align-items-center mb-0 col-md-12 col-12">
         <div class="mx-2 col-md-3 col-12">
             <h4 class=""><i class="fa-regular fa-circle-user me-1"></i>Employee Profile</h4>
@@ -23,14 +24,10 @@
                 data-bs-target="#deleteEmployeeModal"
                 data-id="<?= htmlspecialchars($employee_id) ?>"
                 id="getEmployeeId">Delete</button>
-                <button class="btn px-4 py-2 btn-success"
-                data-bs-toggle="modal"
-                data-bs-target="#aprrovalEmployee"
-                data-id="<?= htmlspecialchars($employee_id) ?>"
-                id="getEmployeeId">Approve</button>
             <?php }else{}?>
         </div>
     </div>
+    <!-- Profile tabs =========================================================================================== -->
     <div class="card-body col-md-12 col-12">
         <ul class="nav nav-tabs justify-content-end align-items-end col-md-12 col-12" id="ProfileInfoTabs">
             <li class="nav-item cursor-pointer col-md-2 col-12">
@@ -59,42 +56,59 @@
             </li>
         </ul>
     </div>
-
+    <!-- Profile contents ======================================================================================= -->
     <div class="row">
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-4">
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-3">
             <div class="card rounded-2">
                 <div class="d-flex flex-column w-100 align-items-center justify-content-center p-2">
                     <div class="w-100 d-flex justify-content-start ps-3 pt-1">
-                        <a href="index.php?page=contents/recruitment" class="btn btn-danger btn-sm"><i
+                        <a href="index.php?page=contents/recruitment" class="btn btn-danger py-1 px-2 font-12 btn-sm"><i
                                 class="fa-solid fa-arrow-left me-1"></i> Back</a>
                     </div>
                     <?php if($getEmployee["profile_picture"] == null){ ?>
-                    <strong class="py-1 px-5 text-white mb-2" style="
+                    <strong class="py-2 px-4 text-white mb-2" style="
                                 border-radius: 50%;
-                                background-color: #303030ff;
-                                font-size: 5rem;
+                                font-weight: 500;
+                                background-color: rgba(255, 14, 14, 0.70);
+                                font-size: 2.5rem;
+                                border: solid 2px rgb(255, 14, 14);
                             "><?= htmlspecialchars(substr($getEmployee["firstname"], 0,1)) ?></strong>
                     <?php }else{ ?>
                     <img src="../../authentication/uploads/<?= $getEmployee["profile_picture"] ?>"
-                        style="width: 200px; height: auto; border-radius: 50%;">
+                        style="width: 150px; height: auto; border-radius: 50%;">
                     <?php } ?>
                     <span id="employeeID"
-                        class="text-muted fw-bold"><?= htmlspecialchars($getEmployee["employeeID"]) ?></span>
-                    <span
+                        class="text-muted fw-bold font-15"><?= 'EMP-' . htmlspecialchars($getEmployee["employeeID"]) ?></span>
+                    <span class="font-15 text-center"
                         id="employeeName"><?= htmlspecialchars($getEmployee["firstname"]) . " " .  substr(htmlspecialchars($getEmployee["middlename"]), 0, 1) . ". " . htmlspecialchars($getEmployee["lastname"]) ?></span>
-                    <span class="text-center"
+                    <span class="text-center font-15"
                         id="employeeDept"><?= htmlspecialchars($getEmployee["Department_name"]) ?></span>
                     <span
-                        class="text-center"><?= isset($getEmployee["unit_section_name"]) ? ' (' . htmlspecialchars($getEmployee["unit_section_name"]) . ')' : '' ?></span>
-                    <span id="employeeJobTitle"><?= htmlspecialchars($getEmployee["jobTitle"]) ?></span>
+                        class="text-center font-15"><?= isset($getEmployee["unit_section_name"]) ? ' (' . htmlspecialchars($getEmployee["unit_section_name"]) . ')' : '' ?></span>
+                    <span class="text-center font-15" id="employeeJobTitle"><?= htmlspecialchars($getEmployee["jobTitle"]) ?></span>
                     <span id="employeeSchedule" class="fw-bold"></span>
-                    <a href="index.php?page=contents/pds&employee_id=<?= $employee_id ?>" class="mt-2"><strong>View
+                    <form class="form_select d-flex align-items-center" id="formSelect">
+                        <input type="hidden" name="employee_id" value="<?= $getEmployee["employee_id"] ?>">
+                        <?php if($getEmployee["status"] == "Active"){ ?>
+                            <i class="fa-solid fa-circle font-8 text-success me-1"></i>
+                        <?php }else if($getEmployee["status"] == "Inactive"){ ?>
+                            <i class="fa-solid fa-circle font-8 text-danger me-1"></i>
+                        <?php }else{ ?>
+                            <i class="fa-solid fa-circle font-8 text-warning me-1"></i>
+                        <?php } ?>
+                        <select name="status" class="form-select select_status font-15">
+                            <option value="">Select Employee Status</option>
+                            <option value="Active" <?= ($getEmployee["status"] == "Active") ? "selected" : "" ?>>Active</option>
+                            <option value="Inactive" <?= ($getEmployee["status"] == "Inactive") ? "selected" : "" ?>>Inactive</option>
+                        </select>
+                    </form>
+                    <a class="font-15 mt-2" href="index.php?page=contents/pds&employee_id=<?= $employee_id ?>" class="mt-2"><strong>View
                             Personal Data Sheet <i class="fa-solid fa-arrow-up-right-from-square ms-2"></i></strong></a>
                 </div>
             </div>
         </div>
         <!-- PERSONAL INFORMATIONS TAB -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade show active" role="tabpanel"
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade show active" role="tabpanel"
             id="Personal">
             <form id="profile_update">
                 <div class="card rounded-2 profile-contents show-scroll">
@@ -392,21 +406,11 @@
                             <input type="text" name="joined_at" value="<?= $getEmployee["joined_at"] ?>"
                                 id="joined_at_field" class="form-control">
                         </div>
-                        <?php
-                            $stmt = $pdo->prepare("SELECT * FROM departments");
-                            $stmt->execute();
-                            $departmentResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                            $stmt = $pdo->prepare("SELECT * FROM jobtitles");
-                            $stmt->execute();
-                            $jobtitleResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                        ?>
-
                         <div class="col-md-4">
                             <label class="form-label">Department</label>
                             <select name="Department_id" class="form-select">
                                 <option value="">Select Department</option>
-                                <?php foreach($departmentResult as $departments): ?>
+                                <?php foreach($getDedpartments as $departments): ?>
                                 <option value="<?= $departments['Department_id'] ?>"
                                     <?= ($departments['Department_id'] == $getEmployee['Department_id']) ? 'selected' : '' ?>>
                                     <?= htmlspecialchars($departments['Department_name']) ?>
@@ -419,7 +423,7 @@
                             <label class="form-label">Job Title</label>
                             <select disabled name="jobTitles_id" class="form-select">
                                 <option value="">Select Job Title</option>
-                                <?php foreach($jobtitleResult as $jb): ?>
+                                <?php foreach($getDesignations as $jb): ?>
                                 <option value="<?= $jb['jobTitles_id'] ?>"
                                     <?= ($jb['jobTitles_id'] == $getEmployee['jobTitles_id']) ? 'selected' : '' ?>>
                                     <?= htmlspecialchars($jb['jobTitle']) ?>
@@ -1002,7 +1006,7 @@
         </div>
     </div>
 </section>
-<!-- Pending accounts approval and rejection modals ================================================ -->
+<!-- ================================================ MODALS ================================================ -->
 <!-- PENDING APPROVAL -->
 <div class="modal fade" id="aprrovalEmployee" tabindex="-1" aria-labelledby="aprrovalEmployeeLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -1062,112 +1066,4 @@
         </form>
     </div>
 </div>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const profileContents = document.querySelector('.profile-contents');
-    if (profileContents) {
-        // Override the scrollbar display property
-        profileContents.style.setProperty('scrollbar-width', 'thin', 'important');
-        profileContents.style.setProperty('-webkit-scrollbar', 'auto', 'important');
-
-        // Add custom scrollbar styling
-        const style = document.createElement('style');
-        style.textContent = `
-            .profile-contents::-webkit-scrollbar {
-                display: block !important;
-                width: 8px !important;
-            }
-            .profile-contents::-webkit-scrollbar-track {
-                background: #f1f1f1 !important;
-                border-radius: 4px !important;
-            }
-            .profile-contents::-webkit-scrollbar-thumb {
-                background: #c1c1c1 !important;
-                border-radius: 4px !important;
-            }
-            .profile-contents::-webkit-scrollbar-thumb:hover {
-                background: #a8a8a8 !important;
-            }
-        `;
-        document.head.appendChild(style);
-    }
-
-    const birthdayInput = document.getElementById('birthday');
-    const ageInput = document.getElementById('age');
-
-    // Function to calculate age from birthday
-    function calculateAge(birthday) {
-        if (!birthday) return '';
-
-        const birthDate = new Date(birthday);
-        const today = new Date();
-
-        // Check if birthdate is valid and not in the future
-        if (birthDate > today) {
-            ageInput.classList.add('is-invalid');
-            return 'Invalid date';
-        }
-
-        ageInput.classList.remove('is-invalid');
-
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const monthDiff = today.getMonth() - birthDate.getMonth();
-        const dayDiff = today.getDate() - birthDate.getDate();
-
-        // Adjust age if birthday hasn't occurred this year yet
-        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-            age--;
-        }
-
-        return age >= 0 ? age : 0;
-    }
-
-    // Function to validate birthday (not in future)
-    function validateBirthday(birthday) {
-        if (!birthday) return true;
-
-        const birthDate = new Date(birthday);
-        const today = new Date();
-
-        if (birthDate > today) {
-            birthdayInput.classList.add('is-invalid');
-            return false;
-        }
-
-        birthdayInput.classList.remove('is-invalid');
-        return true;
-    }
-
-    // Calculate age when birthday changes
-    birthdayInput.addEventListener('change', function() {
-        if (validateBirthday(this.value)) {
-            const age = calculateAge(this.value);
-            ageInput.value = age;
-        } else {
-            ageInput.value = '';
-        }
-    });
-
-    // Real-time age calculation
-    birthdayInput.addEventListener('input', function() {
-        if (validateBirthday(this.value)) {
-            const age = calculateAge(this.value);
-            ageInput.value = age;
-        } else {
-            ageInput.value = '';
-        }
-    });
-
-    // Calculate initial age if birthday is already set
-    if (birthdayInput.value) {
-        if (validateBirthday(birthdayInput.value)) {
-            const initialAge = calculateAge(birthdayInput.value);
-            ageInput.value = initialAge;
-        }
-    }
-
-    // Make age field read-only since it's auto-calculated
-    ageInput.readOnly = true;
-    ageInput.placeholder = 'Auto-calculated from birthday';
-});
-</script>
+<script src="../../assets/js/hr_js/admin/profile.js" defer></script>

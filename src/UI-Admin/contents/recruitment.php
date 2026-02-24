@@ -1,56 +1,4 @@
-<?php
-// Fetch Pending Employees
-$stmtPending = $pdo->prepare("
-    SELECT 
-        ed.employee_id, 
-        ed.firstname, 
-        ed.middlename, 
-        ed.lastname, 
-        ed.suffix,
-        ed.profile_picture,
-        d.Department_name AS department,
-        hd.employeeID,
-        jt.jobTitle,
-        jt.salary,
-        ed.status
-    FROM employee_data ed
-    INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-    LEFT JOIN jobTitles jt ON hd.jobtitle_id = jt.jobTitles_id
-    LEFT JOIN departments d ON hd.Department_id = d.Department_id
-    WHERE ed.status = 'Pending' AND ed.user_role = 'EMPLOYEE'
-    ORDER BY ed.lastname, ed.firstname
-");
-$stmtPending->execute();
-$pendingEmployees = $stmtPending->fetchAll(PDO::FETCH_ASSOC);
-
-// Fetch Inactive Employees
-$stmtInactive = $pdo->prepare("
-    SELECT 
-        ed.employee_id, 
-        ed.firstname, 
-        ed.middlename, 
-        ed.lastname, 
-        ed.suffix,
-        ed.profile_picture,
-        d.Department_name AS department,
-        hd.employeeID,
-        jt.jobTitle,
-        jt.salary,
-        ed.status,
-        ed.user_role
-    FROM employee_data ed
-    INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-    LEFT JOIN jobTitles jt ON hd.jobtitle_id = jt.jobTitles_id
-    LEFT JOIN departments d ON hd.Department_id = d.Department_id
-    WHERE ed.status = 'Inactive' AND ed.user_role = 'EMPLOYEE'
-    ORDER BY ed.lastname, ed.firstname
-");
-$stmtInactive->execute();
-$inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
-
-
-    $countOfficials = 1;
-?>
+<?php $pending = $pdo->query("SELECT COUNT(*) FROM employee_data WHERE status = 'Pending' AND user_role = 'EMPLOYEE'")->fetchColumn(); ?>
 <section>
     <div class="d-flex justify-content-between align-items-center mb-2 col-md-12 col-12 flex-wrap">
         <div class=" col-md-6 col-12">
@@ -64,12 +12,6 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
             </button>
         </div>
     </div>
-
-    <?php
-           
-            $pending = $pdo->query("SELECT COUNT(*) FROM employee_data WHERE status = 'Pending' AND user_role = 'EMPLOYEE'")->fetchColumn();
-           
-        ?>
 
     <!-- EMPLOYEE ACCOUNT DISPLAYS =============================================================================================== -->
     <div class="card">
@@ -160,8 +102,8 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
                     tabindex="0">
 
                     <?php 
-                            if($pendingEmployees){
-                                foreach ($pendingEmployees as $pendings) : ?>
+                            if($PendingEmployees){
+                                foreach ($PendingEmployees as $pendings) : ?>
                     <a href="index.php?page=contents/profile&id=<?= htmlspecialchars($pendings["employee_id"]) ?>"
                         class="col-md-4">
                         <div class="card col-md-12 d-flex flex-row shadow p-2 rounded-3 border">
@@ -199,8 +141,8 @@ $inactiveEmployees = $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
                     tabindex="0">
 
                     <?php 
-                            if($inactiveEmployees){
-                                foreach ($inactiveEmployees as $inactive) : ?>
+                            if($InactiveEmployees){
+                                foreach ($InactiveEmployees as $inactive) : ?>
                     <a href="index.php?page=contents/profile&id=<?= htmlspecialchars($inactive["employee_id"]) ?>"
                         class="col-md-4">
                         <div class="card col-md-12 d-flex flex-row shadow p-2 rounded-3 border">

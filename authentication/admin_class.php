@@ -1465,9 +1465,10 @@ class Action
         $scheduleTo = htmlSpecialChars($_POST["scheduleTo"] ?? '');
         $shift_type = htmlSpecialChars($_POST["shift_type"] ?? '');
         $work_days = htmlSpecialChars($_POST["work_days"] ?? '');
-        $admin_update = htmlSpecialChars($_POST["admin_update"]);
         $unit_section_id = htmlSpecialChars($_POST["unit_section_id"]);
         $joined_at = htmlSpecialChars($_POST["joined_at"]);
+        $user_id = htmlSpecialChars($_POST["user_id"]);
+        $Department_id = htmlSpecialChars($_POST["Department_id"]);
 
         try {
             if($unit_section_id == ''){
@@ -1476,61 +1477,17 @@ class Action
                     'message' => 'Unit'
                 ]);
             }
-            if($admin_update == 'true'){
-                $admin_user_id = htmlSpecialChars($_POST["admin_user_id"]);
-                $admin_department_id = htmlSpecialChars($_POST["admin_department_id"]);
-                $admin_position_id = htmlSpecialChars($_POST["admin_position_id"]);
-                $admin_id = 1;
 
-                $stmt = $this->db->prepare("UPDATE admin SET joined_at = :joined_at WHERE admin_id = :admin_id");
-                $stmt->execute([
-                    'joined_at' => $joined_at,
-                    'admin_id' => $admin_id
-                ]);
+            $stmt = $this->db->prepare("UPDATE employee_data SET  Department_id = :Department_id, salary = :salary, 
+                joined_at = :joined_at, unit_section_id = :unit_section_id WHERE user_id = :user_id");
+            $stmt->execute([
+                'user_id' => $user_id,
+                'Department_id' => $Department_id,
+                'salary' => $salary,
+                'joined_at' => $joined_at,
+                'unit_section_id' => $unit_section_id
+            ]);
 
-                $stmt = $this->db->prepare("UPDATE admin_info SET admin_user_id = :admin_user_id, admin_position_id = :admin_position_id,
-                    admin_department_id = :admin_department_id, salary = :salary, unit_section_id = :unit_section_id WHERE
-                    admin_id = :admin_id");
-                    $stmt->execute([
-                        'admin_id' => $admin_id,
-                        'admin_user_id' => $admin_user_id,
-                        'admin_position_id' => $admin_position_id,
-                        'admin_department_id' => $admin_department_id,
-                        'salary' => $salary,
-                        'unit_section_id' => $unit_section_id
-                    ]);
-
-                    $stmtSchdule = $this->db->prepare("UPDATE admin_schedule SET  shift_type = :shift_type, work_days = :work_days, scheduleFrom = :scheduleFrom, scheduleTo = :scheduleTo WHERE admin_id = :admin_id");
-                    $stmtSchdule->execute([
-                        'shift_type'          => $shift_type,
-                        'work_days'     => $work_days,
-                        'scheduleFrom' => $scheduleFrom,
-                        'scheduleTo' => $scheduleTo,
-                        'admin_id'     => $admin_id
-                    ]);
-            }else if($admin_update == 'false'){
-                $user_id = htmlSpecialChars($_POST["user_id"]);
-                $employeeID = htmlSpecialChars($_POST["employeeID"]);
-                $Department_id = htmlSpecialChars($_POST["Department_id"]);
-
-                $stmt = $this->db->prepare("UPDATE employee_data SET employeeID = :employeeID, Department_id = :Department_id, salary = :salary, 
-                    joined_at = :joined_at, unit_section_id = :unit_section_id WHERE user_id = :user_id");
-                $stmt->execute([
-                    'user_id' => $user_id,
-                    'employeeID' => $employeeID,
-                    'Department_id' => $Department_id,
-                    'salary' => $salary,
-                    'joined_at' => $joined_at,
-                    'unit_section_id' => $unit_section_id
-                ]);
-
-                $stmtSchdule = $this->db->prepare("UPDATE schedule SET  shift_type = :shift_type, work_days = :work_days WHERE user_id = :user_id");
-                $stmtSchdule->execute([
-                    'shift_type'          => $shift_type,
-                    'work_days'     => $work_days,
-                    'user_id'     => $user_id
-                ]);
-            }
             return json_encode([
                 'status' => 1,
                 'message' => 'Profile updated successfully!'

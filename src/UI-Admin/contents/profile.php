@@ -1,4 +1,4 @@
-<?php $employee_id = $getEmployee["employee_id"]; ?>
+<?php $user_id = $getEmployee["user_id"]; ?>
 <section>
     <!-- Header and buttons for account approval ================================================================ -->
     <div class="d-flex justify-content-between align-items-center mb-0 col-md-12 col-12">
@@ -10,12 +10,12 @@
         <div class="col-md-9 d-flex gap-1 justify-content-end align-items-end ps-e">
             <?php if($getEmployee["status"] == 'Pending'){ ?>
             <button class="btn px-4 py-2 btn-success" data-bs-toggle="modal" data-bs-target="#aprrovalEmployee"
-                data-id="<?= htmlspecialchars($employee_id) ?>" id="getEmployeeId">Approve</button>
+                data-id="<?= htmlspecialchars($user_id) ?>" id="getEmployeeId">Approve</button>
             <button class="btn px-4 py-2 btn-danger" data-bs-toggle="modal" data-bs-target="#rejectionEmployee"
-                data-id="<?= htmlspecialchars($employee_id) ?>" id="getEmployeeId">Reject</button>
+                data-id="<?= htmlspecialchars($user_id) ?>" id="getEmployeeId">Reject</button>
             <?php }else if($getEmployee["status"] == 'Inactive'){?>
             <button class="btn px-4 py-2 btn-danger" data-bs-toggle="modal" data-bs-target="#deleteEmployeeModal"
-                data-id="<?= htmlspecialchars($employee_id) ?>" id="getEmployeeId">Delete</button>
+                data-id="<?= htmlspecialchars($user_id) ?>" id="getEmployeeId">Delete</button>
             <?php }else{}?>
         </div>
     </div>
@@ -80,7 +80,7 @@
                         id="employeeJobTitle"><?= htmlspecialchars($getEmployee["jobTitle"]) ?></span>
                     <span id="employeeSchedule" class="fw-bold"></span>
                     <form class="form_select d-flex align-items-center" id="formSelect">
-                        <input type="hidden" name="employee_id" value="<?= $getEmployee["employee_id"] ?>">
+                        <input type="hidden" name="user_id" value="<?= $getEmployee["user_id"] ?>">
                         <?php if($getEmployee["status"] == "Active"){ ?>
                         <i class="fa-solid fa-circle font-8 text-success me-1"></i>
                         <?php }else if($getEmployee["status"] == "Inactive"){ ?>
@@ -96,7 +96,7 @@
                                 Inactive</option>
                         </select>
                     </form>
-                    <a class="font-15 mt-2" href="index.php?page=contents/pds&employee_id=<?= $employee_id ?>"
+                    <a class="font-15 mt-2" href="index.php?page=contents/pds&user_id=<?= $user_id ?>"
                         class="mt-2"><strong>View
                             Personal Data Sheet <i class="fa-solid fa-arrow-up-right-from-square ms-2"></i></strong></a>
                 </div>
@@ -107,7 +107,7 @@
             id="Personal">
             <form id="profile_update">
                 <div class="card rounded-2 profile-contents show-scroll">
-                    <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
+                    <input type="hidden" name="user_id" value="<?= $user_id ?>">
                     <!-- PERSONAL INFORMATION HEADER -->
                     <div class="col-md-12 d-flex">
                         <div class="header ps-3 pt-3 col-md-5">
@@ -390,7 +390,7 @@
                             <?php } else {} ?>
                         </div>
                         <div class="col-md-12 row">
-                            <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
+                            <input type="hidden" name="user_id" value="<?= $user_id ?>">
                             <div class="col-md-4">
                                 <label class="form-label">Employee ID</label>
                                 <input readonly type="text" name="employeeID" value="<?= $getEmployee["employeeID"] ?>"
@@ -458,7 +458,7 @@
                     <div class="col-md-12 d-flex justify-content-end">
                         <button class="btn btn-danger btn-sm px-3 py-2" data-bs-toggle="modal"
                             data-bs-target="#manageCareerPath" onclick="getEmploymentData(
-                                <?= $employee_id ?>,
+                                <?= $user_id ?>,
                                 '<?= addslashes($getEmployee['jobTitle']) ?>',
                                 '<?= $getEmployee['salary'] ?>'
                             )"><i class="fa-solid fa-pen-to-square me-2"></i>Manage
@@ -482,7 +482,7 @@
                                     <td><?= $career["job_from"] ?></td>
                                     <td><?= $career["job_to"] ?></td>
                                     <td><?= $career["job_status"] ?></td>
-                                    <td><?= $career["addAt"] ?></td>
+                                    <td><?= date('M d Y', strtotime($career["addAt"])) ?></td>
                                     <td>
                                         <button class="btn btn-danger btn-sm m-0 my-2 mx-3"><i
                                                 class="fa-solid fa-print me-2"></i>Print</button>
@@ -512,7 +512,7 @@
         <!-- Leave Credits Tab -->
         <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Leave_Credits">
             <form id="leave_update">
-                <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
+                <input type="hidden" name="user_id" value="<?= $user_id ?>">
                 <div class="header pt-3 col-md-5">
                     <h5 class="m-0 p-0">
                         <i class="fa-solid fa-circle-info me-2"></i>Leave Credits
@@ -551,7 +551,7 @@
         <!-- EDUCATIONAL BACKGROUND TAB -->
         <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Education">
             <form id="educational_update" class="profile-contents show-scroll">
-                <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
+                <input type="hidden" name="user_id" value="<?= $user_id ?>">
                 <div class="card rounded-2 show-scroll">
                     <!-- EDUCATIONAL INFORMATION HEADER -->
                     <div class="col-md-12 d-flex">
@@ -572,8 +572,8 @@
                         $educationData = [];
                         
                         foreach($educationLevels as $level) {
-                            $stmt = $pdo->prepare("SELECT * FROM educational_data WHERE employee_id = ? AND education_level = ?");
-                            $stmt->execute([$employee_id, $level]);
+                            $stmt = $pdo->prepare("SELECT * FROM educational_data WHERE user_id = ? AND education_level = ?");
+                            $stmt->execute([$user_id, $level]);
                             $educationData[$level] = $stmt->fetch(PDO::FETCH_ASSOC);
                         }
                     ?>
@@ -720,7 +720,7 @@
         <!-- FAMILY BACKGROUND TAB -->
         <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Family">
             <form id="family_update">
-                <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
+                <input type="hidden" name="user_id" value="<?= $user_id ?>">
                 <div class="card rounded-2 profile-contents show-scroll">
                     <!-- FAMILY INFORMATION HEADER -->
                     <div class="col-md-12 d-flex">
@@ -736,19 +736,19 @@
                         <?php } ?>
                     </div>
                     <?php
-                        $stmtFather = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Father'");
+                        $stmtFather = $pdo->prepare("SELECT * FROM Family_data WHERE user_id = '$user_id' AND Relationship = 'Father'");
                         $stmtFather->execute();
                         $father = $stmtFather->fetch(PDO::FETCH_ASSOC);        
                     
-                        $stmtMother = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Mother'");
+                        $stmtMother = $pdo->prepare("SELECT * FROM Family_data WHERE user_id = '$user_id' AND Relationship = 'Mother'");
                         $stmtMother->execute();
                         $mother = $stmtMother->fetch(PDO::FETCH_ASSOC);   
 
-                        $stmtGuardian = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Guardian'");
+                        $stmtGuardian = $pdo->prepare("SELECT * FROM Family_data WHERE user_id = '$user_id' AND Relationship = 'Guardian'");
                         $stmtGuardian->execute();
                         $guardian = $stmtGuardian->fetch(PDO::FETCH_ASSOC);  
                         
-                        $stmtSpouse = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Spouse'");
+                        $stmtSpouse = $pdo->prepare("SELECT * FROM Family_data WHERE user_id = '$user_id' AND Relationship = 'Spouse'");
                         $stmtSpouse->execute();
                         $Spouse = $stmtSpouse->fetch(PDO::FETCH_ASSOC);  
                         ?>
@@ -1032,7 +1032,7 @@
                 <!-- FAMILY INFORMATION CONTENTS -->
                 <div class="row flex-wrap col-md-12 col-12 p-3">
                     <?php
-                        $stmtActivities = $pdo->prepare("SELECT * FROM activities WHERE employee_id = '$employee_id' ORDER BY activity_at DESC");
+                        $stmtActivities = $pdo->prepare("SELECT * FROM activities WHERE user_id = '$user_id' ORDER BY activity_at DESC");
                         $stmtActivities->execute();
                         $Activities = $stmtActivities->fetchAll(PDO::FETCH_ASSOC);
 
@@ -1075,7 +1075,7 @@
             </div>
             <div class="modal-body">
                 Are you sure you want to Approved this employee Account?
-                <input type="hidden" name="employee_ID" id="approval_employeeID">
+                <input type="hidden" name="user_id" id="approval_employeeID">
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-danger">Yes, Approved</button>
@@ -1095,7 +1095,7 @@
             </div>
             <div class="modal-body">
                 Are you sure you want to Approved this employee Account?
-                <input type="hidden" name="employee_ID" id="rejection_employeeID">
+                <input type="hidden" name="user_id" id="rejection_employeeID">
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-danger">Yes, Reject</button>
@@ -1115,7 +1115,7 @@
             </div>
             <div class="modal-body">
                 Are you sure you want to Delete this employee Account?
-                <input type="hidden" name="employee_id" id="deletion_employeeID">
+                <input type="hidden" name="user_id" id="deletion_employeeID">
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-danger">Yes, Delete</button>
@@ -1133,7 +1133,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <input type="hidden" class="form-control" name="employee_id" id="employee_id_careerPath">
+                <input type="hidden" class="form-control" name="user_id" id="user_id_careerPath">
                 <div class="mx-2">
                     <label class="form-label">Current Designation</label>
                     <input class="form-control" readonly type="text" name="job_from" id="currentDesignationId">

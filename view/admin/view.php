@@ -44,35 +44,35 @@
             return ['employee_data' => null, 'error' => 'Invalid employee ID format'];
         }
         
-        $employee_id = (int)$_GET["id"];
+        $user_id = (int)$_GET["id"];
         
         $sql = "
             SELECT 
                 j.*,
-                ed.*,
+                u.*,
                 d.*,
-                hd.*,
+                ed.*,
                 s.*,
                 lc.*,
                 us.unit_section_name
-            FROM employee_data ed
-            LEFT JOIN hr_data hd
-                ON ed.employee_id = hd.employee_id
+            FROM users u
+            INNER JOIN employee_data ed
+                ON u.user_id = ed.user_id
             LEFT JOIN jobTitles j
-                ON hd.jobtitle_id = j.jobTitles_id
+                ON ed.jobtitle_id = j.jobTitles_id
             LEFT JOIN schedule s
-                ON ed.employee_id = s.employee_id
+                ON u.user_id = s.user_id
             LEFT JOIN departments d
-                ON hd.Department_id = d.Department_id
+                ON ed.Department_id = d.Department_id
             LEFT JOIN leaveCounts lc
-                ON ed.employee_id = lc.employee_id
+                ON u.user_id = lc.user_id
             LEFT JOIN unit_section us
-                ON hd.unit_section_id = us.unit_section_id
-            WHERE ed.employee_id = ?
+                ON ed.unit_section_id = us.unit_section_id
+            WHERE u.user_id = ?
         ";
 
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$employee_id]);
+        $stmt->execute([$user_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
 
     }

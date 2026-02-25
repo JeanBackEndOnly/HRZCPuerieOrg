@@ -158,8 +158,8 @@
     });
 
     // ============================= CAREER PATH =================================== //
-    function getEmploymentData(employee_id, designation, salary){
-        document.getElementById('employee_id_careerPath').value = employee_id
+    function getEmploymentData(user_id, designation, salary){
+        document.getElementById('user_id_careerPath').value = user_id
         document.getElementById('currentDesignationId').value = designation
         document.getElementById('currentSalaryId').value = salary
     } 

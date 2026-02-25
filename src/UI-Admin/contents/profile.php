@@ -6,6 +6,7 @@
             <h4 class=""><i class="fa-regular fa-circle-user me-1"></i>Employee Profile</h4>
             <small class="text-muted ">Masnage Employee Profile</small>
         </div>
+        <!-- Buttons div -->
         <div class="col-md-9 d-flex gap-1 justify-content-end align-items-end ps-e">
             <?php if($getEmployee["status"] == 'Pending'){ ?>
                 <button class="btn px-4 py-2 btn-success"
@@ -58,6 +59,7 @@
     </div>
     <!-- Profile contents ======================================================================================= -->
     <div class="row">
+        <!-- Profile Info tab -->
         <div class="column p-2 m-0 rounded-2 col-12 col-md-3">
             <div class="card rounded-2">
                 <div class="d-flex flex-column w-100 align-items-center justify-content-center p-2">
@@ -66,13 +68,11 @@
                                 class="fa-solid fa-arrow-left me-1"></i> Back</a>
                     </div>
                     <?php if($getEmployee["profile_picture"] == null){ ?>
-                    <strong class="py-2 px-4 text-white mb-2" style="
-                                border-radius: 50%;
-                                font-weight: 500;
-                                background-color: rgba(255, 14, 14, 0.70);
-                                font-size: 2.5rem;
-                                border: solid 2px rgb(255, 14, 14);
-                            "><?= htmlspecialchars(substr($getEmployee["firstname"], 0,1)) ?></strong>
+                    <div class="profile-circle d-flex align-items-center justify-content-center mb-1">
+                        <strong class="p-0 text-white m-0 font-profile">
+                            <?= htmlspecialchars(substr($getEmployee["firstname"], 0,1) . substr($getEmployee["lastname"], 0,1)) ?>
+                        </strong>
+                    </div>
                     <?php }else{ ?>
                     <img src="../../authentication/uploads/<?= $getEmployee["profile_picture"] ?>"
                         style="width: 150px; height: auto; border-radius: 50%;">
@@ -376,7 +376,7 @@
             </form>
         </div>
         <!-- WORK INFORMATIONS TAB -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Employment">
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Employment">
             <form id="employment_update">
                 <input type="hidden" name="admin_update" value="false">
                 <div class="card rounded-2 profile-contents pb-5 show-scroll">
@@ -446,7 +446,7 @@
 
                         <div class="col-md-4">
                             <label class="form-label">Salary</label>
-                            <input type="number" step="0.01" name="salary" value="<?= $getEmployee["salary"] ?>"
+                            <input type="number" readonly step="0.01" name="salary" value="<?= $getEmployee["salary"] ?>"
                                 id="salary" class="form-control">
                         </div>
                     </div>
@@ -454,7 +454,7 @@
             </form>
         </div>
         <!-- Leave Credits Tab -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Leave_Credits">
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Leave_Credits">
             <form id="leave_update">
                 <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
                 <strong class="w-100 text-start fs-5 mt-3">
@@ -491,7 +491,7 @@
             </form>
         </div>
         <!-- EDUCATIONAL BACKGROUND TAB -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Education">
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Education">
             <form id="educational_update" class="profile-contents show-scroll">
                 <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
                 <div class="card rounded-2 show-scroll">
@@ -660,7 +660,7 @@
             </form>
         </div>
         <!-- FAMILY BACKGROUND TAB -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Family">
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Family">
             <form id="family_update">
                 <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
                 <div class="card rounded-2 profile-contents show-scroll">
@@ -693,7 +693,7 @@
             $stmtSpouse = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Spouse'");
             $stmtSpouse->execute();
             $Spouse = $stmtSpouse->fetch(PDO::FETCH_ASSOC);  
-        ?>
+            ?>
                     <!-- FAMILY INFORMATION CONTENTS -->
                     <div class="row flex-wrap col-md-12 col-12 p-3">
                         <div class="col-md-12 row">
@@ -963,7 +963,7 @@
             </form>
         </div>
         <!-- Leave Informations -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Leave">
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Leave">
             <div class="card rounded-2 profile-contents show-scroll">
                 <!-- FAMILY INFORMATION HEADER -->
                 <div class="header ps-3 pt-3">

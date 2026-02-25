@@ -26,13 +26,8 @@
                     </button>
                 </li>
                 <li class="nav-item col-md-4" role="presentation">
-                    <div style="background-color: #E32126 !important;
-                        z-index: 3 !important;
-                        position: absolute !important;
-                        transform: translateX(11.8rem) !important;
-                        border-radius: 50% !important;
-                        ">
-                        <label class="form-label m-0 px-2 text-white font-10" style="
+                    <div class="recruitment-count d-flex align-items-center justify-content-center">
+                        <label class="form-label m-0 p-0 text-white font-10" style="
                             "><?php echo $pending ?></strong>
                     </div>
                     <button class="nav-link w-100 h-100" id="pending-tab" data-bs-toggle="tab"

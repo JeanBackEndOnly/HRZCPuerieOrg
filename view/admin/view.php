@@ -182,3 +182,29 @@
         $stmtInactive->execute();
         return $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
     }
+
+// Get Leaves ========================================================================================
+    function getRecommendedLeave(){
+        $pdo = db_connect();
+        $stmt = $pdo->prepare("SELECT 
+            lr.leave_id,
+            lr.leaveType,
+            lr.leaveStatus,
+            lr.Purpose,
+            lr.numberOfDays,
+            lr.contact,
+            lr.request_date,
+            ed.employee_id,
+            ed.firstname,
+            ed.middlename,
+            ed.lastname,
+            ed.suffix,
+            hd.employeeID
+            FROM leaveReq lr
+            INNER JOIN employee_data ed ON lr.employee_id = ed.employee_id
+            INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
+            WHERE lr.leaveStatus = 'Recommended'
+            ORDER BY lr.request_date DESC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }

@@ -226,7 +226,35 @@ label {
 .sidebar-list a.active {
   color: #fff;
 }
-
+a{
+  transition: 0.5s ease;
+}
+.active{
+  font-weight: 600 !important;
+}
+a:hover{
+  opacity: 0.7;
+}
+.font-profile{
+  font-size: 35px;
+  font-weight: 600;
+}
+.profile-circle{
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: rgba(255, 14, 14, 0.70);
+  border: solid 2px rgb(200, 0, 0);
+}
+.recruitment-count{
+  background-color: #E32126 !important;
+  z-index: 3 !important;
+  position: absolute !important;
+  transform: translateX(11.8rem) !important;
+  border-radius: 50% !important;
+  width: 20px;
+  height: 20px;
+}
 .sidebar-list {
   background-color: #fff;
   font-size: .9rem;

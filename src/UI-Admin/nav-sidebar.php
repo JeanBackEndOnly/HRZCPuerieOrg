@@ -39,7 +39,7 @@
             </a>
             <a href="index.php?page=contents/leave"
                 class="nav-item nav-leave nav-viewLeave nav-reviewLeave">
-                <span class="me-1"><i class="fa-solid fa-person-through-window"></i></span> Leave
+                <span class="me-1"><i class="fa-solid fa-calendar"></i></span> Leave
             </a>
             <a href="index.php?page=contents/dept_job" class="nav-item nav-dept_job">
                 <span class="me-1"><i class="fa-solid fa-building-user"></i></span> Departments & Jobs

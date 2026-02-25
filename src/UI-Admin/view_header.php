@@ -53,8 +53,19 @@ if(!$InactiveEmployees){
 
 // Leave MOdule ========================================================================
 $RecommendedLeave = getRecommendedLeave();
+$_SESSION["RecommendedLeaveData"] =  $RecommendedLeave;
 if(!$RecommendedLeave){
     $_SESSION['error'] = "Failed to fetch employees data";
     $RecommendedLeave = null;
+}
+$ApprovedLeave = getApprovedLeave();
+if(!$ApprovedLeave){
+    $_SESSION['error'] = "Failed to fetch employees data";
+    $ApprovedLeave = null;
+}
+$DisapprovedLeave = getDisapprovedLeave();
+if(!$DisapprovedLeave){
+    $_SESSION['error'] = "Failed to fetch employees data";
+    $DisapprovedLeave = null;
 }
 ?>

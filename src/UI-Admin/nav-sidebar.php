@@ -41,21 +41,21 @@
                 class="nav-item nav-leave nav-viewLeave nav-reviewLeave">
                 <span class="me-1"><i class="fa-solid fa-calendar"></i></span> Leave
             </a>
-            <a href="index.php?page=contents/dept_job" class="nav-item nav-dept_job">
-                <span class="me-1"><i class="fa-solid fa-building-user"></i></span> Departments & Jobs
-            </a>
             <a href="index.php?page=contents/201" class="nav-item nav-201 nav-files">
                 <span class="me-1"><i class="fa-solid fa-file-pdf"></i></span> 201 Files
             </a>
             <a href="index.php?page=contents/hr_settings"
                 class="nav-item nav-hr_settings nav-employee_sched">
-                <span class="me-1"><i class="fa-solid fa-gears"></i></span> Schedule settings
+                <span class="me-1"><i class="fa-solid fa-gears"></i></span> Schedule setting
+            </a>
+            <a href="index.php?page=contents/dept_job" class="nav-item nav-dept_job">
+                <span class="me-1"><i class="fa-solid fa-building-user"></i></span> System Setting
             </a>
             <!-- <a href="index.php?page=contents/form" class="nav-item nav-form m-0">
                 <span class="me-1"><i class="me-1"></i></span> Forms
             </a> -->
             <a href="index.php?page=contents/setting" class="nav-item nav-setting ">
-                <span class="me-1"><i class="fa-solid fa-user-gear"></i></span> Account Settings
+                <span class="me-1"><i class="fa-solid fa-user-gear"></i></span> Account Setting
             </a>
         </div>
     </div>

@@ -23,15 +23,18 @@
                         <i class="fa-solid fa-calendar-xmark me-2"></i>Disapproved Leaves</a>
                 </li>
             </ul>
+            <div class="col-md-3 ps-2">
+                <input type="text" id="searchForAllLeave" class="form-control" placeholder="search by: name and leave type........">
+            </div>
         </div>
         <!-- CONTENTS -->
         <div class="card-body pt-0">
             <div class="tab-content">
                 <!-- Pending Leaves -->
                 <div class="tab-pane text-center table-body fade show active" id="Pending_Leave" role="tabpanel">
-                    <table class="table table-bordered table-sm">
+                    <table class="table table-bordered table-hover table-sm">
                         <thead class="table-light col-md-12">
-                            <tr class="col-md-12">
+                            <tr class="col-md-12 font-15">
                                 <th>#</th>
                                 <th>Complete Name</th>
                                 <th>Leave Type</th>
@@ -40,12 +43,12 @@
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
-                        <tbody style="color: #666;">
+                        <tbody style="color: #666;" >
                             <?php 
                             if($RecommendedLeave){
                                 $count = 1; 
                                     foreach($RecommendedLeave as $recommended) : ?>
-                                    <tr>
+                                    <tr class="font-14">
                                         <th><?= $count++ ?></th>
                                         <th><?= htmlspecialchars($recommended["firstname"]) . " " . htmlspecialchars(substr($recommended["middlename"], 0, 1)) . ". " . htmlspecialchars($recommended["lastname"]) ?></th>
                                         <th><?= htmlspecialchars($recommended["leaveType"]) ?></th>
@@ -106,7 +109,7 @@
                 <!-- Approved Leaves -->
                 <div class="tab-pane text-center table-body fade" id="Approved_leave" role="tabpanel">
                     <div class="table-responsive table-body">
-                        <table class="table table-bordered table-sm">
+                        <table class="table table-bordered table-hover table-sm">
                             <thead class="table-light col-md-12">
                                 <tr class="col-md-12">
                                     <th>#</th>
@@ -119,30 +122,7 @@
                             </thead>
                                                     <tbody style="color: #666;">
                             <?php 
-                            $stmt = $pdo->prepare("SELECT 
-                                    lr.leave_id,
-                                    lr.leaveType,
-                                    lr.leaveStatus,
-                                    lr.Purpose,
-                                    lr.numberOfDays,
-                                    lr.contact,
-                                    lr.request_date,
-                                    ed.employee_id,
-                                    ed.firstname,
-                                    ed.middlename,
-                                    ed.lastname,
-                                    ed.suffix,
-                                    hd.employeeID
-                                FROM leaveReq lr
-                                INNER JOIN employee_data ed ON lr.employee_id = ed.employee_id
-                                INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-                                WHERE lr.leaveStatus = 'Approved'
-                                ORDER BY lr.request_date DESC");
-                            $stmt->execute();
-
                             $countApproved = 1;
-
-                            $ApprovedLeave = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             if($ApprovedLeave){
                             foreach($ApprovedLeave as $approved) : ?>
                             <tr>
@@ -203,11 +183,9 @@
                     </div>
                 </div>
 
-
-
                 <!-- Rejected Leaves -->
                 <div class="tab-pane text-center table-body fade" id="Rejected_Leave" role="tabpanel">
-                    <table class="table table-bordered table-sm">
+                    <table class="table table-bordered table-hover table-sm">
                         <thead class="table-light col-md-12">
                             <tr class="col-md-12">
                                 <th>#</th>
@@ -220,32 +198,10 @@
                         </thead>
                          <tbody style="color: #666;">
                             <?php 
-                            $stmt = $pdo->prepare("SELECT 
-                                    lr.leave_id,
-                                    lr.leaveType,
-                                    lr.leaveStatus,
-                                    lr.Purpose,
-                                    lr.numberOfDays,
-                                    lr.contact,
-                                    lr.request_date,
-                                    ed.employee_id,
-                                    ed.firstname,
-                                    ed.middlename,
-                                    ed.lastname,
-                                    ed.suffix,
-                                    hd.employeeID
-                                FROM leaveReq lr
-                                INNER JOIN employee_data ed ON lr.employee_id = ed.employee_id
-                                INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-                                WHERE lr.leaveStatus = 'Disapproved'
-                                ORDER BY lr.request_date DESC");
-                            $stmt->execute();
-                            $disapprovedLeave = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
                             $countDisapproved = 1;
-                            if($disapprovedLeave){
+                            if($DisapprovedLeave){
 
-                            foreach($disapprovedLeave as $disapproved) : ?>
+                            foreach($DisapprovedLeave as $disapproved) : ?>
                             <tr>
                                 <th><?= $countDisapproved++ ?></th>
                                 <th><?= htmlspecialchars($disapproved["firstname"]) . " " . htmlspecialchars(substr($disapproved["middlename"], 0, 1)) . ". " . htmlspecialchars($disapproved["lastname"]) ?></th>

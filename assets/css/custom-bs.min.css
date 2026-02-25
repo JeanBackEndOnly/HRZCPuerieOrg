@@ -2476,7 +2476,8 @@ progress {
     color: #67748e;
     margin-bottom: 1rem;
     vertical-align: top;
-    width: 100%
+    width: 100%;
+    border-top-left-radius: 10px !important;
 }
 
 .table>:not(caption)>*>* {
@@ -2618,7 +2619,8 @@ progress {
     --bs-table-hover-bg: #d8dadd;
     --bs-table-hover-color: #000;
     border-color: #d2d4d7;
-    color: #000
+    color: #000;
+    
 }
 
 .table-dark {

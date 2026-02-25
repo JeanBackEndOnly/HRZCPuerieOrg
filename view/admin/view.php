@@ -8,7 +8,9 @@
     function getUnitSection(){
         try {
             $pdo = db_connect();
-            $stmt = $pdo->prepare("SELECT * FROM unit_section");
+            $stmt = $pdo->prepare("SELECT us.*, d.Department_name, d.Department_code, d.Department_id FROM unit_section us
+                LEFT JOIN departments d ON us.department_id = d.Department_id
+            ");
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -17,7 +19,9 @@
     }
     function getJobtitles(){
         $pdo = db_connect();
-        $stmt = $pdo->prepare("SELECT * FROM jobtitles");
+        $stmt = $pdo->prepare("SELECT j.*, d.Department_name FROM jobtitles j
+        LEFT JOIN departments d ON j.department_id = d.Department_id
+        ");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -208,3 +212,52 @@
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    function getApprovedLeave(){
+        $pdo = db_connect();
+        $stmt = $pdo->prepare("SELECT 
+            lr.leave_id,
+            lr.leaveType,
+            lr.leaveStatus,
+            lr.Purpose,
+            lr.numberOfDays,
+            lr.contact,
+            lr.request_date,
+            ed.employee_id,
+            ed.firstname,
+            ed.middlename,
+            ed.lastname,
+            ed.suffix,
+            hd.employeeID
+            FROM leaveReq lr
+            INNER JOIN employee_data ed ON lr.employee_id = ed.employee_id
+            INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
+            WHERE lr.leaveStatus = 'Approved'
+            ORDER BY lr.request_date DESC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    function getDisapprovedLeave(){
+        $pdo = db_connect();
+        $stmt = $pdo->prepare("SELECT 
+            lr.leave_id,
+            lr.leaveType,
+            lr.leaveStatus,
+            lr.Purpose,
+            lr.numberOfDays,
+            lr.contact,
+            lr.request_date,
+            ed.employee_id,
+            ed.firstname,
+            ed.middlename,
+            ed.lastname,
+            ed.suffix,
+            hd.employeeID
+            FROM leaveReq lr
+            INNER JOIN employee_data ed ON lr.employee_id = ed.employee_id
+            INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
+            WHERE lr.leaveStatus = 'Disapproved'
+            ORDER BY lr.request_date DESC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    

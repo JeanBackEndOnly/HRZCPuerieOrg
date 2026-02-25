@@ -239,40 +239,10 @@ if ($action === "delete_schedule_for_employee_form") {
 }
 
 // CAREER PATHS =========================================================================
-if ($action === 'fetch_careerPaths_data') {
-    $employees = $crud->fetch_careerPaths_data();
-    if ($employees) {
-        echo $employees;
-    }
-} 
-if ($action === 'get_all_career_paths') {
-    $response = $crud->get_all_career_paths();
-    if ($response) {
-        echo $response;
-    }
+if ($action === "career_path_form") {
+     $result = $crud->career_path_form();
+    echo $result;
 }
-if ($action === 'get_career_path_details') {
-    if (!isset($_GET['id'])) {
-        echo json_encode([
-            'status' => 'error',
-            'message' => 'Employee ID is required'
-        ]);
-        exit;
-    }
-    $id = (int)$_GET['id'];
-    $response = $crud->get_career_path_details($id);
-    if ($response) {
-        echo $response;
-    }
-}
-if ($action === 'fetch_careerPath_data') {
-    $employeeIdCareerPath = $_POST['employee_id'] ?? null;
-    $employees = $crud->fetch_careerPath_data($employeeIdCareerPath);
-    if ($employees) {
-        echo $employees;
-    }
-} 
-
 // LEAVES ====================================================================================
 if ($action === 'leave_form') {
     $employees = $crud->leave_form();

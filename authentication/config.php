@@ -254,12 +254,6 @@ function db_connect()
                 new_salary DECIMAL(12,2),
                 job_status ENUM('Promote', 'Demote', 'Update'),
                 addAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                department_id INT NULL,
-                jobTitle_id INT NULL,
-                FOREIGN KEY (department_id) REFERENCES departments(Department_id)
-                    ON DELETE SET NULL ON UPDATE CASCADE,
-                FOREIGN KEY (jobTitle_id) REFERENCES jobTitles(jobTitles_id)
-                    ON DELETE SET NULL ON UPDATE CASCADE,
                 FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id)
                     ON DELETE CASCADE
             )",

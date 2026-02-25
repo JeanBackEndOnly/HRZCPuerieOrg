@@ -2441,6 +2441,46 @@ class Action
         }
     }
 
+// CAREER PATH =========================================================================
+    function career_path_form(){
+        $employee_id = $_POST["employee_id"];
+        $job_from = $_POST["job_from"];
+        $current_salary = $_POST["current_salary"];
+        $jobTitles_id = $_POST["jobTitles_id"];
+        $new_salary = $_POST["new_salary"];
+        $job_status = $_POST["job_status"];
+        try {
+
+            $stmt = $this->db->prepare("SELECT j.jobTitle FROM jobTitles j WHERE jobTitles_id = ?");
+            $stmt->execute([$jobTitles_id]);
+            $resultOfJob = $stmt->fetch(PDO::FETCH_ASSOC);
+            $job_to = $resultOfJob["jobTitle"];
+
+            if(!$job_to){
+                return json_encode([
+                    'status' => 0,
+                    'message' => 'New Designation not found, please debug it.'
+                ]);
+            }
+
+            $stmt = $this->db->prepare("INSERT INTO job_history 
+                (employee_id, job_from, job_to, current_salary, new_salary, job_status)
+                    VALUES
+                (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([
+                $employee_id, $job_from, $job_to, $current_salary, $new_salary, $job_status
+            ]);
+            return json_encode([
+                'status' => 1,
+                'message' => 'Employee ' . $job_status . ' Successfully!'
+            ]);
+        } catch (PDOException $e) {
+            return json_encode([
+                'status' => 0,
+                'message' => 'An error occured: ' . $e->getMessage()
+            ]);
+        }
+    }
 // SCHEDULE TEMPLATE ====================================================================
     function schedule_template_form(){
         try {

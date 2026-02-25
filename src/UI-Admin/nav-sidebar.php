@@ -4,14 +4,11 @@
             <div class="profile-nav mb-1 p-3 bg-gradeint-fade w-100 d-flex align-items-start justify-content-center p-2">
                 <div class="col-md-4 d-flex align-items-center justify-content-center">
                     <?php if($profile_picture == null){ ?>
-                    <strong class="py-2 px-3 text-white" style="
-                                    border-radius: 50%;
-                                    font-weight: 500 !important;
-                                    background-color: rgba(255, 14, 14, 0.70);
-                                    font-size: 20px;
-                                    border: solid 1px #000000;
-                                "><?= htmlspecialchars(substr($admin_firstname, 0,1) . substr($admin_lastname, 0,1)) ?>
-                    </strong>
+                    <div class="nav-circle-profile d-flex align-items-center justify-content-center font-19">
+                        <strong class="p-0 text-white">
+                            <?= htmlspecialchars(substr($admin_firstname, 0,1) . substr($admin_lastname, 0,1)) ?>
+                        </strong>
+                    </div>
                     <?php } else {?>
                     <img src="../../authentication/uploads<?= $profile_picture ?>" class="image-profile"
                         alt="This is the admin profile picture">

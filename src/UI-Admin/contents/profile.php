@@ -117,7 +117,7 @@
                         </div>
                         <?php if($getEmployee["status"] == 'Active'){ ?>
                         <div class="col-md-7 d-flex justify-content-end me-5">
-                            <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5">Update</button>
+                            <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                         </div>
                         <?php } else {} ?>
                     </div>
@@ -363,7 +363,7 @@
                         </div>
                         <?php if($getEmployee["status"] == 'Active'){ ?>
                         <div class="col-md-12 d-flex justify-content-end pb-5">
-                            <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-2">Update</button>
+                            <button type="submit" class="btn btn-sm btn-danger px-3 btn-sm mt-3 me-2"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                         </div>
                         <?php } else {} ?>
                     </div>
@@ -385,7 +385,7 @@
                             </div>
                             <?php if($getEmployee["status"] == 'Active'){ ?>
                             <div class="col-md-7 d-flex justify-content-end me-5">
-                                <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5">Update</button>
+                                <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                             </div>
                             <?php } else {} ?>
                         </div>
@@ -543,7 +543,7 @@
 
                 <?php if($getEmployee["status"] == 'Active'){ ?>
                 <div class="col-md-12 d-flex mt-3 justify-content-end me-0">
-                    <button type="submit" class="btn  btn-danger px-5 mt-3 me-2">Update</button>
+                    <button type="submit" class="btn  btn-danger px-3 mt-3 me-2 btn-sm"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                 </div>
                 <?php } else {} ?>
             </form>
@@ -562,7 +562,7 @@
                         </div>
                         <?php if($getEmployee["status"] == 'Active'){ ?>
                         <div class="col-md-7 d-flex justify-content-end me-5">
-                            <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5">Update</button>
+                            <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                         </div>
                         <?php } else {} ?>
                     </div>
@@ -711,7 +711,7 @@
                     </div>
                     <?php if($getEmployee["status"] == 'Active'){ ?>
                     <div class="transform col-md-12 col-12 d-flex justify-content-end pe-4 mt-3 mb-2">
-                        <button type="submit" class="btn btn-danger px-5 mt-4">Update</button>
+                        <button type="submit" class="btn btn-danger px-5 mt-4"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                     </div>
                     <?php } else {} ?>
                 </div>
@@ -731,7 +731,7 @@
                         </div>
                         <?php if($getEmployee["status"] == 'Active'){ ?>
                         <div class="col-md-7 d-flex justify-content-end me-5">
-                            <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5">Update</button>
+                            <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                         </div>
                         <?php } ?>
                     </div>
@@ -1014,13 +1014,13 @@
                     </div>
                     <?php if($getEmployee["status"] == 'Active'){ ?>
                     <div class="col-md-12 d-flex justify-content-end me-5 mb-5">
-                        <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5">Update</button>
+                        <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                     </div>
                     <?php } ?>
                 </div>
             </form>
         </div>
-        <!-- Leave Informations -->
+        <!-- Activity tracking -->
         <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Leave">
             <div class="card rounded-2 profile-contents show-scroll">
                 <!-- FAMILY INFORMATION HEADER -->
@@ -1127,7 +1127,7 @@
 <!-- Career Path Modal -->
 <div class="modal fade" id="manageCareerPath" tabindex="-1" aria-labelledby="manageCareerPathLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form class="modal-content" id="approval-form">
+        <form class="modal-content" id="career-path-form">
             <div class="modal-header bg-gradient-primary text-white">
                 <h5 class="modal-title text-white" id="manageCareerPathLabel">Manage Employee Career Path</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

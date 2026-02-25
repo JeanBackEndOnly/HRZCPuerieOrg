@@ -57,11 +57,11 @@
                     <?php 
                     $adminPicture = $getAdminData["admin_picture"] ?? null;
                     if($adminPicture == null){ ?>
-                    <strong class="py-1 px-5 text-white mb-2" style="
-                                border-radius: 50%;
-                                background-color: #303030ff;
-                                font-size: 5rem;
-                            "><?= htmlspecialchars(substr($getAdminData["admin_firstname"] ?? '', 0,1)) ?></strong>
+                    <div class="setting-circle-profile mb-2 d-flex align-items-center justify-content-center fs-2">
+                        <strong class="p-0 text-white">
+                            <?= htmlspecialchars(substr($getAdminData["admin_firstname"] ?? '', 0,1) . substr($getAdminData["admin_lastname"] ?? '', 0,1)) ?>
+                        </strong>
+                    </div>
                     <?php }else{ ?>
                     <img src="../../authentication/uploads/<?= $adminPicture ?>"
                         style="width: 200px; height: auto; border-radius: 50%;">

@@ -5,7 +5,7 @@
             <h4><i class="fas fa-calendar-check"></i> Schedule Settings</h4>
             <small class="text-muted">Create Template for schedules</small>
         </div>
-        <div class="col-md-3" style="display: none;" id="display-csv">
+        <div class="col-md-3 justify-content-end" style="display: none;" id="display-csv">
             <button class="btn btn-success m-0 py-2 px-3" id="download-csv">Download csv</button>
         </div>
         <div id="displayButton">
@@ -14,9 +14,9 @@
             </button>
         </div>
     </div>
-    <div class="card">
-        <div class="card-body col-md-12 col-12 d-flex justify-content-between pb-4 max-width-hr-settings">
-            <ul class="nav nav-tabs col-md-7 col-12" id="hr_settingsTabs">
+    <div class="card p-2">
+        <div class="card-body col-md-12 col-12 d-flex justify-content-between p-2 max-width-hr-settings">
+            <ul class="nav nav-tabs col-md-8 col-12" id="hr_settingsTabs">
                 <li class="nav-item cursor-pointer col-md-4">
                     <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#schedule_template">
                         <i class="fa-solid fa-calendar-plus me-2"></i>Schedule Template</a>
@@ -31,10 +31,9 @@
                     </a>
                 </li>
             </ul>
-            <div class="col-md-4 justify-content-end gap-1 pb-2" id="displayFilter" style="display: none;">
+            <div class="col-md-4 ps-4 justify-content-end gap-1 pb-2" id="displayFilter" style="display: none;">
                 <div class="col-md-6">
-                    <label class="form-label m-0">Departments</label> <select name="filter_department"
-                        id="filter_department" class="form-select">
+                    <select name="filter_department" id="filter_department" class="form-select">
                         <option value="">All Departments</option>
                         <?php 
                             $stmt = $pdo->prepare("SELECT * FROM departments ORDER BY Department_name");
@@ -48,15 +47,14 @@
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label m-0">From</label>
                     <input type="date" class="form-control" name="scheduleFrom" id="scheduleFrom">
                 </div>
+                <strong class="h-100 d-flex align-items-center justify-content-center"> - </strong>
                 <div class="col-md-3">
-                    <label class="form-label m-0">To</label>
                     <input type="date" class="form-control" name="scheduleTo" id="scheduleTo">
                 </div>
             </div>
-            <div class="col-md-4 justify-content-end pb-2" id="displaySearch" style="display: none;">
+            <div class="col-md-4 ps-3 justify-content-end pb-2" id="displaySearch" style="display: none;">
                 <input type="text" name="search" id="searchEmployee" class="form-control"
                     placeholder="Search by name and id.....">
             </div>

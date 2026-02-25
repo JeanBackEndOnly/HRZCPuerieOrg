@@ -61,17 +61,32 @@
 :before {
     box-sizing: border-box
 }
+.font-12{
+    font-size: 12px !important;
+}
 .font-13{
     font-size: 13px !important;
-}
-.font-15{
-    font-size: 15px !important;
 }
 .font-14{
     font-size: 14px !important;
 }
-.font-12{
-    font-size: 12px !important;
+.font-15{
+    font-size: 15px !important;
+}
+.font-16{
+    font-size: 16px !important;
+}
+.font-17{
+    font-size: 17px !important;
+}
+.font-18{
+    font-size: 18px !important;
+}
+.font-19{
+    font-size: 19px !important;
+}
+.font-20{
+    font-size: 20px !important;
 }
 @media(prefers-reduced-motion:no-preference) {
     :root {
@@ -2674,7 +2689,9 @@ progress {
         overflow-x: auto
     }
 }
-
+.fw-500{
+    font-weight: 500 !important;
+}
 .form-label {
     font-size: .75rem;
     margin-bottom: .5rem

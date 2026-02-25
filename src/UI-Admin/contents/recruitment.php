@@ -64,14 +64,11 @@
                         <div class="card col-md-12 d-flex flex-row shadow p-2 rounded-3 border">
                             <div class="col-md-2 d-flex align-items-center">
                                 <?php if($officials["profile_picture"] == null){ ?>
-                                <strong class="py-2 px-2 text-white"
-                                    style="
-                                                    border-radius: 50%;
-                                                    font-weight: 500 !important;
-                                                    background-color: rgba(255, 14, 14, 0.70);
-                                                    font-size: 15px;
-                                                    border: solid 1px #fff;
-                                                "><?= htmlspecialchars(strtoupper(substr($officials["firstname"], 0,1) . substr($officials["lastname"], 0,1))) ?></strong>
+                                <div class="recruitment-profile-circle d-flex align-items-center justify-content-center font-15">
+                                    <span class="p-0 m-0 text-white fw-500">
+                                        <?= htmlspecialchars(strtoupper(substr($officials["firstname"], 0,1) . substr($officials["lastname"], 0,1))) ?>
+                                    </span>
+                                </div>
                                 <?php }else{ ?>
                                 <img src="../../authentication/uploads/<?= $officials["profile_picture"] ?>"
                                     style="width: 200px; height: auto; border-radius: 50%;">

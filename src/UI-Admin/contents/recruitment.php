@@ -1,4 +1,4 @@
-<?php $pending = $pdo->query("SELECT COUNT(*) FROM employee_data WHERE status = 'Pending' AND user_role = 'EMPLOYEE'")->fetchColumn(); ?>
+<?php $pending = $pdo->query("SELECT COUNT(*) FROM users WHERE status = 'Pending' AND user_role = 'EMPLOYEE'")->fetchColumn(); ?>
 <section>
     <div class="d-flex justify-content-between align-items-center mb-2 col-md-12 col-12 flex-wrap">
         <div class=" col-md-6 col-12">

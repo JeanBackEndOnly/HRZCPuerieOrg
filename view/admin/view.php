@@ -99,11 +99,11 @@
 // Get employees for scheduling ======================================================================   
     function getEmployeesForSchedule(){
         $pdo = db_connect();
-        $stmt = $pdo->prepare("SELECT ed.profile_picture, hd.employeeID, ed.employee_id, ed.firstname, ed.middlename, ed.lastname, ed.suffix,
-            d.Department_name, d.Department_code, ed.employee_id FROM employee_data ed
-            INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-            LEFT JOIN departments d ON hd.Department_id = d.Department_id
-            ORDER BY ed.lastname DESC");
+        $stmt = $pdo->prepare("SELECT u.profile_picture, u.employeeID, u.firstname, u.middlename, u.lastname, u.suffix,
+            d.Department_name, d.Department_code, u.user_id FROM users u
+            INNER JOIN employee_data ed ON u.user_id = ed.user_id
+            LEFT JOIN departments d ON ed.Department_id = d.Department_id
+            ORDER BY u.lastname DESC");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -113,24 +113,24 @@
         $pdo = db_connect();
         $stmtOfficial = $pdo->prepare("
             SELECT 
-                ed.employee_id, 
-                ed.firstname, 
-                ed.middlename, 
-                ed.lastname, 
-                ed.suffix,
-                ed.profile_picture,
+                u.user_id, 
+                u.firstname, 
+                u.middlename, 
+                u.lastname, 
+                u.suffix,
+                u.profile_picture,
                 d.Department_name AS department,
-                hd.employeeID,
+                u.employeeID,
                 jt.jobTitle,
                 jt.salary,
-                ed.status,
-                ed.user_role
-            FROM employee_data ed
-            INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-            LEFT JOIN jobTitles jt ON hd.jobtitle_id = jt.jobTitles_id
-            LEFT JOIN departments d ON hd.Department_id = d.Department_id
-            WHERE ed.status = 'Active' AND ed.user_role = 'EMPLOYEE'
-            ORDER BY ed.status
+                u.status,
+                u.user_role
+            FROM users u
+            INNER JOIN employee_data ed ON u.user_id = ed.user_id
+            LEFT JOIN jobTitles jt ON ed.jobtitle_id = jt.jobTitles_id
+            LEFT JOIN departments d ON ed.Department_id = d.Department_id
+            WHERE u.status = 'Active' AND u.user_role = 'EMPLOYEE'
+            ORDER BY u.status
         ");
         $stmtOfficial->execute();
         return $stmtOfficial->fetchAll(PDO::FETCH_ASSOC);
@@ -139,23 +139,23 @@
         $pdo = db_connect();
         $stmtPending = $pdo->prepare("
             SELECT 
-                ed.employee_id, 
-                ed.firstname, 
-                ed.middlename, 
-                ed.lastname, 
-                ed.suffix,
-                ed.profile_picture,
+                u.user_id, 
+                u.firstname, 
+                u.middlename, 
+                u.lastname, 
+                u.suffix,
+                u.profile_picture,
                 d.Department_name AS department,
-                hd.employeeID,
+                u.employeeID,
                 jt.jobTitle,
                 jt.salary,
-                ed.status
-            FROM employee_data ed
-            INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-            LEFT JOIN jobTitles jt ON hd.jobtitle_id = jt.jobTitles_id
-            LEFT JOIN departments d ON hd.Department_id = d.Department_id
-            WHERE ed.status = 'Pending' AND ed.user_role = 'EMPLOYEE'
-            ORDER BY ed.lastname, ed.firstname
+                u.status
+            FROM users u
+            INNER JOIN employee_data ed ON u.user_id = ed.user_id
+            LEFT JOIN jobTitles jt ON ed.jobtitle_id = jt.jobTitles_id
+            LEFT JOIN departments d ON ed.Department_id = d.Department_id
+            WHERE u.status = 'Pending' AND u.user_role = 'EMPLOYEE'
+            ORDER BY u.lastname, u.firstname
         ");
         $stmtPending->execute();
         return $stmtPending->fetchAll(PDO::FETCH_ASSOC);
@@ -164,24 +164,24 @@
         $pdo = db_connect();
         $stmtInactive = $pdo->prepare("
             SELECT 
-                ed.employee_id, 
-                ed.firstname, 
-                ed.middlename, 
-                ed.lastname, 
-                ed.suffix,
-                ed.profile_picture,
+                u.user_id, 
+                u.firstname, 
+                u.middlename, 
+                u.lastname, 
+                u.suffix,
+                u.profile_picture,
                 d.Department_name AS department,
-                hd.employeeID,
+                u.employeeID,
                 jt.jobTitle,
                 jt.salary,
-                ed.status,
-                ed.user_role
-            FROM employee_data ed
-            INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-            LEFT JOIN jobTitles jt ON hd.jobtitle_id = jt.jobTitles_id
-            LEFT JOIN departments d ON hd.Department_id = d.Department_id
-            WHERE ed.status = 'Inactive' AND ed.user_role = 'EMPLOYEE'
-            ORDER BY ed.lastname, ed.firstname
+                u.status,
+                u.user_role
+            FROM users u
+            INNER JOIN employee_data ed ON u.user_id = ed.user_id
+            LEFT JOIN jobTitles jt ON ed.jobtitle_id = jt.jobTitles_id
+            LEFT JOIN departments d ON ed.Department_id = d.Department_id
+            WHERE u.status = 'Inactive' AND u.user_role = 'EMPLOYEE'
+            ORDER BY u.lastname, u.firstname
         ");
         $stmtInactive->execute();
         return $stmtInactive->fetchAll(PDO::FETCH_ASSOC);
@@ -198,15 +198,14 @@
             lr.numberOfDays,
             lr.contact,
             lr.request_date,
-            ed.employee_id,
-            ed.firstname,
-            ed.middlename,
-            ed.lastname,
-            ed.suffix,
-            hd.employeeID
+            u.user_id,
+            u.firstname,
+            u.middlename,
+            u.lastname,
+            u.suffix,
+            u.employeeID
             FROM leaveReq lr
-            INNER JOIN employee_data ed ON lr.employee_id = ed.employee_id
-            INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
+            INNER JOIN users u ON lr.user_id = u.user_id
             WHERE lr.leaveStatus = 'Recommended'
             ORDER BY lr.request_date DESC");
         $stmt->execute();
@@ -222,15 +221,14 @@
             lr.numberOfDays,
             lr.contact,
             lr.request_date,
-            ed.employee_id,
-            ed.firstname,
-            ed.middlename,
-            ed.lastname,
-            ed.suffix,
-            hd.employeeID
+            u.user_id,
+            u.firstname,
+            u.middlename,
+            u.lastname,
+            u.suffix,
+            u.employeeID
             FROM leaveReq lr
-            INNER JOIN employee_data ed ON lr.employee_id = ed.employee_id
-            INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
+            INNER JOIN users u ON lr.user_id = u.user_id
             WHERE lr.leaveStatus = 'Approved'
             ORDER BY lr.request_date DESC");
         $stmt->execute();
@@ -246,15 +244,14 @@
             lr.numberOfDays,
             lr.contact,
             lr.request_date,
-            ed.employee_id,
-            ed.firstname,
-            ed.middlename,
-            ed.lastname,
-            ed.suffix,
-            hd.employeeID
+            u.user_id,
+            u.firstname,
+            u.middlename,
+            u.lastname,
+            u.suffix,
+            u.employeeID
             FROM leaveReq lr
-            INNER JOIN employee_data ed ON lr.employee_id = ed.employee_id
-            INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
+            INNER JOIN users u ON lr.user_id = u.user_id
             WHERE lr.leaveStatus = 'Disapproved'
             ORDER BY lr.request_date DESC");
         $stmt->execute();
@@ -266,21 +263,15 @@
         $pdo = db_connect();
         $stmt = $pdo->prepare("SELECT 
             jh.job_historyID,
-            e.employee_id,
-            e.firstname,
-            e.lastname,
-            d.Department_name AS department,
-            jt.jobTitle,
-            jt.salary,
-            jt.jobTitles_id,
+            u.user_id,
+            u.firstname,
+            u.lastname,
             jh.job_from,
             jh.job_to,
             jh.job_status,
             jh.addAt
             FROM job_history jh
-            JOIN employee_data e ON jh.employee_id = e.employee_id
-            LEFT JOIN departments d ON jh.department_id = d.Department_id
-            LEFT JOIN JobTitles jt ON jh.jobTitle_id = jt.jobTitles_id
+            JOIN users u ON jh.user_id = u.user_id
             ORDER BY jh.addAt ASC");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

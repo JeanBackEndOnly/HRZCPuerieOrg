@@ -1,7 +1,7 @@
 <?php
 $stmt = $pdo->query("
     SELECT status, COUNT(*) AS total
-    FROM employee_data
+    FROM users
     WHERE user_role = 'EMPLOYEE' 
     GROUP BY status
 ");

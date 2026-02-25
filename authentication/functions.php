@@ -3,40 +3,6 @@ include "config.php";
 
 $pdo = db_connect();
 
-function initInstaller()
-{
-    $pdo = db_connect();
-
-    try {
-        // Check if admin exists
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM admin WHERE admin_user_role = :user_role");
-        $stmt->execute(['user_role' => 'admin']);
-        $adminCount = $stmt->fetchColumn();
-
-        // Get clean current path
-        $currentPath = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
-        $installerPath = '/installation';
-
-        if ($adminCount > 0) {
-            if (strpos($currentPath, $installerPath) === 0) {
-                header("Location: " . base_url() . "src/");
-                exit;
-            }
-        } else {
-            if (strpos($currentPath, $installerPath) !== 0) {
-                header("Location: " . base_url() . "installation/");
-                exit;
-            }
-        }
-
-    } catch (PDOException $e) {
-        die("Installer check failed: " . $e->getMessage());
-    }
-    
-    $pdo = null;
-}
-
-
 
 // function base_url()
 // {

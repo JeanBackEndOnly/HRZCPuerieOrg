@@ -43,57 +43,10 @@ function db_connect()
                 FOREIGN KEY(department_id) REFERENCES departments(Department_id)
                 ON DELETE CASCADE ON UPDATE CASCADE
             )",
-            "CREATE TABLE IF NOT EXISTS admin (
-                admin_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                admin_firstname VARCHAR(50) NOT NULL,
-                admin_middlename VARCHAR(50) NOT NULL,
-                admin_lastname VARCHAR(50) NOT NULL,
-                admin_suffix VARCHAR(5) NOT NULL,
-                joined_at VARCHAR(30) NOT NULL,
-                admin_cpno VARCHAR(15) NOT NULL,
-                admin_religion VARCHAR(50),
-                admin_civil_status VARCHAR(50),
-                admin_citizenship VARCHAR(50),
-                admin_birthPlace VARCHAR(100),
-                admin_birth VARCHAR(10) NOT NULL,
-                admin_gender VARCHAR(10) NOT NULL,
-                admin_admin_status VARCHAR(10) NOT NULL,
-                admin_email VARCHAR(100) NOT NULL,
-                admin_username VARCHAR(50) NOT NULL,
-                admin_password VARCHAR(255) NOT NULL,
-                admin_user_role VARCHAR(20) NOT NULL,
-                admin_picture VARCHAR(255),
-                created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-            )",
-            "CREATE TABLE IF NOT EXISTS admin_info (
-                admin_info_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                admin_id INT,
-                admin_employee_id VARCHAR(20) NOT NULL,
-                admin_position_id INT,
-                admin_department_id INT,
-                unit_section_id INT,
-                admin_province VARCHAR(50),
-                admin_city VARCHAR(50),
-                admin_barangay VARCHAR(50),
-                admin_subdivision VARCHAR(50),
-                admin_house VARCHAR(50),
-                admin_street VARCHAR(50),
-                admin_zip_code VARCHAR(50),
-                salary DECIMAL(12,2),
-                admin_rating VARCHAR(10) NOT NULL,
-                profession_title ENUM('Dr.', 'Prof.', 'Assoc. Prof.', 'Asst. Prof.', 'RN', 'Mr.', 'Ms.', 'Mrs.'),
-                degrees VARCHAR(100),
-                fellowship VARCHAR(100),
-                created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                FOREIGN KEY (unit_section_id) REFERENCES unit_section(unit_section_id),
-                FOREIGN KEY (admin_id) REFERENCES admin(admin_id),
-                FOREIGN KEY (admin_position_id) REFERENCES jobTitles(jobTitles_id),
-                FOREIGN KEY (admin_department_id) REFERENCES departments(Department_id)
-            )",
             // SYSTEM TABLE FOR FRONTEND ============================================================
             "CREATE TABLE IF NOT EXISTS system (
-                id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                admin_id INT(11) NOT NULL,
+                system_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                user_id INT(11) NOT NULL,
                 system_title VARCHAR(50) NOT NULL,
                 system_description VARCHAR(255) NOT NULL,
                 system_logo VARCHAR(20) NOT NULL,
@@ -101,9 +54,8 @@ function db_connect()
             )",
 
             // HUMAN RESOURCES DATABASE =============================================================
-            "CREATE TABLE IF NOT EXISTS employee_data (    
-                employee_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-
+            "CREATE TABLE IF NOT EXISTS users (    
+                user_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
                 firstname VARCHAR(50) NOT NULL,
                 middlename VARCHAR(50) NOT NULL,
                 lastname VARCHAR(50) NOT NULL,
@@ -122,10 +74,9 @@ function db_connect()
                 status ENUM('Active', 'Inactive', 'Pending') DEFAULT 'Pending',
                 username VARCHAR(50) NOT NULL,
                 password VARCHAR(255) NOT NULL,
-                user_role ENUM('HRSM','EMPLOYEE'),
+                user_role ENUM('HR','EMPLOYEE', 'ADMIN', 'PAYROLL'),
                 email VARCHAR(100) NOT NULL,
 
-                user_request ENUM('Validated','Rejected', 'Pending'),
                 reason TEXT,
                 profile_picture VARCHAR(255),
                 created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -133,9 +84,9 @@ function db_connect()
             // HUMAN RESOURCES DATABASE (PERSONAL DATA SHEET) =======================================
             "CREATE TABLE IF NOT EXISTS personal_data_sheet (
                 pds_id           INT AUTO_INCREMENT PRIMARY KEY,
-                employee_id INT,       
+                user_id INT,       
                 accomplished_on DATE NOT NULL DEFAULT CURRENT_DATE,
-                FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id) ON DELETE CASCADE ON UPDATE CASCADE
+                FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
             );",
             "CREATE TABLE IF NOT EXISTS userGovIDs (
                 id           INT AUTO_INCREMENT PRIMARY KEY,
@@ -244,39 +195,28 @@ function db_connect()
                 FOREIGN KEY (pds_id) REFERENCES personal_data_sheet(pds_id)
                 ON DELETE CASCADE ON UPDATE CASCADE
             )",
+
             // HUMAN RESOURCES DATABASE (JOB, DEPT, REPORTS, HISTORY AND LEAVES) ======================
             "CREATE TABLE IF NOT EXISTS job_history(
                 job_historyID INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                employee_id INT,
+                user_id INT,
                 job_from VARCHAR(50) NOT NULL,
                 job_to VARCHAR(50) NOT NULL,
                 current_salary DECIMAL(12,2),
                 new_salary DECIMAL(12,2),
                 job_status ENUM('Promote', 'Demote', 'Update'),
                 addAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id)
+                FOREIGN KEY (user_id) REFERENCES users(user_id)
                     ON DELETE CASCADE
-            )",
-            "CREATE TABLE IF NOT EXISTS admin_schedule(
-                schedule_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                admin_id INT(11),
-                work_schedule_type VARCHAR(50),
-                shift_type VARCHAR(50),
-                work_days VARCHAR(50),
-                scheduleFrom time,
-                scheduleTo time,
-                updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (admin_id) REFERENCES admin(admin_id)
-                ON DELETE CASCADE ON UPDATE CASCADE
             )",
             "CREATE TABLE IF NOT EXISTS schedule(
                 schedule_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                employee_id INT(11),
+                user_id INT(11),
                 work_schedule_type VARCHAR(50),
                 shift_type VARCHAR(50),
                 work_days VARCHAR(50),
                 updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id)
+                FOREIGN KEY (user_id) REFERENCES users(user_id)
                 ON DELETE CASCADE ON UPDATE CASCADE
             )",
             "CREATE TABLE IF NOT EXISTS sched_template(
@@ -285,14 +225,12 @@ function db_connect()
                 schedule_from time NOT NULL,
                 schedule_to time NOT NULL,
                 shift ENUM('night', 'day') NOT NULL,
-                -- day VARCHAR(7) NOT NULL,
-                -- department ENUM('HOSPITAL', 'ADMIN', 'SCHOOL', 'HR') NOT NULL,
                 created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
             )",
 
-            "CREATE TABLE IF NOT EXISTS hr_data (
-                hr_data_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                employee_id INT,
+            "CREATE TABLE IF NOT EXISTS employee_data (
+                employee_data_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                user_id INT,
                 jobtitle_id INT(11),
                 Department_id INT(11),
                 unit_section_id INT,
@@ -308,7 +246,6 @@ function db_connect()
                 gross_pay DECIMAL(12,2) NOT NULL,        
                 deduction_pay DECIMAL(12,2) NOT NULL, 
 
-                employeeID VARCHAR(150) NOT NULL,
                 joined_at VARCHAR(20),
                 salary DECIMAL(12,2) NOT NULL,
                 scheduleFrom time,
@@ -323,27 +260,21 @@ function db_connect()
                 updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (unit_section_id) REFERENCES unit_section(unit_section_id),
-                FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id) ON DELETE CASCADE ON UPDATE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
                 FOREIGN KEY (jobtitle_id) REFERENCES jobTitles(jobTitles_id),
                 FOREIGN KEY (Department_id) REFERENCES departments(Department_id)
                 
             )",
             "CREATE TABLE IF NOT EXISTS login_history (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                employee_id INT NOT NULL,
+                user_id INT NOT NULL,
                 login_time DATETIME NOT NULL,
                 logout_time DATETIME DEFAULT NULL,
-                FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id) ON DELETE CASCADE
-            )",
-            "CREATE TABLE IF NOT EXISTS admin_login_history (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                employee_id INT NOT NULL,
-                login_time DATETIME NOT NULL,
-                logout_time DATETIME DEFAULT NULL
+                FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
             )",
             "CREATE TABLE IF NOT EXISTS leaveReq (
                 leave_id     INT(11) NOT NULL AUTO_INCREMENT,
-                employee_id     INT(11) NOT NULL,
+                user_id     INT(11) NOT NULL,
                 leaveStatus  ENUM('Pending','Recommended','Approved','Disapproved') DEFAULT 'Pending',
                 leaveType    VARCHAR(20) NOT NULL,
                 leaveDate    DATE NOT NULL,
@@ -358,7 +289,7 @@ function db_connect()
                 medical_proof VARCHAR(255),
                 request_date DATE NOT NULL DEFAULT CURRENT_DATE,
                 PRIMARY KEY (leave_id),
-                FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id) ON DELETE CASCADE
+                FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
             )",
             "CREATE TABLE IF NOT EXISTS leave_date(
                 leave_date_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -369,10 +300,10 @@ function db_connect()
             )",
             "CREATE TABLE IF NOT EXISTS activities (
                 activities_id     INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                employee_id     INT(11) NOT NULL,
+                user_id     INT(11) NOT NULL,
                 activity_type  VARCHAR(255) NOT NULL,
                 activity_at  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,                     
-                FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id) ON DELETE CASCADE
+                FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
             )",
             "CREATE TABLE IF NOT EXISTS leave_details (
                 leaveDetails_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -389,7 +320,7 @@ function db_connect()
             )",
             "CREATE TABLE IF NOT EXISTS leaveCounts (
                 leaveCountID     INT          AUTO_INCREMENT PRIMARY KEY,
-                employee_id         INT          NOT NULL,
+                user_id         INT          NOT NULL,
                 VacationBalance  DECIMAL(6,2) NOT NULL DEFAULT 0.00,
                 SickBalance      DECIMAL(6,2) NOT NULL DEFAULT 0.00,
                 SpecialBalance   DECIMAL(6,2) NOT NULL DEFAULT 0.00,
@@ -397,11 +328,11 @@ function db_connect()
                 OthersBalance    DECIMAL(6,2) NOT NULL DEFAULT 0.00,
                 last_earned_month VARCHAR(7) DEFAULT NULL,
                 last_updated date,
-                FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id) ON DELETE CASCADE
+                FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
             )",
             "CREATE TABLE IF NOT EXISTS Family_data (
                 Family_data_id     INT          AUTO_INCREMENT PRIMARY KEY,
-                employee_id INT(11) NOT NULL,
+                user_id INT(11) NOT NULL,
                 Relationship  ENUM('Father', 'Mother', 'Guardian', 'Spouse'),
                 firstname VARCHAR(50),
                 middlename VARCHAR(50),
@@ -415,40 +346,40 @@ function db_connect()
                 city VARCHAR(50),
                 province VARCHAR(50),
                 zip_code VARCHAR(50),
-                FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id) ON DELETE CASCADE
+                FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
             )",
             "CREATE TABLE IF NOT EXISTS educational_data (
                 educational_data_id     INT          AUTO_INCREMENT PRIMARY KEY,
-                employee_id INT(11) NOT NULL,
+                user_id INT(11) NOT NULL,
                 education_level  ENUM('Elementary', 'High_school', 'Senior_high', 'College', 'Graduate'),
                 school_name VARCHAR(50),
                 year_started VARCHAR(50),
                 year_ended VARCHAR(50),
                 course_strand VARCHAR(50),
                 honors TEXT,
-                FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id) ON DELETE CASCADE
+                FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
             )",
             "CREATE TABLE IF NOT EXISTS files (
                 files_id     INT          AUTO_INCREMENT PRIMARY KEY,
-                employee_id INT(11) NOT NULL,
+                user_id INT(11) NOT NULL,
                 file_title VARCHAR(100) NOT NULL,
                 type ENUM('communication', 'certifications' ,'training_certificates', 'license_eligibility', 'academic_credentials', 'preScreening_requirements', 'medical_certificates') NOT NULL,
                 201file VARCHAR(255) NOT NULL,
                 added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id) ON DELETE CASCADE
+                FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
             )",
             "CREATE TABLE IF NOT EXISTS employee_schedule (
                 employee_schedule_id INT  AUTO_INCREMENT PRIMARY KEY,
-                employee_id INT NOT NULL,
+                user_id INT NOT NULL,
                 schedule_id INT NOT NULL,
                 schedule_at date NOT NULL,
                 added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id) ON DELETE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
                 FOREIGN KEY (schedule_id) REFERENCES sched_template(template_id)
             )",
             "CREATE TABLE IF NOT EXISTS notifications (
                 notifications_id INT AUTO_INCREMENT PRIMARY KEY,
-                type ENUM('HR', 'ADMIN') NOT NULL,
+                type ENUM('HR', 'ADMIN', 'EMPLOYEE', 'PAYROLL') NOT NULL,
                 status ENUM('Active', 'Inactive'),
                 notify_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             )"
@@ -457,25 +388,25 @@ function db_connect()
         foreach ($tableQueries as $sql) {
             $pdo->exec($sql);
         }
-        $count = $pdo->query("SELECT COUNT(*) FROM admin")->fetchColumn();
+        $count = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
 
         if ($count == 0) {
 
             $stmt = $pdo->prepare("
-                INSERT INTO admin (
-                    admin_firstname,
-                    admin_middlename,
-                    admin_lastname,
-                    admin_suffix,
-                    joined_at,
-                    admin_cpno,
-                    admin_birth,
-                    admin_gender,
-                    admin_admin_status,
-                    admin_email,
-                    admin_username,
-                    admin_password,
-                    admin_user_role
+                INSERT INTO users (
+                    firstname,
+                    middlename,
+                    lastname,
+                    suffix,
+                    employeeID,
+                    contact,
+                    birthday,
+                    gender,
+                    status,
+                    email,
+                    username,
+                    password,
+                    user_role
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
 
@@ -484,7 +415,7 @@ function db_connect()
                 'VENTURA',         
                 'BAGUIO',
                 '',
-                '2024',       
+                '0001',      
                 '09171234567',
                 '1999-05-23',
                 'Male',
@@ -492,42 +423,30 @@ function db_connect()
                 'admin@example.com',
                 'admin',
                 password_hash('admin123', PASSWORD_BCRYPT),
-                'admin'
+                'ADMIN'
             ]);
 
-            // Get the inserted admin_id
-            $admin_id = $pdo->lastInsertId();
-            
+            $user_id = $pdo->lastInsertId();
+             
             $stmtInfo = $pdo->prepare("
-                    INSERT INTO admin_info (
-                        admin_id,
-                        admin_employee_id,
-                        admin_province,
-                        admin_city,
-                        admin_barangay,
-                        admin_rating
-                    ) VALUES (?, ?, ?, ?, ?, ?)
+                    INSERT INTO employee_data (
+                        user_id,
+                        joined_at,
+                        province,
+                        city_muntinlupa,
+                        barangay
+                    ) VALUES (?, ?, ?, ?, ?)
                 ");
 
                 $stmtInfo->execute([
-                    $admin_id,
-                    '0001',
+                    $user_id,
+                    '',
                     'Metro Manila',
                     'Manila',
-                    'Barangay 123',
-                    'Excellent'
+                    'Barangay 123'
                 ]);
 
         }
-
-        $countSchedule = $pdo->query("SELECT COUNT(*) FROM admin_schedule")->fetchColumn();
-        if($countSchedule == 0){
-            $stmt = $pdo->prepare("
-                INSERT INTO admin_schedule (admin_id) VALUES (1)
-            ");
-            $stmt->execute();
-        }
-
         // CSRF Token Generation
         if (!isset($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));

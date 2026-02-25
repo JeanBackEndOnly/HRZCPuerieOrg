@@ -1,6 +1,4 @@
-<?php include '../header.php';
-initInstaller()
-    ?>
+<?php include '../header.php'; ?>
 
 <div class="header col-md-12 col-12 d-flex justify-content-center align-items-center py-2">
     <div class="bg-gradient-primary rounded-2 col-md-11 col-11 py-2 px-3">

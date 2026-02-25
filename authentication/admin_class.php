@@ -28,247 +28,186 @@ class Action
     }
 // LOGIN ===============================================================================================================
 
-    function login()
-    {
+    function login(){
         $username = $_POST['username'] ?? '';
         $password = $_POST['password'] ?? '';
-
-        $_SESSION["username"] = $username;
-        $_SESSION["password"] = $password;
 
         if (empty($username) || empty($password)) {
             return json_encode(['status' => 0, 'message' => 'Username and password are required.']);
         }
 
         try {
-            // ==== Admin Login ====
-            $stmt = $this->db->prepare("SELECT a.*, ai.admin_employee_id,
-            d.Department_name AS admin_department, j.jobTitle AS admin_position
-            FROM admin a
-            INNER JOIN admin_info ai ON a.admin_id = ai.admin_id
-            LEFT JOIN jobTitles j ON ai.admin_position_id = j.jobTitles_id
-            LEFT JOIN departments d ON ai.admin_department_id = d.Department_id
-            WHERE admin_username = ? OR admin_email = ?");
+            // Fixed the JOIN condition - added table alias for user_id
+            $stmt = $this->db->prepare("SELECT u.*, 
+                u.firstname, u.middlename, u.lastname, u.email, u.user_role, 
+                u.employeeID, u.profile_picture, u.user_id, u.status, u.password,
+                d.Department_name AS employee_department,
+                j.jobTitle AS employee_position,
+                u.created_date
+                FROM users u
+                LEFT JOIN employee_data ed ON u.user_id = ed.user_id
+                LEFT JOIN departments d ON ed.Department_id = d.Department_id
+                LEFT JOIN jobTitles j ON ed.jobtitle_id = j.jobTitles_id
+                WHERE u.username = ? OR u.email = ?");
+            
             $stmt->execute([$username, $username]);
-            $admin = $stmt->fetch();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($admin && $admin['admin_user_role'] === 'admin') {
-                if (password_verify($password, $admin['admin_password'])) {
-                    $_SESSION['adminData'] = [
-                        'admin_firstname' => $admin['admin_firstname'],
-                        'admin_middlename' => $admin['admin_middlename'],
-                        'admin_lastname' => $admin['admin_lastname'],
-                        'admin_email' => $admin['admin_email'],
-                        'admin_department' => $admin['admin_department'],
-                        'admin_position' => $admin['admin_position'],
-                        'admin_user_role' => $admin['admin_user_role'],
-                        'admin_username' => $admin['admin_username'],
-                        'admin_id' => $admin['admin_id'],
-                        'admin_employee_id' => $admin['admin_employee_id'],
-                        'joined_at' => $admin['joined_at'],
-                        'admin_picture' => $admin['admin_picture'],
-                        'created_date' => $admin['created_date']
-                    ];
-                    $admin_id = $admin['admin_id'];
-                    $stmtHistory = $this->db->prepare("INSERT INTO admin_login_history (employee_id, login_time) VALUES ('$admin_id', NOW())");
-                    $stmtHistory->execute();
-                    return json_encode([
-                        'status' => 1,
-                        'message' => 'Logging in...',
-                        'redirect_url' => 'src/UI-Admin/index.php',
-                        'user_role' => $admin['admin_firstname'] . " " . $admin['admin_lastname']
-                    ]);
-                } else {
-                    return json_encode(['status' => 0, 'message' => 'Incorrect password.']);
-                }
+            if (!$user) {
+                return json_encode([
+                    'status' => 0,
+                    'message' => 'User not found. Please check your username/email.'
+                ]);
             }
 
-
-            // ==== Employee Login ====
-            $stmt = $this->db->prepare("SELECT ed.*, hd.employeeID,
-            d.Department_name AS employee_department,
-            j.jobTitle AS employee_position
-            FROM employee_data ed
-            INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-            LEFT JOIN departments d ON hd.Department_id = d.Department_id
-            LEFT JOIN jobTitles j ON hd.jobtitle_id = j.jobTitles_id
-            WHERE ed.username = ? OR ed.email = ?");
-            $stmt->execute([$username, $username]);
-            $employees = $stmt->fetch();
-
-
-
-            if ($employees['user_role'] === 'EMPLOYEE' && $employees["status"] === 'Active') {
-
-                if (password_verify($password, $employees['password'])) {
-                    $_SESSION['employeeData'] = [
-                        'firstname' => $employees['firstname'],
-                        'middlename' => $employees['middlename'],
-                        'lastname' => $employees['lastname'],
-                        'email' => $employees['email'],
-                        'user_role' => $employees['user_role'],
-                        'username' => $employees['username'],
-                        'employee_id' => $employees['employee_id'],
-                        'employeeID' => $employees['employeeID'],
-                        'employee_department' => $employees['employee_department'],
-                        'employee_position' => $employees['employee_position'],
-                        'profile_picture' => $employees['profile_picture'],
-                        'created_date' => $employees['created_date']
-                    ];
-
-                    $employee_id = $employees['employee_id'];
-                    $stmtHistory = $this->db->prepare("INSERT INTO login_history (employee_id, login_time) VALUES ('$employee_id', NOW())");
-                    $stmtHistory->execute();
-
-                    return json_encode([
-                        'status' => 1,
-                        'message' => 'Login successful.',
-                        'redirect_url' => 'src/UI-employee/index.php',
-                        'user_role' => $employees['firstname'] . " " . $employees['lastname']
-                    ]);
-                } else {
-                    return json_encode(['status' => 0, 'message' => 'Incorrect password.']);
-                }
-            }else if($employees['user_role'] === 'EMPLOYEE' && $employees["status"] === 'Pending'){
-                if (password_verify($password, $employees['password'])) {
-                    $_SESSION['employeeData'] = [
-                        'firstname' => $employees['firstname'],
-                        'middlename' => $employees['middlename'],
-                        'lastname' => $employees['lastname'],
-                        'email' => $employees['email'],
-                        'user_role' => $employees['user_role'],
-                        'username' => $employees['username'],
-                        'employee_id' => $employees['employee_id'],
-                        'created_date' => $employees['created_date']
-                    ];
-                    return json_encode([
-                        'status' => 1,
-                        'message' => 'Login successful.',
-                        'redirect_url' => 'src/UI-employee/pending.php',
-                        'user_role' => $employees['firstname'] . " " . $employees['lastname']
-                    ]);
-                } else {
-                    return json_encode(['status' => 0, 'message' => 'Incorrect password.']);
-                }
-            }else if($employees['user_role'] === 'EMPLOYEE' && $employees["status"] === 'Inactive'){
-                if (password_verify($password, $employees['password'])) {
-                    $_SESSION['employeeData'] = [
-                        'firstname' => $employees['firstname'],
-                        'middlename' => $employees['middlename'],
-                        'lastname' => $employees['lastname'],
-                        'email' => $employees['email'],
-                        'user_role' => $employees['user_role'],
-                        'username' => $employees['username'],
-                        'employee_id' => $employees['employee_id'],
-                        'created_date' => $employees['created_date']
-                    ];
-                    return json_encode([
-                        'status' => 1,
-                        'message' => 'Login successful.',
-                        'redirect_url' => 'src/UI-employee/inactive.php',
-                        'user_role' => $employees['firstname'] . " " . $employees['lastname']
-                    ]);
-                } else {
-                    return json_encode(['status' => 0, 'message' => 'Incorrect password.']);
-                }
+            // Verify password first
+            if (!password_verify($password, $user['password'])) {
+                return json_encode(['status' => 0, 'message' => 'Incorrect password.']);
             }
 
-            if ($employees['user_role'] === 'HRSM' && $employees["status"] === 'Active') {
+            // Handle different user roles and statuses
+            switch ($user['user_role']) {
+                case 'ADMIN':
+                    if ($user['status'] === 'Active') {
+                        $_SESSION['adminData'] = [
+                            'user_id' => $user['user_id'],
+                            'firstname' => $user['firstname'],
+                            'middlename' => $user['middlename'],
+                            'lastname' => $user['lastname'],
+                            'email' => $user['email'],
+                            'user_role' => $user['user_role'],
+                            'employeeID' => $user['employeeID'],
+                            'employee_department' => $user['employee_department'],
+                            'employee_position' => $user['employee_position'],
+                            'profile_picture' => $user['profile_picture'],
+                            'created_date' => $user['created_date']
+                        ];
 
-                if (password_verify($password, $employees['password'])) {
-                    $_SESSION['hrData'] = [
-                        'firstname' => $employees['firstname'],
-                        'middlename' => $employees['middlename'],
-                        'lastname' => $employees['lastname'],
-                        'employeeID' => $employees['employeeID'],
-                        'employee_department' => $employees['employee_department'],
-                        'employee_position' => $employees['employee_position'],
-                        'email' => $employees['email'],
-                        'user_role' => $employees['user_role'],
-                        'username' => $employees['username'],
-                        'employee_id' => $employees['employee_id'],
-                        'profile_picture' => $employees['profile_picture'],
-                        'created_date' => $employees['created_date']
+                        $this->insertLoginHistory($user['user_id']);
+
+                        return json_encode([
+                            'status' => 1,
+                            'message' => 'Login successful.',
+                            'redirect_url' => 'src/UI-Admin/index.php',
+                            'user_role' => $user['firstname'] . " " . $user['lastname']
+                        ]);
+                    }
+                    break;
+
+                case 'HR':
+                    $sessionData = [
+                        'user_id' => $user['user_id'],
+                        'firstname' => $user['firstname'],
+                        'middlename' => $user['middlename'],
+                        'lastname' => $user['lastname'],
+                        'email' => $user['email'],
+                        'user_role' => $user['user_role'],
+                        'username' => $user['username'],
+                        'employeeID' => $user['employeeID'],
+                        'employee_department' => $user['employee_department'],
+                        'employee_position' => $user['employee_position'],
+                        'profile_picture' => $user['profile_picture'],
+                        'created_date' => $user['created_date']
                     ];
 
-                    $employee_id = $employees['employee_id'];
-                    $stmtHistory = $this->db->prepare("INSERT INTO login_history (employee_id, login_time) VALUES ('$employee_id', NOW())");
-                    $stmtHistory->execute();
+                    $_SESSION['hrData'] = $sessionData;
+                    $this->insertLoginHistory($user['user_id']);
+
+                    $redirectPath = 'src/UI-HR/';
+                    switch ($user['status']) {
+                        case 'Active':
+                            $redirectPath .= 'index.php';
+                            break;
+                        case 'Pending':
+                            $redirectPath .= 'pending.php';
+                            break;
+                        case 'Inactive':
+                            $redirectPath .= 'inactive.php';
+                            break;
+                        default:
+                            $redirectPath .= 'pending.php';
+                    }
 
                     return json_encode([
                         'status' => 1,
                         'message' => 'Login successful.',
-                        'redirect_url' => 'src/UI-HR/index.php',
-                        'user_role' => $employees['firstname'] . " " . $employees['lastname']
+                        'redirect_url' => $redirectPath,
+                        'user_role' => $user['firstname'] . " " . $user['lastname']
                     ]);
-                } else {
-                    return json_encode(['status' => 0, 'message' => 'Incorrect password.']);
-                }
-            }else if ($employees['user_role'] === 'HRSM' && $employees["status"] === 'Inactive') {
 
-                if (password_verify($password, $employees['password'])) {
-                    $_SESSION['hrData'] = [
-                        'firstname' => $employees['firstname'],
-                        'middlename' => $employees['middlename'],
-                        'lastname' => $employees['lastname'],
-                        'email' => $employees['email'],
-                        'user_role' => $employees['user_role'],
-                        'username' => $employees['username'],
-                        'employee_id' => $employees['employee_id'],
-                        'created_date' => $employees['created_date']
+                case 'EMPLOYEE':
+                    $sessionData = [
+                        'user_id' => $user['user_id'],
+                        'firstname' => $user['firstname'],
+                        'middlename' => $user['middlename'],
+                        'lastname' => $user['lastname'],
+                        'email' => $user['email'],
+                        'user_role' => $user['user_role'],
+                        'username' => $user['username'],
+                        'employeeID' => $user['employeeID'],
+                        'employee_department' => $user['employee_department'],
+                        'employee_position' => $user['employee_position'],
+                        'profile_picture' => $user['profile_picture'],
+                        'created_date' => $user['created_date']
                     ];
 
-                    $employee_id = $employees['employee_id'];
-                    $stmtHistory = $this->db->prepare("INSERT INTO login_history (employee_id, login_time) VALUES ('$employee_id', NOW())");
-                    $stmtHistory->execute();
+                    $_SESSION['employeeData'] = $sessionData;
+
+                    $redirectPath = 'src/UI-employee/';
+                    switch ($user['status']) {
+                        case 'Active':
+                            $this->insertLoginHistory($user['user_id']);
+                            $redirectPath .= 'index.php';
+                            break;
+                        case 'Pending':
+                            $redirectPath .= 'pending.php';
+                            break;
+                        case 'Inactive':
+                            $redirectPath .= 'inactive.php';
+                            break;
+                        default:
+                            $redirectPath .= 'pending.php';
+                    }
 
                     return json_encode([
                         'status' => 1,
                         'message' => 'Login successful.',
-                        'redirect_url' => 'src/UI-HR/inactive.php',
-                        'user_role' => $employees['firstname'] . " " . $employees['lastname']
+                        'redirect_url' => $redirectPath,
+                        'user_role' => $user['firstname'] . " " . $user['lastname']
                     ]);
-                } else {
-                    return json_encode(['status' => 0, 'message' => 'Incorrect password.']);
-                }
-            }else if ($employees['user_role'] === 'HRSM' && $employees["status"] === 'Pending') {
 
-                if (password_verify($password, $employees['password'])) {
-                    $_SESSION['hrData'] = [
-                        'firstname' => $employees['firstname'],
-                        'middlename' => $employees['middlename'],
-                        'lastname' => $employees['lastname'],
-                        'email' => $employees['email'],
-                        'user_role' => $employees['user_role'],
-                        'username' => $employees['username'],
-                        'employee_id' => $employees['employee_id'],
-                        'created_date' => $employees['created_date']
-                    ];
-
-                    $employee_id = $employees['employee_id'];
-                    $stmtHistory = $this->db->prepare("INSERT INTO login_history (employee_id, login_time) VALUES ('$employee_id', NOW())");
-                    $stmtHistory->execute();
-
+                default:
                     return json_encode([
-                        'status' => 1,
-                        'message' => 'Login successful.',
-                        'redirect_url' => 'src/UI-HR/pending.php',
-                        'user_role' => $employees['firstname'] . " " . $employees['lastname']
+                        'status' => 0,
+                        'message' => 'Invalid user role.'
                     ]);
-                } else {
-                    return json_encode(['status' => 0, 'message' => 'Incorrect password.']);
-                }
             }
 
+            // If we get here, the status check failed for the role
             return json_encode([
                 'status' => 0,
-                'message' => 'User not found. Please check your username/email.'
+                'message' => 'Account is not active. Please contact HR.'
             ]);
+
         } catch (Exception $e) {
+            // Log the error for debugging
+            error_log("Login error: " . $e->getMessage());
             return json_encode(['status' => 0, 'message' => 'Database error. Please try again later.']);
         }
     }
-   
+
+    // Helper function to insert login history
+    private function insertLoginHistory($user_id)
+    {
+        try {
+            // Check if login_history table exists, if not you might want to create it
+            $stmtHistory = $this->db->prepare("INSERT INTO login_history (user_id, login_time) VALUES (?, NOW())");
+            $stmtHistory->execute([$user_id]);
+        } catch (Exception $e) {
+            // Log error but don't stop login process
+            error_log("Failed to insert login history: " . $e->getMessage());
+        }
+    }
 
     function logout(){
         if (session_status() === PHP_SESSION_NONE) {

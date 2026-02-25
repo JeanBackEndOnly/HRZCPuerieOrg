@@ -57,7 +57,7 @@
                     <?php 
                     $adminPicture = $getAdminData["admin_picture"] ?? null;
                     if($adminPicture == null){ ?>
-                    <div class="setting-circle-profile mb-2 d-flex align-items-center justify-content-center fs-2">
+                    <div class="setting-circle-profile mb-2 mt-2 d-flex align-items-center justify-content-center fs-2">
                         <strong class="p-0 text-white">
                             <?= htmlspecialchars(substr($getAdminData["admin_firstname"] ?? '', 0,1) . substr($getAdminData["admin_lastname"] ?? '', 0,1)) ?>
                         </strong>
@@ -67,17 +67,17 @@
                         style="width: 200px; height: auto; border-radius: 50%;">
                     <?php } ?>
 
-                    <span id="admin_employeeID"
-                        class="text-muted fw-bold"><?= htmlspecialchars($getAdminData["admin_employeeID"] ?? '') ?></span>
-                    <span
+                    <span id="admin_employee_id"
+                        class="font-15 text-muted fw-bold"><?= 'EMP-' .  htmlspecialchars($getAdminData["admin_employee_id"] ?? 'wala') ?></span>
+                    <span class="font-15"
                         id="employeeName"><?= htmlspecialchars($getAdminData["admin_firstname"] ?? '') . " " .  substr(htmlspecialchars($getAdminData["admin_middlename"] ?? ''), 0, 1) . ". " . htmlspecialchars($getAdminData["admin_lastname"] ?? '') ?></span>
-                    <span class="text-center"
+                    <span class="font-15 text-center"
                         id="employeeDept"><?= isset($getAdminData["Department_name"]) ? htmlspecialchars($getAdminData["Department_name"]) : '' ?>
                     </span>
-                    <span class="text-center">
+                    <span class="font-15 text-center">
                         <?= isset($getAdminData["unit_section_name"]) ? ' (' . $getAdminData["unit_section_name"] . ')' : ''; ?>
                     </span>
-                    <span id="employeeJobTitle"><?= htmlspecialchars($getAdminData["jobTitle"]) ?? '' ?></span>
+                    <span class="font-15" id="employeeJobTitle"><?= htmlspecialchars($getAdminData["jobTitle"]) ?? '' ?></span>
 
                 </div>
             </div>

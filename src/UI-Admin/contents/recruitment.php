@@ -59,7 +59,7 @@
                     <?php 
                         if($ActiveEmployees){
                             foreach ($ActiveEmployees as $officials) : ?>
-                    <a href="index.php?page=contents/profile&id=<?= htmlspecialchars($officials["employee_id"]) ?>"
+                    <a href="index.php?page=contents/profile&id=<?= htmlspecialchars($officials["user_id"]) ?>"
                         class="col-md-4">
                         <div class="card col-md-12 d-flex flex-row shadow p-2 rounded-3 border">
                             <div class="col-md-2 d-flex align-items-center">
@@ -261,11 +261,11 @@
                     <!-- Contact Information -->
                     <div class="col-md-4">
                         <label class="form-label">Account Role <span class="text-danger">*</span></label>
-                        <!-- <input type="text" readonly class="form-control" value="EMPLOYEE" name="user_role" required> -->
                         <select name="user_role" class="form-select" id="">
                             <option value="">Select Account Role</option>
                             <option value="EMPLOYEE">EMPLOYEE</option>
-                            <option value="HRSM">HR</option>
+                            <option value="PAYROLL">PAYROLL</option>
+                            <option value="HR">HR</option>
                         </select>
                     </div>
                     <div class="col-md-4">

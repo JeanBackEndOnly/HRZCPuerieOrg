@@ -45,7 +45,7 @@ class Action
                 j.jobTitle AS employee_position,
                 u.created_date
                 FROM users u
-                LEFT JOIN employee_data ed ON u.user_id = ed.user_id
+                LEFT JOIN users ed ON u.user_id = ed.user_id
                 LEFT JOIN departments d ON ed.Department_id = d.Department_id
                 LEFT JOIN jobTitles j ON ed.jobtitle_id = j.jobTitles_id
                 WHERE u.username = ? OR u.email = ?");
@@ -215,37 +215,37 @@ class Action
         }
         
         // ✅ Get employee ID before destroying the session
-        $employee_id = null;
+        $user_id = null;
 
-        if (!empty($_SESSION['employeeData']['employee_id'])) {
-            $employee_id = $_SESSION['employeeData']['employee_id'];
-        } elseif (!empty($_SESSION['hrData']['employee_id'])) {
-            $employee_id = $_SESSION['hrData']['employee_id'];
+        if (!empty($_SESSION['employeeData']['user_id'])) {
+            $user_id = $_SESSION['employeeData']['user_id'];
+        } elseif (!empty($_SESSION['hrData']['user_id'])) {
+            $user_id = $_SESSION['hrData']['user_id'];
         } elseif (!empty($_SESSION['adminData']['admin_id'])) {
             $admin_id = $_SESSION['adminData']['admin_id'];
         }
 
-        // ✅ Update logout_time only if we got an employee_id
-        if ($employee_id !== null) {
+        // ✅ Update logout_time only if we got an user_id
+        if ($user_id !== null) {
             $sql = "UPDATE login_history 
                     SET logout_time = NOW() 
-                    WHERE employee_id = :employee_id 
+                    WHERE user_id = :user_id 
                     AND logout_time IS NULL 
                     ORDER BY login_time DESC 
                     LIMIT 1";
 
             $stmt = $this->db->prepare($sql);
-            $stmt->execute(['employee_id' => $employee_id]);
+            $stmt->execute(['user_id' => $user_id]);
         }else if($admin_id !== null){
             $sql = "UPDATE admin_login_history 
                     SET logout_time = NOW() 
-                    WHERE employee_id = :employee_id 
+                    WHERE user_id = :user_id 
                     AND logout_time IS NULL 
                     ORDER BY login_time DESC 
                     LIMIT 1";
 
             $stmt = $this->db->prepare($sql);
-            $stmt->execute(['employee_id' => $admin_id]);
+            $stmt->execute(['user_id' => $admin_id]);
         }
 
         // ✅ Now clear and destroy the session
@@ -289,9 +289,9 @@ class Action
             }
 
             // Determine employee id
-            $employee_id = $_SESSION["employee_id"] ?? $_POST["employee_id"] ?? null;
+            $user_id = $_SESSION["user_id"] ?? $_POST["user_id"] ?? null;
 
-            if ($employee_id === null) {
+            if ($user_id === null) {
                 $admin_id = $_POST["admin_id"];
                 $stmt = $this->db->prepare("SELECT admin_password FROM admin WHERE admin_id = :admin_id");
                 $stmt->execute(['admin_id' => $admin_id]);
@@ -319,9 +319,9 @@ class Action
                     'admin_password' => $hash,
                     'admin_id' => $admin_id
                 ]);
-            }else if($employee_id !== null){
-                $stmt = $this->db->prepare("SELECT password FROM employee_data WHERE employee_id = :employee_id");
-                $stmt->execute(['employee_id' => $employee_id]);
+            }else if($user_id !== null){
+                $stmt = $this->db->prepare("SELECT password FROM users WHERE user_id = :user_id");
+                $stmt->execute(['user_id' => $user_id]);
                 $employee = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 if (!$employee) {
@@ -343,10 +343,10 @@ class Action
                 $hash = password_hash($new_pass, PASSWORD_BCRYPT);
 
                 // FIXED: Added WHERE clause
-                $stmt = $this->db->prepare("UPDATE employee_data SET password = :password WHERE employee_id = :employee_id");
+                $stmt = $this->db->prepare("UPDATE users SET password = :password WHERE user_id = :user_id");
                 $stmt->execute([
                     'password' => $hash,
-                    'employee_id' => $employee_id
+                    'user_id' => $user_id
                 ]);
             }
             return json_encode([
@@ -367,7 +367,7 @@ class Action
             $username = $_POST['username'] ?? '';
             
             // Use proper prepared statements
-            $stmt = $this->db->prepare("SELECT username, email, firstname, lastname, employee_id FROM employee_data WHERE username = :username OR email = :username");
+            $stmt = $this->db->prepare("SELECT username, email, firstname, lastname, user_id FROM users WHERE username = :username OR email = :username");
             $stmt->execute([':username' => $username]);
             $userExists = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -379,10 +379,10 @@ class Action
                 $email = $userExists["email"];
                 $firstName = $userExists["firstname"]; // lowercase
                 $lastName = $userExists["lastname"];   // lowercase
-                $employee_id = $userExists["employee_id"];
+                $user_id = $userExists["user_id"];
 
                 $_SESSION["email"] = $email;
-                $_SESSION["employee_id"] = $employee_id;
+                $_SESSION["user_id"] = $user_id;
                 $_SESSION["email_verification"] = $verification;
 
                 $mail = new PHPMailer(true);
@@ -471,7 +471,7 @@ class Action
     }
     function password_form(){
         try {
-            $employee_id = $_SESSION["employee_id"];
+            $user_id = $_SESSION["user_id"];
             $new_pass = $_POST["new_pass"];
             $confirm_pass = $_POST["confirm_pass"];
 
@@ -482,10 +482,10 @@ class Action
                 ]);
             }
             $hash = password_hash($new_pass, PASSWORD_BCRYPT);
-            $stmt = $this->db->prepare("UPDATE employee_data SET password = :password WHERE employee_id = :employee_id");
+            $stmt = $this->db->prepare("UPDATE users SET password = :password WHERE user_id = :user_id");
             $stmt->execute([
                 'password' => $hash,
-                'employee_id' => $employee_id
+                'user_id' => $user_id
             ]);
 
             return json_encode([
@@ -572,7 +572,7 @@ class Action
             $department_id = $_POST["department_id"];
 
                 $stmt = $this->db->prepare("SELECT * FROM departments d
-                    INNER JOIN hr_data hd ON d.Department_id = hd.Department_id
+                    INNER JOIN employee_data hd ON d.Department_id = hd.Department_id
                     WHERE d.Department_id = :Department_id");
 
                 $stmt->execute([
@@ -706,7 +706,7 @@ class Action
             $jobTitles_id = $_POST["jobTitles_id"];
 
                 $stmt = $this->db->prepare("SELECT * FROM jobTitles jt
-                    INNER JOIN hr_data hd ON jt.jobTitles_id = hd.jobtitle_id
+                    INNER JOIN employee_data hd ON jt.jobTitles_id = hd.jobtitle_id
                     WHERE jt.jobTitles_id = :jobTitles_id");
 
                 $stmt->execute([
@@ -797,13 +797,13 @@ class Action
         // Validation code remains the same...
 
         try {
-            $stmtGetSalary = $this->db->prepare("SELECT salary FROM jobTitles WHERE jobTitles_id = '$jobTitle_id'");
-            $stmtGetSalary->execute();
+            $stmtGetSalary = $this->db->prepare("SELECT salary FROM jobTitles WHERE jobTitles_id = ?");
+            $stmtGetSalary->execute([$jobTitle_id]);
             $salaryResult = $stmtGetSalary->fetch(PDO::FETCH_ASSOC);
             $salary = $salaryResult["salary"] ?? '';
 
             // Check if username exists using prepared statement
-            $stmt = $this->db->prepare("SELECT username FROM employee_data WHERE username = ?");
+            $stmt = $this->db->prepare("SELECT username FROM users WHERE username = ?");
             $stmt->execute([$username]);
             $usernameTaken = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -815,7 +815,7 @@ class Action
             }
 
             // Check if email exists
-            $stmt = $this->db->prepare("SELECT email FROM employee_data WHERE email = ?");
+            $stmt = $this->db->prepare("SELECT email FROM users WHERE email = ?");
             $stmt->execute([$email]);
             $emailTaken = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -828,7 +828,7 @@ class Action
 
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
             // FIXED: Use $this->db instead of $pdo
-            $query = "INSERT INTO employee_data (firstname, middlename, lastname, suffix, email, contact, gender, username, password, user_role, status) 
+            $query = "INSERT INTO users (firstname, middlename, lastname, suffix, email, contact, gender, username, password, user_role, status) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Active')";
 
             $stmt = $this->db->prepare($query); // CHANGED: $pdo to $this->db
@@ -845,42 +845,42 @@ class Action
                 $user_role
             ]);
 
-            $employee_id = $this->db->lastInsertId();
-            $plusOne = $employee_id + 1;
+            $user_id = $this->db->lastInsertId();
+            $plusOne = $user_id + 1;
             $employeeID = sprintf("%04d", $plusOne);
             
-            $stmtUpdate = $this->db->prepare("UPDATE employee_data SET employeeID = :employeeID WHERE employee_id = :employee_id");
+            $stmtUpdate = $this->db->prepare("UPDATE users SET employeeID = :employeeID WHERE user_id = :user_id");
             $stmtUpdate->execute([
                 'employeeID' => $employeeID,
-                'employee_id' => $employee_id,
+                'user_id' => $user_id,
             ]);
 
             $stmtLeaveCounts = $this->db->prepare("
-                INSERT INTO leaveCounts (employee_id, last_updated) 
-                VALUES (:employee_id, CURDATE())
+                INSERT INTO leaveCounts (user_id, last_updated) 
+                VALUES (:user_id, CURDATE())
             ");
 
             $stmtLeaveCounts->execute([
-                'employee_id' => $employee_id
+                'user_id' => $user_id
             ]);
 
-            $stmt = $this->db->prepare("INSERT INTO hr_data (employee_id, jobTitle_id, employeeID, Department_id, salary) VALUES ('$employee_id', '$jobTitle_id', '$employeeID', '$Department_id', '$salary')");
-            $stmt->execute();
+            $stmt = $this->db->prepare("INSERT INTO employee_data (user_id, jobTitle_id, Department_id, salary) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$user_id, $jobTitle_id, $Department_id, $salary]);
 
-            $stmtSchedule = $this->db->prepare("INSERT INTO schedule (employee_id) VALUES ('$employee_id')");
-            $stmtSchedule->execute();
+            $stmtSchedule = $this->db->prepare("INSERT INTO schedule (user_id) VALUES (?)");
+            $stmtSchedule->execute([$user_id]);
 
-            $stmtFamily = $this->db->prepare("INSERT INTO Family_data (employee_id, Relationship) 
-            VALUES ('$employee_id', 'Father'), ('$employee_id', 'Mother'), ('$employee_id', 'Guardian')");
-            $stmtFamily->execute();
+            $stmtFamily = $this->db->prepare("INSERT INTO Family_data (user_id, Relationship) 
+            VALUES (?, 'Father'), (?, 'Mother'), (?, 'Guardian')");
+            $stmtFamily->execute([$user_id, $user_id, $user_id]);
 
-            $stmtEducation = $this->db->prepare("INSERT INTO educational_data (employee_id, education_level) 
-            VALUES ('$employee_id', 'Elementary'), ('$employee_id', 'High_school'), ('$employee_id', 'Senior_high')
-            , ('$employee_id', 'College'), ('$employee_id', 'Graduate')");
-            $stmtEducation->execute();
+            $stmtEducation = $this->db->prepare("INSERT INTO educational_data (user_id, education_level) 
+            VALUES (?, 'Elementary'), (?, 'High_school'), (?, 'Senior_high')
+            , (?, 'College'), (?, 'Graduate')");
+            $stmtEducation->execute([$user_id, $user_id, $user_id, $user_id, $user_id]);
 
-            $personal_data_sheet = $this->db->prepare("INSERT INTO personal_data_sheet (employee_id) VALUES ('$employee_id')");
-            $personal_data_sheet->execute();
+            $personal_data_sheet = $this->db->prepare("INSERT INTO personal_data_sheet (user_id) VALUES (?)");
+            $personal_data_sheet->execute([$user_id]);
 
             $pds_id = $this->db->lastInsertId();
             
@@ -965,14 +965,14 @@ class Action
 
         try {
             // ------------------ Check if username exists ------------------
-            $stmt = $this->db->prepare("SELECT username FROM employee_data WHERE username = ?");
+            $stmt = $this->db->prepare("SELECT username FROM users WHERE username = ?");
             $stmt->execute([$username]);
             if ($stmt->fetch(PDO::FETCH_ASSOC)) {
                 return json_encode(['status' => 0, 'message' => 'Username already taken']);
             }
 
             // ------------------ Check if email exists ------------------
-            $stmt = $this->db->prepare("SELECT email FROM employee_data WHERE email = ?");
+            $stmt = $this->db->prepare("SELECT email FROM users WHERE email = ?");
             $stmt->execute([$email]);
             if ($stmt->fetch(PDO::FETCH_ASSOC)) {
                 return json_encode(['status' => 0, 'message' => 'Email already registered']);
@@ -1065,57 +1065,57 @@ class Action
             $salaryResult = $stmt->fetch(PDO::FETCH_ASSOC);
             $salary = $salaryResult["salary"] ?? 0;
 
-            // Insert into employee_data
+            // Insert into users
             $stmt = $this->db->prepare("
-                INSERT INTO employee_data 
+                INSERT INTO users 
                 (firstname, middlename, lastname, suffix, email, contact, gender, username, password, user_role)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
             $stmt->execute([$firstName, $middleName, $lastName, $suffix, $email, $contact, $gender, $username, $hashedPassword, $user_role]);
 
             
-            $employee_id = $this->db->lastInsertId();
-            $plusOne = $employee_id + 1;
+            $user_id = $this->db->lastInsertId();
+            $plusOne = $user_id + 1;
             $employeeID = sprintf("%04d", $plusOne);
             
-            $stmtUpdate = $this->db->prepare("UPDATE employee_data SET employeeID = :employeeID WHERE employee_id = :employee_id");
+            $stmtUpdate = $this->db->prepare("UPDATE users SET employeeID = :employeeID WHERE user_id = :user_id");
             $stmtUpdate->execute([
                 'employeeID' => $employeeID,
-                'employee_id' => $employee_id,
+                'user_id' => $user_id,
             ]);
 
             $stmtLeaveCounts = $this->db->prepare("
-                INSERT INTO leaveCounts (employee_id, last_updated) 
-                VALUES (:employee_id, CURDATE())
+                INSERT INTO leaveCounts (user_id, last_updated) 
+                VALUES (:user_id, CURDATE())
             ");
 
             $stmtLeaveCounts->execute([
-                'employee_id' => $employee_id
+                'user_id' => $user_id
             ]);
 
 
-            // Insert into hr_data
+            // Insert into employee_data
             $stmt = $this->db->prepare("
-                INSERT INTO hr_data (employee_id, jobTitle_id, employeeID, Department_id, salary)
+                INSERT INTO employee_data (user_id, jobTitle_id, employeeID, Department_id, salary)
                 VALUES (?, ?, ?, ?, ?)
             ");
-            $stmt->execute([$employee_id, $jobTitle_id, $employeeID, $Department_id, $salary]);
+            $stmt->execute([$user_id, $jobTitle_id, $employeeID, $Department_id, $salary]);
 
-            $stmt = $this->db->prepare("INSERT INTO schedule (employee_id) VALUES (?)");
-            $stmt->execute([$employee_id]);
+            $stmt = $this->db->prepare("INSERT INTO schedule (user_id) VALUES (?)");
+            $stmt->execute([$user_id]);
     
 
             // Insert Family data
             $relationships = ['Father', 'Mother', 'Guardian'];
             $values = [];
             foreach ($relationships as $rel) {
-                $values[] = "($employee_id, '$rel')";
+                $values[] = "($user_id, '$rel')";
             }
-            $this->db->exec("INSERT INTO Family_data (employee_id, Relationship) VALUES " . implode(',', $values));
+            $this->db->exec("INSERT INTO Family_data (user_id, Relationship) VALUES " . implode(',', $values));
 
             // Personal Data Sheet
-            $stmt = $this->db->prepare("INSERT INTO personal_data_sheet (employee_id) VALUES (?)");
-            $stmt->execute([$employee_id]);
+            $stmt = $this->db->prepare("INSERT INTO personal_data_sheet (user_id) VALUES (?)");
+            $stmt->execute([$user_id]);
             $pds_id = $this->db->lastInsertId();
 
             $tablesPDS = ['userGovIDs', 'spouseInfo', 'children', 'parents', 'siblings', 'educationInfo', 'workExperience', 'seminarsTrainings', 'otherInfo'];
@@ -1141,9 +1141,9 @@ class Action
         }
     }
     function delete_employee_form(){
-        $employee_id = htmlspecialchars($_POST["employee_id"] ?? '');
+        $user_id = htmlspecialchars($_POST["user_id"] ?? '');
 
-        if (empty($employee_id)) {
+        if (empty($user_id)) {
             return json_encode([
                 'status' => 0,
                 'message' => 'Employee ID is required.'
@@ -1152,8 +1152,8 @@ class Action
 
         try {
 
-            $stmt = $this->db->prepare("DELETE FROM employee_data WHERE employee_id = ?");
-            $stmt->execute([$employee_id]);
+            $stmt = $this->db->prepare("DELETE FROM users WHERE user_id = ?");
+            $stmt->execute([$user_id]);
 
             return json_encode([
                 'status' => 1,
@@ -1169,9 +1169,9 @@ class Action
         }
     }
     function approval_form(){
-        $employee_ID = htmlspecialchars($_POST["employee_ID"] ?? '');
+        $user_id = htmlspecialchars($_POST["user_id"] ?? '');
 
-        if (empty($employee_ID)) {
+        if (empty($user_id)) {
             return json_encode([
                 'status' => 0,
                 'message' => 'Employee ID is required.'
@@ -1180,24 +1180,24 @@ class Action
 
         try {
             // Get employee data
-            $stmt = $this->db->prepare("SELECT email, firstname, lastname FROM employee_data WHERE employee_id = :employee_id");
-            $stmt->execute(['employee_id' => $employee_ID]);
-            $employee_data = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt = $this->db->prepare("SELECT email, firstname, lastname FROM users WHERE user_id = :user_id");
+            $stmt->execute(['user_id' => $user_id]);
+            $users = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (!$employee_data) {
+            if (!$users) {
                 return json_encode([
                     'status' => 0,
                     'message' => 'Employee not found.'
                 ]);
             }
 
-            $email = $employee_data["email"];
-            $firstname = $employee_data["firstname"];
-            $lastname = $employee_data["lastname"];
+            $email = $users["email"];
+            $firstname = $users["firstname"];
+            $lastname = $users["lastname"];
 
             // Update status first
-            $stmt = $this->db->prepare("UPDATE employee_data SET status = 'Active' WHERE employee_id = :employee_id");
-            $stmt->execute(['employee_id' => $employee_ID]);
+            $stmt = $this->db->prepare("UPDATE users SET status = 'Active' WHERE user_id = :user_id");
+            $stmt->execute(['user_id' => $user_id]);
 
             // Send email with short timeout
             $this->quickEmailSend($email, $firstname, $lastname);
@@ -1216,10 +1216,10 @@ class Action
         }
     }
     function rejection_form(){
-        $employee_ID = htmlspecialchars($_POST["employee_ID"] ?? '');
+        $user_id = htmlspecialchars($_POST["user_id"] ?? '');
 
         // Validate input
-        if (empty($employee_ID)) {
+        if (empty($user_id)) {
             return json_encode([
                 'status' => 0,
                 'message' => 'Employee ID is required.'
@@ -1228,24 +1228,24 @@ class Action
 
         try {
             // Fetch employee info
-            $stmt = $this->db->prepare("SELECT email, firstname, lastname FROM employee_data WHERE employee_id = :employee_id");
-            $stmt->execute(['employee_id' => $employee_ID]);
-            $employee_data = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt = $this->db->prepare("SELECT email, firstname, lastname FROM users WHERE user_id = :user_id");
+            $stmt->execute(['user_id' => $user_id]);
+            $users = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (!$employee_data) {
+            if (!$users) {
                 return json_encode([
                     'status' => 0,
                     'message' => 'Employee not found.'
                 ]);
             }
 
-            $email = $employee_data["email"];
-            $firstname = $employee_data["firstname"];
-            $lastname = $employee_data["lastname"];
+            $email = $users["email"];
+            $firstname = $users["firstname"];
+            $lastname = $users["lastname"];
 
             // Update employee status to Inactive
-            $stmt = $this->db->prepare("UPDATE employee_data SET status = 'Inactive' WHERE employee_id = :employee_id");
-            $stmt->execute(['employee_id' => $employee_ID]);
+            $stmt = $this->db->prepare("UPDATE users SET status = 'Inactive' WHERE user_id = :user_id");
+            $stmt->execute(['user_id' => $user_id]);
 
             // OPTIONAL: Send rejection email
             $this->quickRejectionEmail($email, $firstname, $lastname);
@@ -1266,19 +1266,19 @@ class Action
     function select_status() {
         try {
             $status = $_POST["status"] ?? null;
-            $employee_id = $_POST["employee_id"] ?? null;
+            $user_id = $_POST["user_id"] ?? null;
 
-            if (!$status || !$employee_id) {
+            if (!$status || !$user_id) {
                 return json_encode([
                     'status' => 0,
                     'message' => 'Missing status or employee ID.'
                 ]);
             }
 
-            $stmt = $this->db->prepare("UPDATE employee_data SET status = :status WHERE employee_id = :employee_id");
+            $stmt = $this->db->prepare("UPDATE users SET status = :status WHERE user_id = :user_id");
             $stmt->execute([
                 'status' => $status,
-                'employee_id' => $employee_id
+                'user_id' => $user_id
             ]);
 
             return json_encode([
@@ -1359,7 +1359,7 @@ class Action
 
 // PROFILE MANAGEMENT ADMIN =============================================================
     function profile_update(){
-        $employee_id = htmlspecialchars($_POST["employee_id"]);
+        $user_id = htmlspecialchars($_POST["user_id"]);
         $firstname = htmlspecialchars($_POST["firstname"]);
         $middlename = htmlspecialchars($_POST["middlename"]);
         $lastname = htmlspecialchars($_POST["lastname"]);
@@ -1385,9 +1385,9 @@ class Action
         $fellowship        = htmlspecialchars(trim($_POST["fellowship"] ?? ''));
 
         try {
-            // ✅ Update employee_data
+            // ✅ Update users
             $stmtEmployee = $this->db->prepare("
-                UPDATE employee_data 
+                UPDATE users 
                 SET firstname = :firstname,
                     middlename = :middlename,
                     lastname = :lastname,
@@ -1400,7 +1400,7 @@ class Action
                     birthPlace = :birthPlace,
                     contact = :contact,
                     email = :email
-                WHERE employee_id = :employee_id
+                WHERE user_id = :user_id
             ");
             $stmtEmployee->execute([
                 'firstname' => $firstname,
@@ -1415,12 +1415,12 @@ class Action
                 'birthPlace' => $birthPlace,
                 'contact' => $contact,
                 'email' => $email,
-                'employee_id' => $employee_id
+                'user_id' => $user_id
             ]);
 
-            // ✅ Update hr_data
+            // ✅ Update employee_data
             $stmtHR = $this->db->prepare("
-                UPDATE hr_data 
+                UPDATE employee_data 
                 SET houseBlock = :houseBlock,
                     street = :street,
                     subdivision = :subdivision,
@@ -1431,7 +1431,7 @@ class Action
                     profession_title = :profession_title,
                     degrees = :degrees,
                     fellowship = :fellowship
-                WHERE employee_id = :employee_id
+                WHERE user_id = :user_id
             ");
             $stmtHR->execute([
                 'houseBlock' => $houseBlock,
@@ -1444,7 +1444,7 @@ class Action
                 'profession_title' => $profession_title,
                 'degrees' => $degrees,
                 'fellowship' => $fellowship,
-                'employee_id' => $employee_id
+                'user_id' => $user_id
             ]);
 
             return json_encode([
@@ -1477,7 +1477,7 @@ class Action
                 ]);
             }
             if($admin_update == 'true'){
-                $admin_employee_id = htmlSpecialChars($_POST["admin_employee_id"]);
+                $admin_user_id = htmlSpecialChars($_POST["admin_user_id"]);
                 $admin_department_id = htmlSpecialChars($_POST["admin_department_id"]);
                 $admin_position_id = htmlSpecialChars($_POST["admin_position_id"]);
                 $admin_id = 1;
@@ -1488,12 +1488,12 @@ class Action
                     'admin_id' => $admin_id
                 ]);
 
-                $stmt = $this->db->prepare("UPDATE admin_info SET admin_employee_id = :admin_employee_id, admin_position_id = :admin_position_id,
+                $stmt = $this->db->prepare("UPDATE admin_info SET admin_user_id = :admin_user_id, admin_position_id = :admin_position_id,
                     admin_department_id = :admin_department_id, salary = :salary, unit_section_id = :unit_section_id WHERE
                     admin_id = :admin_id");
                     $stmt->execute([
                         'admin_id' => $admin_id,
-                        'admin_employee_id' => $admin_employee_id,
+                        'admin_user_id' => $admin_user_id,
                         'admin_position_id' => $admin_position_id,
                         'admin_department_id' => $admin_department_id,
                         'salary' => $salary,
@@ -1509,14 +1509,14 @@ class Action
                         'admin_id'     => $admin_id
                     ]);
             }else if($admin_update == 'false'){
-                $employee_id = htmlSpecialChars($_POST["employee_id"]);
+                $user_id = htmlSpecialChars($_POST["user_id"]);
                 $employeeID = htmlSpecialChars($_POST["employeeID"]);
                 $Department_id = htmlSpecialChars($_POST["Department_id"]);
 
-                $stmt = $this->db->prepare("UPDATE hr_data SET employeeID = :employeeID, Department_id = :Department_id, salary = :salary, 
-                    joined_at = :joined_at, unit_section_id = :unit_section_id WHERE employee_id = :employee_id");
+                $stmt = $this->db->prepare("UPDATE employee_data SET employeeID = :employeeID, Department_id = :Department_id, salary = :salary, 
+                    joined_at = :joined_at, unit_section_id = :unit_section_id WHERE user_id = :user_id");
                 $stmt->execute([
-                    'employee_id' => $employee_id,
+                    'user_id' => $user_id,
                     'employeeID' => $employeeID,
                     'Department_id' => $Department_id,
                     'salary' => $salary,
@@ -1524,11 +1524,11 @@ class Action
                     'unit_section_id' => $unit_section_id
                 ]);
 
-                $stmtSchdule = $this->db->prepare("UPDATE schedule SET  shift_type = :shift_type, work_days = :work_days WHERE employee_id = :employee_id");
+                $stmtSchdule = $this->db->prepare("UPDATE schedule SET  shift_type = :shift_type, work_days = :work_days WHERE user_id = :user_id");
                 $stmtSchdule->execute([
                     'shift_type'          => $shift_type,
                     'work_days'     => $work_days,
-                    'employee_id'     => $employee_id
+                    'user_id'     => $user_id
                 ]);
             }
             return json_encode([
@@ -1546,8 +1546,8 @@ class Action
     function family_update() {
         try {
             // Ensure required data
-            $employee_id = $_POST['employee_id'] ?? null;
-            if (!$employee_id) {
+            $user_id = $_POST['user_id'] ?? null;
+            if (!$user_id) {
                 return json_encode([
                     'status' => 0,
                     'message' => 'Employee ID is missing.'
@@ -1588,8 +1588,8 @@ class Action
                 }
 
                 // Check if record exists
-                $check = $this->db->prepare("SELECT Family_data_id FROM Family_data WHERE employee_id = :employee_id AND Relationship = :relationship");
-                $check->execute([':employee_id' => $employee_id, ':relationship' => $relation]);
+                $check = $this->db->prepare("SELECT Family_data_id FROM Family_data WHERE user_id = :user_id AND Relationship = :relationship");
+                $check->execute([':user_id' => $user_id, ':relationship' => $relation]);
                 $exists = $check->rowCount() > 0;
 
                 if ($exists) {
@@ -1608,17 +1608,17 @@ class Action
                             city = :city,
                             province = :province,
                             zip_code = :zip_code
-                        WHERE employee_id = :employee_id AND Relationship = :relationship
+                        WHERE user_id = :user_id AND Relationship = :relationship
                     ");
                     error_log("Updating existing $relation record");
                 } else {
                     // Insert new if missing
                     $stmt = $this->db->prepare("
                         INSERT INTO Family_data (
-                            employee_id, Relationship, firstname, middlename, lastname, occupation, contact,
+                            user_id, Relationship, firstname, middlename, lastname, occupation, contact,
                             house_block, street, subdivision, barangay, city, province, zip_code
                         ) VALUES (
-                            :employee_id, :relationship, :firstname, :middlename, :lastname, :occupation, :contact,
+                            :user_id, :relationship, :firstname, :middlename, :lastname, :occupation, :contact,
                             :house_block, :street, :subdivision, :barangay, :city, :province, :zip_code
                         )
                     ");
@@ -1627,7 +1627,7 @@ class Action
 
                 // Bind and execute
                 $result = $stmt->execute([
-                    ':employee_id' => $employee_id,
+                    ':user_id' => $user_id,
                     ':relationship' => $relation,
                     ':firstname' => $firstname,
                     ':middlename' => $middlename,
@@ -1666,8 +1666,8 @@ class Action
     function educational_update() {
         try {
             // Ensure required data
-            $employee_id = $_POST['employee_id'] ?? null;
-            if (!$employee_id) {
+            $user_id = $_POST['user_id'] ?? null;
+            if (!$user_id) {
                 return json_encode([
                     'status' => 0,
                     'message' => 'Employee ID is missing.'
@@ -1723,8 +1723,8 @@ class Action
                 }
 
                 // Check if record exists
-                $check = $this->db->prepare("SELECT educational_data_id FROM educational_data WHERE employee_id = :employee_id AND education_level = :education_level");
-                $check->execute([':employee_id' => $employee_id, ':education_level' => $level]);
+                $check = $this->db->prepare("SELECT educational_data_id FROM educational_data WHERE user_id = :user_id AND education_level = :education_level");
+                $check->execute([':user_id' => $user_id, ':education_level' => $level]);
 
                 if ($check->rowCount() > 0) {
                     // Update existing record
@@ -1735,16 +1735,16 @@ class Action
                             year_ended = :year_ended,
                             course_strand = :course_strand,
                             honors = :honors
-                        WHERE employee_id = :employee_id AND education_level = :education_level
+                        WHERE user_id = :user_id AND education_level = :education_level
                     ");
                 } else {
                     // Insert new if missing
                     $stmt = $this->db->prepare("
                         INSERT INTO educational_data (
-                            employee_id, education_level, school_name, year_started, 
+                            user_id, education_level, school_name, year_started, 
                             year_ended, course_strand, honors
                         ) VALUES (
-                            :employee_id, :education_level, :school_name, :year_started,
+                            :user_id, :education_level, :school_name, :year_started,
                             :year_ended, :course_strand, :honors
                         )
                     ");
@@ -1752,7 +1752,7 @@ class Action
 
                 // Bind and execute
                 $stmt->execute([
-                    ':employee_id' => $employee_id,
+                    ':user_id' => $user_id,
                     ':education_level' => $level,
                     ':school_name' => $data['school_name'],
                     ':year_started' => $data['year_started'],
@@ -1919,7 +1919,7 @@ class Action
 // PROFILE MANAGEMENT EMPLOYEES =============================================================
     function profile_update_employee() {
         // Sanitize input safely
-        $employee_id     = htmlspecialchars(trim($_POST["employee_id"] ?? ''));
+        $user_id     = htmlspecialchars(trim($_POST["user_id"] ?? ''));
         $firstname       = htmlspecialchars(trim($_POST["firstname"] ?? ''));
         $middlename      = htmlspecialchars(trim($_POST["middlename"] ?? ''));
         $lastname        = htmlspecialchars(trim($_POST["lastname"] ?? ''));
@@ -1943,7 +1943,7 @@ class Action
         $degrees        = htmlspecialchars(trim($_POST["degrees"] ?? ''));
         $fellowship        = htmlspecialchars(trim($_POST["fellowship"] ?? ''));
         
-        if (empty($employee_id)) {
+        if (empty($user_id)) {
             return json_encode([
                 'status' => 0,
                 'message' => 'Employee ID is missing.'
@@ -1980,7 +1980,7 @@ class Action
                         // Check file size (max 5MB)
                         if ($fileSize <= 5 * 1024 * 1024) {
                             // Generate unique filename
-                            $newFileName = 'profile_' . $employee_id . '_' . time() . '.' . $fileExt;
+                            $newFileName = 'profile_' . $user_id . '_' . time() . '.' . $fileExt;
                             $fileDestination = $uploadDir . $newFileName;
                             
                             // Move uploaded file
@@ -1988,8 +1988,8 @@ class Action
                                 $profile_picture = $newFileName;
                                 
                                 // Delete old profile picture if exists
-                                $stmtOldPic = $this->db->prepare("SELECT profile_picture FROM employee_data WHERE employee_id = ?");
-                                $stmtOldPic->execute([$employee_id]);
+                                $stmtOldPic = $this->db->prepare("SELECT profile_picture FROM users WHERE user_id = ?");
+                                $stmtOldPic->execute([$user_id]);
                                 $oldPic = $stmtOldPic->fetchColumn();
                                 
                                 if ($oldPic && file_exists($uploadDir . $oldPic)) {
@@ -2018,10 +2018,10 @@ class Action
                 }
             }
             
-            // ✅ Update employee_data with profile picture
+            // ✅ Update users with profile picture
             if ($profile_picture) {
                 $stmtEmployeeData = $this->db->prepare("
-                    UPDATE employee_data 
+                    UPDATE users 
                     SET firstname = :firstname,
                         middlename = :middlename,
                         lastname = :lastname,
@@ -2035,7 +2035,7 @@ class Action
                         contact = :contact,
                         email = :email,
                         profile_picture = :profile_picture
-                    WHERE employee_id = :employee_id
+                    WHERE user_id = :user_id
                 ");
                 $stmtEmployeeData->execute([
                     'firstname'       => $firstname,
@@ -2051,11 +2051,11 @@ class Action
                     'contact'         => $contact,
                     'email'           => $email,
                     'profile_picture' => $profile_picture,
-                    'employee_id'     => $employee_id
+                    'user_id'     => $user_id
                 ]);
             } else {
                 $stmtEmployeeData = $this->db->prepare("
-                    UPDATE employee_data 
+                    UPDATE users 
                     SET firstname = :firstname,
                         middlename = :middlename,
                         lastname = :lastname,
@@ -2068,7 +2068,7 @@ class Action
                         birthPlace = :birthPlace,
                         contact = :contact,
                         email = :email
-                    WHERE employee_id = :employee_id
+                    WHERE user_id = :user_id
                 ");
                 $stmtEmployeeData->execute([
                     'firstname'     => $firstname,
@@ -2083,13 +2083,13 @@ class Action
                     'birthPlace'    => $birthPlace,
                     'contact'       => $contact,
                     'email'         => $email,
-                    'employee_id'   => $employee_id
+                    'user_id'   => $user_id
                 ]);
             }
 
-            // ✅ Update hr_data
+            // ✅ Update employee_data
             $stmtHrData = $this->db->prepare("
-                UPDATE hr_data 
+                UPDATE employee_data 
                 SET houseBlock = :houseBlock,
                     street = :street,
                     subdivision = :subdivision,
@@ -2100,7 +2100,7 @@ class Action
                     profession_title = :profession_title,
                     degrees = :degrees,
                     fellowship = :fellowship
-                WHERE employee_id = :employee_id
+                WHERE user_id = :user_id
             ");
             $stmtHrData->execute([
                 'houseBlock'      => $houseBlock,
@@ -2113,7 +2113,7 @@ class Action
                 'profession_title'        => $profession_title,
                 'degrees'        => $degrees,
                 'fellowship'        => $fellowship,
-                'employee_id'     => $employee_id
+                'user_id'     => $user_id
             ]);
 
             // ✅ Record activity
@@ -2123,11 +2123,11 @@ class Action
             }
             
             $stmtActivity = $this->db->prepare("
-                INSERT INTO activities (employee_id, activity_type)
-                VALUES (:employee_id, :activity_type)
+                INSERT INTO activities (user_id, activity_type)
+                VALUES (:user_id, :activity_type)
             ");
             $stmtActivity->execute([
-                'employee_id' => $employee_id,
+                'user_id' => $user_id,
                 'activity_type' => $activityMsg
             ]);
 
@@ -2147,8 +2147,8 @@ class Action
     function family_update_employee() {
         try {
             // Ensure required data
-            $employee_id = $_POST['employee_id'] ?? null;
-            if (!$employee_id) {
+            $user_id = $_POST['user_id'] ?? null;
+            if (!$user_id) {
                 return json_encode([
                     'status' => 0,
                     'message' => 'Employee ID is missing.'
@@ -2189,8 +2189,8 @@ class Action
                 }
 
                 // Check if record exists
-                $check = $this->db->prepare("SELECT Family_data_id FROM Family_data WHERE employee_id = :employee_id AND Relationship = :relationship");
-                $check->execute([':employee_id' => $employee_id, ':relationship' => $relation]);
+                $check = $this->db->prepare("SELECT Family_data_id FROM Family_data WHERE user_id = :user_id AND Relationship = :relationship");
+                $check->execute([':user_id' => $user_id, ':relationship' => $relation]);
                 $exists = $check->rowCount() > 0;
 
                 if ($exists) {
@@ -2209,17 +2209,17 @@ class Action
                             city = :city,
                             province = :province,
                             zip_code = :zip_code
-                        WHERE employee_id = :employee_id AND Relationship = :relationship
+                        WHERE user_id = :user_id AND Relationship = :relationship
                     ");
                     error_log("Updating existing $relation record");
                 } else {
                     // Insert new if missing
                     $stmt = $this->db->prepare("
                         INSERT INTO Family_data (
-                            employee_id, Relationship, firstname, middlename, lastname, occupation, contact,
+                            user_id, Relationship, firstname, middlename, lastname, occupation, contact,
                             house_block, street, subdivision, barangay, city, province, zip_code
                         ) VALUES (
-                            :employee_id, :relationship, :firstname, :middlename, :lastname, :occupation, :contact,
+                            :user_id, :relationship, :firstname, :middlename, :lastname, :occupation, :contact,
                             :house_block, :street, :subdivision, :barangay, :city, :province, :zip_code
                         )
                     ");
@@ -2228,7 +2228,7 @@ class Action
 
                 // Bind and execute
                 $result = $stmt->execute([
-                    ':employee_id' => $employee_id,
+                    ':user_id' => $user_id,
                     ':relationship' => $relation,
                     ':firstname' => $firstname,
                     ':middlename' => $middlename,
@@ -2267,8 +2267,8 @@ class Action
     function educational_update_employee() {
         try {
             // Ensure required data
-            $employee_id = $_POST['employee_id'] ?? null;
-            if (!$employee_id) {
+            $user_id = $_POST['user_id'] ?? null;
+            if (!$user_id) {
                 return json_encode([
                     'status' => 0,
                     'message' => 'Employee ID is missing.'
@@ -2324,8 +2324,8 @@ class Action
                 }
 
                 // Check if record exists
-                $check = $this->db->prepare("SELECT educational_data_id FROM educational_data WHERE employee_id = :employee_id AND education_level = :education_level");
-                $check->execute([':employee_id' => $employee_id, ':education_level' => $level]);
+                $check = $this->db->prepare("SELECT educational_data_id FROM educational_data WHERE user_id = :user_id AND education_level = :education_level");
+                $check->execute([':user_id' => $user_id, ':education_level' => $level]);
 
                 if ($check->rowCount() > 0) {
                     // Update existing record
@@ -2336,16 +2336,16 @@ class Action
                             year_ended = :year_ended,
                             course_strand = :course_strand,
                             honors = :honors
-                        WHERE employee_id = :employee_id AND education_level = :education_level
+                        WHERE user_id = :user_id AND education_level = :education_level
                     ");
                 } else {
                     // Insert new if missing
                     $stmt = $this->db->prepare("
                         INSERT INTO educational_data (
-                            employee_id, education_level, school_name, year_started, 
+                            user_id, education_level, school_name, year_started, 
                             year_ended, course_strand, honors
                         ) VALUES (
-                            :employee_id, :education_level, :school_name, :year_started,
+                            :user_id, :education_level, :school_name, :year_started,
                             :year_ended, :course_strand, :honors
                         )
                     ");
@@ -2353,7 +2353,7 @@ class Action
 
                 // Bind and execute
                 $stmt->execute([
-                    ':employee_id' => $employee_id,
+                    ':user_id' => $user_id,
                     ':education_level' => $level,
                     ':school_name' => $data['school_name'],
                     ':year_started' => $data['year_started'],
@@ -2363,7 +2363,7 @@ class Action
                 ]);
             }
             
-            $stmtActivity = $this->db->prepare("INSERT INTO activities (employee_id, activity_type) VALUES ('$employee_id', 'Updated education informations')");
+            $stmtActivity = $this->db->prepare("INSERT INTO activities (user_id, activity_type) VALUES ('$user_id', 'Updated education informations')");
             $stmtActivity->execute();
 
             return json_encode([
@@ -2382,7 +2382,7 @@ class Action
 
 // CAREER PATH =========================================================================
     function career_path_form(){
-        $employee_id = $_POST["employee_id"];
+        $user_id = $_POST["user_id"];
         $job_from = $_POST["job_from"];
         $current_salary = $_POST["current_salary"];
         $jobTitles_id = $_POST["jobTitles_id"];
@@ -2403,11 +2403,11 @@ class Action
             }
 
             $stmt = $this->db->prepare("INSERT INTO job_history 
-                (employee_id, job_from, job_to, current_salary, new_salary, job_status)
+                (user_id, job_from, job_to, current_salary, new_salary, job_status)
                     VALUES
                 (?, ?, ?, ?, ?, ?)");
             $stmt->execute([
-                $employee_id, $job_from, $job_to, $current_salary, $new_salary, $job_status
+                $user_id, $job_from, $job_to, $current_salary, $new_salary, $job_status
             ]);
             return json_encode([
                 'status' => 1,
@@ -2450,12 +2450,12 @@ class Action
     }
     function schedule_for_employee_form(){
         $schedule_at  = $_POST["schedule_at"];
-        $employee_id  = $_POST["employee_id"];
+        $user_id  = $_POST["user_id"];
         $schedule_id  = $_POST["schedule_id"];
         try {
-            $stmt = $this->db->prepare("INSERT INTO employee_schedule (employee_id, schedule_id, schedule_at) 
+            $stmt = $this->db->prepare("INSERT INTO employee_schedule (user_id, schedule_id, schedule_at) 
             VALUES (?, ?, ?)");
-            $stmt->execute([$employee_id, $schedule_id, $schedule_at]);
+            $stmt->execute([$user_id, $schedule_id, $schedule_at]);
 
             return json_encode([
                 'status' => 1,
@@ -2585,7 +2585,7 @@ class Action
 
 // LEAVES ====================================================================================
     function leave_form(){
-        $employee_id = htmlspecialchars($_POST["employee_id"]);
+        $user_id = htmlspecialchars($_POST["user_id"]);
         $leaveStatus = htmlspecialchars($_POST["leaveStatus"]);
         $leaveType = htmlspecialchars($_POST["leaveType"]); 
         $Others = htmlspecialchars($_POST["Others"] ?? '');
@@ -2646,9 +2646,9 @@ class Action
             $stmt = $this->db->prepare("
                 SELECT $balanceColumn AS credits 
                 FROM leaveCounts 
-                WHERE employee_id = :employee_id
+                WHERE user_id = :user_id
             ");
-            $stmt->execute([':employee_id' => $employee_id]);
+            $stmt->execute([':user_id' => $user_id]);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             $currentCredits = floatval($row["credits"] ?? 0);
@@ -2664,13 +2664,13 @@ class Action
             // Insert into leaveReq table
             $stmt = $this->db->prepare("
                 INSERT INTO leaveReq 
-                (employee_id, leaveStatus, leaveType, Others, leaveDate, Purpose, numberOfDays, contact, sectionHead, departmentHead, medical_proof)
+                (user_id, leaveStatus, leaveType, Others, leaveDate, Purpose, numberOfDays, contact, sectionHead, departmentHead, medical_proof)
                 VALUES 
                 (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
 
             $stmt->execute([
-                $employee_id, 
+                $user_id, 
                 $leaveStatus, 
                 $leaveType,
                 $Others,
@@ -2698,10 +2698,10 @@ class Action
             $activity_type = "Requested a " . str_replace("_", " ", strtolower($leaveType));
 
             $stmtActivity = $this->db->prepare("
-                INSERT INTO activities (employee_id, activity_type) 
+                INSERT INTO activities (user_id, activity_type) 
                 VALUES (?, ?)
             ");
-            $stmtActivity->execute([$employee_id, ucfirst($activity_type)]);
+            $stmtActivity->execute([$user_id, ucfirst($activity_type)]);
 
             $stmtNotify = $this->db->prepare("INSERT INTO notifications (type, status) VALUES ('HR', 'Active')");
             $stmtNotify->execute();
@@ -2724,20 +2724,20 @@ class Action
     }
     function leave_update(){
         try {
-            $employee_id = htmlSpecialChars($_POST["employee_id"]);
+            $user_id = htmlSpecialChars($_POST["user_id"]);
             $VacationBalance = htmlSpecialChars($_POST["VacationBalance"]);
             $SickBalance = htmlSpecialChars($_POST["SickBalance"]);
             $SpecialBalance = htmlSpecialChars($_POST["SpecialBalance"]);
             $OthersBalance = htmlSpecialChars($_POST["OthersBalance"]);
 
             $stmtLeaveCounts = $this->db->prepare("UPDATE leaveCounts SET VacationBalance = :VacationBalance, 
-            SickBalance = :SickBalance, SpecialBalance = :SpecialBalance, OthersBalance = :OthersBalance WHERE employee_id = :employee_id");
+            SickBalance = :SickBalance, SpecialBalance = :SpecialBalance, OthersBalance = :OthersBalance WHERE user_id = :user_id");
             $stmtLeaveCounts->execute([
                 'VacationBalance' => $VacationBalance,
                 'SickBalance' => $SickBalance,
                 'SpecialBalance' => $SpecialBalance,
                 'OthersBalance' => $OthersBalance,
-                'employee_id' => $employee_id
+                'user_id' => $user_id
             ]);
             return json_encode([
                 'status' => 1,
@@ -2782,7 +2782,7 @@ class Action
     function leaveProcess_form(){
         try {
             $leave_id = $_POST["leave_id"] ?? '';
-            $employee_id = $_POST["employee_id"] ?? '';
+            $user_id = $_POST["user_id"] ?? '';
             $leaveType = $_POST["leaveType"] ?? '';
             $leaveStatus = $_POST["leaveStatus"] ?? '';
             $disapprovalDetails = $_POST["disapprovalDetails"] ?? '';
@@ -2873,8 +2873,8 @@ class Action
                 // Update leave counts
                 $stmt = $this->db->prepare("UPDATE leaveCounts SET 
                     VacationBalance = ?, SickBalance = ?, SpecialBalance = ? 
-                    WHERE employee_id = ?");
-                $stmt->execute([$vacationBalanceToDate, $sickBalanceToDate, $specialBalanceToDate, $employee_id]);
+                    WHERE user_id = ?");
+                $stmt->execute([$vacationBalanceToDate, $sickBalanceToDate, $specialBalanceToDate, $user_id]);
 
                 return json_encode(['status'=>1,'message'=>'Leave Approved Successfully!']);
             }
@@ -2888,10 +2888,10 @@ class Action
     }
     function cancel_leave_form(){
         try {
-            $employee_id = $_POST["employee_id"] ?? null;
+            $user_id = $_POST["user_id"] ?? null;
             $leave_id = $_POST["leave_id"] ?? null;
 
-            if($leave_id == null || $employee_id == null){
+            if($leave_id == null || $user_id == null){
                 return json_encode([
                     'status' => 0,
                     'message' => 'No leave ID or No employee ID!'
@@ -2907,10 +2907,10 @@ class Action
             // $activity_type = "Cancelled a leave:  " . str_replace("_", " ", strtolower($leaveType));
 
             // $stmtActivity = $this->db->prepare("
-            //     INSERT INTO activities (employee_id, activity_type) 
+            //     INSERT INTO activities (user_id, activity_type) 
             //     VALUES (?, ?)
             // ");
-            // $stmtActivity->execute([$employee_id, ucfirst($activity_type)]);
+            // $stmtActivity->execute([$user_id, ucfirst($activity_type)]);
 
             // SUCCESS RESPONSE
             return json_encode([
@@ -3000,7 +3000,7 @@ class Action
     function file_form() {
         try {
             // Check required fields
-            if (!isset($_POST["file_title"], $_POST["employee_id"], $_FILES["201file"])) {
+            if (!isset($_POST["file_title"], $_POST["user_id"], $_FILES["201file"])) {
                 return json_encode([
                     'status' => 0,
                     'message' => 'Missing required fields.'
@@ -3009,7 +3009,7 @@ class Action
 
             $file_title  = htmlspecialchars($_POST["file_title"]);
             $type  = htmlspecialchars($_POST["type"]);
-            $employee_id = htmlspecialchars($_POST["employee_id"]);
+            $user_id = htmlspecialchars($_POST["user_id"]);
             $file        = $_FILES["201file"];
 
             // Validate upload
@@ -3039,12 +3039,12 @@ class Action
             }
 
             $stmt = $this->db->prepare("
-                INSERT INTO files (employee_id, file_title, 201file, type)
-                VALUES (:employee_id, :file_title, :file_path, :type)
+                INSERT INTO files (user_id, file_title, 201file, type)
+                VALUES (:user_id, :file_title, :file_path, :type)
             ");
 
             $stmt->execute([
-                ':employee_id' => $employee_id,
+                ':user_id' => $user_id,
                 ':file_title'  => $file_title,
                 ':file_path'   => $fileName,
                 ':type'   => $type
@@ -3086,20 +3086,20 @@ class Action
 // PERSONAL DATA SHEETS =====================================================================
     function pds_update() {
         try {
-            $employee_id = $_POST["employee_id"];
+            $user_id = $_POST["user_id"];
             
-            // Get pds_id using employee_id (not users_id)
-            $stmt = $this->db->prepare("SELECT pds_id FROM personal_data_sheet WHERE employee_id = ?");
-            $stmt->execute([$employee_id]);
+            // Get pds_id using user_id (not users_id)
+            $stmt = $this->db->prepare("SELECT pds_id FROM personal_data_sheet WHERE user_id = ?");
+            $stmt->execute([$user_id]);
             $pds_id = $stmt->fetchColumn();
 
             if (!$pds_id) {
-                throw new RuntimeException("No personal_data_sheet found for employee ID: {$employee_id}");
+                throw new RuntimeException("No personal_data_sheet found for employee ID: {$user_id}");
             }
 
-            // Update employee_data (not userInformations)
+            // Update users (not userInformations)
             $this->db->prepare(
-                "UPDATE employee_data SET
+                "UPDATE users SET
                     lastname = :ln,
                     firstname = :fn,
                     middlename = :mn,
@@ -3114,9 +3114,9 @@ class Action
                     birthPlace = :bp,
                     contact = :cnt,
                     email = :em
-                WHERE employee_id = :eid"
+                WHERE user_id = :eid"
             )->execute([
-                ':eid' => $employee_id,
+                ':eid' => $user_id,
                 ':ln' => $_POST['lname'] ?? null,
                 ':fn' => $_POST['fname'] ?? null,
                 ':mn' => $_POST['mname'] ?? null,

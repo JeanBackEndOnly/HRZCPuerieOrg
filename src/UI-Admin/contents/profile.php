@@ -9,22 +9,13 @@
         <!-- Buttons div -->
         <div class="col-md-9 d-flex gap-1 justify-content-end align-items-end ps-e">
             <?php if($getEmployee["status"] == 'Pending'){ ?>
-                <button class="btn px-4 py-2 btn-success"
-                data-bs-toggle="modal"
-                data-bs-target="#aprrovalEmployee"
-                data-id="<?= htmlspecialchars($employee_id) ?>"
-                id="getEmployeeId">Approve</button>
-                <button class="btn px-4 py-2 btn-danger"
-                data-bs-toggle="modal"
-                data-bs-target="#rejectionEmployee"
-                data-id="<?= htmlspecialchars($employee_id) ?>"
-                id="getEmployeeId">Reject</button>
+            <button class="btn px-4 py-2 btn-success" data-bs-toggle="modal" data-bs-target="#aprrovalEmployee"
+                data-id="<?= htmlspecialchars($employee_id) ?>" id="getEmployeeId">Approve</button>
+            <button class="btn px-4 py-2 btn-danger" data-bs-toggle="modal" data-bs-target="#rejectionEmployee"
+                data-id="<?= htmlspecialchars($employee_id) ?>" id="getEmployeeId">Reject</button>
             <?php }else if($getEmployee["status"] == 'Inactive'){?>
-                <button class="btn px-4 py-2 btn-danger"
-                data-bs-toggle="modal"
-                data-bs-target="#deleteEmployeeModal"
-                data-id="<?= htmlspecialchars($employee_id) ?>"
-                id="getEmployeeId">Delete</button>
+            <button class="btn px-4 py-2 btn-danger" data-bs-toggle="modal" data-bs-target="#deleteEmployeeModal"
+                data-id="<?= htmlspecialchars($employee_id) ?>" id="getEmployeeId">Delete</button>
             <?php }else{}?>
         </div>
     </div>
@@ -85,24 +76,28 @@
                         id="employeeDept"><?= htmlspecialchars($getEmployee["Department_name"]) ?></span>
                     <span
                         class="text-center font-15"><?= isset($getEmployee["unit_section_name"]) ? ' (' . htmlspecialchars($getEmployee["unit_section_name"]) . ')' : '' ?></span>
-                    <span class="text-center font-15" id="employeeJobTitle"><?= htmlspecialchars($getEmployee["jobTitle"]) ?></span>
+                    <span class="text-center font-15"
+                        id="employeeJobTitle"><?= htmlspecialchars($getEmployee["jobTitle"]) ?></span>
                     <span id="employeeSchedule" class="fw-bold"></span>
                     <form class="form_select d-flex align-items-center" id="formSelect">
                         <input type="hidden" name="employee_id" value="<?= $getEmployee["employee_id"] ?>">
                         <?php if($getEmployee["status"] == "Active"){ ?>
-                            <i class="fa-solid fa-circle font-8 text-success me-1"></i>
+                        <i class="fa-solid fa-circle font-8 text-success me-1"></i>
                         <?php }else if($getEmployee["status"] == "Inactive"){ ?>
-                            <i class="fa-solid fa-circle font-8 text-danger me-1"></i>
+                        <i class="fa-solid fa-circle font-8 text-danger me-1"></i>
                         <?php }else{ ?>
-                            <i class="fa-solid fa-circle font-8 text-warning me-1"></i>
+                        <i class="fa-solid fa-circle font-8 text-warning me-1"></i>
                         <?php } ?>
                         <select name="status" class="form-select select_status font-15">
                             <option value="">Select Employee Status</option>
-                            <option value="Active" <?= ($getEmployee["status"] == "Active") ? "selected" : "" ?>>Active</option>
-                            <option value="Inactive" <?= ($getEmployee["status"] == "Inactive") ? "selected" : "" ?>>Inactive</option>
+                            <option value="Active" <?= ($getEmployee["status"] == "Active") ? "selected" : "" ?>>Active
+                            </option>
+                            <option value="Inactive" <?= ($getEmployee["status"] == "Inactive") ? "selected" : "" ?>>
+                                Inactive</option>
                         </select>
                     </form>
-                    <a class="font-15 mt-2" href="index.php?page=contents/pds&employee_id=<?= $employee_id ?>" class="mt-2"><strong>View
+                    <a class="font-15 mt-2" href="index.php?page=contents/pds&employee_id=<?= $employee_id ?>"
+                        class="mt-2"><strong>View
                             Personal Data Sheet <i class="fa-solid fa-arrow-up-right-from-square ms-2"></i></strong></a>
                 </div>
             </div>
@@ -377,89 +372,152 @@
         </div>
         <!-- WORK INFORMATIONS TAB -->
         <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Employment">
-            <form id="employment_update">
-                <input type="hidden" name="admin_update" value="false">
-                <div class="card rounded-2 profile-contents pb-5 show-scroll">
-                    <!-- EMPLOYMENT INFORMATION HEADER -->
-                    <div class="col-md-12 d-flex">
-                        <div class="header ps-3 pt-3 col-md-5">
+            <div
+                class="card rounded-2 align-items-center justify-content-start ps-0 pe-0 profile-contents pb-5 p-0 show-scroll">
+                <div class="row flex-wrap col-md-12 col-12 p-1 px-3">
+                    <form id="employment_update" class="p-0 col-md-12">
+                        <input type="hidden" name="admin_update" value="false">
+                        <div class="col-md-12 d-flex">
+                            <div class="header pt-3 col-md-5">
+                                <h5 class="m-0 p-0">
+                                    <i class="fa-solid fa-circle-info me-2"></i>Employment Information
+                                </h5>
+                            </div>
+                            <?php if($getEmployee["status"] == 'Active'){ ?>
+                            <div class="col-md-7 d-flex justify-content-end me-5">
+                                <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5">Update</button>
+                            </div>
+                            <?php } else {} ?>
+                        </div>
+                        <div class="col-md-12 row">
+                            <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
+                            <div class="col-md-4">
+                                <label class="form-label">Employee ID</label>
+                                <input readonly type="text" name="employeeID" value="<?= $getEmployee["employeeID"] ?>"
+                                    id="employeeID_field" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Joined at</label>
+                                <input type="text" name="joined_at" value="<?= $getEmployee["joined_at"] ?>"
+                                    id="joined_at_field" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Department</label>
+                                <select name="Department_id" class="form-select">
+                                    <option value="">Select Department</option>
+                                    <?php foreach($getDedpartments as $departments): ?>
+                                    <option value="<?= $departments['Department_id'] ?>"
+                                        <?= ($departments['Department_id'] == $getEmployee['Department_id']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($departments['Department_name']) ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Designation</label>
+                                <select disabled name="jobTitles_id" class="form-select">
+                                    <option value="">Select Designation</option>
+                                    <?php foreach($getDesignations as $jb): ?>
+                                    <option value="<?= $jb['jobTitles_id'] ?>"
+                                        <?= ($jb['jobTitles_id'] == $getEmployee['jobTitles_id']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($jb['jobTitle']) ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Unit/Section</label>
+                                <select name="unit_section_id" id="" class="form-select" required>
+                                    <option value="">Select Unit/Section</option>
+                                    <?php foreach($getUnit as $uniSec):  ?>
+                                    <option value="<?= $uniSec['unit_section_id'] ?>"
+                                        <?= ($uniSec['unit_section_id'] == $getEmployee['unit_section_id']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($uniSec['unit_section_name']) ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Salary</label>
+                                <input type="number" readonly step="0.01" name="salary"
+                                    value="<?= $getEmployee["salary"] ?>" id="salary" class="form-control">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row flex-wrap col-md-12 col-12 p-1 px-3">
+                    <div class="col-md-12 d-flex justify-content-between">
+                        <div class="header pt-3 col-md-7">
                             <h5 class="m-0 p-0">
-                                <i class="fa-solid fa-circle-info me-2"></i>Employment Information
+                                <i class="fa-solid fa-circle-info me-2"></i>Employment History
                             </h5>
                         </div>
-                        <?php if($getEmployee["status"] == 'Active'){ ?>
-                        <div class="col-md-7 d-flex justify-content-end me-5">
-                            <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5">Update</button>
-                        </div>
-                        <?php } else {} ?>
                     </div>
-                    <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
-                    <!-- EMPLOYMENT INFORMATION CONTENTS -->
-                    <div class="row flex-wrap col-md-12 col-12 p-3">
-                        <div class="col-md-4">
-                            <label class="form-label">Employee ID</label>
-                            <input readonly type="text" name="employeeID" value="<?= $getEmployee["employeeID"] ?>"
-                                id="employeeID_field" class="form-control">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Joined at</label>
-                            <input type="text" name="joined_at" value="<?= $getEmployee["joined_at"] ?>"
-                                id="joined_at_field" class="form-control">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Department</label>
-                            <select name="Department_id" class="form-select">
-                                <option value="">Select Department</option>
-                                <?php foreach($getDedpartments as $departments): ?>
-                                <option value="<?= $departments['Department_id'] ?>"
-                                    <?= ($departments['Department_id'] == $getEmployee['Department_id']) ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($departments['Department_name']) ?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">Job Title</label>
-                            <select disabled name="jobTitles_id" class="form-select">
-                                <option value="">Select Job Title</option>
-                                <?php foreach($getDesignations as $jb): ?>
-                                <option value="<?= $jb['jobTitles_id'] ?>"
-                                    <?= ($jb['jobTitles_id'] == $getEmployee['jobTitles_id']) ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($jb['jobTitle']) ?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Unit/Section</label>
-                            <select name="unit_section_id" id="" class="form-select" required>
-                                <option value="">Select Unit/Section</option>
-                                <?php foreach($getUnit as $uniSec):  ?>
-                                <option value="<?= $uniSec['unit_section_id'] ?>"
-                                    <?= ($uniSec['unit_section_id'] == $getEmployee['unit_section_id']) ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($uniSec['unit_section_name']) ?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">Salary</label>
-                            <input type="number" readonly step="0.01" name="salary" value="<?= $getEmployee["salary"] ?>"
-                                id="salary" class="form-control">
-                        </div>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <button class="btn btn-danger btn-sm px-3 py-2" data-bs-toggle="modal"
+                            data-bs-target="#manageCareerPath" onclick="getEmploymentData(
+                                <?= $employee_id ?>,
+                                '<?= addslashes($getEmployee['jobTitle']) ?>',
+                                '<?= $getEmployee['salary'] ?>'
+                            )"><i class="fa-solid fa-pen-to-square me-2"></i>Manage
+                            Career Path</button>
+                    </div>
+                    <div class="responsive-table mt-1">
+                        <table class="table table-responsive table-sm table-bordered text-center table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <td>From Position</td>
+                                    <td>To Position</td>
+                                    <td>Type</td>
+                                    <td>Date</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if($employeeCareerPath){ 
+                                        foreach($employeeCareerPath as $career) : ?>
+                                <tr>
+                                    <td><?= $career["job_from"] ?></td>
+                                    <td><?= $career["job_to"] ?></td>
+                                    <td><?= $career["job_status"] ?></td>
+                                    <td><?= $career["addAt"] ?></td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm m-0 my-2 mx-3"><i
+                                                class="fa-solid fa-print me-2"></i>Print</button>
+                                    </td>
+                                </tr>
+                                <?php endforeach; 
+                                    }else{ ?>
+                                <tr>
+                                    <td>Initial Position</td>
+                                    <td><?= $getEmployee["jobTitle"] ?></td>
+                                    <td>Current</td>
+                                    <td><?= $getEmployee["joined_at"] ?></td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm m-0 my-2 mx-3"><i
+                                                class="fa-solid fa-print me-2"></i>Print</button>
+                                    </td>
+                                </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </form>
+            </div>
+
+
         </div>
         <!-- Leave Credits Tab -->
         <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Leave_Credits">
             <form id="leave_update">
                 <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
-                <strong class="w-100 text-start fs-5 mt-3">
-                    Leave Credits
-                </strong>
+                <div class="header pt-3 col-md-5">
+                    <h5 class="m-0 p-0">
+                        <i class="fa-solid fa-circle-info me-2"></i>Leave Credits
+                    </h5>
+                </div>
                 <div class="row">
                     <div class="col-md-3">
                         <label class="form-label">Sick Leave</label>
@@ -678,22 +736,22 @@
                         <?php } ?>
                     </div>
                     <?php
-            $stmtFather = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Father'");
-            $stmtFather->execute();
-            $father = $stmtFather->fetch(PDO::FETCH_ASSOC);        
-        
-            $stmtMother = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Mother'");
-            $stmtMother->execute();
-            $mother = $stmtMother->fetch(PDO::FETCH_ASSOC);   
+                        $stmtFather = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Father'");
+                        $stmtFather->execute();
+                        $father = $stmtFather->fetch(PDO::FETCH_ASSOC);        
+                    
+                        $stmtMother = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Mother'");
+                        $stmtMother->execute();
+                        $mother = $stmtMother->fetch(PDO::FETCH_ASSOC);   
 
-            $stmtGuardian = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Guardian'");
-            $stmtGuardian->execute();
-            $guardian = $stmtGuardian->fetch(PDO::FETCH_ASSOC);  
-            
-            $stmtSpouse = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Spouse'");
-            $stmtSpouse->execute();
-            $Spouse = $stmtSpouse->fetch(PDO::FETCH_ASSOC);  
-            ?>
+                        $stmtGuardian = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Guardian'");
+                        $stmtGuardian->execute();
+                        $guardian = $stmtGuardian->fetch(PDO::FETCH_ASSOC);  
+                        
+                        $stmtSpouse = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Spouse'");
+                        $stmtSpouse->execute();
+                        $Spouse = $stmtSpouse->fetch(PDO::FETCH_ASSOC);  
+                        ?>
                     <!-- FAMILY INFORMATION CONTENTS -->
                     <div class="row flex-wrap col-md-12 col-12 p-3">
                         <div class="col-md-12 row">
@@ -1066,4 +1124,104 @@
         </form>
     </div>
 </div>
+<!-- Career Path Modal -->
+<div class="modal fade" id="manageCareerPath" tabindex="-1" aria-labelledby="manageCareerPathLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" id="approval-form">
+            <div class="modal-header bg-gradient-primary text-white">
+                <h5 class="modal-title text-white" id="manageCareerPathLabel">Manage Employee Career Path</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" class="form-control" name="employee_id" id="employee_id_careerPath">
+                <div class="mx-2">
+                    <label class="form-label">Current Designation</label>
+                    <input class="form-control" readonly type="text" name="job_from" id="currentDesignationId">
+                </div>
+                <div class="mx-2">
+                    <label class="form-label">Current Salary</label>
+                    <input class="form-control" readonly type="text" name="current_salary" id="currentSalaryId">
+                </div>
+                <div class="mx-2">
+                    <label class="form-label">New Designation</label>
+                    <select name="jobTitles_id" id="newDesignationIdToggle" class="form-select">
+                        <option value="">Select Job Title</option>
+                        <?php foreach($getDesignations as $jb): ?>
+                        <option value="<?= $jb['jobTitles_id'] ?>">
+                            <?= htmlspecialchars($jb['jobTitle']) ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="mx-2">
+                    <label class="form-label">New salary</label>
+                    <input class="form-control" readonly type="text" name="new_salary">
+                </div>
+                <div class="mx-2">
+                    <label class="form-label">Manage Type</label>
+                    <select name="job_status" class="form-select">
+                        <option value="">Select Type</option>
+                        <option value="Update">Update</option>
+                        <option value="Promote">Promote</option>
+                        <option value="Demote">Demote</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger">Confirm</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
 <script src="../../assets/js/hr_js/admin/profile.js" defer></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const jobTitleSelect = document.getElementById('newDesignationIdToggle');
+        const salaryInput = document.querySelector('input[name="new_salary"]');
+        
+        if (!jobTitleSelect || !salaryInput) return;
+        
+        let jobSalaries = {};
+        
+        function loadJobSalaries() {
+            <?php
+            $jobSalaries = [];
+            foreach($getDesignations as $jb) {
+                $jobSalaries[$jb['jobTitles_id']] = $jb['salary'];
+            }
+            ?>
+            
+            jobSalaries = <?php echo json_encode($jobSalaries); ?>;
+        }
+        
+        loadJobSalaries();
+        
+        jobTitleSelect.addEventListener('change', function() {
+            const selectedJobId = this.value;
+            
+            if (selectedJobId && jobSalaries[selectedJobId]) {
+                const salary = jobSalaries[selectedJobId];
+                salaryInput.value = formatCurrency(salary);
+            } else {ed
+                salaryInput.value = '';
+            }
+        });
+        
+        function formatCurrency(amount) {
+            const numAmount = parseFloat(amount);
+            
+            return new Intl.NumberFormat('en-PH', {
+                style: 'currency',
+                currency: 'PHP',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(numAmount);
+        }
+        
+        if (jobTitleSelect.value) {
+            jobTitleSelect.dispatchEvent(new Event('change'));
+        }
+    });
+</script>

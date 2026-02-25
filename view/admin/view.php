@@ -260,4 +260,28 @@
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
+// Career Path History ==============================================================================
+    function getCareerPathHistory(){
+        $pdo = db_connect();
+        $stmt = $pdo->prepare("SELECT 
+            jh.job_historyID,
+            e.employee_id,
+            e.firstname,
+            e.lastname,
+            d.Department_name AS department,
+            jt.jobTitle,
+            jt.salary,
+            jt.jobTitles_id,
+            jh.job_from,
+            jh.job_to,
+            jh.job_status,
+            jh.addAt
+            FROM job_history jh
+            JOIN employee_data e ON jh.employee_id = e.employee_id
+            LEFT JOIN departments d ON jh.department_id = d.Department_id
+            LEFT JOIN JobTitles jt ON jh.jobTitle_id = jt.jobTitles_id
+            ORDER BY jh.addAt ASC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }

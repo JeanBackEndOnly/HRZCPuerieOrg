@@ -156,3 +156,11 @@
         ageInput.readOnly = true;
         ageInput.placeholder = 'Auto-calculated from birthday';
     });
+
+    // ============================= CAREER PATH =================================== //
+    function getEmploymentData(employee_id, designation, salary){
+        alert('Button toggled!');
+        document.getElementById('employee_id_careerPath').value = employee_id
+        document.getElementById('currentDesignationId').value = designation
+        document.getElementById('currentSalaryId').value = salary
+    } 

@@ -48,7 +48,7 @@
                 class="nav-item nav-hr_settings nav-employee_sched">
                 <span class="me-1"><i class="fa-solid fa-gears"></i></span> Schedule setting
             </a>
-            <a href="index.php?page=contents/dept_job" class="nav-item nav-dept_job">
+            <a href="index.php?page=contents/system_setting" class="nav-item nav-system_setting">
                 <span class="me-1"><i class="fa-solid fa-building-user"></i></span> System Setting
             </a>
             <!-- <a href="index.php?page=contents/form" class="nav-item nav-form m-0">

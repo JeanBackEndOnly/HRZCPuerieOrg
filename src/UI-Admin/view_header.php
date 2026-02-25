@@ -68,4 +68,11 @@ if(!$DisapprovedLeave){
     $_SESSION['error'] = "Failed to fetch employees data";
     $DisapprovedLeave = null;
 }
+
+// Career Path History ==================================================================
+$employeeCareerPath = getCareerPathHistory();
+if(!$employeeCareerPath){
+    $_SESSION['error'] = "Failed to fetch employees data";
+    $employeeCareerPath = null;
+}
 ?>

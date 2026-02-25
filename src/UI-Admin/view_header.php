@@ -27,6 +27,13 @@ if (!$getEmployee) {
     $getEmployee = null; 
 }
 
+// ADMIN DATA ========================================================================
+$getAdminData = getAdminData();
+if (!$getAdminData) {
+    $_SESSION['error'] = isset($_GET["id"]) ? "Employee not found" : "No employee ID provided";
+    $getAdminData = null; 
+}
+
 // Schedule settings =================================================================
 $getEmployeeForSchedules = getEmployeesForSchedule();
 if(!$getEmployeeForSchedules){

@@ -1,10 +1,10 @@
 <?php
-    include "../../header.php";
-    include 'view_header.php';
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+    include "../../header.php";
+    include 'view_header.php';
+
 if (!isset($_SESSION['adminData'])) {
   include 'eror.php';
   exit;

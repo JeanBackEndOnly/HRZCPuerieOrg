@@ -1,14 +1,3 @@
-<?php
-    $stmt = $pdo->prepare("SELECT a.*, ai.*, ass.*, us.unit_section_name, d.Department_name, d.Department_code, d.Department_id, j.jobTitle, j.jobTitles_id  FROM admin a
-        LEFT JOIN admin_info ai ON a.admin_id = ai.admin_id
-        LEFT JOIN departments d ON ai.admin_department_id = d.Department_id
-        LEFT JOIN jobTitles j ON ai.admin_position_id = j.jobTitles_id
-        LEFT JOIN admin_schedule ass ON a.admin_id = ass.admin_id 
-        LEFT JOIN unit_section us ON ai.unit_section_id = us.unit_section_id 
-        WHERE a.admin_id = 1");
-    $stmt->execute();
-    $getAdminData = $stmt->fetch(PDO::FETCH_ASSOC);
-?>
 <section>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="col-md-5">
@@ -31,7 +20,7 @@
                     </a>
                 </li>
                 <li class="nav-item cursor-pointer col-md-3 col-12">
-                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Employement">
+                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Employment">
                         <i class="fa-solid fa-circle-info me-2"></i> Employement
                     </a>
                 </li>
@@ -51,198 +40,191 @@
 
     <div class="row">
         <!-- Profile Card -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-4">
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-3">
             <div class="card rounded-2">
                 <div class="d-flex flex-column w-100 align-items-center justify-content-center p-2">
-                    <?php 
-                    $adminPicture = $getAdminData["admin_picture"] ?? null;
-                    if($adminPicture == null){ ?>
-                    <div class="setting-circle-profile mb-2 mt-2 d-flex align-items-center justify-content-center fs-2">
-                        <strong class="p-0 text-white">
-                            <?= htmlspecialchars(substr($getAdminData["admin_firstname"] ?? '', 0,1) . substr($getAdminData["admin_lastname"] ?? '', 0,1)) ?>
+                    <div class="w-100 d-flex justify-content-start ps-3 pt-1">
+                    </div>
+                    <?php if($getAdminData["profile_picture"] == null){ ?>
+                    <div class="profile-circle d-flex align-items-center justify-content-center mb-1">
+                        <strong class="p-0 text-white m-0 font-profile">
+                            <?= htmlspecialchars(substr($getAdminData["firstname"], 0,1) . substr($getAdminData["lastname"], 0,1)) ?>
                         </strong>
                     </div>
                     <?php }else{ ?>
-                    <img src="../../authentication/uploads/<?= $adminPicture ?>"
-                        style="width: 200px; height: auto; border-radius: 50%;">
+                    <img src="../../authentication/uploads/<?= $getAdminData["profile_picture"] ?>"
+                        style="width: 150px; height: auto; border-radius: 50%;">
                     <?php } ?>
-
-                    <span id="admin_employee_id"
-                        class="font-15 text-muted fw-bold"><?= 'EMP-' .  htmlspecialchars($getAdminData["admin_employee_id"] ?? 'wala') ?></span>
-                    <span class="font-15"
-                        id="employeeName"><?= htmlspecialchars($getAdminData["admin_firstname"] ?? '') . " " .  substr(htmlspecialchars($getAdminData["admin_middlename"] ?? ''), 0, 1) . ". " . htmlspecialchars($getAdminData["admin_lastname"] ?? '') ?></span>
+                    <span id="employeeID"
+                        class="text-muted fw-bold font-15"><?= 'EMP-' . htmlspecialchars($getAdminData["employeeID"]) ?></span>
                     <span class="font-15 text-center"
-                        id="employeeDept"><?= isset($getAdminData["Department_name"]) ? htmlspecialchars($getAdminData["Department_name"]) : '' ?>
-                    </span>
-                    <span class="font-15 text-center">
-                        <?= isset($getAdminData["unit_section_name"]) ? ' (' . $getAdminData["unit_section_name"] . ')' : ''; ?>
-                    </span>
-                    <span class="font-15" id="employeeJobTitle"><?= htmlspecialchars($getAdminData["jobTitle"]) ?? '' ?></span>
-
+                        id="employeeName"><?= htmlspecialchars($getAdminData["firstname"]) . " " .  substr(htmlspecialchars($getAdminData["middlename"]), 0, 1) . ". " . htmlspecialchars($getAdminData["lastname"]) ?></span>
+                    <span class="text-center font-15"
+                        id="employeeDept"><?= htmlspecialchars($getAdminData["Department_name"]) ?></span>
+                    <span
+                        class="text-center font-15"><?= isset($getAdminData["unit_section_name"]) ? ' (' . htmlspecialchars($getAdminData["unit_section_name"]) . ')' : '' ?></span>
+                    <span class="text-center font-15"
+                        id="employeeJobTitle"><?= htmlspecialchars($getAdminData["jobTitle"]) ?></span>
+                    <span id="employeeSchedule" class="fw-bold"></span>
+                    <form class="form_select d-flex align-items-center" id="formSelect">
+                        <input type="hidden" name="user_id" value="<?= $getAdminData["user_id"] ?>">
+                        <?php if($getAdminData["status"] == "Active"){ ?>
+                        <i class="fa-solid fa-circle font-8 text-success me-1"></i>
+                        <?php }else if($getAdminData["status"] == "Inactive"){ ?>
+                        <i class="fa-solid fa-circle font-8 text-danger me-1"></i>
+                        <?php }else{ ?>
+                        <i class="fa-solid fa-circle font-8 text-warning me-1"></i>
+                        <?php } ?>
+                        <select name="status" class="form-select select_status font-15">
+                            <option value="">Select Employee Status</option>
+                            <option value="Active" <?= ($getAdminData["status"] == "Active") ? "selected" : "" ?>>Active
+                            </option>
+                            <option value="Inactive" <?= ($getAdminData["status"] == "Inactive") ? "selected" : "" ?>>
+                                Inactive</option>
+                        </select>
+                    </form>
+                    <a class="font-15 mt-2" href="index.php?page=contents/pds&user_id=<?= $user_id ?>"
+                        class="mt-2"><strong>View
+                            Personal Data Sheet <i class="fa-solid fa-arrow-up-right-from-square ms-2"></i></strong></a>
                 </div>
             </div>
         </div>
 
         <!-- PERSONAL INFORMATION TAB -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade show active" role="tabpanel"
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade show active" role="tabpanel"
             id="Personal">
-            <form id="admin_profile_update" enctype="multipart/form-data">
-                <div class="card rounded-2 profile-contents col-md-12 col-12"
-                    style="padding-bottom: 5rem !important; overflow-y: scroll;">
-                    <input type="hidden" name="employee_id" value="<?= $hr_id ?>">
+            <form id="profile_update">
+                <div class="card rounded-2 profile-contents show-scroll">
+                    <input type="hidden" name="user_id" value="<?= $user_id ?>">
                     <!-- PERSONAL INFORMATION HEADER -->
                     <div class="col-md-12 d-flex">
-                        <div class="header ps-3 pt-3 col-md-5 col-8">
-                            <h5 class="m-0 p-0 label-media-name">
+                        <div class="header ps-3 pt-3 col-md-5">
+                            <h5 class="m-0 p-0">
                                 <i class="fa-solid fa-circle-info me-2"></i>Personal Information
                             </h5>
                         </div>
-                        <div
-                            class="col-md-7 col-4 button-margin-right no-padding-media d-flex justify-content-end me-5">
-                            <button type="submit"
-                                class="btn btn-sm btn-danger px-5 mt-3 me-5 button-margin-right">Update</button>
+                        <?php if($getAdminData["status"] == 'Active'){ ?>
+                        <div class="col-md-7 d-flex justify-content-end me-5">
+                            <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                         </div>
-                    </div>
-
-                    <div class="col-md-10 ms-3">
-                        <label class="form-label">Upload or update profile picture here:</label>
-                        <input type="file" name="admin_picture" class="form-control">
+                        <?php } else {} ?>
                     </div>
 
                     <!-- PERSONAL INFORMATION CONTENTS -->
                     <div class="row flex-wrap col-md-12 col-12 p-3">
                         <div class="col-md-3">
                             <label class="form-label">First Name</label>
-                            <input type="text" name="admin_firstname" class="form-control"
-                                value="<?= htmlspecialchars($getAdminData["admin_firstname"] ?? '') ?>">
+                            <input type="text" name="firstname" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["firstname"] ?? '') ?>">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Middle Name</label>
-                            <input type="text" name="admin_middlename" class="form-control"
-                                value="<?= htmlspecialchars($getAdminData["admin_middlename"] ?? '') ?>">
+                            <input type="text" name="middlename" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["middlename"] ?? '') ?>">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Last Name</label>
-                            <input type="text" name="admin_lastname" class="form-control"
-                                value="<?= htmlspecialchars($getAdminData["admin_lastname"] ?? '') ?>">
+                            <input type="text" name="lastname" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["lastname"] ?? '') ?>">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Suffix</label>
-                            <select class="form-select" name="admin_suffix">
-                                <option value="" <?= empty($getAdminData["admin_suffix"] ?? '') ? 'selected' : '' ?>>
-                                    Select
+                            <select class="form-select" name="suffix">
+                                <option value="" <?= empty($getAdminData["suffix"] ?? '') ? 'selected' : '' ?>>Select
                                     suffix (optional)</option>
-                                <option value="Jr"
-                                    <?= ($getAdminData["admin_suffix"] ?? '') == 'Jr' ? 'selected' : '' ?>>Jr
+                                <option value="Jr" <?= ($getAdminData["suffix"] ?? '') == 'Jr' ? 'selected' : '' ?>>Jr
                                 </option>
-                                <option value="Sr"
-                                    <?= ($getAdminData["admin_suffix"] ?? '') == 'Sr' ? 'selected' : '' ?>>Sr
+                                <option value="Sr" <?= ($getAdminData["suffix"] ?? '') == 'Sr' ? 'selected' : '' ?>>Sr
                                 </option>
-                                <option value="II"
-                                    <?= ($getAdminData["admin_suffix"] ?? '') == 'II' ? 'selected' : '' ?>>II
+                                <option value="II" <?= ($getAdminData["suffix"] ?? '') == 'II' ? 'selected' : '' ?>>II
                                 </option>
-                                <option value="III"
-                                    <?= ($getAdminData["admin_suffix"] ?? '') == 'III' ? 'selected' : '' ?>>III
+                                <option value="III" <?= ($getAdminData["suffix"] ?? '') == 'III' ? 'selected' : '' ?>>III
                                 </option>
                             </select>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Citizenship</label>
-                            <input type="text" name="admin_citizenship" class="form-control"
-                                value="<?= htmlspecialchars($getAdminData["admin_citizenship"] ?? '') ?>">
+                            <input type="text" name="citizenship" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["citizenship"] ?? '') ?>">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Gender</label>
-                            <select name="admin_gender" id="admin_gender" class="form-select">
+                            <select name="gender" id="gender" class="form-select">
                                 <option value="">Select Gender</option>
-                                <option value="MALE"
-                                    <?= ($getAdminData["admin_gender"] ?? '') == 'MALE' ? 'selected' : '' ?>>
+                                <option value="MALE" <?= ($getAdminData["gender"] ?? '') == 'MALE' ? 'selected' : '' ?>>
                                     Male</option>
                                 <option value="FEMALE"
-                                    <?= ($getAdminData["admin_gender"] ?? '') == 'FEMALE' ? 'selected' : '' ?>>Female
-                                </option>
+                                    <?= ($getAdminData["gender"] ?? '') == 'FEMALE' ? 'selected' : '' ?>>Female</option>
                             </select>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Civil Status</label>
-                            <select name="admin_civil_status" id="admin_civil_status" class="form-select">
+                            <select name="civil_status" id="civil_status" class="form-select">
                                 <option value="">Select Civil Status</option>
                                 <option value="Single"
-                                    <?= ($getAdminData["admin_civil_status"] ?? '') == 'Single' ? 'selected' : '' ?>>
-                                    Single
+                                    <?= ($getAdminData["civil_status"] ?? '') == 'Single' ? 'selected' : '' ?>>Single
                                 </option>
                                 <option value="Married"
-                                    <?= ($getAdminData["admin_civil_status"] ?? '') == 'Married' ? 'selected' : '' ?>>
-                                    Married
+                                    <?= ($getAdminData["civil_status"] ?? '') == 'Married' ? 'selected' : '' ?>>Married
                                 </option>
                                 <option value="Widowed"
-                                    <?= ($getAdminData["admin_civil_status"] ?? '') == 'Widowed' ? 'selected' : '' ?>>
-                                    Widowed
+                                    <?= ($getAdminData["civil_status"] ?? '') == 'Widowed' ? 'selected' : '' ?>>Widowed
                                 </option>
                                 <option value="Separated"
-                                    <?= ($getAdminData["admin_civil_status"] ?? '') == 'Separated' ? 'selected' : '' ?>>
+                                    <?= ($getAdminData["civil_status"] ?? '') == 'Separated' ? 'selected' : '' ?>>
                                     Separated</option>
                                 <option value="Divorced"
-                                    <?= ($getAdminData["admin_civil_status"] ?? '') == 'Divorced' ? 'selected' : '' ?>>
-                                    Divorced
+                                    <?= ($getAdminData["civil_status"] ?? '') == 'Divorced' ? 'selected' : '' ?>>Divorced
                                 </option>
                                 <option value="Annulled"
-                                    <?= ($getAdminData["admin_civil_status"] ?? '') == 'Annulled' ? 'selected' : '' ?>>
-                                    Annulled
+                                    <?= ($getAdminData["civil_status"] ?? '') == 'Annulled' ? 'selected' : '' ?>>Annulled
                                 </option>
                             </select>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Religion</label>
-                            <select name="admin_religion" id="admin_religion" class="form-select">
+                            <select name="religion" id="religion" class="form-select">
                                 <option value="">Select Religion</option>
                                 <option value="Roman Catholic"
-                                    <?= ($getAdminData["admin_religion"] ?? '') == 'Roman Catholic' ? 'selected' : '' ?>>
-                                    Roman
+                                    <?= ($getAdminData["religion"] ?? '') == 'Roman Catholic' ? 'selected' : '' ?>>Roman
                                     Catholic</option>
                                 <option value="Islam"
-                                    <?= ($getAdminData["admin_religion"] ?? '') == 'Islam' ? 'selected' : '' ?>>Islam
-                                </option>
+                                    <?= ($getAdminData["religion"] ?? '') == 'Islam' ? 'selected' : '' ?>>Islam</option>
                                 <option value="Iglesia ni Cristo"
-                                    <?= ($getAdminData["admin_religion"] ?? '') == 'Iglesia ni Cristo' ? 'selected' : '' ?>>
+                                    <?= ($getAdminData["religion"] ?? '') == 'Iglesia ni Cristo' ? 'selected' : '' ?>>
                                     Iglesia ni Cristo</option>
                                 <option value="Protestant"
-                                    <?= ($getAdminData["admin_religion"] ?? '') == 'Protestant' ? 'selected' : '' ?>>
-                                    Protestant
+                                    <?= ($getAdminData["religion"] ?? '') == 'Protestant' ? 'selected' : '' ?>>Protestant
                                 </option>
                                 <option value="Born Again Christian"
-                                    <?= ($getAdminData["admin_religion"] ?? '') == 'Born Again Christian' ? 'selected' : '' ?>>
+                                    <?= ($getAdminData["religion"] ?? '') == 'Born Again Christian' ? 'selected' : '' ?>>
                                     Born Again Christian</option>
                                 <option value="Seventh-day Adventist"
-                                    <?= ($getAdminData["admin_religion"] ?? '') == 'Seventh-day Adventist' ? 'selected' : '' ?>>
+                                    <?= ($getAdminData["religion"] ?? '') == 'Seventh-day Adventist' ? 'selected' : '' ?>>
                                     Seventh-day Adventist</option>
                                 <option value="Buddhist"
-                                    <?= ($getAdminData["admin_religion"] ?? '') == 'Buddhist' ? 'selected' : '' ?>>
-                                    Buddhist
+                                    <?= ($getAdminData["religion"] ?? '') == 'Buddhist' ? 'selected' : '' ?>>Buddhist
                                 </option>
                                 <option value="Jehovah's Witness"
-                                    <?= ($getAdminData["admin_religion"] ?? '') == 'Jehovah\'s Witness' ? 'selected' : '' ?>>
+                                    <?= ($getAdminData["religion"] ?? '') == 'Jehovah\'s Witness' ? 'selected' : '' ?>>
                                     Jehovah's Witness</option>
                                 <option value="Mormon"
-                                    <?= ($getAdminData["admin_religion"] ?? '') == 'Mormon' ? 'selected' : '' ?>>Mormon
+                                    <?= ($getAdminData["religion"] ?? '') == 'Mormon' ? 'selected' : '' ?>>Mormon
                                 </option>
                                 <option value="Aglipayan"
-                                    <?= ($getAdminData["admin_religion"] ?? '') == 'Aglipayan' ? 'selected' : '' ?>>
-                                    Aglipayan
+                                    <?= ($getAdminData["religion"] ?? '') == 'Aglipayan' ? 'selected' : '' ?>>Aglipayan
                                 </option>
                                 <option value="None"
-                                    <?= ($getAdminData["admin_religion"] ?? '') == 'None' ? 'selected' : '' ?>>None
-                                </option>
+                                    <?= ($getAdminData["religion"] ?? '') == 'None' ? 'selected' : '' ?>>None</option>
                                 <option value="Others"
-                                    <?= ($getAdminData["admin_religion"] ?? '') == 'Others' ? 'selected' : '' ?>>Others
+                                    <?= ($getAdminData["religion"] ?? '') == 'Others' ? 'selected' : '' ?>>Others
                                 </option>
                             </select>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Birthday</label>
                             <?php
-                                // Convert birthday to proper date format for input type="date"
-                                $birthday = $getAdminData["admin_birth"] ?? '';
+                                $birthday = $getAdminData["birthday"] ?? '';
                                 if (!empty($birthday)) {
                                     // If it's already in YYYY-MM-DD format, use it directly
                                     if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $birthday)) {
@@ -254,35 +236,36 @@
                                 } else {
                                     $formattedBirthday = '';
                                 }
-                            ?>
-                            <input type="date" name="admin_birth" id="admin_birth" class="form-control"
+                                ?>
+                            <input type="date" name="birthday" id="birthday" class="form-control"
                                 value="<?= htmlspecialchars($formattedBirthday) ?>">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Age</label>
-                            <input type="text" name="age" id="age" class="form-control" readonly>
+                            <input type="text" readonly name="age" id="age" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["age"] ?? '') ?>">
                         </div>
-
                         <div class="col-md-4">
                             <label class="form-label">Birth Place</label>
-                            <input type="text" name="admin_birthPlace" id="admin_birthPlace" class="form-control"
-                                value="<?= htmlspecialchars($getAdminData["admin_birthPlace"] ?? '') ?>">
+                            <input type="text" name="birthPlace" id="birthPlace" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["birthPlace"] ?? '') ?>">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Contact Number</label>
-                            <input type="text" name="admin_cpno" id="admin_cpno" class="form-control"
-                                value="<?= htmlspecialchars($getAdminData["admin_cpno"] ?? '') ?>">
+                            <input type="text" name="contact" id="contact" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["contact"] ?? '') ?>">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Email</label>
-                            <input type="email" name="admin_email" id="admin_email" class="form-control"
-                                value="<?= htmlspecialchars($getAdminData["admin_email"] ?? '') ?>">
+                            <input type="email" name="email" id="email" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["email"] ?? '') ?>">
                         </div>
                     </div>
                     <!-- OTHERS INFORMATION -->
-                     <div class="header ps-3 pt-3">
+                    <div class="header ps-3 pt-3">
                         <h5 class="m-0 p-0">
-                            <i class="fa-solid fa-circle-info me-2"></i>Other Information <span class="fw-light">(optional)</span>
+                            <i class="fa-solid fa-circle-info me-2"></i>Other Information <span
+                                class="fw-light">(optional)</span>
                         </h5>
                     </div>
                     <div class="row flex-wrap col-md-12 col-12 p-3 h-auto">
@@ -290,14 +273,25 @@
                             <label class="form-label">Profession Title</label>
                             <select name="profession_title" class="form-select">
                                 <option value="">Select Profession Title</option>
-                                <option value="Dr." <?= ($getAdminData["profession_title"] == "Dr.") ? 'selected' : '' ?>>Dr.</option>
-                                <option value="Prof." <?= ($getAdminData["profession_title"] == "Prof.") ? 'selected' : '' ?>>Prof.</option>
-                                <option value="Assoc. Prof." <?= ($getAdminData["profession_title"] == "Assoc. Prof.") ? 'selected' : '' ?>>Assoc. Prof.</option>
-                                <option value="Asst. Prof." <?= ($getAdminData["profession_title"] == "Asst. Prof.") ? 'selected' : '' ?>>Asst. Prof.</option>
-                                <option value="RN." <?= ($getAdminData["profession_title"] == "RN.") ? 'selected' : '' ?>>RN.</option>
-                                <option value="Mr." <?= ($getAdminData["profession_title"] == "Mr.") ? 'selected' : '' ?>>Mr.</option>
-                                <option value="Ms." <?= ($getAdminData["profession_title"] == "Ms.") ? 'selected' : '' ?>>Ms.</option>
-                                <option value="Mrs." <?= ($getAdminData["profession_title"] == "Mrs.") ? 'selected' : '' ?>>Mrs.</option>
+                                <option value="Dr."
+                                    <?= ($getAdminData["profession_title"] == "Dr.") ? 'selected' : '' ?>>Dr.</option>
+                                <option value="Prof."
+                                    <?= ($getAdminData["profession_title"] == "Prof.") ? 'selected' : '' ?>>Prof.
+                                </option>
+                                <option value="Assoc. Prof."
+                                    <?= ($getAdminData["profession_title"] == "Assoc. Prof.") ? 'selected' : '' ?>>Assoc.
+                                    Prof.</option>
+                                <option value="Asst. Prof."
+                                    <?= ($getAdminData["profession_title"] == "Asst. Prof.") ? 'selected' : '' ?>>Asst.
+                                    Prof.</option>
+                                <option value="RN."
+                                    <?= ($getAdminData["profession_title"] == "RN.") ? 'selected' : '' ?>>RN.</option>
+                                <option value="Mr."
+                                    <?= ($getAdminData["profession_title"] == "Mr.") ? 'selected' : '' ?>>Mr.</option>
+                                <option value="Ms."
+                                    <?= ($getAdminData["profession_title"] == "Ms.") ? 'selected' : '' ?>>Ms.</option>
+                                <option value="Mrs."
+                                    <?= ($getAdminData["profession_title"] == "Mrs.") ? 'selected' : '' ?>>Mrs.</option>
                             </select>
 
                         </div>
@@ -319,210 +313,188 @@
                         </h5>
                     </div>
                     <!-- ADDRESS INFORMATION CONTENTS -->
-                    <div class="row flex-wrap col-md-12 col-12 p-3 h-auto">
+                    <div class="row flex-wrap col-md-12 col-12 p-3 h-auto pb-5">
                         <div class="col-md-3">
                             <label class="form-label">House/Block No.</label>
-                            <input type="text" name="admin_house" id="admin_house" class="form-control"
-                                value="<?= htmlspecialchars($getAdminData["admin_house"] ?? '') ?>">
+                            <input type="text" name="houseBlock" id="houseBlock" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["houseBlock"] ?? '') ?>">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Street</label>
-                            <input type="text" name="admin_street" id="admin_street" class="form-control"
-                                value="<?= htmlspecialchars($getAdminData["admin_street"] ?? '') ?>">
+                            <input type="text" name="street" id="street" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["street"] ?? '') ?>">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Subdivision</label>
-                            <input type="text" name="admin_subdivision" id="admin_subdivision" class="form-control"
-                                value="<?= htmlspecialchars($getAdminData["admin_subdivision"] ?? '') ?>">
+                            <input type="text" name="subdivision" id="subdivision" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["subdivision"] ?? '') ?>">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Barangay</label>
-                            <input type="text" name="admin_barangay" id="admin_barangay" class="form-control"
-                                value="<?= htmlspecialchars($getAdminData["admin_barangay"] ?? '') ?>">
+                            <input type="text" name="barangay" id="barangay" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["barangay"] ?? '') ?>">
                         </div>
                         <div class="col-md-3" style="z-index: 2 !important;">
                             <label class="form-label">City/Municipality</label>
-                            <input type="text" name="admin_city" id="admin_city" class="form-control"
-                                value="<?= htmlspecialchars($getAdminData["admin_city"] ?? '') ?>">
+                            <input type="text" name="city_muntinlupa" id="city_muntinlupa" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["city_muntinlupa"] ?? '') ?>">
                         </div>
                         <div class="col-md-3" style="z-index: 2 !important;">
                             <label class="form-label">Province</label>
-                            <input type="text" name="admin_province" id="admin_province" class="form-control"
-                                value="<?= htmlspecialchars($getAdminData["admin_province"] ?? '') ?>">
+                            <input type="text" name="province" id="province" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["province"] ?? '') ?>">
                         </div>
                         <div class="col-md-3" style="z-index: 2 !important;">
                             <label class="form-label">Zip Code</label>
-                            <input type="text" name="admin_zip_code" id="admin_zip_code" class="form-control"
-                                value="<?= htmlspecialchars($getAdminData["admin_zip_code"] ?? '') ?>">
+                            <input type="text" name="zip_code" id="zip_code" class="form-control"
+                                value="<?= htmlspecialchars($getAdminData["zip_code"] ?? '') ?>">
                         </div>
-                    </div>
-                    <div
-                        class="col-md-12 hidden-button d-flex button-margin-right no-padding-media justify-content-end me-5">
-                        <button type="submit"
-                            class="btn btn-sm btn-danger px-5 mt-3 me-5 no-padding-media button-margin-right">Update</button>
+                        <?php if($getAdminData["status"] == 'Active'){ ?>
+                        <div class="col-md-12 d-flex justify-content-end pb-5">
+                            <button type="submit" class="btn btn-sm btn-danger px-3 btn-sm mt-3 me-2"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
+                        </div>
+                        <?php } else {} ?>
                     </div>
                 </div>
             </form>
         </div>
         <!-- Employement -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Employement">
-            <form id="employment_update">
-                <input type="hidden" name="admin_update" value="true">
-                <div class="card rounded-2 profile-contents col-md-12 col-12" style="overflow-y: scroll;">
-                    <!-- EMPLOYMENT INFORMATION HEADER -->
-                    <div class="col-md-12 d-flex">
-                        <div class="header ps-3 pt-3 col-md-5">
-                            <h5 class="m-0 p-0 label-media-name">
-                                <i class="fa-solid fa-circle-info me-2"></i>Employment Information
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Employment">
+            <div
+                class="card rounded-2 align-items-center justify-content-start ps-0 pe-0 profile-contents pb-5 p-0 show-scroll">
+                <div class="row flex-wrap col-md-12 col-12 p-1 px-3">
+                    <form id="employment_update" class="p-0 col-md-12">
+                        <div class="col-md-12 d-flex">
+                            <div class="header pt-3 col-md-5">
+                                <h5 class="m-0 p-0">
+                                    <i class="fa-solid fa-circle-info me-2"></i>Employment Information
+                                </h5>
+                            </div>
+                            <?php if($getAdminData["status"] == 'Active'){ ?>
+                            <div class="col-md-7 d-flex justify-content-end me-5">
+                                <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
+                            </div>
+                            <?php } else {} ?>
+                        </div>
+                        <div class="col-md-12 row">
+                            <input type="hidden" name="user_id" value="<?= $admin_id ?>">
+                            <div class="col-md-4">
+                                <label class="form-label">Employee ID</label>
+                                <input readonly type="text" name="employeeID" value="<?= $getAdminData["employeeID"] ?>"
+                                    id="employeeID_field" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Joined at</label>
+                                <input type="text" name="joined_at" value="<?= $getAdminData["joined_at"] ?>"
+                                    id="joined_at_field" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Department</label>
+                                <select name="Department_id" class="form-select">
+                                    <option value="">Select Department</option>
+                                    <?php foreach($getDedpartments as $departments): ?>
+                                    <option value="<?= $departments['Department_id'] ?>"
+                                        <?= ($departments['Department_id'] == $getAdminData['Department_id']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($departments['Department_name']) ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Designation</label>
+                                <select disabled name="jobTitles_id" class="form-select">
+                                    <option value="">Select Designation</option>
+                                    <?php foreach($getDesignations as $jb): ?>
+                                    <option value="<?= $jb['jobTitles_id'] ?>"
+                                        <?= ($jb['jobTitles_id'] == $getAdminData['jobTitles_id']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($jb['jobTitle']) ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Unit/Section</label>
+                                <select name="unit_section_id" id="" class="form-select" required>
+                                    <option value="">Select Unit/Section</option>
+                                    <?php foreach($getUnit as $uniSec):  ?>
+                                    <option value="<?= $uniSec['unit_section_id'] ?>"
+                                        <?= ($uniSec['unit_section_id'] == $getAdminData['unit_section_id']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($uniSec['unit_section_name']) ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Salary</label>
+                                <input type="number" readonly step="0.01" name="salary"
+                                    value="<?= $getAdminData["salary"] ?>" id="salary" class="form-control">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row flex-wrap col-md-12 col-12 p-1 px-3">
+                    <div class="col-md-12 d-flex justify-content-between">
+                        <div class="header pt-3 col-md-7">
+                            <h5 class="m-0 p-0">
+                                <i class="fa-solid fa-circle-info me-2"></i>Employment History
                             </h5>
                         </div>
                     </div>
-                    <!-- EMPLOYMENT INFORMATION CONTENTS -->
-                    <div class="row flex-wrap col-md-12 col-12 p-3">
-                        <div class="col-md-4">
-                            <label class="form-label">Employee ID</label>
-                            <input type="text" name="admin_employee_id"
-                                value="<?= $getAdminData["admin_employee_id"] ?>" id="employeeID_field"
-                                class="form-control">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Joined at</label>
-                            <input type="text" name="joined_at" value="<?= $getAdminData["joined_at"] ?>"
-                                id="joined_at_field" class="form-control">
-                        </div>
-                        <?php
-                            $stmt = $pdo->prepare("SELECT d.Department_id, d.Department_name FROM departments d");
-                            $stmt->execute();
-                            $departmentResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                            $stmt = $pdo->prepare("SELECT * FROM jobTitles");
-                            $stmt->execute();
-                            $jobtitleResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                        ?>
-
-                        <div class="col-md-4">
-                            <label class="form-label">Department</label>
-                            <select name="admin_department_id" class="form-select" required>
-                                <option value="">Select Department</option>
-                                <?php foreach($departmentResult as $departments): ?>
-                                <option value="<?= $departments['Department_id'] ?>"
-                                    <?= ($departments['Department_id'] == $getAdminData['Department_id']) ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($departments['Department_name']) ?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">Job Title</label>
-                            <select name="admin_position_id" class="form-select" required>
-                                <option value="">Select Job Title</option>
-                                <?php foreach($jobtitleResult as $jb): ?>
-                                <option value="<?= $jb['jobTitles_id'] ?>"
-                                    <?= ($jb['jobTitles_id'] == $getAdminData['jobTitles_id']) ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($jb['jobTitle']) ?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Unit/Section</label>
-                            <select name="unit_section_id" id="" class="form-select" required>
-                                <option value="">Select Unit/Section</option>
-                                <?php foreach($getUnit as $uniSec):  ?>
-                                    <option value="<?= $uniSec["unit_section_id"] ?>"><?= htmlspecialchars($uniSec["unit_section_name"]) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <strong class="w-100 text-start fs-5 mt-3">
-                            Scheduling information
-                        </strong>
-                        <?php
-                            $stmtTemplates = $pdo->prepare("SELECT * FROM sched_template ORDER BY scheduleName");
-                            $stmtTemplates->execute();
-                            $templates = $stmtTemplates->fetchAll(PDO::FETCH_ASSOC);
-                            ?>
-
-                        <div class="col-md-3">
-                            <label class="form-label">Schedule Template</label>
-                            <select name="schedule_template" id="schedule_template" class="form-select">
-                                <option value="">Select Schedule </option>
-                                <?php foreach ($templates as $template): ?>
-                                    <option value="<?= $template['template_id'] ?>"
-                                        data-from="<?= $template['schedule_from'] ?>"
-                                        data-to="<?= $template['schedule_to'] ?>" data-shift="<?= $template['shift'] ?>"
-                                        data-name="<?= htmlspecialchars($template['scheduleName']) ?>">
-                                        <?= htmlspecialchars($template['scheduleName']) ?>
-                                        (<?= $template['schedule_from'] ?> - <?= $template['schedule_to'] ?>)
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label class="form-label">Shift Type</label>
-                            <input type="text" name="shift_type" value="<?= $getAdminData["shift_type"] ?? '' ?>"
-                                id="shift_type" class="form-control" placeholder="Auto-filled from template" readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Schedule From</label>
-                            <input type="time" name="scheduleFrom" value="<?= $getAdminData["scheduleFrom"] ?? '' ?>"
-                                id="scheduleFrom" class="form-control" readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Schedule To</label>
-                            <input type="time" name="scheduleTo" id="scheduleTo"
-                                value="<?= $getAdminData["scheduleTo"] ?? '' ?>" class="form-control" readonly>
-                        </div>
-
-                        <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const scheduleTemplate = document.getElementById('schedule_template');
-                            const shiftType = document.getElementById('shift_type');
-                            const scheduleFrom = document.getElementById('scheduleFrom');
-                            const scheduleTo = document.getElementById('scheduleTo');
-
-                            scheduleTemplate.addEventListener('change', function() {
-                                if (this.value) {
-                                    const selectedOption = this.options[this.selectedIndex];
-
-                                    // Auto-fill all fields
-                                    shiftType.value = selectedOption.getAttribute('data-shift');
-                                    scheduleFrom.value = selectedOption.getAttribute('data-from');
-                                    scheduleTo.value = selectedOption.getAttribute('data-to');
-
-                                    // Optional: Add visual feedback
-                                    this.classList.add('is-valid');
-                                } else {
-                                    // Clear fields if no template selected
-                                    clearScheduleFields();
-                                }
-                            });
-
-                            function clearScheduleFields() {
-                                shiftType.value = '';
-                                scheduleFrom.value = '';
-                                scheduleTo.value = '';
-                                scheduleTemplate.classList.remove('is-valid');
-                            }
-
-                            // Optional: Allow manual editing by double-clicking fields
-                            [shiftType, scheduleFrom, scheduleTo].forEach(field => {
-                                field.addEventListener('dblclick', function() {
-                                    this.readOnly = !this.readOnly;
-                                    if (!this.readOnly) {
-                                        this.focus();
-                                    }
-                                });
-                            });
-                        });
-                        </script>
-                        <div class="col-md-12 d-flex mt-3 justify-content-end me-0">
-                            <button type="submit" class="btn  btn-danger px-5 mt-3 me-2">Update</button>
-                        </div>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <button class="btn btn-danger btn-sm px-3 py-2" data-bs-toggle="modal"
+                            data-bs-target="#manageCareerPath" onclick="getEmploymentData(
+                                <?= $user_id ?>,
+                                '<?= addslashes($getAdminData['jobTitle']) ?>',
+                                '<?= $getAdminData['salary'] ?>'
+                            )"><i class="fa-solid fa-pen-to-square me-2"></i>Manage
+                            Career Path</button>
+                    </div>
+                    <div class="responsive-table mt-1">
+                        <table class="table table-responsive table-sm table-bordered text-center table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <td>From Position</td>
+                                    <td>To Position</td>
+                                    <td>Type</td>
+                                    <td>Date</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if($employeeCareerPath){ 
+                                        foreach($employeeCareerPath as $career) : ?>
+                                <tr>
+                                    <td><?= $career["job_from"] ?></td>
+                                    <td><?= $career["job_to"] ?></td>
+                                    <td><?= $career["job_status"] ?></td>
+                                    <td><?= date('M d Y', strtotime($career["addAt"])) ?></td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm m-0 my-2 mx-3"><i
+                                                class="fa-solid fa-print me-2"></i>Print</button>
+                                    </td>
+                                </tr>
+                                <?php endforeach; 
+                                    }else{ ?>
+                                <tr>
+                                    <td>Initial Position</td>
+                                    <td><?= $getAdminData["jobTitle"] ?></td>
+                                    <td>Current</td>
+                                    <td><?= $getAdminData["joined_at"] ?></td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm m-0 my-2 mx-3"><i
+                                                class="fa-solid fa-print me-2"></i>Print</button>
+                                    </td>
+                                </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </form>
+            </div>
+
+
         </div>
         <!-- HRMS Activation -->
         <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="hrEmployees">

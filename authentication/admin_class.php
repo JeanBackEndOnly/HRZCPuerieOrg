@@ -37,15 +37,14 @@ class Action
         }
 
         try {
-            // Fixed the JOIN condition - added table alias for user_id
-            $stmt = $this->db->prepare("SELECT u.*, 
+            $stmt = $this->db->prepare("SELECT  
                 u.firstname, u.middlename, u.lastname, u.email, u.user_role, 
                 u.employeeID, u.profile_picture, u.user_id, u.status, u.password,
                 d.Department_name AS employee_department,
                 j.jobTitle AS employee_position,
                 u.created_date
                 FROM users u
-                LEFT JOIN users ed ON u.user_id = ed.user_id
+                LEFT JOIN employee_data ed ON u.user_id = ed.user_id
                 LEFT JOIN departments d ON ed.Department_id = d.Department_id
                 LEFT JOIN jobTitles j ON ed.jobtitle_id = j.jobTitles_id
                 WHERE u.username = ? OR u.email = ?");
@@ -183,28 +182,23 @@ class Action
                     ]);
             }
 
-            // If we get here, the status check failed for the role
             return json_encode([
                 'status' => 0,
                 'message' => 'Account is not active. Please contact HR.'
             ]);
 
         } catch (Exception $e) {
-            // Log the error for debugging
             error_log("Login error: " . $e->getMessage());
             return json_encode(['status' => 0, 'message' => 'Database error. Please try again later.']);
         }
     }
 
-    // Helper function to insert login history
     private function insertLoginHistory($user_id)
     {
         try {
-            // Check if login_history table exists, if not you might want to create it
             $stmtHistory = $this->db->prepare("INSERT INTO login_history (user_id, login_time) VALUES (?, NOW())");
             $stmtHistory->execute([$user_id]);
         } catch (Exception $e) {
-            // Log error but don't stop login process
             error_log("Failed to insert login history: " . $e->getMessage());
         }
     }

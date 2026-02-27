@@ -59,6 +59,9 @@ html{
     opacity: 1;
     z-index: 99;
   }
+  .logoutDomain{
+    z-index: 99 !important;
+  }
   @media(max-width: 576px){
     #logoutDomain {
       left: 13% !important;
@@ -239,6 +242,11 @@ a:hover{
   font-size: 35px;
   font-weight: 600;
 }
+.position-logout{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
 .setting-circle-profile, .nav-circle-profile, .recruitment-profile-circle, .profile-circle{
   border-radius: 50% !important;
   background-color: rgba(255, 14, 14, 0.70) !important;
@@ -273,7 +281,7 @@ a:hover{
   background-color: #fff;
   font-size: .9rem;
   width: 240px !important;
-  height: 100vh !important;
+  height: 90vh !important;
   border-right: solid 1px #0000003b;
 }
 .sidebar-list a:hover {
@@ -330,5 +338,8 @@ a:hover{
     
     .sidebar-overlay.active {
         display: block;
+    }
+    .position-logout{
+      bottom: 4rem;
     }
 }

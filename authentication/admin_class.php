@@ -28,7 +28,7 @@ class Action
     }
 // LOGIN ===============================================================================================================
 
-    function login(){
+    function login() {
         $username = $_POST['username'] ?? '';
         $password = $_POST['password'] ?? '';
 
@@ -37,16 +37,21 @@ class Action
         }
 
         try {
-            $stmt = $this->db->prepare("SELECT  
-                u.firstname, u.middlename, u.lastname, u.email, u.user_role, 
-                u.employeeID, u.profile_picture, u.user_id, u.status, u.password,
-                d.Department_name AS employee_department,
-                j.jobTitle AS employee_position,
+            // First, get the user from users table
+            $stmt = $this->db->prepare("SELECT 
+                u.user_id, 
+                u.firstname, 
+                u.middlename, 
+                u.lastname, 
+                u.email, 
+                u.username,
+                u.user_role, 
+                u.employeeID, 
+                u.profile_picture, 
+                u.status, 
+                u.password,
                 u.created_date
                 FROM users u
-                LEFT JOIN employee_data ed ON u.user_id = ed.user_id
-                LEFT JOIN departments d ON ed.Department_id = d.Department_id
-                LEFT JOIN jobTitles j ON ed.jobtitle_id = j.jobTitles_id
                 WHERE u.username = ? OR u.email = ?");
             
             $stmt->execute([$username, $username]);
@@ -64,26 +69,51 @@ class Action
                 return json_encode(['status' => 0, 'message' => 'Incorrect password.']);
             }
 
+            // For non-admin users, get additional employee data if available
+            $employee_department = null;
+            $employee_position = null;
+            
+            if ($user['user_role'] !== 'ADMIN') {
+                $empStmt = $this->db->prepare("
+                    SELECT 
+                        d.Department_name AS employee_department,
+                        j.jobTitle AS employee_position
+                    FROM employee_data ed
+                    LEFT JOIN departments d ON ed.Department_id = d.Department_id
+                    LEFT JOIN jobTitles j ON ed.jobtitle_id = j.jobTitles_id
+                    WHERE ed.user_id = ?
+                ");
+                $empStmt->execute([$user['user_id']]);
+                $empData = $empStmt->fetch(PDO::FETCH_ASSOC);
+
+                $employee_department = $empData['employee_department'] ?? '';
+                $employee_position = $empData['employee_position'] ?? '';
+                
+            }
+
+            // Prepare base session data
+            $sessionData = [
+                'user_id' => $user['user_id'],
+                'firstname' => $user['firstname'],
+                'middlename' => $user['middlename'],
+                'lastname' => $user['lastname'],
+                'email' => $user['email'],
+                'username' => $user['username'],
+                'user_role' => $user['user_role'],
+                'employeeID' => $user['employeeID'],
+                'employee_department' => $employee_department,
+                'employee_position' => $employee_position,
+                'profile_picture' => $user['profile_picture'],
+                'created_date' => $user['created_date']
+            ];
+
             // Handle different user roles and statuses
             switch ($user['user_role']) {
                 case 'ADMIN':
                     if ($user['status'] === 'Active') {
-                        $_SESSION['adminData'] = [
-                            'user_id' => $user['user_id'],
-                            'firstname' => $user['firstname'],
-                            'middlename' => $user['middlename'],
-                            'lastname' => $user['lastname'],
-                            'email' => $user['email'],
-                            'user_role' => $user['user_role'],
-                            'employeeID' => $user['employeeID'],
-                            'employee_department' => $user['employee_department'],
-                            'employee_position' => $user['employee_position'],
-                            'profile_picture' => $user['profile_picture'],
-                            'created_date' => $user['created_date']
-                        ];
-
+                        $_SESSION['adminData'] = $sessionData;
                         $this->insertLoginHistory($user['user_id']);
-
+                        
                         return json_encode([
                             'status' => 1,
                             'message' => 'Login successful.',
@@ -94,64 +124,22 @@ class Action
                     break;
 
                 case 'HR':
-                    $sessionData = [
-                        'user_id' => $user['user_id'],
-                        'firstname' => $user['firstname'],
-                        'middlename' => $user['middlename'],
-                        'lastname' => $user['lastname'],
-                        'email' => $user['email'],
-                        'user_role' => $user['user_role'],
-                        'username' => $user['username'],
-                        'employeeID' => $user['employeeID'],
-                        'employee_department' => $user['employee_department'],
-                        'employee_position' => $user['employee_position'],
-                        'profile_picture' => $user['profile_picture'],
-                        'created_date' => $user['created_date']
-                    ];
-
                     $_SESSION['hrData'] = $sessionData;
                     $this->insertLoginHistory($user['user_id']);
-
-                    $redirectPath = 'src/UI-HR/';
-                    switch ($user['status']) {
-                        case 'Active':
-                            $redirectPath .= 'index.php';
-                            break;
-                        case 'Pending':
-                            $redirectPath .= 'pending.php';
-                            break;
-                        case 'Inactive':
-                            $redirectPath .= 'inactive.php';
-                            break;
-                        default:
-                            $redirectPath .= 'pending.php';
-                    }
-
+                    
+                    $redirectPath = 'src/UI-HR/index.php';
+                    
                     return json_encode([
                         'status' => 1,
                         'message' => 'Login successful.',
                         'redirect_url' => $redirectPath,
                         'user_role' => $user['firstname'] . " " . $user['lastname']
                     ]);
+                    break;
 
                 case 'EMPLOYEE':
-                    $sessionData = [
-                        'user_id' => $user['user_id'],
-                        'firstname' => $user['firstname'],
-                        'middlename' => $user['middlename'],
-                        'lastname' => $user['lastname'],
-                        'email' => $user['email'],
-                        'user_role' => $user['user_role'],
-                        'username' => $user['username'],
-                        'employeeID' => $user['employeeID'],
-                        'employee_department' => $user['employee_department'],
-                        'employee_position' => $user['employee_position'],
-                        'profile_picture' => $user['profile_picture'],
-                        'created_date' => $user['created_date']
-                    ];
-
                     $_SESSION['employeeData'] = $sessionData;
-
+                    
                     $redirectPath = 'src/UI-employee/';
                     switch ($user['status']) {
                         case 'Active':
@@ -167,14 +155,15 @@ class Action
                         default:
                             $redirectPath .= 'pending.php';
                     }
-
+                    
                     return json_encode([
                         'status' => 1,
                         'message' => 'Login successful.',
                         'redirect_url' => $redirectPath,
                         'user_role' => $user['firstname'] . " " . $user['lastname']
                     ]);
-
+                    break;
+                    
                 default:
                     return json_encode([
                         'status' => 0,

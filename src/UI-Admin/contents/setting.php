@@ -534,7 +534,7 @@
                             INNER JOIN employee_data ed ON u.user_id = ed.user_id
                             LEFT JOIN jobTitles jt ON ed.jobtitle_id = jt.jobTitles_id
                             LEFT JOIN departments d ON ed.Department_id = d.Department_id
-                            WHERE u.user_role = 'HRSM'
+                            WHERE u.user_role = 'HR' || u.user_role = 'PAYROLL'
                             ORDER BY u.status
                         ");
                         $stmtOfficial->execute();
@@ -549,15 +549,15 @@
                         <th>HRMS</th>
                         <td class="d-flex justify-content-center flex-wrap gap-1">
                             <a
-                                href="index.php?page=contents/profile&id=<?= htmlspecialchars($officials["employee_id"]) ?>">
+                                href="index.php?page=contents/profile&id=<?= htmlspecialchars($officials["user_id"]) ?>">
                                 <button class="btn btn-sm btn-danger px-3 py-2 m-0">
                                     <i class="fas fa-eye"></i> View
                                 </button>
                             </a>
 
                             <form class="form_select d-flex align-items-center">
-                                <input type="hidden" name="employee_id"
-                                    value="<?= htmlspecialchars($officials['employee_id']) ?>">
+                                <input type="hidden" name="user_id"
+                                    value="<?= htmlspecialchars($officials['user_id']) ?>">
                                 <select class="form-select m-0 p-2 select_status" name="status">
                                     <option value="" disabled>Select Status</option>
                                     <option value="Active" <?= ($officials['status'] === 'Active') ? 'selected' : '' ?>>

@@ -712,42 +712,9 @@
         </form>
     </div>
 </div>
+<script src="../../assets/js/hr_js/admin/setting.js" defer></script>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const birthdayInput = document.getElementById("admin_birth");
-    const ageInput = document.getElementById("age");
-
-    function calculateAge() {
-        if (!birthdayInput.value) {
-            ageInput.value = "";
-            return;
-        }
-
-        const birthDate = new Date(birthdayInput.value);
-        const today = new Date();
-
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const monthDiff = today.getMonth() - birthDate.getMonth();
-        const dayDiff = today.getDate() - birthDate.getDate();
-
-        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-            age--;
-        }
-
-        ageInput.value = age;
-    }
-
-    birthdayInput.addEventListener("change", calculateAge);
-
-    calculateAge();
-});
-
-function getEmploymentData(user_id, designation, salary) {
-    document.getElementById('user_id_careerPath').value = user_id;
-    document.getElementById('currentDesignationId').value = designation;
-    document.getElementById('currentSalaryId').value = salary;
-}
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
         const jobTitleSelect = document.getElementById('newDesignationIdToggle');
         const salaryInput = document.querySelector('input[name="new_salary"]');
         

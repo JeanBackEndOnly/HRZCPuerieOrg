@@ -1,87 +1,5 @@
-<?php
-// include "../../header.php";
-include 'view_header.php';
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-if (!isset($_SESSION['hrData'])) {
-  include 'eror.php';
-  exit;
-}
 
-$employeeID = $_SESSION['hrData']['employeeID'];
-$position = $_SESSION['hrData']['employee_position'] ?? '';
-$department = $_SESSION['hrData']['employee_department'] ?? '';
-$firstname = $_SESSION['hrData']['firstname'];
-$middelname = $_SESSION['hrData']['middlename'];
-$lastname = $_SESSION['hrData']['lastname'];
-$profile_picture = $_SESSION['hrData']['profile_picture'];
-$hr_id = $_SESSION['hrData']['user_id'];
-
-$stmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE type = 'HR' AND status = 'Active'");
-$stmt->execute();
-$leaveCounts = $stmt->fetchColumn();
-?>
-
-<div class="bg-gradient-primary col-md-12 col-12 justify-content-between d-flex">
-    <div class="col-md-2 col-1 align-items-center justify-content-center burger-ka-saken" style="display: none;">
-        <i class="fa-solid fw-solid fa-bars"></i>
-    </div>
-    <div class=" d-flex col-md-4 col-6 align-items-center justify-content-center ">
-        <img src="../../assets/image/system_logo/pueri-logo.png" class="image-header me-2">
-        <h4 class="text-white m-0 header-text">Zamboanga Puericulture Center</h4>
-    </div>
-    <div class="justify-content-end dap-3 p-4 col-md-7 col-6 mx-2 d-flex media-adjustaments">
-        <div class="notification me-2 d-flex align-items-center justify-content-center">
-            <form action="../../authentication/hrAuth.php" method="POST">
-                <?php $csrf = $_SESSION["csrf_token"] ?? ''?>
-                <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
-                <input type="hidden" name="update_notification" value="true">
-                <input type="hidden" name="admin_id" value="">
-                <button type="submit" style="border: none; background: none;">
-                    <span class="text-white text-bold" style="position: absolute;
-                  transform: translate(.8rem, -.7rem);
-                  border-radius: 50%;
-                  font-size: 12px !important;"><?= $leaveCounts ?></span>
-                    <i class="fa-solid fa-bell fs-5 text-white"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-<script>
-$(document).ready(function() {
-    $('html').css('scroll-behavior', 'smooth');
-});
-$(document).ready(function() {
-    const sidebar = $('.navbarHide');
-    const burger = $('.burger-ka-saken i');
-
-    if (!$('.sidebar-overlay').length) {
-        $('body').append('<div class="sidebar-overlay"></div>');
-    }
-
-    $('.burger-ka-saken').on('click', function() {
-        sidebar.toggleClass('navbarShow');
-        $('.sidebar-overlay').toggleClass('active');
-        burger.toggleClass('fa-times');
-    });
-
-    $(document).on('click', function(e) {
-        if (!$(e.target).closest('.navbarHide, .burger-ka-saken').length) {
-            sidebar.removeClass('navbarShow');
-            $('.sidebar-overlay').removeClass('active');
-            burger.removeClass('fa-times');
-        }
-    });
-
-    sidebar.on('click', function(e) {
-        e.stopPropagation();
-    });
-});
- document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
         const logoutBtn = document.getElementById('logoutBtn');
         const logoutDomain = document.getElementById('logoutDomain');
         const cancelBtn = logoutDomain.querySelector('.btn-dark');
@@ -201,4 +119,3 @@ $(document).ready(function() {
             }
         });
     });
-</script>

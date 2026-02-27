@@ -6,7 +6,7 @@
             <div class="col-md-9 col-12 p-0 m-0">
                 <div class="card-header shadow">
                     <div class="card-header bg-gradient-primary text-white shadow  text-center">
-                        <h4 class="mb-0 fontRegister fw-light">Sign-up to Z.C Puericulture Center</h4>
+                        <h4 class="mb-0 text-white fw-bold p-2 fs-3">Sign-up to Z.C Puericulture Center</h4>
                     </div>
                     <div class="card-body scroll">
                         <!-- Registration Form -->

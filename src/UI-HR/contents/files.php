@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="../../assets/css/files.css">
 <?php
-$employee_id = $_GET["id"];
+$user_id = $_GET["id"];
 // Get employee data
-$stmtEmployee = $pdo->prepare("SELECT firstname, lastname FROM employee_data WHERE employee_id = :employee_id");
-$stmtEmployee->execute(['employee_id' => $employee_id]);
+$stmtEmployee = $pdo->prepare("SELECT firstname, lastname FROM users WHERE user_id = :user_id");
+$stmtEmployee->execute(['user_id' => $user_id]);
 $dataEmployee = $stmtEmployee->fetch(PDO::FETCH_ASSOC);
 
 // Define file types
@@ -12,8 +12,8 @@ $file_types = ['communication', 'certifications', 'training_certificates', 'lice
 $file_data = [];
 
 // Get all files data in one query
-$stmt = $pdo->prepare("SELECT * FROM files WHERE employee_id = :employee_id");
-$stmt->execute(['employee_id' => $employee_id]);
+$stmt = $pdo->prepare("SELECT * FROM files WHERE user_id = :user_id");
+$stmt->execute(['user_id' => $user_id]);
 $all_files = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Organize files by type
@@ -22,7 +22,6 @@ foreach ($all_files as $file) {
 }
 
 ?>
-
 <section>
     <div class="row mb-4">
         <div class="col-md-8">
@@ -34,9 +33,11 @@ foreach ($all_files as $file) {
             <small class="text-muted">Manage employee 201 files - Create, update and view documents</small>
         </div>
         <div class="col-md-4 text-end">
-            <a href="index.php?page=contents/201" class="btn btn-danger" id="getID">
-                go back to 201 files
-            </a>
+            <button class="btn btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#create201">
+                <i class="fa-solid fa-file-circle-plus"></i> Add File
+            </button>
         </div>
     </div>
 
@@ -124,9 +125,11 @@ foreach ($all_files as $file) {
                                             title="Download File">
                                             <i class="fa-solid fa-download me-1"></i>Download
                                         </button>
-                                        <button class="btn btn-outline-danger btn-sm delete-file" data-bs-toggle="modal"
+                                        <button class="btn btn-outline-danger btn-sm" id="delete-file"
+                                            data-bs-toggle="modal"
                                             data-bs-target="#deleteFile"
-                                            data-id="<?= htmlspecialchars($files["files_id"]) ?>" title="Delete File">
+                                            data-id="<?= htmlspecialchars($files["files_id"]) ?>" title="Delete File"
+                                        >
                                             <i class="fa-solid fa-trash me-1"></i>Delete
                                         </button>
                                     </td>
@@ -148,7 +151,52 @@ foreach ($all_files as $file) {
         </div>
     </div>
 </section>
+<!-- Create 201 files modal -->
+<div class="modal fade" id="create201" tabindex="-1" aria-labelledby="create201Label" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title text-white" id="create201Label">Add employee 201 file</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
+                    onclick="location.reload()"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" id="file-form" method="post" enctype="multipart/form-data">
+                    <div class="mx-2">
+                        <label class="form-label">Title</label>
+                        <input required type="text" class="form-control" name="file_title" placeholder="File title">
+                    </div>
+                    <div class="mx-2">
+                        <label class="form-label">201 type</label>
+                        <select required name="type" id="" class="form-select">
+                            <option value="">Select Type</option>
+                            <option value="communication">Communication</option>
+                            <option value="certifications">Certifications</option>
+                            <option value="training_certificates">Training Certificates</option>
+                            <option value="license_eligibility">License Eligibility</option>
+                            <option value="academic_credentials">Academic Credentials</option>
+                            <option value="preScreening_requirements">Pre-screening Requirements</option>
+                            <option value="medical_certificates">Medical Certificates</option>
 
+                        </select>
+                    </div>
+                    <div class="mx-2">
+                        <label class="form-label">Employee file</label>
+                        <input required type="file" name="201file" class="form-control">
+                        <input type="hidden" name="user_id" id="user_id" value="<?= $user_id ?>">
+                    </div>
+
+                    <!-- Form Submission -->
+                    <div class="col-12 text-center mt-3">
+                        <button type="submit" class="btn btn-primary px-5">
+                            <i class="bi bi-person-plus-fill me-1"></i> Submit File
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteFile" tabindex="-1" aria-labelledby="deleteFileLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
@@ -177,4 +225,4 @@ foreach ($all_files as $file) {
         </form>
     </div>
 </div>
-<script src="../../assets/js/hr_js/files.js" defer></script>
+<script src="../../assets/js/hr_js/admin/files.js" defer></script>

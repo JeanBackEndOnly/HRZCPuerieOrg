@@ -18,7 +18,7 @@
             <div class="col-md-4 col-11 mx-auto">
                 <div class="shadow">
                     <div class="card-header text-white bg-gradient-primary text-center shadow bg-primary">
-                        <h4 class="card-title fontHeader fw-light">Login Access</h4>
+                        <h4 class="card-title fw-bold fs-2 text-white mb-1 pt-2">Login Access</h4>
                         <p class="card-text">Web-based system</p>
                     </div>
                     <div class="card-body bg-white shadow ">

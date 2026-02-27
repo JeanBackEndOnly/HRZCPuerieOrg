@@ -1,77 +1,113 @@
+<?php $user_id = $getEmployee["user_id"]; ?>
 <section>
-    <?php $employee_id = $getEmployee["employee_id"]; ?>
-    <div class="d-flex justify-content-between align-items-center mb-0 col-md-12 col-12 flex-wrap">
+    <!-- Header and buttons for account approval ================================================================ -->
+    <div class="d-flex justify-content-between align-items-center mb-0 col-md-12 col-12">
         <div class="mx-2 col-md-3 col-12">
             <h4 class=""><i class="fa-regular fa-circle-user me-1"></i>Employee Profile</h4>
-            <small class="text-muted ">Manage Employee Profile</small>
+            <small class="text-muted ">Masnage Employee Profile</small>
         </div>
-        <div class="card-body col-md-9 col-12">
-            <ul class="nav nav-tabs justify-content-end align-items-end col-md-12 col-12" id="ProfileInfoTabs">
-                <li class="nav-item col-md-2 col-12">
-                    <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Personal"><i
-                            class="fa-solid fa-circle-info me-2"></i>Personal</a>
-                </li>
-                <li class="nav-item col-md-2 col-12">
-                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Employment"><i
-                            class="fa-solid me-2 fa-briefcase"></i>Employment</a>
-                </li>
-                <li class="nav-item col-md-2 col-12">
-                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Leave_Credits"><i
-                            class="fa-solid fa-person-through-window me-2"></i>Leave Credits</a>
-                </li>
-                <li class="nav-item col-md-2 col-12">
-                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Education"><i
-                            class="fa-solid me-2 fa-school"></i>Education</a>
-                </li>
-                <li class="nav-item col-md-2 col-12">
-                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Family"><i
-                            class="fa-solid me-2 fa-people-group"></i>Family</a>
-                </li>
-                <li class="nav-item col-md-2 col-12">
-                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Leave">
-                        <i class="fa-solid fa-chart-line me-2"></i>Activities</a>
-                </li>
-            </ul>
+        <!-- Buttons div -->
+        <div class="col-md-9 d-flex gap-1 justify-content-end align-items-end ps-e">
+            <?php if($getEmployee["status"] == 'Pending'){ ?>
+            <button class="btn px-4 py-2 btn-success" data-bs-toggle="modal" data-bs-target="#aprrovalEmployee"
+                data-id="<?= htmlspecialchars($user_id) ?>" id="getEmployeeId">Approve</button>
+            <button class="btn px-4 py-2 btn-danger" data-bs-toggle="modal" data-bs-target="#rejectionEmployee"
+                data-id="<?= htmlspecialchars($user_id) ?>" id="getEmployeeId">Reject</button>
+            <?php }else if($getEmployee["status"] == 'Inactive'){?>
+            <button class="btn px-4 py-2 btn-danger" data-bs-toggle="modal" data-bs-target="#deleteEmployeeModal"
+                data-id="<?= htmlspecialchars($user_id) ?>" id="getEmployeeId">Delete</button>
+            <?php }else{}?>
         </div>
     </div>
+    <!-- Profile tabs =========================================================================================== -->
+    <div class="card-body col-md-12 col-12">
+        <ul class="nav nav-tabs justify-content-end align-items-end col-md-12 col-12" id="ProfileInfoTabs">
+            <li class="nav-item cursor-pointer col-md-2 col-12">
+                <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Personal"><i
+                        class="fa-solid fa-circle-info me-2"></i>Personal</a>
+            </li>
+            <li class="nav-item cursor-pointer col-md-2 col-12">
+                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Employment"><i
+                        class="fa-solid me-2 fa-briefcase"></i>Employment</a>
+            </li>
+            <li class="nav-item cursor-pointer col-md-2 col-12">
+                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Leave_Credits"><i
+                        class="fa-solid fa-person-through-window me-2"></i>Leave Credits</a>
+            </li>
+            <li class="nav-item cursor-pointer col-md-2 col-12">
+                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Education"><i
+                        class="fa-solid me-2 fa-school"></i>Education</a>
+            </li>
+            <li class="nav-item cursor-pointer col-md-2 col-12">
+                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Family"><i
+                        class="fa-solid me-2 fa-people-group"></i>Family</a>
+            </li>
+            <li class="nav-item cursor-pointer col-md-2 col-12">
+                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Leave">
+                    <i class="fa-solid fa-chart-line me-2"></i>Activities</a>
+            </li>
+        </ul>
+    </div>
+    <!-- Profile contents ======================================================================================= -->
     <div class="row">
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-4">
+        <!-- Profile Info tab -->
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-3">
             <div class="card rounded-2">
                 <div class="d-flex flex-column w-100 align-items-center justify-content-center p-2">
                     <div class="w-100 d-flex justify-content-start ps-3 pt-1">
-                        <a href="index.php?page=contents/recruitment" class="btn btn-danger btn-sm"><i
+                        <a href="index.php?page=contents/recruitment" class="btn btn-danger py-1 px-2 font-12 btn-sm"><i
                                 class="fa-solid fa-arrow-left me-1"></i> Back</a>
                     </div>
-                     <?php if($getEmployee["profile_picture"] == null){ ?>
-                            <strong class="py-1 px-5 text-white mb-2" style="
-                                border-radius: 50%;
-                                background-color: #303030ff;
-                                font-size: 5rem;
-                            "><?= htmlspecialchars(substr($getEmployee["firstname"], 0,1)) ?></strong>
+                    <?php if($getEmployee["profile_picture"] == null){ ?>
+                    <div class="profile-circle d-flex align-items-center justify-content-center mb-1">
+                        <strong class="p-0 text-white m-0 font-profile">
+                            <?= htmlspecialchars(substr($getEmployee["firstname"], 0,1) . substr($getEmployee["lastname"], 0,1)) ?>
+                        </strong>
+                    </div>
                     <?php }else{ ?>
-                            <img src="../../authentication/uploads/<?= $getEmployee["profile_picture"] ?>" 
-                                style="width: 200px; height: auto; border-radius: 50%;">
+                    <img src="../../authentication/uploads/<?= $getEmployee["profile_picture"] ?>"
+                        style="width: 150px; height: auto; border-radius: 50%;">
                     <?php } ?>
                     <span id="employeeID"
-                        class="text-muted fw-bold"><?= htmlspecialchars($getEmployee["employeeID"]) ?></span>
-                    <span
+                        class="text-muted fw-bold font-15"><?= 'EMP-' . htmlspecialchars($getEmployee["employeeID"]) ?></span>
+                    <span class="font-15 text-center"
                         id="employeeName"><?= htmlspecialchars($getEmployee["firstname"]) . " " .  substr(htmlspecialchars($getEmployee["middlename"]), 0, 1) . ". " . htmlspecialchars($getEmployee["lastname"]) ?></span>
-                    <span class="text-center"
-                        id="employeeDept"><?= htmlspecialchars($getEmployee["Department_name"]) . ' (' . htmlspecialchars($getEmployee["Department_code"]) . ')'?></span>
-                    <span id="employeeJobTitle"><?= htmlspecialchars($getEmployee["jobTitle"]) ?></span>
+                    <span class="text-center font-15"
+                        id="employeeDept"><?= htmlspecialchars($getEmployee["Department_name"]) ?></span>
+                    <span
+                        class="text-center font-15"><?= isset($getEmployee["unit_section_name"]) ? ' (' . htmlspecialchars($getEmployee["unit_section_name"]) . ')' : '' ?></span>
+                    <span class="text-center font-15"
+                        id="employeeJobTitle"><?= htmlspecialchars($getEmployee["jobTitle"]) ?></span>
                     <span id="employeeSchedule" class="fw-bold"></span>
-                    <a href="index.php?page=contents/pds&employee_id=<?= $getEmployee["employee_id"] ?>"
-                        class="mt-2"><strong>View Personal Data Sheet <i
-                                class="fa-solid fa-arrow-up-right-from-square ms-2"></i></strong></a>
+                    <form class="form_select d-flex align-items-center" id="formSelect">
+                        <input type="hidden" name="user_id" value="<?= $getEmployee["user_id"] ?>">
+                        <?php if($getEmployee["status"] == "Active"){ ?>
+                        <i class="fa-solid fa-circle font-8 text-success me-1"></i>
+                        <?php }else if($getEmployee["status"] == "Inactive"){ ?>
+                        <i class="fa-solid fa-circle font-8 text-danger me-1"></i>
+                        <?php }else{ ?>
+                        <i class="fa-solid fa-circle font-8 text-warning me-1"></i>
+                        <?php } ?>
+                        <select name="status" class="form-select select_status font-15">
+                            <option value="">Select Employee Status</option>
+                            <option value="Active" <?= ($getEmployee["status"] == "Active") ? "selected" : "" ?>>Active
+                            </option>
+                            <option value="Inactive" <?= ($getEmployee["status"] == "Inactive") ? "selected" : "" ?>>
+                                Inactive</option>
+                        </select>
+                    </form>
+                    <a class="font-15 mt-2" href="index.php?page=contents/pds&user_id=<?= $user_id ?>"
+                        class="mt-2"><strong>View
+                            Personal Data Sheet <i class="fa-solid fa-arrow-up-right-from-square ms-2"></i></strong></a>
                 </div>
             </div>
         </div>
         <!-- PERSONAL INFORMATIONS TAB -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade show active" role="tabpanel"
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade show active" role="tabpanel"
             id="Personal">
             <form id="profile_update">
-                <div class="card rounded-2 profile-contents" style="overflow-y: scroll;">
-                    <input type="hidden" name="employee_id" value="<?= $getEmployee["employee_id"] ?>">
+                <div class="card rounded-2 profile-contents show-scroll">
+                    <input type="hidden" name="user_id" value="<?= $user_id ?>">
                     <!-- PERSONAL INFORMATION HEADER -->
                     <div class="col-md-12 d-flex">
                         <div class="header ps-3 pt-3 col-md-5">
@@ -81,7 +117,7 @@
                         </div>
                         <?php if($getEmployee["status"] == 'Active'){ ?>
                         <div class="col-md-7 d-flex justify-content-end me-5">
-                            <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5">Update</button>
+                            <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                         </div>
                         <?php } else {} ?>
                     </div>
@@ -238,9 +274,10 @@
                         </div>
                     </div>
                     <!-- OTHERS INFORMATION -->
-                     <div class="header ps-3 pt-3">
+                    <div class="header ps-3 pt-3">
                         <h5 class="m-0 p-0">
-                            <i class="fa-solid fa-circle-info me-2"></i>Other Information <span class="fw-light">(optional)</span>
+                            <i class="fa-solid fa-circle-info me-2"></i>Other Information <span
+                                class="fw-light">(optional)</span>
                         </h5>
                     </div>
                     <div class="row flex-wrap col-md-12 col-12 p-3 h-auto">
@@ -248,14 +285,25 @@
                             <label class="form-label">Profession Title</label>
                             <select name="profession_title" class="form-select">
                                 <option value="">Select Profession Title</option>
-                                <option value="Dr." <?= ($getEmployee["profession_title"] == "Dr.") ? 'selected' : '' ?>>Dr.</option>
-                                <option value="Prof." <?= ($getEmployee["profession_title"] == "Prof.") ? 'selected' : '' ?>>Prof.</option>
-                                <option value="Assoc. Prof." <?= ($getEmployee["profession_title"] == "Assoc. Prof.") ? 'selected' : '' ?>>Assoc. Prof.</option>
-                                <option value="Asst. Prof." <?= ($getEmployee["profession_title"] == "Asst. Prof.") ? 'selected' : '' ?>>Asst. Prof.</option>
-                                <option value="RN." <?= ($getEmployee["profession_title"] == "RN.") ? 'selected' : '' ?>>RN.</option>
-                                <option value="Mr." <?= ($getEmployee["profession_title"] == "Mr.") ? 'selected' : '' ?>>Mr.</option>
-                                <option value="Ms." <?= ($getEmployee["profession_title"] == "Ms.") ? 'selected' : '' ?>>Ms.</option>
-                                <option value="Mrs." <?= ($getEmployee["profession_title"] == "Mrs.") ? 'selected' : '' ?>>Mrs.</option>
+                                <option value="Dr."
+                                    <?= ($getEmployee["profession_title"] == "Dr.") ? 'selected' : '' ?>>Dr.</option>
+                                <option value="Prof."
+                                    <?= ($getEmployee["profession_title"] == "Prof.") ? 'selected' : '' ?>>Prof.
+                                </option>
+                                <option value="Assoc. Prof."
+                                    <?= ($getEmployee["profession_title"] == "Assoc. Prof.") ? 'selected' : '' ?>>Assoc.
+                                    Prof.</option>
+                                <option value="Asst. Prof."
+                                    <?= ($getEmployee["profession_title"] == "Asst. Prof.") ? 'selected' : '' ?>>Asst.
+                                    Prof.</option>
+                                <option value="RN."
+                                    <?= ($getEmployee["profession_title"] == "RN.") ? 'selected' : '' ?>>RN.</option>
+                                <option value="Mr."
+                                    <?= ($getEmployee["profession_title"] == "Mr.") ? 'selected' : '' ?>>Mr.</option>
+                                <option value="Ms."
+                                    <?= ($getEmployee["profession_title"] == "Ms.") ? 'selected' : '' ?>>Ms.</option>
+                                <option value="Mrs."
+                                    <?= ($getEmployee["profession_title"] == "Mrs.") ? 'selected' : '' ?>>Mrs.</option>
                             </select>
 
                         </div>
@@ -315,7 +363,7 @@
                         </div>
                         <?php if($getEmployee["status"] == 'Active'){ ?>
                         <div class="col-md-12 d-flex justify-content-end pb-5">
-                            <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-2">Update</button>
+                            <button type="submit" class="btn btn-sm btn-danger px-3 btn-sm mt-3 me-2"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                         </div>
                         <?php } else {} ?>
                     </div>
@@ -323,204 +371,153 @@
             </form>
         </div>
         <!-- WORK INFORMATIONS TAB -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Employment">
-            <form id="employment_update">
-                <input type="hidden" name="admin_update" value="false">
-                <div class="card rounded-2 profile-contents pb-5" style="overflow-y: scroll;">
-                    <!-- EMPLOYMENT INFORMATION HEADER -->
-                    <div class="col-md-12 d-flex">
-                        <div class="header ps-3 pt-3 col-md-5">
-                            <h5 class="m-0 p-0">
-                                <i class="fa-solid fa-circle-info me-2"></i>Employment Information
-                            </h5>
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Employment">
+            <div
+                class="card rounded-2 align-items-center justify-content-start ps-0 pe-0 profile-contents pb-5 p-0 show-scroll">
+                <div class="row flex-wrap col-md-12 col-12 p-1 px-3">
+                    <form id="employment_update" class="p-0 col-md-12">
+                        <input type="hidden" name="admin_update" value="false">
+                        <div class="col-md-12 d-flex">
+                            <div class="header pt-3 col-md-5">
+                                <h5 class="m-0 p-0">
+                                    <i class="fa-solid fa-circle-info me-2"></i>Employment Information
+                                </h5>
+                            </div>
+                            <?php if($getEmployee["status"] == 'Active'){ ?>
+                            <div class="col-md-7 d-flex justify-content-end me-5">
+                                <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
+                            </div>
+                            <?php } else {} ?>
                         </div>
-                        <?php if($getEmployee["status"] == 'Active'){ ?>
-                        <div class="col-md-7 d-flex justify-content-end me-5">
-                            <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5">Update</button>
-                        </div>
-                        <?php } else {} ?>
-                    </div>
-                    <input type="hidden" name="employee_id" value="<?= $getEmployee["employee_id"] ?>">
-                    <!-- EMPLOYMENT INFORMATION CONTENTS -->
-                    <div class="row flex-wrap col-md-12 col-12 p-3">
-                        <div class="col-md-4">
-                            <label class="form-label">Employee ID</label>
-                            <input readonly type="text" name="employeeID" value="<?= $getEmployee["employeeID"] ?>"
-                                id="employeeID_field" class="form-control">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Joined at</label>
-                            <input type="text" name="joined_at" value="<?= $getEmployee["joined_at"] ?>"
-                                id="joined_at_field" class="form-control">
-                        </div>
-                        <?php
-                            $stmt = $pdo->prepare("SELECT * FROM departments");
-                            $stmt->execute();
-                            $departmentResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                            $stmt = $pdo->prepare("SELECT * FROM jobtitles");
-                            $stmt->execute();
-                            $jobtitleResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                        ?>
-
-                        <div class="col-md-4">
-                            <label class="form-label">Department</label>
-                            <select name="Department_id" class="form-select">
-                                <option value="">Select Department</option>
-                                <?php foreach($departmentResult as $departments): ?>
-                                <option value="<?= $departments['Department_id'] ?>"
-                                    <?= ($departments['Department_id'] == $getEmployee['Department_id']) ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($departments['Department_name']) ?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">Job Title</label>
-                            <select disabled name="jobTitles_id" class="form-select">
-                                <option value="">Select Job Title</option>
-                                <?php foreach($jobtitleResult as $jb): ?>
-                                <option value="<?= $jb['jobTitles_id'] ?>"
-                                    <?= ($jb['jobTitles_id'] == $getEmployee['jobTitles_id']) ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($jb['jobTitle']) ?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">Salary</label>
-                            <input type="number" step="0.01" name="salary" value="<?= $getEmployee["salary"] ?>"
-                                id="salary" class="form-control">
-                        </div>
-                        
-
-                        <strong class="w-100 text-start fs-5 mt-3">
-                            Schedulin'g information
-                        </strong>
-                        <!-- <div class="col-md-4">
-                            <label class="form-label">Work Schedule</label>
-                            <input type="text" name="work_schedule_type" value="<?= $getEmployee["work_schedule_type"] ?? '' ?>"
-                                id="work_schedule_type" class="form-control" placeholder="">
-                        </div> -->
-                        <?php
-                            // Fetch schedule templates grouped by department
-                            $stmtTemplates = $pdo->prepare("SELECT * FROM sched_template ORDER BY department, scheduleName");
-                            $stmtTemplates->execute();
-                            $templates = $stmtTemplates->fetchAll(PDO::FETCH_ASSOC);
-
-                            // Group templates by department
-                            $groupedTemplates = [];
-                            foreach ($templates as $template) {
-                                $groupedTemplates[$template['department']][] = $template;
-                            }
-                            ?>
-
-                        <div class="col-md-3">
-                            <label class="form-label">Schedule Template</label>
-                            <select name="schedule_template" id="schedule_template" class="form-select">
-                                <option value="">Select Schedule </option>
-                                <?php foreach ($groupedTemplates as $department => $deptTemplates): ?>
-                                <optgroup label="<?= $department ?>">
-                                    <?php foreach ($deptTemplates as $template): ?>
-                                    <option value="<?= $template['template_id'] ?>"
-                                        data-from="<?= $template['schedule_from'] ?>"
-                                        data-to="<?= $template['schedule_to'] ?>" data-shift="<?= $template['shift'] ?>"
-                                        data-days="<?= $template['day'] ?>"
-                                        data-name="<?= htmlspecialchars($template['scheduleName']) ?>">
-                                        <?= htmlspecialchars($template['scheduleName']) ?>
-                                        (<?= $template['schedule_from'] ?> - <?= $template['schedule_to'] ?>)
+                        <div class="col-md-12 row">
+                            <input type="hidden" name="user_id" value="<?= $user_id ?>">
+                            <div class="col-md-4">
+                                <label class="form-label">Employee ID</label>
+                                <input readonly type="text" name="employeeID" value="<?= $getEmployee["employeeID"] ?>"
+                                    id="employeeID_field" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Joined at</label>
+                                <input type="text" name="joined_at" value="<?= $getEmployee["joined_at"] ?>"
+                                    id="joined_at_field" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Department</label>
+                                <select name="Department_id" class="form-select">
+                                    <option value="">Select Department</option>
+                                    <?php foreach($getDedpartments as $departments): ?>
+                                    <option value="<?= $departments['Department_id'] ?>"
+                                        <?= ($departments['Department_id'] == $getEmployee['Department_id']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($departments['Department_name']) ?>
                                     </option>
                                     <?php endforeach; ?>
-                                </optgroup>
-                                <?php endforeach; ?>
-                            </select>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Designation</label>
+                                <select disabled name="jobTitles_id" class="form-select">
+                                    <option value="">Select Designation</option>
+                                    <?php foreach($getDesignations as $jb): ?>
+                                    <option value="<?= $jb['jobTitles_id'] ?>"
+                                        <?= ($jb['jobTitles_id'] == $getEmployee['jobTitles_id']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($jb['jobTitle']) ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Unit/Section</label>
+                                <select name="unit_section_id" id="" class="form-select" required>
+                                    <option value="">Select Unit/Section</option>
+                                    <?php foreach($getUnit as $uniSec):  ?>
+                                    <option value="<?= $uniSec['unit_section_id'] ?>"
+                                        <?= ($uniSec['unit_section_id'] == $getEmployee['unit_section_id']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($uniSec['unit_section_name']) ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Salary</label>
+                                <input type="number" readonly step="0.01" name="salary"
+                                    value="<?= $getEmployee["salary"] ?>" id="salary" class="form-control">
+                            </div>
                         </div>
-
-                        <div class="col-md-3">
-                            <label class="form-label">Shift Type</label>
-                            <input type="text" name="shift_type" value="<?= $getEmployee["shift_type"] ?? '' ?>"
-                                id="shift_type" class="form-control" placeholder="Auto-filled from template" readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Work Days</label>
-                            <input type="text" name="work_days" value="<?= $getEmployee["work_days"] ?? '' ?>"
-                                id="work_days" class="form-control" placeholder="Auto-filled from template" readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Schedule From</label>
-                            <input type="time" name="scheduleFrom" value="<?= $getEmployee["scheduleFrom"] ?? '' ?>"
-                                id="scheduleFrom" class="form-control" readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Schedule To</label>
-                            <input type="time" name="scheduleTo" id="scheduleTo"
-                                value="<?= $getEmployee["scheduleTo"] ?? '' ?>" class="form-control" readonly>
-                        </div>
-
-                        <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const scheduleTemplate = document.getElementById('schedule_template');
-                            const shiftType = document.getElementById('shift_type');
-                            const workDays = document.getElementById('work_days');
-                            const scheduleFrom = document.getElementById('scheduleFrom');
-                            const scheduleTo = document.getElementById('scheduleTo');
-
-                            scheduleTemplate.addEventListener('change', function() {
-                                if (this.value) {
-                                    const selectedOption = this.options[this.selectedIndex];
-
-                                    // Auto-fill all fields
-                                    shiftType.value = selectedOption.getAttribute('data-shift');
-                                    workDays.value = selectedOption.getAttribute('data-days');
-                                    scheduleFrom.value = selectedOption.getAttribute('data-from');
-                                    scheduleTo.value = selectedOption.getAttribute('data-to');
-
-                                    // Optional: Add visual feedback
-                                    this.classList.add('is-valid');
-                                } else {
-                                    // Clear fields if no template selected
-                                    clearScheduleFields();
-                                }
-                            });
-
-                            function clearScheduleFields() {
-                                shiftType.value = '';
-                                workDays.value = '';
-                                scheduleFrom.value = '';
-                                scheduleTo.value = '';
-                                scheduleTemplate.classList.remove('is-valid');
-                            }
-
-                            // Optional: Allow manual editing by double-clicking fields
-                            [shiftType, workDays, scheduleFrom, scheduleTo].forEach(field => {
-                                field.addEventListener('dblclick', function() {
-                                    this.readOnly = !this.readOnly;
-                                    if (!this.readOnly) {
-                                        this.focus();
-                                    }
-                                });
-                            });
-                        });
-                        </script>
-                        <?php if($getEmployee["status"] == 'Active'){ ?>
-                        <div class="col-md-12 d-flex mt-3 justify-content-end me-0">
-                            <button type="submit" class="btn  btn-danger px-5 mt-3 me-2">Update</button>
-                        </div>
-                        <?php } else {} ?>
-                    </div>
-
+                    </form>
                 </div>
-            </form>
+                <div class="row flex-wrap col-md-12 col-12 p-1 px-3">
+                    <div class="col-md-12 d-flex justify-content-between">
+                        <div class="header pt-3 col-md-7">
+                            <h5 class="m-0 p-0">
+                                <i class="fa-solid fa-circle-info me-2"></i>Employment History
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <button class="btn btn-danger btn-sm px-3 py-2" data-bs-toggle="modal"
+                            data-bs-target="#manageCareerPath" onclick="getEmploymentData(
+                                <?= $user_id ?>,
+                                '<?= addslashes($getEmployee['jobTitle']) ?>',
+                                '<?= $getEmployee['salary'] ?>'
+                            )"><i class="fa-solid fa-pen-to-square me-2"></i>Manage
+                            Career Path</button>
+                    </div>
+                    <div class="responsive-table mt-1">
+                        <table class="table table-responsive table-sm table-bordered text-center table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <td>From Position</td>
+                                    <td>To Position</td>
+                                    <td>Type</td>
+                                    <td>Date</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if($employeeCareerPath){ 
+                                        foreach($employeeCareerPath as $career) : ?>
+                                <tr>
+                                    <td><?= $career["job_from"] ?></td>
+                                    <td><?= $career["job_to"] ?></td>
+                                    <td><?= $career["job_status"] ?></td>
+                                    <td><?= date('M d Y', strtotime($career["addAt"])) ?></td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm m-0 my-2 mx-3"><i
+                                                class="fa-solid fa-print me-2"></i>Print</button>
+                                    </td>
+                                </tr>
+                                <?php endforeach; 
+                                    }else{ ?>
+                                <tr>
+                                    <td>Initial Position</td>
+                                    <td><?= $getEmployee["jobTitle"] ?></td>
+                                    <td>Current</td>
+                                    <td><?= $getEmployee["joined_at"] ?></td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm m-0 my-2 mx-3"><i
+                                                class="fa-solid fa-print me-2"></i>Print</button>
+                                    </td>
+                                </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
         <!-- Leave Credits Tab -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Leave_Credits">
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Leave_Credits">
             <form id="leave_update">
-                <input type="hidden" name="employee_id" value="<?= $getEmployee["employee_id"] ?>">
-                <strong class="w-100 text-start fs-5 mt-3">
-                    Leave Credits
-                </strong>
+                <input type="hidden" name="user_id" value="<?= $user_id ?>">
+                <div class="header pt-3 col-md-5">
+                    <h5 class="m-0 p-0">
+                        <i class="fa-solid fa-circle-info me-2"></i>Leave Credits
+                    </h5>
+                </div>
                 <div class="row">
                     <div class="col-md-3">
                         <label class="form-label">Sick Leave</label>
@@ -546,16 +543,16 @@
 
                 <?php if($getEmployee["status"] == 'Active'){ ?>
                 <div class="col-md-12 d-flex mt-3 justify-content-end me-0">
-                    <button type="submit" class="btn  btn-danger px-5 mt-3 me-2">Update</button>
+                    <button type="submit" class="btn  btn-danger px-3 mt-3 me-2 btn-sm"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                 </div>
                 <?php } else {} ?>
             </form>
         </div>
         <!-- EDUCATIONAL BACKGROUND TAB -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Education">
-            <form id="educational_update">
-                <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
-                <div class="card rounded-2 profile-contents" style="overflow-y: scroll;">
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Education">
+            <form id="educational_update" class="profile-contents show-scroll">
+                <input type="hidden" name="user_id" value="<?= $user_id ?>">
+                <div class="card rounded-2 show-scroll">
                     <!-- EDUCATIONAL INFORMATION HEADER -->
                     <div class="col-md-12 d-flex">
                         <div class="header ps-3 pt-3 col-md-5">
@@ -565,7 +562,7 @@
                         </div>
                         <?php if($getEmployee["status"] == 'Active'){ ?>
                         <div class="col-md-7 d-flex justify-content-end me-5">
-                            <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5">Update</button>
+                            <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                         </div>
                         <?php } else {} ?>
                     </div>
@@ -575,8 +572,8 @@
                         $educationData = [];
                         
                         foreach($educationLevels as $level) {
-                            $stmt = $pdo->prepare("SELECT * FROM educational_data WHERE employee_id = ? AND education_level = ?");
-                            $stmt->execute([$employee_id, $level]);
+                            $stmt = $pdo->prepare("SELECT * FROM educational_data WHERE user_id = ? AND education_level = ?");
+                            $stmt->execute([$user_id, $level]);
                             $educationData[$level] = $stmt->fetch(PDO::FETCH_ASSOC);
                         }
                     ?>
@@ -713,18 +710,18 @@
                         </div>
                     </div>
                     <?php if($getEmployee["status"] == 'Active'){ ?>
-                    <div class="col-md-12 d-flex justify-content-end me-5 mb-5">
-                        <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5">Update</button>
+                    <div class="transform col-md-12 col-12 d-flex justify-content-end pe-4 mt-3 mb-2">
+                        <button type="submit" class="btn btn-danger px-5 mt-4"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                     </div>
                     <?php } else {} ?>
                 </div>
             </form>
         </div>
         <!-- FAMILY BACKGROUND TAB -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Family">
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Family">
             <form id="family_update">
-                <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
-                <div class="card rounded-2 profile-contents" style="overflow-y: scroll;">
+                <input type="hidden" name="user_id" value="<?= $user_id ?>">
+                <div class="card rounded-2 profile-contents show-scroll">
                     <!-- FAMILY INFORMATION HEADER -->
                     <div class="col-md-12 d-flex">
                         <div class="header ps-3 pt-3 col-md-5">
@@ -734,27 +731,27 @@
                         </div>
                         <?php if($getEmployee["status"] == 'Active'){ ?>
                         <div class="col-md-7 d-flex justify-content-end me-5">
-                            <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5">Update</button>
+                            <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                         </div>
                         <?php } ?>
                     </div>
                     <?php
-                        $stmtFather = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Father'");
+                        $stmtFather = $pdo->prepare("SELECT * FROM Family_data WHERE user_id = '$user_id' AND Relationship = 'Father'");
                         $stmtFather->execute();
                         $father = $stmtFather->fetch(PDO::FETCH_ASSOC);        
                     
-                        $stmtMother = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Mother'");
+                        $stmtMother = $pdo->prepare("SELECT * FROM Family_data WHERE user_id = '$user_id' AND Relationship = 'Mother'");
                         $stmtMother->execute();
                         $mother = $stmtMother->fetch(PDO::FETCH_ASSOC);   
 
-                        $stmtGuardian = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Guardian'");
+                        $stmtGuardian = $pdo->prepare("SELECT * FROM Family_data WHERE user_id = '$user_id' AND Relationship = 'Guardian'");
                         $stmtGuardian->execute();
                         $guardian = $stmtGuardian->fetch(PDO::FETCH_ASSOC);  
                         
-                        $stmtSpouse = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$employee_id' AND Relationship = 'Spouse'");
+                        $stmtSpouse = $pdo->prepare("SELECT * FROM Family_data WHERE user_id = '$user_id' AND Relationship = 'Spouse'");
                         $stmtSpouse->execute();
                         $Spouse = $stmtSpouse->fetch(PDO::FETCH_ASSOC);  
-                    ?>
+                        ?>
                     <!-- FAMILY INFORMATION CONTENTS -->
                     <div class="row flex-wrap col-md-12 col-12 p-3">
                         <div class="col-md-12 row">
@@ -1017,15 +1014,15 @@
                     </div>
                     <?php if($getEmployee["status"] == 'Active'){ ?>
                     <div class="col-md-12 d-flex justify-content-end me-5 mb-5">
-                        <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5">Update</button>
+                        <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                     </div>
                     <?php } ?>
                 </div>
             </form>
         </div>
-        <!-- Leave Informations -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Leave">
-            <div class="card rounded-2 profile-contents" style="overflow-y: scroll;">
+        <!-- Activity tracking -->
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Leave">
+            <div class="card rounded-2 profile-contents show-scroll">
                 <!-- FAMILY INFORMATION HEADER -->
                 <div class="header ps-3 pt-3">
                     <h5 class="m-0 p-0">
@@ -1035,7 +1032,7 @@
                 <!-- FAMILY INFORMATION CONTENTS -->
                 <div class="row flex-wrap col-md-12 col-12 p-3">
                     <?php
-                        $stmtActivities = $pdo->prepare("SELECT * FROM activities WHERE employee_id = '$employee_id' ORDER BY activity_at DESC");
+                        $stmtActivities = $pdo->prepare("SELECT * FROM activities WHERE user_id = '$user_id' ORDER BY activity_at DESC");
                         $stmtActivities->execute();
                         $Activities = $stmtActivities->fetchAll(PDO::FETCH_ASSOC);
 
@@ -1067,112 +1064,164 @@
         </div>
     </div>
 </section>
+<!-- ================================================ MODALS ================================================ -->
+<!-- PENDING APPROVAL -->
+<div class="modal fade" id="aprrovalEmployee" tabindex="-1" aria-labelledby="aprrovalEmployeeLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" id="approval-form">
+            <div class="modal-header bg-gradient-primary text-white">
+                <h5 class="modal-title text-white" id="aprrovalEmployeeLabel">Confirmation Approval</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Approved this employee Account?
+                <input type="hidden" name="user_id" id="approval_employeeID">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger">Yes, Approved</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- REJECTION OF EMPLOYEE -->
+<div class="modal fade" id="rejectionEmployee" tabindex="-1" aria-labelledby="rejectionEmployeeLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="rejection-form" class="modal-content">
+            <div class="modal-header bg-gradient-primary text-white">
+                <h5 class="modal-title text-white" id="rejectionEmployeeLabel">Confirmation Rejection</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Approved this employee Account?
+                <input type="hidden" name="user_id" id="rejection_employeeID">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger">Yes, Reject</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Deletion employee -->
+<div class="modal fade" id="deleteEmployeeModal" tabindex="-1" aria-labelledby="deleteEmployeeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" id="delete-employee-form">
+            <div class="modal-header bg-gradient-primary text-white">
+                <h5 class="modal-title text-white" id="deleteEmployeeModalLabel">Confirmation Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Delete this employee Account?
+                <input type="hidden" name="user_id" id="deletion_employeeID">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Career Path Modal -->
+<div class="modal fade" id="manageCareerPath" tabindex="-1" aria-labelledby="manageCareerPathLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" id="career-path-form">
+            <div class="modal-header bg-gradient-primary text-white">
+                <h5 class="modal-title text-white" id="manageCareerPathLabel">Manage Employee Career Path</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" class="form-control" name="user_id" id="user_id_careerPath">
+                <div class="mx-2">
+                    <label class="form-label">Current Designation</label>
+                    <input class="form-control" readonly type="text" name="job_from" id="currentDesignationId">
+                </div>
+                <div class="mx-2">
+                    <label class="form-label">Current Salary</label>
+                    <input class="form-control" readonly type="text" name="current_salary" id="currentSalaryId">
+                </div>
+                <div class="mx-2">
+                    <label class="form-label">New Designation</label>
+                    <select name="jobTitles_id" id="newDesignationIdToggle" class="form-select">
+                        <option value="">Select Job Title</option>
+                        <?php foreach($getDesignations as $jb): ?>
+                        <option value="<?= $jb['jobTitles_id'] ?>">
+                            <?= htmlspecialchars($jb['jobTitle']) ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="mx-2">
+                    <label class="form-label">New salary</label>
+                    <input class="form-control" readonly type="text" name="new_salary">
+                </div>
+                <div class="mx-2">
+                    <label class="form-label">Manage Type</label>
+                    <select name="job_status" class="form-select">
+                        <option value="">Select Type</option>
+                        <option value="Update">Update</option>
+                        <option value="Promote">Promote</option>
+                        <option value="Demote">Demote</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger">Confirm</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="../../assets/js/hr_js/admin/profile.js" defer></script>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const profileContents = document.querySelector('.profile-contents');
-    if (profileContents) {
-        // Override the scrollbar display property
-        profileContents.style.setProperty('scrollbar-width', 'thin', 'important');
-        profileContents.style.setProperty('-webkit-scrollbar', 'auto', 'important');
+    document.addEventListener('DOMContentLoaded', function() {
+        const jobTitleSelect = document.getElementById('newDesignationIdToggle');
+        const salaryInput = document.querySelector('input[name="new_salary"]');
         
-        // Add custom scrollbar styling
-        const style = document.createElement('style');
-        style.textContent = `
-            .profile-contents::-webkit-scrollbar {
-                display: block !important;
-                width: 8px !important;
+        if (!jobTitleSelect || !salaryInput) return;
+        
+        let jobSalaries = {};
+        
+        function loadJobSalaries() {
+            <?php
+            $jobSalaries = [];
+            foreach($getDesignations as $jb) {
+                $jobSalaries[$jb['jobTitles_id']] = $jb['salary'];
             }
-            .profile-contents::-webkit-scrollbar-track {
-                background: #f1f1f1 !important;
-                border-radius: 4px !important;
-            }
-            .profile-contents::-webkit-scrollbar-thumb {
-                background: #c1c1c1 !important;
-                border-radius: 4px !important;
-            }
-            .profile-contents::-webkit-scrollbar-thumb:hover {
-                background: #a8a8a8 !important;
-            }
-        `;
-        document.head.appendChild(style);
-    }
-    
-    const birthdayInput = document.getElementById('birthday');
-    const ageInput = document.getElementById('age');
-
-    // Function to calculate age from birthday
-    function calculateAge(birthday) {
-        if (!birthday) return '';
-
-        const birthDate = new Date(birthday);
-        const today = new Date();
-
-        // Check if birthdate is valid and not in the future
-        if (birthDate > today) {
-            ageInput.classList.add('is-invalid');
-            return 'Invalid date';
+            ?>
+            
+            jobSalaries = <?php echo json_encode($jobSalaries); ?>;
         }
-
-        ageInput.classList.remove('is-invalid');
-
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const monthDiff = today.getMonth() - birthDate.getMonth();
-        const dayDiff = today.getDate() - birthDate.getDate();
-
-        // Adjust age if birthday hasn't occurred this year yet
-        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-            age--;
+        
+        loadJobSalaries();
+        
+        jobTitleSelect.addEventListener('change', function() {
+            const selectedJobId = this.value;
+            
+            if (selectedJobId && jobSalaries[selectedJobId]) {
+                const salary = jobSalaries[selectedJobId];
+                salaryInput.value = formatCurrency(salary);
+            } else {ed
+                salaryInput.value = '';
+            }
+        });
+        
+        function formatCurrency(amount) {
+            const numAmount = parseFloat(amount);
+            
+            return new Intl.NumberFormat('en-PH', {
+                style: 'currency',
+                currency: 'PHP',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(numAmount);
         }
-
-        return age >= 0 ? age : 0;
-    }
-
-    // Function to validate birthday (not in future)
-    function validateBirthday(birthday) {
-        if (!birthday) return true;
-
-        const birthDate = new Date(birthday);
-        const today = new Date();
-
-        if (birthDate > today) {
-            birthdayInput.classList.add('is-invalid');
-            return false;
-        }
-
-        birthdayInput.classList.remove('is-invalid');
-        return true;
-    }
-
-    // Calculate age when birthday changes
-    birthdayInput.addEventListener('change', function() {
-        if (validateBirthday(this.value)) {
-            const age = calculateAge(this.value);
-            ageInput.value = age;
-        } else {
-            ageInput.value = '';
+        
+        if (jobTitleSelect.value) {
+            jobTitleSelect.dispatchEvent(new Event('change'));
         }
     });
-
-    // Real-time age calculation
-    birthdayInput.addEventListener('input', function() {
-        if (validateBirthday(this.value)) {
-            const age = calculateAge(this.value);
-            ageInput.value = age;
-        } else {
-            ageInput.value = '';
-        }
-    });
-
-    // Calculate initial age if birthday is already set
-    if (birthdayInput.value) {
-        if (validateBirthday(birthdayInput.value)) {
-            const initialAge = calculateAge(birthdayInput.value);
-            ageInput.value = initialAge;
-        }
-    }
-
-    // Make age field read-only since it's auto-calculated
-    ageInput.readOnly = true;
-    ageInput.placeholder = 'Auto-calculated from birthday';
-});
 </script>

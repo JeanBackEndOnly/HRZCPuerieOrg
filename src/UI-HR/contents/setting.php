@@ -1,24 +1,31 @@
 <section>
-    <?php $getHrData = getHrData();   ?>
-    <div class="d-flex justify-content-between align-items-center mb-3 col-md-12 col-12">
-        <div class="col-md-5 col-7">
-            <h4 class="mb-0 label-media-name"><i class="fa fa-cog text-dark me-2"></i>Account Settings</h4>
-            <small class="text-muted p-media-name">Manage your parent account information and preferences</small>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="col-md-5">
+            <h4 class="mb-0"><i class="fa fa-cog text-dark me-2"></i>Account Settings</h4>
+            <small class="text-muted">Manage your account information and preferences</small>
         </div>
-        <div class="col-md-7 col-5 d-flex justify-content-end">
-            <button class="m-0 btn btn-sm btn-danger change-pass-media" data-bs-toggle="modal" data-bs-target="#changePassword"><i class="fa-solid fa-key me-2"></i>Change Password</button>
+        <div class="col-md-7 d-flex justify-content-end">
+            <button class="m-0 btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#changePassword">
+                <i class="fa-solid fa-key me-2"></i>Change Password
+            </button>
         </div>
     </div>
+
     <div class="d-flex justify-content-between align-items-center mb-0 col-md-12 col-12 flex-wrap">
         <div class="card-body col-md-8 col-12">
-            <ul class="nav nav-tabs justify-content-end align-items-end col-md-12 col-12" id="ProfileInfoTabs">
+            <ul class="nav nav-tabs justify-content-start align-items-start col-md-12 col-12" id="AdminSettingsTabs">
                 <li class="nav-item cursor-pointer col-md-2 col-12">
-                    <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Personal"><i
-                            class="fa-solid fa-circle-info me-2"></i>Personal</a>
+                    <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Personal">
+                        <i class="fa-solid fa-circle-info me-2"></i> Personal
+                    </a>
                 </li>
                 <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Employment"><i
                             class="fa-solid me-2 fa-briefcase"></i>Employment</a>
+                </li>
+                <li class="nav-item cursor-pointer col-md-2 col-12">
+                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Leave_Credits"><i
+                            class="fa-solid fa-person-through-window me-2"></i>Leave</a>
                 </li>
                 <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Education"><i
@@ -34,59 +41,84 @@
                 </li>
                 <li class="nav-item cursor-pointer col-md-2 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#history">
-                        <i class="fa-solid fa-clock-rotate-left me-2"></i>Login history</a>
+                        <i class="fa-solid fa-clock me-2"></i>Login History
+                    </a>
                 </li>
             </ul>
         </div>
     </div>
+
     <div class="row">
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-4">
+        <!-- Profile Card -->
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-3">
             <div class="card rounded-2">
                 <div class="d-flex flex-column w-100 align-items-center justify-content-center p-2">
-                    <?php if($getHrData["profile_picture"] == null){ ?>
-                            <strong class="py-1 px-5 text-white mb-2" style="
-                                border-radius: 50%;
-                                background-color: #303030ff;
-                                font-size: 5rem;
-                            "><?= htmlspecialchars(substr($getHrData["firstname"], 0,1)) ?></strong>
+                    <div class="w-100 d-flex justify-content-start ps-3 pt-1">
+                    </div>
+                    <?php if($hr_data["profile_picture"] == null){ ?>
+                    <div class="profile-circle d-flex align-items-center justify-content-center mb-1">
+                        <strong class="p-0 text-white m-0 font-profile">
+                            <?= htmlspecialchars(substr($hr_data["firstname"], 0,1) . substr($hr_data["lastname"], 0,1)) ?>
+                        </strong>
+                    </div>
                     <?php }else{ ?>
-                            <img src="../../authentication/uploads/<?= $getHrData["profile_picture"] ?>" 
-                                style="width: 200px; height: auto; border-radius: 50%;">
+                    <img src="../../authentication/uploads/<?= $hr_data["profile_picture"] ?>"
+                        style="width: 150px; height: auto; border-radius: 50%;">
                     <?php } ?>
-                    
                     <span id="employeeID"
-                        class="text-muted fw-bold"><?= htmlspecialchars($getHrData["employeeID"]) ?? '' ?></span>
+                        class="text-muted fw-bold font-15"><?= 'EMP-' . htmlspecialchars($hr_data["employeeID"]) ?></span>
+                    <span class="font-15 text-center"
+                        id="employeeName"><?= htmlspecialchars($hr_data["firstname"]) . " " .  substr(htmlspecialchars($hr_data["middlename"]), 0, 1) . ". " . htmlspecialchars($hr_data["lastname"]) ?></span>
+                    <span class="text-center font-15"
+                        id="employeeDept"><?= htmlspecialchars($hr_data["Department_name"]) ?></span>
                     <span
-                        id="employeeName"><?= htmlspecialchars($getHrData["firstname"]) . " " .  substr(htmlspecialchars($getHrData["middlename"]), 0, 1) . ". " . htmlspecialchars($getHrData["lastname"]) ?></span>
-                    <span class="text-center"
-                        id="employeeDept"><?= htmlspecialchars($getHrData["Department_name"]) . ' (' . htmlspecialchars($getHrData["Department_code"]) . ')'?></span>
-                    <span id="employeeJobTitle"><?= htmlspecialchars($getHrData["jobTitle"]) ?? '' ?></span>
+                        class="text-center font-15"><?= isset($hr_data["unit_section_name"]) ? ' (' . htmlspecialchars($hr_data["unit_section_name"]) . ')' : '' ?></span>
+                    <span class="text-center font-15"
+                        id="employeeJobTitle"><?= htmlspecialchars($hr_data["jobTitle"]) ?></span>
                     <span id="employeeSchedule" class="fw-bold"></span>
-                      <a href="index.php?page=contents/pds&employee_id=<?= $getHrData["employee_id"] ?? '' ?>" class="mt-2"><strong>View Personal Data Sheet <i class="fa-solid fa-arrow-up-right-from-square ms-2"></i></strong></a>
+                    <form class="form_select d-flex align-items-center" id="formSelect">
+                        <input type="hidden" name="user_id" value="<?= $hr_data["user_id"] ?>">
+                        <?php if($hr_data["status"] == "Active"){ ?>
+                        <i class="fa-solid fa-circle font-8 text-success me-1"></i>
+                        <?php }else if($hr_data["status"] == "Inactive"){ ?>
+                        <i class="fa-solid fa-circle font-8 text-danger me-1"></i>
+                        <?php }else{ ?>
+                        <i class="fa-solid fa-circle font-8 text-warning me-1"></i>
+                        <?php } ?>
+                        <select name="status" class="form-select select_status font-15">
+                            <option value="">Select Employee Status</option>
+                            <option value="Active" <?= ($hr_data["status"] == "Active") ? "selected" : "" ?>>Active
+                            </option>
+                            <option value="Inactive" <?= ($hr_data["status"] == "Inactive") ? "selected" : "" ?>>
+                                Inactive</option>
+                        </select>
+                    </form>
+                    <a class="font-15 mt-2" href="index.php?page=contents/pds&user_id=<?= $hr_idd ?>"
+                        class="mt-2"><strong>View
+                            Personal Data Sheet <i class="fa-solid fa-arrow-up-right-from-square ms-2"></i></strong></a>
                 </div>
             </div>
         </div>
-        <!-- PERSONAL INFORMATIONS TAB -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade show active" role="tabpanel"
+
+        <!-- PERSONAL INFORMATION TAB -->
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade show active" role="tabpanel"
             id="Personal">
-            <form id="profile_update_employee" enctype="multipart/form-data">
-                <div class="card rounded-2 profile-contents col-md-12 col-12" style="padding-bottom: 5rem !important; overflow-y: scroll;">
-                    <input type="hidden" name="employee_id" value="<?= $hr_id ?>">
+            <form id="profile_update">
+                <div class="card rounded-2 profile-contents show-scroll">
+                    <input type="hidden" name="user_id" value="<?= $hr_id ?>">
                     <!-- PERSONAL INFORMATION HEADER -->
                     <div class="col-md-12 d-flex">
-                        <div class="header ps-3 pt-3 col-md-5 col-8">
-                            <h5 class="m-0 p-0 label-media-name">
+                        <div class="header ps-3 pt-3 col-md-5">
+                            <h5 class="m-0 p-0">
                                 <i class="fa-solid fa-circle-info me-2"></i>Personal Information
                             </h5>
                         </div>
-                        <div class="col-md-7 col-4 button-margin-right no-padding-media d-flex justify-content-end me-5">
-                            <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5 button-margin-right">Update</button>
+                        <?php if($hr_data["status"] == 'Active'){ ?>
+                        <div class="col-md-7 d-flex justify-content-end me-5">
+                            <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i
+                                    class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                         </div>
-                    </div>
-
-                    <div class="col-md-10 ms-3">
-                        <label class="form-label">Upload or update profile picture here:</label>
-                        <input type="file" name="profile_picture" class="form-control">
+                        <?php } else {} ?>
                     </div>
 
                     <!-- PERSONAL INFORMATION CONTENTS -->
@@ -94,46 +126,47 @@
                         <div class="col-md-3">
                             <label class="form-label">First Name</label>
                             <input type="text" name="firstname" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["firstname"] ?? '') ?>" readonly>
+                                value="<?= htmlspecialchars($hr_data["firstname"] ?? '') ?>">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Middle Name</label>
                             <input type="text" name="middlename" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["middlename"] ?? '') ?>" readonly>
+                                value="<?= htmlspecialchars($hr_data["middlename"] ?? '') ?>">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Last Name</label>
                             <input type="text" name="lastname" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["lastname"] ?? '') ?>" readonly>
+                                value="<?= htmlspecialchars($hr_data["lastname"] ?? '') ?>">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Suffix</label>
-                            <select class="form-select" name="suffix" disabled>
-                                <option value="" <?= empty($getHrData["suffix"] ?? '') ? 'selected' : '' ?>>Select
+                            <select class="form-select" name="suffix">
+                                <option value="" <?= empty($hr_data["suffix"] ?? '') ? 'selected' : '' ?>>Select
                                     suffix (optional)</option>
-                                <option value="Jr" <?= ($getHrData["suffix"] ?? '') == 'Jr' ? 'selected' : '' ?>>Jr
+                                <option value="Jr" <?= ($hr_data["suffix"] ?? '') == 'Jr' ? 'selected' : '' ?>>Jr
                                 </option>
-                                <option value="Sr" <?= ($getHrData["suffix"] ?? '') == 'Sr' ? 'selected' : '' ?>>Sr
+                                <option value="Sr" <?= ($hr_data["suffix"] ?? '') == 'Sr' ? 'selected' : '' ?>>Sr
                                 </option>
-                                <option value="II" <?= ($getHrData["suffix"] ?? '') == 'II' ? 'selected' : '' ?>>II
+                                <option value="II" <?= ($hr_data["suffix"] ?? '') == 'II' ? 'selected' : '' ?>>II
                                 </option>
-                                <option value="III" <?= ($getHrData["suffix"] ?? '') == 'III' ? 'selected' : '' ?>>III
+                                <option value="III" <?= ($hr_data["suffix"] ?? '') == 'III' ? 'selected' : '' ?>>
+                                    III
                                 </option>
                             </select>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Citizenship</label>
                             <input type="text" name="citizenship" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["citizenship"] ?? '') ?>">
+                                value="<?= htmlspecialchars($hr_data["citizenship"] ?? '') ?>">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Gender</label>
                             <select name="gender" id="gender" class="form-select">
                                 <option value="">Select Gender</option>
-                                <option value="MALE" <?= ($getHrData["gender"] ?? '') == 'MALE' ? 'selected' : '' ?>>
+                                <option value="MALE" <?= ($hr_data["gender"] ?? '') == 'MALE' ? 'selected' : '' ?>>
                                     Male</option>
-                                <option value="FEMALE"
-                                    <?= ($getHrData["gender"] ?? '') == 'FEMALE' ? 'selected' : '' ?>>Female</option>
+                                <option value="FEMALE" <?= ($hr_data["gender"] ?? '') == 'FEMALE' ? 'selected' : '' ?>>
+                                    Female</option>
                             </select>
                         </div>
                         <div class="col-md-4">
@@ -141,22 +174,24 @@
                             <select name="civil_status" id="civil_status" class="form-select">
                                 <option value="">Select Civil Status</option>
                                 <option value="Single"
-                                    <?= ($getHrData["civil_status"] ?? '') == 'Single' ? 'selected' : '' ?>>Single
+                                    <?= ($hr_data["civil_status"] ?? '') == 'Single' ? 'selected' : '' ?>>Single
                                 </option>
                                 <option value="Married"
-                                    <?= ($getHrData["civil_status"] ?? '') == 'Married' ? 'selected' : '' ?>>Married
+                                    <?= ($hr_data["civil_status"] ?? '') == 'Married' ? 'selected' : '' ?>>Married
                                 </option>
                                 <option value="Widowed"
-                                    <?= ($getHrData["civil_status"] ?? '') == 'Widowed' ? 'selected' : '' ?>>Widowed
+                                    <?= ($hr_data["civil_status"] ?? '') == 'Widowed' ? 'selected' : '' ?>>Widowed
                                 </option>
                                 <option value="Separated"
-                                    <?= ($getHrData["civil_status"] ?? '') == 'Separated' ? 'selected' : '' ?>>
+                                    <?= ($hr_data["civil_status"] ?? '') == 'Separated' ? 'selected' : '' ?>>
                                     Separated</option>
                                 <option value="Divorced"
-                                    <?= ($getHrData["civil_status"] ?? '') == 'Divorced' ? 'selected' : '' ?>>Divorced
+                                    <?= ($hr_data["civil_status"] ?? '') == 'Divorced' ? 'selected' : '' ?>>
+                                    Divorced
                                 </option>
                                 <option value="Annulled"
-                                    <?= ($getHrData["civil_status"] ?? '') == 'Annulled' ? 'selected' : '' ?>>Annulled
+                                    <?= ($hr_data["civil_status"] ?? '') == 'Annulled' ? 'selected' : '' ?>>
+                                    Annulled
                                 </option>
                             </select>
                         </div>
@@ -165,46 +200,46 @@
                             <select name="religion" id="religion" class="form-select">
                                 <option value="">Select Religion</option>
                                 <option value="Roman Catholic"
-                                    <?= ($getHrData["religion"] ?? '') == 'Roman Catholic' ? 'selected' : '' ?>>Roman
+                                    <?= ($hr_data["religion"] ?? '') == 'Roman Catholic' ? 'selected' : '' ?>>Roman
                                     Catholic</option>
-                                <option value="Islam"
-                                    <?= ($getHrData["religion"] ?? '') == 'Islam' ? 'selected' : '' ?>>Islam</option>
+                                <option value="Islam" <?= ($hr_data["religion"] ?? '') == 'Islam' ? 'selected' : '' ?>>
+                                    Islam</option>
                                 <option value="Iglesia ni Cristo"
-                                    <?= ($getHrData["religion"] ?? '') == 'Iglesia ni Cristo' ? 'selected' : '' ?>>
+                                    <?= ($hr_data["religion"] ?? '') == 'Iglesia ni Cristo' ? 'selected' : '' ?>>
                                     Iglesia ni Cristo</option>
                                 <option value="Protestant"
-                                    <?= ($getHrData["religion"] ?? '') == 'Protestant' ? 'selected' : '' ?>>Protestant
+                                    <?= ($hr_data["religion"] ?? '') == 'Protestant' ? 'selected' : '' ?>>
+                                    Protestant
                                 </option>
                                 <option value="Born Again Christian"
-                                    <?= ($getHrData["religion"] ?? '') == 'Born Again Christian' ? 'selected' : '' ?>>
+                                    <?= ($hr_data["religion"] ?? '') == 'Born Again Christian' ? 'selected' : '' ?>>
                                     Born Again Christian</option>
                                 <option value="Seventh-day Adventist"
-                                    <?= ($getHrData["religion"] ?? '') == 'Seventh-day Adventist' ? 'selected' : '' ?>>
+                                    <?= ($hr_data["religion"] ?? '') == 'Seventh-day Adventist' ? 'selected' : '' ?>>
                                     Seventh-day Adventist</option>
                                 <option value="Buddhist"
-                                    <?= ($getHrData["religion"] ?? '') == 'Buddhist' ? 'selected' : '' ?>>Buddhist
+                                    <?= ($hr_data["religion"] ?? '') == 'Buddhist' ? 'selected' : '' ?>>Buddhist
                                 </option>
                                 <option value="Jehovah's Witness"
-                                    <?= ($getHrData["religion"] ?? '') == 'Jehovah\'s Witness' ? 'selected' : '' ?>>
+                                    <?= ($hr_data["religion"] ?? '') == 'Jehovah\'s Witness' ? 'selected' : '' ?>>
                                     Jehovah's Witness</option>
                                 <option value="Mormon"
-                                    <?= ($getHrData["religion"] ?? '') == 'Mormon' ? 'selected' : '' ?>>Mormon
+                                    <?= ($hr_data["religion"] ?? '') == 'Mormon' ? 'selected' : '' ?>>Mormon
                                 </option>
                                 <option value="Aglipayan"
-                                    <?= ($getHrData["religion"] ?? '') == 'Aglipayan' ? 'selected' : '' ?>>Aglipayan
+                                    <?= ($hr_data["religion"] ?? '') == 'Aglipayan' ? 'selected' : '' ?>>Aglipayan
                                 </option>
-                                <option value="None"
-                                    <?= ($getHrData["religion"] ?? '') == 'None' ? 'selected' : '' ?>>None</option>
+                                <option value="None" <?= ($hr_data["religion"] ?? '') == 'None' ? 'selected' : '' ?>>
+                                    None</option>
                                 <option value="Others"
-                                    <?= ($getHrData["religion"] ?? '') == 'Others' ? 'selected' : '' ?>>Others
+                                    <?= ($hr_data["religion"] ?? '') == 'Others' ? 'selected' : '' ?>>Others
                                 </option>
                             </select>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Birthday</label>
                             <?php
-                                // Convert birthday to proper date format for input type="date"
-                                $birthday = $getHrData["birthday"] ?? '';
+                                $birthday = $hr_data["birthday"] ?? '';
                                 if (!empty($birthday)) {
                                     // If it's already in YYYY-MM-DD format, use it directly
                                     if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $birthday)) {
@@ -216,36 +251,36 @@
                                 } else {
                                     $formattedBirthday = '';
                                 }
-                            ?>
+                                ?>
                             <input type="date" name="birthday" id="birthday" class="form-control"
                                 value="<?= htmlspecialchars($formattedBirthday) ?>">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Age</label>
-                            <input type="text" name="age" id="age" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["age"] ?? '') ?>" readonly>
+                            <input type="text" readonly name="age" id="age" class="form-control"
+                                value="<?= htmlspecialchars($hr_data["age"] ?? '') ?>">
                         </div>
-                        
                         <div class="col-md-4">
                             <label class="form-label">Birth Place</label>
                             <input type="text" name="birthPlace" id="birthPlace" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["birthPlace"] ?? '') ?>">
+                                value="<?= htmlspecialchars($hr_data["birthPlace"] ?? '') ?>">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Contact Number</label>
                             <input type="text" name="contact" id="contact" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["contact"] ?? '') ?>">
+                                value="<?= htmlspecialchars($hr_data["contact"] ?? '') ?>">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Email</label>
                             <input type="email" name="email" id="email" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["email"] ?? '') ?>">
+                                value="<?= htmlspecialchars($hr_data["email"] ?? '') ?>">
                         </div>
                     </div>
                     <!-- OTHERS INFORMATION -->
-                     <div class="header ps-3 pt-3">
+                    <div class="header ps-3 pt-3">
                         <h5 class="m-0 p-0">
-                            <i class="fa-solid fa-circle-info me-2"></i>Other Information <span class="fw-light">(optional)</span>
+                            <i class="fa-solid fa-circle-info me-2"></i>Other Information <span
+                                class="fw-light">(optional)</span>
                         </h5>
                     </div>
                     <div class="row flex-wrap col-md-12 col-12 p-3 h-auto">
@@ -253,26 +288,38 @@
                             <label class="form-label">Profession Title</label>
                             <select name="profession_title" class="form-select">
                                 <option value="">Select Profession Title</option>
-                                <option value="Dr." <?= ($getHrData["profession_title"] == "Dr.") ? 'selected' : '' ?>>Dr.</option>
-                                <option value="Prof." <?= ($getHrData["profession_title"] == "Prof.") ? 'selected' : '' ?>>Prof.</option>
-                                <option value="Assoc. Prof." <?= ($getHrData["profession_title"] == "Assoc. Prof.") ? 'selected' : '' ?>>Assoc. Prof.</option>
-                                <option value="Asst. Prof." <?= ($getHrData["profession_title"] == "Asst. Prof.") ? 'selected' : '' ?>>Asst. Prof.</option>
-                                <option value="RN." <?= ($getHrData["profession_title"] == "RN.") ? 'selected' : '' ?>>RN.</option>
-                                <option value="Mr." <?= ($getHrData["profession_title"] == "Mr.") ? 'selected' : '' ?>>Mr.</option>
-                                <option value="Ms." <?= ($getHrData["profession_title"] == "Ms.") ? 'selected' : '' ?>>Ms.</option>
-                                <option value="Mrs." <?= ($getHrData["profession_title"] == "Mrs.") ? 'selected' : '' ?>>Mrs.</option>
+                                <option value="Dr." <?= ($hr_data["profession_title"] == "Dr.") ? 'selected' : '' ?>>Dr.
+                                </option>
+                                <option value="Prof."
+                                    <?= ($hr_data["profession_title"] == "Prof.") ? 'selected' : '' ?>>Prof.
+                                </option>
+                                <option value="Assoc. Prof."
+                                    <?= ($hr_data["profession_title"] == "Assoc. Prof.") ? 'selected' : '' ?>>
+                                    Assoc.
+                                    Prof.</option>
+                                <option value="Asst. Prof."
+                                    <?= ($hr_data["profession_title"] == "Asst. Prof.") ? 'selected' : '' ?>>Asst.
+                                    Prof.</option>
+                                <option value="RN." <?= ($hr_data["profession_title"] == "RN.") ? 'selected' : '' ?>>RN.
+                                </option>
+                                <option value="Mr." <?= ($hr_data["profession_title"] == "Mr.") ? 'selected' : '' ?>>Mr.
+                                </option>
+                                <option value="Ms." <?= ($hr_data["profession_title"] == "Ms.") ? 'selected' : '' ?>>Ms.
+                                </option>
+                                <option value="Mrs." <?= ($hr_data["profession_title"] == "Mrs.") ? 'selected' : '' ?>>
+                                    Mrs.</option>
                             </select>
 
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Degree</label>
                             <input type="text" name="degrees" id="degrees" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["degrees"] ?? '') ?>">
+                                value="<?= htmlspecialchars($hr_data["degrees"] ?? '') ?>">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Certifications</label>
                             <input type="text" name="fellowship" id="fellowship" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["fellowship"] ?? '') ?>">
+                                value="<?= htmlspecialchars($hr_data["fellowship"] ?? '') ?>">
                         </div>
                     </div>
                     <!-- ADDRESS INFORMATION HEADER -->
@@ -282,228 +329,250 @@
                         </h5>
                     </div>
                     <!-- ADDRESS INFORMATION CONTENTS -->
-                    <div class="row flex-wrap col-md-12 col-12 p-3 h-auto">
+                    <div class="row flex-wrap col-md-12 col-12 p-3 h-auto pb-5">
                         <div class="col-md-3">
                             <label class="form-label">House/Block No.</label>
                             <input type="text" name="houseBlock" id="houseBlock" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["houseBlock"] ?? '') ?>">
+                                value="<?= htmlspecialchars($hr_data["houseBlock"] ?? '') ?>">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Street</label>
                             <input type="text" name="street" id="street" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["street"] ?? '') ?>">
+                                value="<?= htmlspecialchars($hr_data["street"] ?? '') ?>">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Subdivision</label>
                             <input type="text" name="subdivision" id="subdivision" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["subdivision"] ?? '') ?>">
+                                value="<?= htmlspecialchars($hr_data["subdivision"] ?? '') ?>">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Barangay</label>
                             <input type="text" name="barangay" id="barangay" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["barangay"] ?? '') ?>">
+                                value="<?= htmlspecialchars($hr_data["barangay"] ?? '') ?>">
                         </div>
                         <div class="col-md-3" style="z-index: 2 !important;">
                             <label class="form-label">City/Municipality</label>
                             <input type="text" name="city_muntinlupa" id="city_muntinlupa" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["city_muntinlupa"] ?? '') ?>">
+                                value="<?= htmlspecialchars($hr_data["city_muntinlupa"] ?? '') ?>">
                         </div>
                         <div class="col-md-3" style="z-index: 2 !important;">
                             <label class="form-label">Province</label>
                             <input type="text" name="province" id="province" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["province"] ?? '') ?>">
+                                value="<?= htmlspecialchars($hr_data["province"] ?? '') ?>">
                         </div>
                         <div class="col-md-3" style="z-index: 2 !important;">
                             <label class="form-label">Zip Code</label>
                             <input type="text" name="zip_code" id="zip_code" class="form-control"
-                                value="<?= htmlspecialchars($getHrData["zip_code"] ?? '') ?>">
+                                value="<?= htmlspecialchars($hr_data["zip_code"] ?? '') ?>">
                         </div>
+                        <?php if($hr_data["status"] == 'Active'){ ?>
+                        <div class="col-md-12 d-flex justify-content-end pb-5">
+                            <button type="submit" class="btn btn-sm btn-danger px-3 btn-sm mt-3 me-2"><i
+                                    class="fa-solid fa-pen-to-square me-2"></i>Update</button>
+                        </div>
+                        <?php } else {} ?>
                     </div>
-                    <div class="col-md-12 hidden-button d-flex button-margin-right no-padding-media justify-content-end me-5">
-                            <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5 no-padding-media button-margin-right">Update</button>
-                        </div>
                 </div>
             </form>
         </div>
         <!-- WORK INFORMATIONS TAB -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Employment">
-            <form id="employment_update">
-                <input type="hidden" name="admin_update" value="false">
-                <input type="hidden" name="employee_id" value="<?= $hr_id ?>">
-                <div class="card rounded-2 profile-contents col-md-12 col-12" style="overflow-y: scroll;">
-                    <!-- EMPLOYMENT INFORMATION HEADER -->
-                    <div class="col-md-12 d-flex">
-                        <div class="header ps-3 pt-3 col-md-5">
-                            <h5 class="m-0 p-0 label-media-name">
-                                <i class="fa-solid fa-circle-info me-2"></i>Employment Information
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Employment">
+            <div
+                class="card rounded-2 align-items-center justify-content-start ps-0 pe-0 profile-contents pb-5 p-0 show-scroll">
+                <div class="row flex-wrap col-md-12 col-12 p-1 px-3">
+                    <form id="employment_update" class="p-0 col-md-12">
+                        <input type="hidden" name="admin_update" value="false">
+                        <div class="col-md-12 d-flex">
+                            <div class="header pt-3 col-md-5">
+                                <h5 class="m-0 p-0">
+                                    <i class="fa-solid fa-circle-info me-2"></i>Employment Information
+                                </h5>
+                            </div>
+                            <?php if($hr_data["status"] == 'Active'){ ?>
+                            <div class="col-md-7 d-flex justify-content-end me-5">
+                                <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i
+                                        class="fa-solid fa-pen-to-square me-2"></i>Update</button>
+                            </div>
+                            <?php } else {} ?>
+                        </div>
+                        <div class="col-md-12 row">
+                            <input type="hidden" name="user_id" value="<?= $hr_id ?>">
+                            <div class="col-md-4">
+                                <label class="form-label">Employee ID</label>
+                                <input readonly type="text" name="employeeID" value="<?= $hr_data["employeeID"] ?>"
+                                    id="employeeID_field" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Joined at</label>
+                                <input type="text" name="joined_at" value="<?= $hr_data["joined_at"] ?>"
+                                    id="joined_at_field" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Department</label>
+                                <select name="Department_id" class="form-select">
+                                    <option value="">Select Department</option>
+                                    <?php foreach($getDedpartments as $departments): ?>
+                                    <option value="<?= $departments['Department_id'] ?>"
+                                        <?= ($departments['Department_id'] == $hr_data['Department_id']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($departments['Department_name']) ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Designation</label>
+                                <select disabled name="jobTitles_id" class="form-select">
+                                    <option value="">Select Designation</option>
+                                    <?php foreach($getDesignations as $jb): ?>
+                                    <option value="<?= $jb['jobTitles_id'] ?>"
+                                        <?= ($jb['jobTitles_id'] == $hr_data['jobTitles_id']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($jb['jobTitle']) ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Unit/Section</label>
+                                <select name="unit_section_id" id="" class="form-select" required>
+                                    <option value="">Select Unit/Section</option>
+                                    <?php foreach($getUnit as $uniSec):  ?>
+                                    <option value="<?= $uniSec['unit_section_id'] ?>"
+                                        <?= ($uniSec['unit_section_id'] == $hr_data['unit_section_id']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($uniSec['unit_section_name']) ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Salary</label>
+                                <input type="number" readonly step="0.01" name="salary"
+                                    value="<?= $hr_data["salary"] ?>" id="salary" class="form-control">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row flex-wrap col-md-12 col-12 p-1 px-3">
+                    <div class="col-md-12 d-flex justify-content-between">
+                        <div class="header pt-3 col-md-7">
+                            <h5 class="m-0 p-0">
+                                <i class="fa-solid fa-circle-info me-2"></i>Employment History
                             </h5>
                         </div>
                     </div>
-                    <!-- EMPLOYMENT INFORMATION CONTENTS -->
-                    <div class="row flex-wrap col-md-12 col-12 p-3">
-                        <div class="col-md-4">
-                            <label class="form-label">Employee ID</label>
-                            <input type="text" name="employeeID"
-                                value="<?= $getHrData["employeeID"] ?>" id="employeeID" readonly
-                                class="form-control">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Joined at</label>
-                            <input type="text" name="joined_at" value="<?= $getHrData["joined_at"] ?>"
-                                id="joined_at_field" class="form-control">
-                        </div>
-                        <?php
-                            $stmt = $pdo->prepare("SELECT d.Department_id, d.Department_name FROM departments d");
-                            $stmt->execute();
-                            $departmentResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                            $stmt = $pdo->prepare("SELECT * FROM jobTitles");
-                            $stmt->execute();
-                            $jobtitleResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                        ?>
-
-                        <div class="col-md-4">
-                            <label class="form-label">Department</label>
-                            <select name="Department_id" class="form-select" required>
-                                <option value="">Select Department</option>
-                                <?php foreach($departmentResult as $departments): ?>
-                                <option value="<?= $departments['Department_id'] ?>"
-                                    <?= ($departments['Department_id'] == $getHrData['Department_id']) ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($departments['Department_name']) ?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">Designation</label>
-                            <select name="" disabled class="form-select" required>
-                                <option value="">Select Designation</option>
-                                <?php foreach($jobtitleResult as $jb): ?>
-                                <option value="<?= $jb['jobTitles_id'] ?>"
-                                    <?= ($jb['jobTitles_id'] == $getHrData['jobTitles_id']) ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($jb['jobTitle']) ?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Unit/Section</label>
-                            <select name="unit_section_id" id="" class="form-select" required>
-                                <option value="">Select Unit/Section</option>
-                                <?php foreach($getUnit as $uniSec):  ?>
-                                    <option value="<?= $uniSec['unit_section_id'] ?>"
-                                    <?= ($uniSec['unit_section_id'] == $getHrData['unit_section_id']) ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($uniSec['unit_section_name']) ?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <strong class="w-100 text-start fs-5 mt-3">
-                            Scheduling information
-                        </strong>
-                        <?php
-                            $stmtTemplates = $pdo->prepare("SELECT * FROM sched_template ORDER BY scheduleName");
-                            $stmtTemplates->execute();
-                            $templates = $stmtTemplates->fetchAll(PDO::FETCH_ASSOC);
-                            ?>
-
-                        <div class="col-md-3">
-                            <label class="form-label">Schedule Template</label>
-                            <select name="schedule_template" id="schedule_template" class="form-select">
-                                <option value="">Select Schedule </option>
-                                <?php foreach ($templates as $template): ?>
-                                    <option value="<?= $template['template_id'] ?>"
-                                        data-from="<?= $template['schedule_from'] ?>"
-                                        data-to="<?= $template['schedule_to'] ?>" data-shift="<?= $template['shift'] ?>"
-                                        data-name="<?= htmlspecialchars($template['scheduleName']) ?>">
-                                        <?= htmlspecialchars($template['scheduleName']) ?>
-                                        (<?= $template['schedule_from'] ?> - <?= $template['schedule_to'] ?>)
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label class="form-label">Shift Type</label>
-                            <input type="text" name="shift_type" value="<?= $getHrData["shift_type"] ?? '' ?>"
-                                id="shift_type" class="form-control" placeholder="Auto-filled from template" readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Schedule From</label>
-                            <input type="time" name="scheduleFrom" value="<?= $getHrData["scheduleFrom"] ?? '' ?>"
-                                id="scheduleFrom" class="form-control" readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Schedule To</label>
-                            <input type="time" name="scheduleTo" id="scheduleTo"
-                                value="<?= $getHrData["scheduleTo"] ?? '' ?>" class="form-control" readonly>
-                        </div>
-
-                        <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const scheduleTemplate = document.getElementById('schedule_template');
-                            const shiftType = document.getElementById('shift_type');
-                            const scheduleFrom = document.getElementById('scheduleFrom');
-                            const scheduleTo = document.getElementById('scheduleTo');
-
-                            scheduleTemplate.addEventListener('change', function() {
-                                if (this.value) {
-                                    const selectedOption = this.options[this.selectedIndex];
-
-                                    // Auto-fill all fields
-                                    shiftType.value = selectedOption.getAttribute('data-shift');
-                                    scheduleFrom.value = selectedOption.getAttribute('data-from');
-                                    scheduleTo.value = selectedOption.getAttribute('data-to');
-
-                                    // Optional: Add visual feedback
-                                    this.classList.add('is-valid');
-                                } else {
-                                    // Clear fields if no template selected
-                                    clearScheduleFields();
-                                }
-                            });
-
-                            function clearScheduleFields() {
-                                shiftType.value = '';
-                                scheduleFrom.value = '';
-                                scheduleTo.value = '';
-                                scheduleTemplate.classList.remove('is-valid');
-                            }
-
-                            // Optional: Allow manual editing by double-clicking fields
-                            [shiftType, scheduleFrom, scheduleTo].forEach(field => {
-                                field.addEventListener('dblclick', function() {
-                                    this.readOnly = !this.readOnly;
-                                    if (!this.readOnly) {
-                                        this.focus();
-                                    }
-                                });
-                            });
-                        });
-                        </script>
-                        <div class="col-md-12 d-flex mt-3 justify-content-end me-0">
-                            <button type="submit" class="btn  btn-danger px-5 mt-3 me-2">Update</button>
-                        </div>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <button class="btn btn-danger btn-sm px-3 py-2" data-bs-toggle="modal"
+                            data-bs-target="#manageCareerPath" onclick="getEmploymentData(
+                                <?= $hr_idd ?>,
+                                '<?= addslashes($hr_data['jobTitle']) ?>',
+                                '<?= $hr_data['salary'] ?>'
+                            )"><i class="fa-solid fa-pen-to-square me-2"></i>Manage
+                            Career Path</button>
+                    </div>
+                    <div class="responsive-table mt-1">
+                        <table class="table table-responsive table-sm table-bordered text-center table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <td>From Position</td>
+                                    <td>To Position</td>
+                                    <td>Type</td>
+                                    <td>Date</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if($employeeCareerPath){ 
+                                        foreach($employeeCareerPath as $career) : ?>
+                                <tr>
+                                    <td><?= $career["job_from"] ?></td>
+                                    <td><?= $career["job_to"] ?></td>
+                                    <td><?= $career["job_status"] ?></td>
+                                    <td><?= date('M d Y', strtotime($career["addAt"])) ?></td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm m-0 my-2 mx-3"><i
+                                                class="fa-solid fa-print me-2"></i>Print</button>
+                                    </td>
+                                </tr>
+                                <?php endforeach; 
+                                    }else{ ?>
+                                <tr>
+                                    <td>Initial Position</td>
+                                    <td><?= $hr_data["jobTitle"] ?></td>
+                                    <td>Current</td>
+                                    <td><?= $hr_data["joined_at"] ?></td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm m-0 my-2 mx-3"><i
+                                                class="fa-solid fa-print me-2"></i>Print</button>
+                                    </td>
+                                </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
+
+
+        </div>
+        <!-- Leave Credits Tab -->
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Leave_Credits">
+            <form id="leave_update">
+                <input type="hidden" name="user_id" value="<?= $hr_id ?>">
+                <div class="header pt-3 col-md-5">
+                    <h5 class="m-0 p-0">
+                        <i class="fa-solid fa-circle-info me-2"></i>Leave Credits
+                    </h5>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label">Sick Leave</label>
+                        <input type="number" name="SickBalance" value="<?= $hr_data["SickBalance"] ?? '' ?>"
+                            id="SickBalance" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Vacation Leave</label>
+                        <input type="number" name="VacationBalance" value="<?= $hr_data["VacationBalance"] ?? '' ?>"
+                            id="VacationBalance" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Special Leave</label>
+                        <input type="number" name="SpecialBalance" value="<?= $hr_data["SpecialBalance"] ?? '' ?>"
+                            id="SpecialBalance" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Others</label>
+                        <input type="number" name="OthersBalance" id="OthersBalance"
+                            value="<?= $hr_data["OthersBalance"] ?? '' ?>" class="form-control">
+                    </div>
+                </div>
+
+                <?php if($hr_data["status"] == 'Active'){ ?>
+                <div class="col-md-12 d-flex mt-3 justify-content-end me-0">
+                    <button type="submit" class="btn  btn-danger px-3 mt-3 me-2 btn-sm"><i
+                            class="fa-solid fa-pen-to-square me-2"></i>Update</button>
+                </div>
+                <?php } else {} ?>
             </form>
         </div>
         <!-- EDUCATIONAL BACKGROUND TAB -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Education">
-            <form id="educational_update_employee">
-                <input type="hidden" name="employee_id" value="<?= $hr_id ?>">
-                <div class="card rounded-2 profile-contents col-md-12 col-12" style="overflow-y: scroll;">
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Education">
+            <form id="educational_update" class="profile-contents show-scroll">
+                <input type="hidden" name="user_id" value="<?= $hr_id ?>">
+                <div class="card rounded-2 show-scroll">
                     <!-- EDUCATIONAL INFORMATION HEADER -->
                     <div class="col-md-12 d-flex">
-                        <div class="header ps-3 pt-3 col-md-5 col-8">
-                            <h5 class="m-0 p-0 label-media-name">
+                        <div class="header ps-3 pt-3 col-md-5">
+                            <h5 class="m-0 p-0">
                                 <i class="fa-solid fa-circle-info me-2"></i>Educational Background
                             </h5>
                         </div>
-                        <div class="col-md-7 col-4 button-margin-right no-padding-media d-flex justify-content-end me-5">
-                            <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5 button-margin-right">Update</button>
+                        <?php if($hr_data["status"] == 'Active'){ ?>
+                        <div class="col-md-7 d-flex justify-content-end me-5">
+                            <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i
+                                    class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                         </div>
+                        <?php } else {} ?>
                     </div>
                     <?php
                         // Fetch educational data for each level
@@ -511,7 +580,7 @@
                         $educationData = [];
                         
                         foreach($educationLevels as $level) {
-                            $stmt = $pdo->prepare("SELECT * FROM educational_data WHERE employee_id = ? AND education_level = ?");
+                            $stmt = $pdo->prepare("SELECT * FROM educational_data WHERE user_id = ? AND education_level = ?");
                             $stmt->execute([$hr_id, $level]);
                             $educationData[$level] = $stmt->fetch(PDO::FETCH_ASSOC);
                         }
@@ -648,17 +717,20 @@
                                 class="form-control"><?= $educationData['Graduate']['honors'] ?? '' ?></textarea>
                         </div>
                     </div>
+                    <?php if($hr_data["status"] == 'Active'){ ?>
                     <div class="transform col-md-12 col-12 d-flex justify-content-end pe-4 mt-3 mb-2">
-                        <button type="submit" class="btn btn-danger px-5 mt-4">Update</button>
+                        <button type="submit" class="btn btn-danger px-5 mt-4"><i
+                                class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                     </div>
+                    <?php } else {} ?>
                 </div>
             </form>
         </div>
         <!-- FAMILY BACKGROUND TAB -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Family">
-             <form id="family_update_employee">
-                <input type="hidden" name="employee_id" value="<?= $hr_id ?>">
-                <div class="card rounded-2 profile-contents" style="overflow-y: scroll;">
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Family">
+            <form id="family_update">
+                <input type="hidden" name="user_id" value="<?= $hr_id ?>">
+                <div class="card rounded-2 profile-contents show-scroll">
                     <!-- FAMILY INFORMATION HEADER -->
                     <div class="col-md-12 d-flex">
                         <div class="header ps-3 pt-3 col-md-5">
@@ -666,27 +738,30 @@
                                 <i class="fa-solid fa-circle-info me-2"></i>Family Information
                             </h5>
                         </div>
+                        <?php if($hr_data["status"] == 'Active'){ ?>
                         <div class="col-md-7 d-flex justify-content-end me-5">
-                            <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5">Update</button>
+                            <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i
+                                    class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                         </div>
+                        <?php } ?>
                     </div>
                     <?php
-                        $stmtFather = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$hr_id' AND Relationship = 'Father'");
+                        $stmtFather = $pdo->prepare("SELECT * FROM Family_data WHERE user_id = '$hr_id' AND Relationship = 'Father'");
                         $stmtFather->execute();
                         $father = $stmtFather->fetch(PDO::FETCH_ASSOC);        
                     
-                        $stmtMother = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$hr_id' AND Relationship = 'Mother'");
+                        $stmtMother = $pdo->prepare("SELECT * FROM Family_data WHERE user_id = '$hr_id' AND Relationship = 'Mother'");
                         $stmtMother->execute();
                         $mother = $stmtMother->fetch(PDO::FETCH_ASSOC);   
 
-                        $stmtGuardian = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$hr_id' AND Relationship = 'Guardian'");
+                        $stmtGuardian = $pdo->prepare("SELECT * FROM Family_data WHERE user_id = '$hr_id' AND Relationship = 'Guardian'");
                         $stmtGuardian->execute();
                         $guardian = $stmtGuardian->fetch(PDO::FETCH_ASSOC);  
                         
-                        $stmtSpouse = $pdo->prepare("SELECT * FROM Family_data WHERE employee_id = '$hr_id' AND Relationship = 'Spouse'");
+                        $stmtSpouse = $pdo->prepare("SELECT * FROM Family_data WHERE user_id = '$hr_id' AND Relationship = 'Spouse'");
                         $stmtSpouse->execute();
                         $Spouse = $stmtSpouse->fetch(PDO::FETCH_ASSOC);  
-                    ?>
+                        ?>
                     <!-- FAMILY INFORMATION CONTENTS -->
                     <div class="row flex-wrap col-md-12 col-12 p-3">
                         <div class="col-md-12 row">
@@ -947,25 +1022,28 @@
                             </div>
                         </div>
                     </div>
+                    <?php if($hr_data["status"] == 'Active'){ ?>
                     <div class="col-md-12 d-flex justify-content-end me-5 mb-5">
-                        <button type="submit" class="btn btn-sm btn-danger px-5 mt-3 me-5">Update</button>
+                        <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i
+                                class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                     </div>
+                    <?php } ?>
                 </div>
             </form>
         </div>
-        <!-- Leave Informations -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="Leave">
-            <div class="card rounded-2 profile-contents col-md-12 col-12" style="overflow-y: scroll;">
+        <!-- Activity tracking -->
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="Leave">
+            <div class="card rounded-2 profile-contents show-scroll">
                 <!-- FAMILY INFORMATION HEADER -->
                 <div class="header ps-3 pt-3">
-                    <h5 class="m-0 p-0 label-media-name">
+                    <h5 class="m-0 p-0">
                         <i class="fa-solid fa-circle-info me-2"></i>Activity Tracking
                     </h5>
                 </div>
                 <!-- FAMILY INFORMATION CONTENTS -->
                 <div class="row flex-wrap col-md-12 col-12 p-3">
                     <?php
-                        $stmtActivities = $pdo->prepare("SELECT * FROM activities WHERE employee_id = '$hr_id' ORDER BY activity_at DESC");
+                        $stmtActivities = $pdo->prepare("SELECT * FROM activities WHERE user_id = '$hr_id' ORDER BY activity_at DESC");
                         $stmtActivities->execute();
                         $Activities = $stmtActivities->fetchAll(PDO::FETCH_ASSOC);
 
@@ -981,10 +1059,13 @@
                             </thead>
                             <tbody>
                                 <?php foreach($Activities as $act) : ?>
-                                    <tr>
-                                        <th  class="fw-light"><span><?= htmlspecialchars($act["activity_type"]) ?></span></th>
-                                        <th  class="fw-light"><span><?= date("F j, Y g:i A", strtotime($act["activity_at"])) ?></span></th>
-                                    </tr>
+                                <tr>
+                                    <th class="fw-light"><span><?= htmlspecialchars($act["activity_type"]) ?></span>
+                                    </th>
+                                    <th class="fw-light">
+                                        <span><?= date("F j, Y g:i A", strtotime($act["activity_at"])) ?></span>
+                                    </th>
+                                </tr>
                                 <?php endforeach ?>
                             </tbody>
                         </table>
@@ -992,165 +1073,184 @@
                 </div>
             </div>
         </div>
-         <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="history">
-            <div class="card rounded-2 profile-contents col-md-12 col-12" style="overflow-y: scroll;">
-                <!-- FAMILY INFORMATION HEADER -->
+        <!-- LOGIN HISTORY TAB -->
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="history">
+            <div class="card rounded-2 profile-contents" style="overflow-y: scroll;">
+                <!-- LOGIN HISTORY HEADER -->
                 <div class="header ps-3 pt-3">
-                    <h5 class="m-0 p-0 label-media-name">
+                    <h5 class="m-0 p-0">
                         <i class="fa-solid fa-circle-info me-2"></i>Login History
                     </h5>
                 </div>
-                <!-- FAMILY INFORMATION CONTENTS -->
-                <div class="row flex-wrap col-md-12 col-12 p-3">
-                    <?php
-                        $stmtHistory = $pdo->prepare("SELECT * FROM login_history WHERE employee_id = '$hr_id' ORDER BY login_time DESC");
-                        $stmtHistory->execute();
-                        $history = $stmtHistory->fetchAll(PDO::FETCH_ASSOC);
 
-                        
-                    ?>
-                    <div class="responsive-table">
-                        <table class="table table-responsive table-bordered text-center">
-                            <thead>
-                                <tr>
-                                    <th>Login Time</th>
-                                    <th>Logout Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach($history as $his) : ?>
-                                    <tr>
-                                        <th><?= 'Login at: <strong>' . date("M d Y g:iA", strtotime($his["login_time"])) . '</strong>' ?></th>
-                                        <th>
-                                            <p class="w-100 text-danger mb-0 mb-2">
-                                                <?php if (!empty($his["logout_time"])): ?>
-                                                    <?= 'Logout at: <strong>' . date("M d Y g:i A", strtotime($his["logout_time"])) . '</strong>' ?>
-                                                <?php else: ?>
+                <!-- LOGIN HISTORY CONTENTS -->
+                <div class="table-responsive table-body-201">
+                    <table class="text-center table table-bordered text-center table-sm">
+                        <?php
+                            $stmtHistory = $pdo->prepare("SELECT * FROM login_history WHERE user_id = ? ORDER BY login_time DESC");
+                            $stmtHistory->execute([$hr_id]);
+                            $history = $stmtHistory->fetchAll(PDO::FETCH_ASSOC);  
+                        ?>
 
-                                                <?php endif; ?>
-                                            </p>
-                                        </th>
-                                    </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table>
-                    </div>
+
+
+                        <thead class="table-light col-md-12">
+                            <tr class="col-md-12">
+                            <tr>
+                                <th>Login Time</th>
+                                <th>Logout Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($history as $his) : ?>
+                            <tr>
+                                <th><?= 'Login at: <strong>' . date("M d Y g:iA", strtotime($his["login_time"])) . '</strong>' ?>
+                                </th>
+                                <th>
+                                    <p class="w-100 text-danger mb-0 mb-2">
+                                        <?php if (!empty($his["logout_time"])): ?>
+                                        <?= 'Logout at: <strong>' . date("M d Y g:i A", strtotime($his["logout_time"])) . '</strong>' ?>
+                                        <?php else: ?>
+
+                                        <?php endif; ?>
+                                    </p>
+                                </th>
+                            </tr>
+                            <?php endforeach ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-    <!-- change password modal -->
-    <div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="changePass_form" class="modal-content">
-                <input type="hidden" name="employee_id" value="<?= $hr_id ?>">
-                <div class="modal-header bg-gradient-primary">
-                    <h5 class="modal-title text-start text-white w-100" id="passwordModalLabel">Change Password</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <label for="usernameConfim">Current Password:</label>
-                    <input type="password" name="current_password" id="usernameConfim" class="form-control" required>
-                </div>
-                <div class="modal-body">
-                    <label for="usernameConfim">New Password:</label>
-                    <input type="password" name="new_pass" id="usernameConfim" class="form-control" required>
-                </div>
-                <div class="modal-body">
-                    <label for="usernameConfim">Confirm Password:</label>
-                    <input type="password" name="confirm_pass" id="usernameConfim" class="form-control" required>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Confirm</button>
-                </div>
-            </form>
-        </div>
-    </div>
 </section>
+<!-- =================================== MODALS =================================== -->
+<!-- CHANGE PASSWORD MODAL -->
+<div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="changePass_form" class="modal-content">
+            <input type="hidden" name="admin_id" value="<?= $hr_id ?>">
+            <div class="modal-header bg-gradient-primary">
+                <h5 class="modal-title text-start text-white w-100" id="passwordModalLabel">Change Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label for="currentPassword">Current Password:</label>
+                <input type="password" name="current_password" id="currentPassword" class="form-control" required>
+            </div>
+            <div class="modal-body">
+                <label for="newPassword">New Password:</label>
+                <input type="password" name="new_pass" id="newPassword" class="form-control" required>
+            </div>
+            <div class="modal-body">
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" name="confirm_pass" id="confirmPassword" class="form-control" required>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Confirm</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Career Path Modal -->
+<div class="modal fade" id="manageCareerPath" tabindex="-1" aria-labelledby="manageCareerPathLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" id="career-path-form">
+            <div class="modal-header bg-gradient-primary text-white">
+                <h5 class="modal-title text-white" id="manageCareerPathLabel">Manage Employee Career Path</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" class="form-control" name="user_id" id="user_id_careerPath">
+                <div class="mx-2">
+                    <label class="form-label">Current Designation</label>
+                    <input class="form-control" readonly type="text" name="job_from" id="currentDesignationId">
+                </div>
+                <div class="mx-2">
+                    <label class="form-label">Current Salary</label>
+                    <input class="form-control" readonly type="text" name="current_salary" id="currentSalaryId">
+                </div>
+                <div class="mx-2">
+                    <label class="form-label">New Designation</label>
+                    <select name="jobTitles_id" id="newDesignationIdToggle" class="form-select">
+                        <option value="">Select Job Title</option>
+                        <?php foreach($getDesignations as $jb): ?>
+                        <option value="<?= $jb['jobTitles_id'] ?>">
+                            <?= htmlspecialchars($jb['jobTitle']) ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="mx-2">
+                    <label class="form-label">New salary</label>
+                    <input class="form-control" readonly type="text" name="new_salary">
+                </div>
+                <div class="mx-2">
+                    <label class="form-label">Manage Type</label>
+                    <select name="job_status" class="form-select">
+                        <option value="">Select Type</option>
+                        <option value="Update">Update</option>
+                        <option value="Promote">Promote</option>
+                        <option value="Demote">Demote</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger">Confirm</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="../../assets/js/hr_js/admin/setting.js" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const birthdayInput = document.getElementById('birthday');
-    const ageInput = document.getElementById('age');
-    
-    if (birthdayInput && ageInput) {
-        // Calculate age when birthday changes
-        birthdayInput.addEventListener('change', function() {
-            calculateAge(this.value);
-        });
-        
-        // Calculate age on page load if birthday has a value
-        if (birthdayInput.value) {
-            calculateAge(birthdayInput.value);
-        }
-        
-        // Function to calculate age from date string
-        function calculateAge(birthDate) {
-            if (!birthDate) {
-                ageInput.value = '';
-                return;
+    const jobTitleSelect = document.getElementById('newDesignationIdToggle');
+    const salaryInput = document.querySelector('input[name="new_salary"]');
+
+    if (!jobTitleSelect || !salaryInput) return;
+
+    let jobSalaries = {};
+
+    function loadJobSalaries() {
+        <?php
+            $jobSalaries = [];
+            foreach($getDesignations as $jb) {
+                $jobSalaries[$jb['jobTitles_id']] = $jb['salary'];
             }
-            
-            const today = new Date();
-            const birth = new Date(birthDate);
-            
-            // Check if date is valid
-            if (isNaN(birth.getTime())) {
-                ageInput.value = '';
-                return;
-            }
-            
-            let age = today.getFullYear() - birth.getFullYear();
-            const monthDiff = today.getMonth() - birth.getMonth();
-            
-            // Adjust age if birthday hasn't occurred yet this year
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-                age--;
-            }
-            
-            // Don't allow negative ages
-            ageInput.value = age >= 0 ? age : '';
-        }
-        
-        // Also recalculate when the input value changes programmatically
-        const observer = new MutationObserver(function() {
-            if (birthdayInput.value) {
-                calculateAge(birthdayInput.value);
-            }
-        });
-        
-        observer.observe(birthdayInput, { attributes: true, attributeFilter: ['value'] });
+            ?>
+
+        jobSalaries = <?php echo json_encode($jobSalaries); ?>;
     }
-});
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const profileContents = document.querySelector('.profile-contents');
-    if (profileContents) {
-        // Override the scrollbar display property
-        profileContents.style.setProperty('scrollbar-width', 'thin', 'important');
-        profileContents.style.setProperty('-webkit-scrollbar', 'auto', 'important');
-        
-        // Add custom scrollbar styling
-        const style = document.createElement('style');
-        style.textContent = `
-            .profile-contents::-webkit-scrollbar {
-                display: block !important;
-                width: 8px !important;
-            }
-            .profile-contents::-webkit-scrollbar-track {
-                background: #f1f1f1 !important;
-                border-radius: 4px !important;
-            }
-            .profile-contents::-webkit-scrollbar-thumb {
-                background: #c1c1c1 !important;
-                border-radius: 4px !important;
-            }
-            .profile-contents::-webkit-scrollbar-thumb:hover {
-                background: #a8a8a8 !important;
-            }
-        `;
-        document.head.appendChild(style);
+
+    loadJobSalaries();
+
+    jobTitleSelect.addEventListener('change', function() {
+        const selectedJobId = this.value;
+
+        if (selectedJobId && jobSalaries[selectedJobId]) {
+            const salary = jobSalaries[selectedJobId];
+            salaryInput.value = formatCurrency(salary);
+        } else {
+            ed
+            salaryInput.value = '';
+        }
+    });
+
+    function formatCurrency(amount) {
+        const numAmount = parseFloat(amount);
+
+        return new Intl.NumberFormat('en-PH', {
+            style: 'currency',
+            currency: 'PHP',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(numAmount);
+    }
+
+    if (jobTitleSelect.value) {
+        jobTitleSelect.dispatchEvent(new Event('change'));
     }
 });
 </script>

@@ -1,7 +1,7 @@
 <?php
 $stmt = $pdo->query("
     SELECT status, COUNT(*) AS total
-    FROM employee_data
+    FROM users
     WHERE user_role = 'EMPLOYEE' 
     GROUP BY status
 ");
@@ -56,59 +56,8 @@ foreach ($leaveTypeData as $row) {
                 <small class="text-muted">Employee status and leave management overview</small>
             </div>
         </div>
-
-        
-
         <!-- Employee Status Chart (Existing) -->
         <div class="row mb-4">
-         <!-- <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Leave Statistics</h5>
-                    </div>
-                    <div class="card-body m-0 p-0 mt-3">
-                        <?php
-                        // Additional leave statistics
-                        $stmt3 = $pdo->query("
-                            SELECT 
-                                COUNT(*) as total_requests,
-                                SUM(CASE WHEN leaveStatus = 'Approved' THEN numberOfDays ELSE 0 END) as approved_days,
-                                AVG(numberOfDays) as avg_days,
-                                MAX(request_date) as latest_request
-                            FROM leaveReq
-                        ");
-                        $leaveStats = $stmt3->fetch(PDO::FETCH_ASSOC);
-                        ?>
-                        <div class="row text-center">
-                            <div class="col-6 mb-3">
-                                <div class="stat-item">
-                                    <div class="stat-value fw-bold fs-5 text-dark"><?php echo $leaveStats['total_requests'] ?? 0; ?></div>
-                                    <div class="stat-label">Total Requests</div>
-                                </div>
-                            </div>
-                            <div class="col-6 mb-3">
-                                <div class="stat-item">
-                                    <div class="stat-value fw-bold fs-5 text-success"><?php echo $leaveStats['approved_days'] ?? 0; ?></div>
-                                    <div class="stat-label">Approved Days</div>
-                                </div>
-                            </div>
-                            <div class="col-6 mb-3">
-                                <div class="stat-item">
-                                    <div class="stat-value fw-bold fs-5 text-dark"><?php echo round($leaveStats['avg_days'] ?? 0, 1); ?></div>
-                                    <div class="stat-label">Avg. Days/Request</div>
-                                </div>
-                            </div>
-                            <div class="col-6 mb-3">
-                                <div class="stat-item">
-                                    <div class="stat-value fw-bold fs-5 text-dark"><?php echo date('M d', strtotime($leaveStats['latest_request'] ?? 'N/A')); ?></div>
-                                    <div class="stat-label">Latest Request</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-            <!-- Leave Status Chart -->
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">

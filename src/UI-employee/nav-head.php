@@ -15,22 +15,22 @@ $middelname = $_SESSION['employeeData']['middlename'];
 $lastname = $_SESSION['employeeData']['lastname'];
 $profile_picture = $_SESSION['employeeData']['profile_picture'];
 // $getEmployee = $employees["employee_data"];
-$employee_id = $_SESSION['employeeData']['employee_id'];
-verify_init($employee_id);
+$user_id = $_SESSION['employeeData']['user_id'];
+verify_init($user_id);
 
-$stmt = $pdo->prepare("SELECT firstname, lastname, middlename, suffix FROM employee_data WHERE employee_id = '$employee_id'");
-$stmt->execute();
+$stmt = $pdo->prepare("SELECT firstname, lastname, middlename, suffix FROM users WHERE user_id = ?");
+$stmt->execute([$user_id]);
 $employee_name = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // LEAVE COUNTS UPDATE PER 15DAYS BY 0.5
 $stmt = $pdo->prepare("
     SELECT VacationBalance, SickBalance, SpecialBalance, OthersBalance, last_updated 
     FROM leaveCounts 
-    WHERE employee_id = :employee_id 
+    WHERE user_id = :user_id 
     LIMIT 1
 ");
 
-$stmt->execute(['employee_id' => $employee_id]);
+$stmt->execute(['user_id' => $user_id]);
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$row) {
@@ -68,7 +68,7 @@ if ($days_passed >= 15) {
             SpecialBalance = :special,
             OthersBalance = :others,
             last_updated = :last_updated
-        WHERE employee_id = :employee_id
+        WHERE user_id = :user_id
     ");
 
     $stmt->execute([
@@ -77,7 +77,7 @@ if ($days_passed >= 15) {
         'special'      => $new_special,
         'others'       => $new_others,
         'last_updated' => $today->format('Y-m-d'),
-        'employee_id'  => $employee_id
+        'user_id'  => $user_id
     ]);
 
     // echo "Balances updated!<br>";

@@ -1,6 +1,6 @@
 
     .sidebar-list a.active {
-        background: #e3212797;
+        background: #e3212797 !important;
         font-weight: bold;
         color: snow;
     }

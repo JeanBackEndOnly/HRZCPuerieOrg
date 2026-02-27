@@ -20,7 +20,7 @@
                 </div>
                 <div class="modal-body">
                     <form class="row g-3" id="leave-form" enctype="multipart/form-data">
-                        <input type="hidden" name="employee_id" value="<?= htmlspecialchars($employee_id) ?>">
+                        <input type="hidden" name="user_id" value="<?= htmlspecialchars($user_id) ?>">
                         <input type="hidden" name="leaveStatus" value="Pending">
                         <h5 class="w-100 text-center m-0">ZAMBOANGA PUERICULTURE CENTER ORG. NO.144 INC.</h5>
                         <strong class="w-100 text-center m-0">APPLICATION FOR LEAVE</strong>
@@ -148,7 +148,7 @@
                 <div class="modal-body">
                     <form class="row g-3" id="cancel-leave-form">
                         <input type="hidden" name="leave_id" id="get_leave_id">
-                        <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
+                        <input type="hidden" name="user_id" value="<?= $user_id ?>">
                         <p class="text-center m-2 text-dark">Are you sure you watn to <strong>Cancel</strong> this leave
                             request?</p>
                         <!-- Form Submission -->
@@ -164,10 +164,10 @@
     </div>
     <div class="row mb-2">
         <?php
-            $official = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Approved' AND employee_id = '$employee_id'")->fetchColumn();
-            $pending = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Pending' AND employee_id = '$employee_id'")->fetchColumn();
-            $recommended = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Recommended' AND employee_id = '$employee_id'")->fetchColumn();
-            $inactive = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Disapproved' AND employee_id = '$employee_id'")->fetchColumn();
+            $official = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Approved' AND user_id = '$user_id'")->fetchColumn();
+            $pending = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Pending' AND user_id = '$user_id'")->fetchColumn();
+            $recommended = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Recommended' AND user_id = '$user_id'")->fetchColumn();
+            $inactive = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Disapproved' AND user_id = '$user_id'")->fetchColumn();
             
             // Total pending + recommended
             $totalPendingRecommended = $pending + $recommended;
@@ -247,19 +247,19 @@
                                         lr.numberOfDays,
                                         lr.contact,
                                         lr.request_date,
-                                        ed.employee_id,
+                                        ed.user_id,
                                         ed.firstname,
                                         ed.middlename,
                                         ed.lastname,
                                         ed.suffix,
                                         hd.employeeID
                                     FROM leaveReq lr
-                                    INNER JOIN employee_data ed ON lr.employee_id = ed.employee_id
-                                    INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-                                    WHERE lr.leaveStatus = 'Pending' AND ed.employee_id = :employee_id
+                                    INNER JOIN employee_data ed ON lr.user_id = ed.user_id
+                                    INNER JOIN hr_data hd ON ed.user_id = hd.user_id
+                                    WHERE lr.leaveStatus = 'Pending' AND ed.user_id = :user_id
                                     ORDER BY lr.request_date DESC");
                                 $stmt->execute([
-                                    'employee_id' => $employee_id
+                                    'user_id' => $user_id
                                 ]);
                                 $pendingLeave = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -279,8 +279,8 @@
                                     <?php 
                                         $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
                                         LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
-                                        WHERE lr.employee_id = :employee_id AND lr.leave_id = :leave_id");
-                                        $stmt->execute(['employee_id' => $employee_id, 'leave_id' => $pending["leave_id"]]);
+                                        WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
+                                        $stmt->execute(['user_id' => $user_id, 'leave_id' => $pending["leave_id"]]);
                                         $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     ?>
                                     <?php
@@ -354,19 +354,19 @@
                                         lr.numberOfDays,
                                         lr.contact,
                                         lr.request_date,
-                                        ed.employee_id,
+                                        ed.user_id,
                                         ed.firstname,
                                         ed.middlename,
                                         ed.lastname,
                                         ed.suffix,
                                         hd.employeeID                                    
                                     FROM leaveReq lr
-                                    INNER JOIN employee_data ed ON lr.employee_id = ed.employee_id
-                                    INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-                                    WHERE lr.leaveStatus = 'Recommended' AND ed.employee_id = :employee_id
+                                    INNER JOIN employee_data ed ON lr.user_id = ed.user_id
+                                    INNER JOIN hr_data hd ON ed.user_id = hd.user_id
+                                    WHERE lr.leaveStatus = 'Recommended' AND ed.user_id = :user_id
                                     ORDER BY lr.request_date DESC");
                                 $stmt->execute([
-                                    'employee_id' => $employee_id
+                                    'user_id' => $user_id
                                 ]);
                                 $recommendedLeave = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -386,8 +386,8 @@
                                     <?php 
                                         $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
                                         LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
-                                        WHERE lr.employee_id = :employee_id AND lr.leave_id = :leave_id");
-                                        $stmt->execute(['employee_id' => $employee_id, 'leave_id' => $recommended["leave_id"]]);
+                                        WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
+                                        $stmt->execute(['user_id' => $user_id, 'leave_id' => $recommended["leave_id"]]);
                                         $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     ?>
                                     <?php
@@ -462,19 +462,19 @@
                                         lr.numberOfDays,
                                         lr.contact,
                                         lr.request_date,
-                                        ed.employee_id,
+                                        ed.user_id,
                                         ed.firstname,
                                         ed.middlename,
                                         ed.lastname,
                                         ed.suffix,
                                         hd.employeeID                                    
                                     FROM leaveReq lr
-                                    INNER JOIN employee_data ed ON lr.employee_id = ed.employee_id
-                                    INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-                                    WHERE lr.leaveStatus = 'Approved' AND ed.employee_id = :employee_id
+                                    INNER JOIN employee_data ed ON lr.user_id = ed.user_id
+                                    INNER JOIN hr_data hd ON ed.user_id = hd.user_id
+                                    WHERE lr.leaveStatus = 'Approved' AND ed.user_id = :user_id
                                     ORDER BY lr.request_date DESC");
                                 $stmt->execute([
-                                    'employee_id' => $employee_id
+                                    'user_id' => $user_id
                                 ]);
                                 $ApprovedLeave = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -494,8 +494,8 @@
                                         <?php 
                                             $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
                                             LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
-                                            WHERE lr.employee_id = :employee_id AND lr.leave_id = :leave_id");
-                                            $stmt->execute(['employee_id' => $employee_id, 'leave_id' => $approved["leave_id"]]);
+                                            WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
+                                            $stmt->execute(['user_id' => $user_id, 'leave_id' => $approved["leave_id"]]);
                                             $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             foreach($getDate as $date):
                                         ?>
@@ -544,19 +544,19 @@
                                         lr.numberOfDays,
                                         lr.contact,
                                         lr.request_date,
-                                        ed.employee_id,
+                                        ed.user_id,
                                         ed.firstname,
                                         ed.middlename,
                                         ed.lastname,
                                         ed.suffix,
                                         hd.employeeID                                    
                                     FROM leaveReq lr
-                                    INNER JOIN employee_data ed ON lr.employee_id = ed.employee_id
-                                    INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-                                    WHERE lr.leaveStatus = 'Disapproved' AND ed.employee_id = :employee_id
+                                    INNER JOIN employee_data ed ON lr.user_id = ed.user_id
+                                    INNER JOIN hr_data hd ON ed.user_id = hd.user_id
+                                    WHERE lr.leaveStatus = 'Disapproved' AND ed.user_id = :user_id
                                     ORDER BY lr.request_date DESC");
                                 $stmt->execute([
-                                    'employee_id' => $employee_id
+                                    'user_id' => $user_id
                                 ]);
                                 $disapprovedLeave = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -576,8 +576,8 @@
                                     <?php 
                                         $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
                                         LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
-                                        WHERE lr.employee_id = :employee_id AND lr.leave_id = :leave_id");
-                                        $stmt->execute(['employee_id' => $employee_id, 'leave_id' => $recommended["leave_id"]]);
+                                        WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
+                                        $stmt->execute(['user_id' => $user_id, 'leave_id' => $recommended["leave_id"]]);
                                         $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     ?>
                                     <?php

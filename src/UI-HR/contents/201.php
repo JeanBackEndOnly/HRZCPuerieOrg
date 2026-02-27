@@ -2,22 +2,23 @@
    // Fetch Active Employees
 $stmtOfficial = $pdo->prepare("
     SELECT 
-        ed.employee_id, 
-        ed.firstname, 
-        ed.middlename, 
-        ed.lastname, 
-        ed.suffix,
+        u.user_id, 
+        u.firstname, 
+        u.middlename, 
+        u.lastname, 
+        u.suffix,
         d.Department_name AS department,
-        hd.employeeID,
+        u.employeeID,
         jt.jobTitle,
         jt.salary,
-        ed.status
-    FROM employee_data ed
-    INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-    LEFT JOIN jobTitles jt ON hd.jobtitle_id = jt.jobTitles_id
-    LEFT JOIN departments d ON hd.Department_id = d.Department_id
-    WHERE ed.status = 'Active' AND ed.user_role = 'EMPLOYEE'
-    ORDER BY ed.lastname, ed.firstname
+        u.status,
+        u.profile_picture
+    FROM users u
+    INNER JOIN employee_data ed ON u.user_id = ed.user_id
+    LEFT JOIN jobTitles jt ON ed.jobtitle_id = jt.jobTitles_id
+    LEFT JOIN departments d ON ed.Department_id = d.Department_id
+    WHERE u.status = 'Active' AND u.user_role = 'EMPLOYEE'
+    ORDER BY u.lastname, u.firstname
 ");
 $stmtOfficial->execute();
 $officialEmployees = $stmtOfficial->fetchAll(PDO::FETCH_ASSOC);
@@ -31,117 +32,67 @@ $countOfficials = 1;
             <small class="text-muted ">Create, Update And view employee 201 files</small>
         </div>
         <div class="col-md-4">
-            <input type="text" id="searchEmployee" placeholder="Search employees by name or ID....." class="form-control">
+            <input type="text" id="searchEmployee" placeholder="Search employees by name or ID....."
+                class="form-control">
         </div>
 
     </div>
-    
+
     <!-- EMPLOYEE ACCOUNT DISPLAYS =============================================================================================== -->
-    <div class="card">
-        <div class="table-responsive table-body-201">
-            <table class="table-body-file text-center table table-bordered text-center table-sm">
-                <thead class="table-light col-md-12">
-                    <tr class="col-md-12">
-                        <th>#</th>
-                        <th>Employee ID</th>
-                        <th>Complete Name</th>
-                        <th>Department</th>
-                        <th>Job Title</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="text-center" style="color: #666;">
-                    <?php 
-                                    if($officialEmployees){
-                                        foreach ($officialEmployees as $officials) : ?>
-                    <tr>
-                        <th><?= $countOfficials++ ?></th>
-                        <th><?= htmlspecialchars($officials["employeeID"]) ?></th>
-                        <th><?= htmlspecialchars($officials["firstname"]) . ' ' . htmlspecialchars($officials["lastname"]) ?>
-                        </th>
-                        <th><?= htmlspecialchars($officials["department"]) ?></th>
-                        <th><?= htmlspecialchars($officials["jobTitle"]) ?></th>
-                        <td class="d-flex justify-content-center flex-wrap gap-1">
-                            <a
-                                href="index.php?page=contents/files&id=<?= htmlspecialchars($officials["employee_id"]) ?>">
-                                <button class="btn btn-sm btn-danger px-3 py-2 m-0">
-                                    <i class="fas fa-eye"></i> View
-                                </button>
-                            </a>
-                            <button class="btn btn-success btn-sm" data-bs-toggle="modal" id="getID" data-bs-target="#create201" data-id="<?= htmlspecialchars($officials["employee_id"]) ?>">Add file</button>
-                        </td>
-                    </tr>
-                    <?php 
-                        endforeach; 
-                        }else {
-                            echo '<tr><td colspan="6" class="text-center">No employees found</td></tr>';
-                        }  
-                    ?>
-                </tbody>
-            </table>
-        </div>
-        <!-- Create 201 files modal -->
-        <div class="modal fade" id="create201" tabindex="-1" aria-labelledby="create201Label"
-            aria-hidden="true">
-            <div class="modal-dialog modal-md">
-                <div class="modal-content">
-                    <div class="modal-header bg-danger text-white">
-                        <h5 class="modal-title text-white" id="create201Label">Add employee 201 file</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close" onclick="location.reload()"></button>
+    <div class="card p-2">
+        <div class="row col-md-12">
+            <?php 
+                if($officialEmployees){
+                    foreach ($officialEmployees as $officials) : ?>
+            <a href="index.php?page=contents/files&id=<?= htmlspecialchars($officials["user_id"]) ?>"
+                class="col-md-4">
+                <div class="card col-md-12 d-flex flex-row shadow p-2 rounded-3 border">
+                    <div class="col-md-2 d-flex align-items-center">
+                        <?php if($officials["profile_picture"] == null){ ?>
+                        <strong class="py-2 px-2 text-white"
+                            style="
+                                                    border-radius: 50%;
+                                                    font-weight: 500 !important;
+                                                    background-color: rgba(255, 14, 14, 0.70);
+                                                    font-size: 15px;
+                                                    border: solid 1px #fff;
+                                                "><?= htmlspecialchars(strtoupper(substr($officials["firstname"], 0,1) . substr($officials["lastname"], 0,1))) ?></strong>
+                        <?php }else{ ?>
+                        <img src="../../authentication/uploads/<?= $officials["profile_picture"] ?>"
+                            style="width: 200px; height: auto; border-radius: 50%;">
+                        <?php } ?>
                     </div>
-                    <div class="modal-body">
-                        <form class="row g-3" id="file-form" method="post" enctype="multipart/form-data">
-                            <div class="mx-2">
-                                <label class="form-label">Title</label>
-                                <input required type="text" class="form-control" name="file_title" placeholder="File title">
-                            </div>
-                            <div class="mx-2">
-                                <label class="form-label">201 type</label>
-                                <select required name="type" id="" class="form-select">
-                                    <option value="">Select Type</option>
-                                    <option value="communication">Communication</option>
-                                    <option value="certifications">Certifications</option>
-                                    <option value="training_certificates">Training Certificates</option>
-                                    <option value="license_eligibility">License Eligibility</option>
-                                    <option value="academic_credentials">Academic Credentials</option>
-                                    <option value="preScreening_requirements">Pre-screening Requirements</option>
-                                    <option value="medical_certificates">Medical Certificates</option>
-                                    
-                                </select>
-                            </div>
-                            <div class="mx-2">
-                                <label class="form-label">Employee file</label>
-                                <input required type="file" name="201file" class="form-control">
-                                <input type="hidden" name="employee_id" id="employee_id">
-                            </div>
-                            
-                            <!-- Form Submission -->
-                            <div class="col-12 text-center mt-3">
-                                <button type="submit" class="btn btn-primary px-5">
-                                    <i class="bi bi-person-plus-fill me-1"></i> Submit File
-                                </button>
-                            </div>
-                        </form>
+                    <div class="col-md-10 d-flex flex-column">
+                        <strong
+                            class="font-13"><?= htmlspecialchars($officials["firstname"] . ' ' . substr($officials["middlename"], 0, 1) . '. ' . $officials["lastname"]) ?></strong>
+                        <span
+                            class="font-12"><?= htmlspecialchars($officials["jobTitle"] . ' •' . $officials["department"]) . ' •EMP-' . $officials["employeeID"] ?></span>
                     </div>
                 </div>
-            </div>
+            </a>
+            <?php 
+                    endforeach; 
+                }else {
+                    echo '<tr><td colspan="6" class="text-center">No employees found</td></tr>';
+                }  
+            ?>
         </div>
+
     </div>
 </section>
 <script>
-    document.getElementById("searchEmployee").addEventListener("keyup", function () {
-        const searchValue = this.value.toLowerCase();
-        const tableRows = document.querySelectorAll("table tbody tr");
+document.getElementById("searchEmployee").addEventListener("keyup", function() {
+    const searchValue = this.value.toLowerCase();
+    const tableRows = document.querySelectorAll("table tbody tr");
 
-        tableRows.forEach(row => {
-            let text = row.textContent.toLowerCase();
+    tableRows.forEach(row => {
+        let text = row.textContent.toLowerCase();
 
-            if (text.includes(searchValue)) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
+        if (text.includes(searchValue)) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
     });
+});
 </script>

@@ -3,6 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 include "../../view/admin/view.php";
+include "../../view/system/view.php";
 // Global ==========================================================================
 $getUnit = getUnitSection();
 if (empty($getUnit)) {

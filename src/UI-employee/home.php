@@ -1,8 +1,8 @@
 <body>
    <?php 
-            $leaveCounts = $stmt = $pdo->prepare("SELECT * FROM  leaveCounts WHERE employee_id = :employee_id");
+            $leaveCounts = $stmt = $pdo->prepare("SELECT * FROM  leaveCounts WHERE user_id = :user_id");
             $leaveCounts->execute([
-               'employee_id' => $employee_id
+               'user_id' => $user_id
             ]);
             $getCounts = $stmt->fetch(PDO::FETCH_ASSOC);
             $VacationBalance = $getCounts["VacationBalance"];
@@ -12,8 +12,8 @@
 
             $stmtSchedule = $pdo->prepare("SELECT es.schedule_at, st.scheduleName, st.schedule_from, st.schedule_to FROM employee_schedule es
             LEFT JOIN sched_template st ON es.schedule_id = st.template_id
-            WHERE es.employee_id = ? AND es.schedule_at = CURDATE()");
-            $stmtSchedule->execute([$employee_id]);
+            WHERE es.user_id = ? AND es.schedule_at = CURDATE()");
+            $stmtSchedule->execute([$user_id]);
             $result = $stmtSchedule->fetch(PDO::FETCH_ASSOC);
             
          ?>

@@ -1,12 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     console.log("DOM loaded - initializing tabs");
 
-    // Set employee ID in modal
-    document.getElementById('getID').addEventListener('click', function() {
-        const employeeId = this.getAttribute('data-id');
-        document.getElementById('employee_id').value = employeeId;
-    });
-
     // Download functionality
     document.addEventListener("click", function(e) {
         if (e.target.classList.contains("downloadBtn") || e.target.closest('.downloadBtn')) {
@@ -35,25 +29,6 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Setting file ID for deletion:", fileId);
         }
     });
-
-    // Form submission handling
-    const fileForm = document.getElementById('file-form');
-    if (fileForm) {
-        fileForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            console.log('File form submitted');
-            // Add your form submission logic here
-        });
-    }
-
-    const deleteForm = document.getElementById('file-delete-form');
-    if (deleteForm) {
-        deleteForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            console.log('Delete form submitted');
-            // Add your delete logic here
-        });
-    }
 
     // Debug: Check if all tabs are properly set up
     const tabs = document.querySelectorAll('#fileTabs .nav-link');

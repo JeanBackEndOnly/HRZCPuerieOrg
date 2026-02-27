@@ -748,51 +748,50 @@ function getEmploymentData(user_id, designation, salary) {
     document.getElementById('currentSalaryId').value = salary;
 }
 document.addEventListener('DOMContentLoaded', function() {
-    const jobTitleSelect = document.getElementById('newDesignationIdToggle');
-    const salaryInput = document.querySelector('input[name="new_salary"]');
-
-    if (!jobTitleSelect || !salaryInput) return;
-
-    let jobSalaries = {};
-
-    function loadJobSalaries() {
-        <?php
+        const jobTitleSelect = document.getElementById('newDesignationIdToggle');
+        const salaryInput = document.querySelector('input[name="new_salary"]');
+        
+        if (!jobTitleSelect || !salaryInput) return;
+        
+        let jobSalaries = {};
+        
+        function loadJobSalaries() {
+            <?php
             $jobSalaries = [];
             foreach($getDesignations as $jb) {
                 $jobSalaries[$jb['jobTitles_id']] = $jb['salary'];
             }
             ?>
-
-        jobSalaries = <?php echo json_encode($jobSalaries); ?>;
-    }
-
-    loadJobSalaries();
-
-    jobTitleSelect.addEventListener('change', function() {
-        const selectedJobId = this.value;
-
-        if (selectedJobId && jobSalaries[selectedJobId]) {
-            const salary = jobSalaries[selectedJobId];
-            salaryInput.value = formatCurrency(salary);
-        } else {
-            ed
-            salaryInput.value = '';
+            
+            jobSalaries = <?php echo json_encode($jobSalaries); ?>;
+        }
+        
+        loadJobSalaries();
+        
+        jobTitleSelect.addEventListener('change', function() {
+            const selectedJobId = this.value;
+            
+            if (selectedJobId && jobSalaries[selectedJobId]) {
+                const salary = jobSalaries[selectedJobId];
+                salaryInput.value = formatCurrency(salary);
+            } else {ed
+                salaryInput.value = '';
+            }
+        });
+        
+        function formatCurrency(amount) {
+            const numAmount = parseFloat(amount);
+            
+            return new Intl.NumberFormat('en-PH', {
+                style: 'currency',
+                currency: 'PHP',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(numAmount);
+        }
+        
+        if (jobTitleSelect.value) {
+            jobTitleSelect.dispatchEvent(new Event('change'));
         }
     });
-
-    function formatCurrency(amount) {
-        const numAmount = parseFloat(amount);
-
-        return new Intl.NumberFormat('en-PH', {
-            style: 'currency',
-            currency: 'PHP',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }).format(numAmount);
-    }
-
-    if (jobTitleSelect.value) {
-        jobTitleSelect.dispatchEvent(new Event('change'));
-    }
-});
 </script>

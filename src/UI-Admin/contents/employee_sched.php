@@ -1,26 +1,27 @@
 <?php
-    $employee_id = $_GET["employee_id"];
-    $stmt = $pdo->prepare("SELECT us.unit_section_name, ed.firstname, ed.lastname, ed.middlename, ed.suffix, ed.profile_picture, ed.employeeID, d.Department_name, j.jobTitle FROM employee_data ed
-        INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id 
-        LEFT JOIN departments d ON hd.Department_id = d.Department_id 
-        LEFT JOIN jobTitles j ON hd.jobtitle_id = j.jobTitles_id 
-        LEFT JOIN unit_section us ON hd.unit_section_id = us.unit_section_id 
-        WHERE ed.employee_id = ?");
-    $stmt->execute([$employee_id]);
+    $user_id = $_GET["user_id"];
+    $stmt = $pdo->prepare("SELECT us.unit_section_name, u.firstname, u.lastname, u.middlename, u.suffix, u.profile_picture, u.employeeID, d.Department_name, j.jobTitle
+        FROM users u
+        INNER JOIN employee_data ed ON u.user_id = ed.user_id 
+        LEFT JOIN departments d ON ed.Department_id = d.Department_id 
+        LEFT JOIN jobTitles j ON ed.jobtitle_id = j.jobTitles_id 
+        LEFT JOIN unit_section us ON ed.unit_section_id = us.unit_section_id 
+        WHERE u.user_id = ?");
+    $stmt->execute([$user_id]);
     $employeeData = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $stmtSchedule = $pdo->prepare("SELECT es.*, st.* FROM employee_schedule es
     INNER JOIN sched_template st ON es.schedule_id = st.template_id
-    WHERE es.employee_id = ? AND es.schedule_at <= CURDATE()
+    WHERE es.user_id = ? AND es.schedule_at <= CURDATE()
     ORDER BY es.schedule_at DESC");
-    $stmtSchedule->execute([$employee_id]);
+    $stmtSchedule->execute([$user_id]);
     $scheduleResult = $stmtSchedule->fetchAll(PDO::FETCH_ASSOC);
 
     $stmtUpcomingSchedule = $pdo->prepare("SELECT es.*, st.* FROM employee_schedule es
     INNER JOIN sched_template st ON es.schedule_id = st.template_id
-    WHERE es.employee_id = ? AND es.schedule_at > CURDATE()
+    WHERE es.user_id = ? AND es.schedule_at > CURDATE()
     ORDER BY es.schedule_at ASC");
-    $stmtUpcomingSchedule->execute([$employee_id]);
+    $stmtUpcomingSchedule->execute([$user_id]);
     $scheduleResultUpcoming = $stmtUpcomingSchedule->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <div class="d-flex justify-content-between align-items-center mb-2">
@@ -32,7 +33,7 @@
     </div>
     <div class="col-md-3 d-flex justify-content-end">
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#createScheduleForEmployee"
-            data-id="<?= $employee_id ?>" id="getEmployeeIdForSchedule">Create Schedule</button>
+            data-id="<?= $user_id ?>" id="getEmployeeIdForSchedule">Create Schedule</button>
     </div>
 </div>
 <main class="col-md-12 d-flex justify-content-start align-items-start">
@@ -44,7 +45,8 @@
                             class="fa-solid fa-arrow-left me-1"></i> Back</a>
                 </div>
                 <?php if($employeeData["profile_picture"] == null){ ?>
-                <strong class="py-2 px-3 text-white mb-2" style="
+                <strong class="py-2 px-3 text-white mb-2"
+                    style="
                                 border-radius: 50%;
                                 font-weight: 500;
                                 background-color: rgba(255, 14, 14, 0.70);
@@ -72,20 +74,20 @@
         <div class="card col-md-12 col-12">
             <!-- NAVIAGATIONS OF TABS -->
             <div class="card-body col-md-12 col-12 d-flex justify-content-between pb-4">
-                <ul class="nav nav-tabs col-md-8 col-12" id="LeaveRequestTabs">
+                <ul class="nav nav-tabs col-md-8 col-12" id="SchedTabs">
                     <li class="nav-item cursor-pointer col-md-6">
-                        <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#active">
+                        <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Active">
                             <i class="fa-solid fa-calendar-days me-2"></i>Current Schedules</a>
                     </li>
                     <li class="nav-item cursor-pointer col-md-6">
-                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#inactive">
+                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Inactive">
                             <i class="fa-solid fa-calendar me-2"></i>Upcoming Schedules</a>
                     </li>
                 </ul>
             </div>
             <div class="card-body pt-0 p-0">
                 <div class="tab-content" id="employeesTabContent">
-                    <div class="tab-pane fade show active" id="active" role="tabpanel" aria-labelledby="approved-tab"
+                    <div class="tab-pane fade show active" id="Active" role="tabpanel" aria-labelledby="approved-tab"
                         tabindex="0">
                         <div class="responssive-table">
                             <table class="table table-responssive table-bordered table-sm text-center">
@@ -101,10 +103,12 @@
                                         foreach($scheduleResult as $sched) :?>
                                     <tr>
                                         <td class="font-13"><?= date('M d Y', strtotime($sched["schedule_at"])) ?></td>
-                                        <td class="font-13"><?= htmlspecialchars('(' . $sched["scheduleName"] . ') '.date('h:i A', strtotime($sched["schedule_from"])) . ' - ' . date('h:i A', strtotime($sched["schedule_to"]))) ?>
+                                        <td class="font-13">
+                                            <?= htmlspecialchars('(' . $sched["scheduleName"] . ') '.date('h:i A', strtotime($sched["schedule_from"])) . ' - ' . date('h:i A', strtotime($sched["schedule_to"]))) ?>
                                         </td>
                                         <td class="font-13">
-                                            <button class="m-0 btn btn-outline-success py-2 px-3" id="getScheduleId" onclick="getScheduleData(
+                                            <button class="m-0 btn btn-outline-success py-2 px-3" id="getScheduleId"
+                                                onclick="getScheduleData(
                                                 <?= $sched['employee_schedule_id'] ?>,
                                                 <?= $sched['template_id'] ?>,
                                                 '<?= addslashes($sched['schedule_at']) ?>'
@@ -126,7 +130,7 @@
                     </div>
                 </div>
                 <div class="tab-content" id="employeesTabContent">
-                    <div class="tab-pane fade" id="inactive" role="tabpanel" aria-labelledby="approved-tab"
+                    <div class="tab-pane fade" id="Inactive" role="tabpanel" aria-labelledby="approved-tab"
                         tabindex="0">
                         <div class="responssive-table">
                             <table class="table table-responssive table-bordered table-sm text-center">
@@ -139,20 +143,22 @@
                                 </thead>
                                 <tbody class="text-center">
                                     <?php if($scheduleResultUpcoming){ 
-                                        foreach($scheduleResultUpcoming as $sched) :?>
+                                        foreach($scheduleResultUpcoming as $UpSched) :?>
                                     <tr>
-                                        <td class="font-13"><?= date('M d Y', strtotime($sched["schedule_at"])) ?></td>
-                                        <td class="font-13"><?= htmlspecialchars('(' . $sched["scheduleName"] . ') '.date('h:i A', strtotime($sched["schedule_from"])) . ' - ' . date('h:i A', strtotime($sched["schedule_to"]))) ?>
+                                        <td class="font-13"><?= date('M d Y', strtotime($UpSched["schedule_at"])) ?></td>
+                                        <td class="font-13">
+                                            <?= htmlspecialchars('(' . $UpSched["scheduleName"] . ') '.date('h:i A', strtotime($UpSched["schedule_from"])) . ' - ' . date('h:i A', strtotime($UpSched["schedule_to"]))) ?>
                                         </td>
                                         <td class="font-13">
-                                            <button class="m-0 btn btn-outline-success py-2 px-3" id="getScheduleId" onclick="getScheduleData(
-                                                <?= $sched['employee_schedule_id'] ?>,
-                                                <?= $sched['template_id'] ?>,
-                                                '<?= addslashes($sched['schedule_at']) ?>'
+                                            <button class="m-0 btn btn-outline-success py-2 px-3" id="getScheduleId"
+                                                onclick="getScheduleData(
+                                                <?= $UpSched['employee_schedule_id'] ?>,
+                                                <?= $UpSched['template_id'] ?>,
+                                                '<?= addslashes($UpSched['schedule_at']) ?>'
                                             )" data-bs-toggle="modal" data-bs-target="#editSchedule">edit</button>
                                             <button class="m-0 btn btn-outline-danger py-2 px-3" data-bs-toggle="modal"
                                                 data-bs-target="#deleteSchedule" id="getScheduleIdAndDelete"
-                                                data-id="<?= $sched["employee_schedule_id"] ?>">delete</button>
+                                                data-id="<?= $UpSched["employee_schedule_id"] ?>">delete</button>
                                         </td>
                                     </tr>
                                     <?php endforeach;
@@ -236,7 +242,8 @@
     </div>
 </div>
 <!-- =================================== SCHEDULE FOR EMPLOYEE =================================== -->
-<div class="modal fade" id="createScheduleForEmployee" tabindex="-1" aria-labelledby="createScheduleForEmployeeLabel" aria-hidden="true">
+<div class="modal fade" id="createScheduleForEmployee" tabindex="-1" aria-labelledby="createScheduleForEmployeeLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
@@ -246,7 +253,7 @@
             </div>
             <div class="modal-body">
                 <form class="row g-3" id="schedule-for_employee-form" method="post">
-                    <input type="hidden" class="form-control" name="employee_id" id="employee_id_for_schedule">
+                    <input type="hidden" class="form-control" name="user_id" id="user_id_for_schedule">
                     <div class="mx-2">
                         <label class="form-label">Scheduled At</label>
                         <input required type="date" name="schedule_at" class="form-control">
@@ -261,7 +268,7 @@
                         <select required name="schedule_id" id="" class="form-select">
                             <option value="">Select Schedule</option>
                             <?php foreach($result as $schedule) : ?>
-                                <option value="<?= $schedule["template_id"] ?>"><?= htmlspecialchars(
+                            <option value="<?= $schedule["template_id"] ?>"><?= htmlspecialchars(
                                     '(' . $schedule["scheduleName"] . ') ' . date('h:i A', strtotime($schedule["schedule_from"])) . ' - ' . date('h:i A', strtotime($schedule["schedule_to"]))
                                 ) ?></option>
                             <?php endforeach; ?>
@@ -278,10 +285,4 @@
     </div>
 </div>
 <!-- ========================================== JAVASCRIPT ========================================== -->
-<script>
-function getScheduleData(schedule_id, template_id, schedule_at) {
-    document.getElementById('edit_schedule_id').value = schedule_id;
-    document.getElementById('template_id_data').value = template_id;
-    document.getElementById('schedule_at_data').value = schedule_at;
-}
-</script>
+<script src="../../assets/js/hr_js/admin/employee_sched.js" defer></script>

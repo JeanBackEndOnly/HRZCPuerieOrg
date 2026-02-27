@@ -20,25 +20,25 @@ if (!$from_date || !$to_date) {
 try {
     // Build the employee query
     $query = "SELECT DISTINCT 
-                ed.employee_id, 
-                ed.firstname, 
-                ed.middlename, 
-                ed.lastname,
+                u.user_id, 
+                u.firstname, 
+                u.middlename, 
+                u.lastname,
                 d.Department_id,
                 d.Department_name,
                 d.Department_code
-              FROM employee_data ed
-              INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-              LEFT JOIN departments d ON hd.Department_id = d.Department_id";
+              FROM users u
+              INNER JOIN employee_data ed ON u.user_id = ed.user_id
+              LEFT JOIN departments d ON ed.Department_id = d.Department_id";
     
     $params = [];
     
     if ($department) {
-        $query .= " WHERE hd.Department_id = :department";
+        $query .= " WHERE ed.Department_id = :department";
         $params[':department'] = $department;
     }
     
-    $query .= " ORDER BY ed.lastname ASC";
+    $query .= " ORDER BY u.lastname ASC";
     
     $stmt = $pdo->prepare($query);
     $stmt->execute($params);
@@ -56,13 +56,13 @@ try {
                         st.shift
                       FROM employee_schedule es
                       INNER JOIN sched_template st ON es.schedule_id = st.template_id
-                      WHERE es.employee_id = :employee_id 
+                      WHERE es.user_id = :user_id 
                       AND es.schedule_at BETWEEN :from_date AND :to_date
                       ORDER BY es.schedule_at ASC";
         
         $schedStmt = $pdo->prepare($schedQuery);
         $schedStmt->execute([
-            ':employee_id' => $employee['employee_id'],
+            ':user_id' => $employee['user_id'],
             ':from_date' => $from_date,
             ':to_date' => $to_date
         ]);

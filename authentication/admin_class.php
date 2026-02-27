@@ -2330,14 +2330,16 @@ class Action
         $job_from = $_POST["job_from"];
         $current_salary = $_POST["current_salary"];
         $jobTitles_id = $_POST["jobTitles_id"];
-        $new_salary = $_POST["new_salary"];
+        // $new_salary = $_POST["new_salary"];
         $job_status = $_POST["job_status"];
         try {
 
-            $stmt = $this->db->prepare("SELECT j.jobTitle FROM jobTitles j WHERE jobTitles_id = ?");
+            $stmt = $this->db->prepare("SELECT j.jobTitle, j.salary FROM jobTitles j WHERE jobTitles_id = ?");
             $stmt->execute([$jobTitles_id]);
             $resultOfJob = $stmt->fetch(PDO::FETCH_ASSOC);
+            
             $job_to = $resultOfJob["jobTitle"];
+            $new_salary = $resultOfJob["salary"];
 
             if(!$job_to){
                 return json_encode([
@@ -2346,8 +2348,8 @@ class Action
                 ]);
             }
 
-            $stmtUpdate = $this->db->prepare("UPDATE employee_data SET jobtitle_id = ? WHERE user_id = ?");
-            $stmtUpdate->execute([$jobTitles_id, $user_id]);
+            $stmtUpdate = $this->db->prepare("UPDATE employee_data SET jobtitle_id = ?, salary = ? WHERE user_id = ?");
+            $stmtUpdate->execute([$jobTitles_id, $new_salary, $user_id]);
 
             $stmt = $this->db->prepare("INSERT INTO job_history 
                 (user_id, job_from, job_to, current_salary, new_salary, job_status)

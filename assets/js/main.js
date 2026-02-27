@@ -55,7 +55,7 @@ $(document).ready(function () {
     $(document).on("click", "#getEmployeeIdForSchedule", function (){
       const employee_id = $(this).data('id');
       // alert(employee_id);
-      document.getElementById('employee_id_for_schedule').value = employee_id;
+      document.getElementById('user_id_for_schedule').value = employee_id;
     });
     $(document).on("click", "#getScheduleIdAndDelete", function (){
       const id = $(this).data('id');

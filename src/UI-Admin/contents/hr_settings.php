@@ -107,7 +107,7 @@
                 </div>
                 <div class="tab-pane row fade col-md-12" id="employee_schedule" role="tabpanel">
                     <?php foreach($getEmployeeForSchedules as $emp) : ?>
-                    <a href="index.php?page=contents/employee_sched&employee_id=<?= $emp["employee_id"] ?>"
+                    <a href="index.php?page=contents/employee_sched&user_id=<?= $emp["user_id"] ?>"
                         class="col-md-4">
                         <div class="card col-md-12 d-flex flex-row shadow p-2 rounded-3 border">
                             <div class="col-md-2 d-flex align-items-center">

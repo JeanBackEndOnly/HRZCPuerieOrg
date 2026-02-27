@@ -184,11 +184,11 @@
     }
 </style>
 <?php
-    $employee_id = $_GET["employee_id"];
+    $user_id = $_GET["user_id"];
 
     // Get PDS ID
-    $stmtPDS = $pdo->prepare("SELECT pds_id FROM personal_data_sheet WHERE employee_id = ?");
-    $stmtPDS->execute([$employee_id]);
+    $stmtPDS = $pdo->prepare("SELECT pds_id FROM personal_data_sheet WHERE user_id = ?");
+    $stmtPDS->execute([$user_id]);
     $pdsData = $stmtPDS->fetch(PDO::FETCH_ASSOC);
 
     if (!$pdsData) {
@@ -199,8 +199,8 @@
 
     // Main query for employee, HR, and single-record tables
     $query = "SELECT 
+        u.*,
         ed.*,
-        hr.*,
         pds.pds_id,
         pds.accomplished_on,
         ug.*,
@@ -209,17 +209,17 @@
         p_mother.*,
         oi.*
     FROM personal_data_sheet pds
-    INNER JOIN employee_data ed ON pds.employee_id = ed.employee_id
-    INNER JOIN hr_data hr ON ed.employee_id = hr.employee_id
+    INNER JOIN users u ON pds.user_id = u.user_id
+    INNER JOIN employee_data ed ON u.user_id = ed.user_id
     LEFT JOIN userGovIDs ug ON pds.pds_id = ug.pds_id
     LEFT JOIN spouseInfo si ON pds.pds_id = si.pds_id
     LEFT JOIN parents p_father ON pds.pds_id = p_father.pds_id AND p_father.relation = 'Father'
     LEFT JOIN parents p_mother ON pds.pds_id = p_mother.pds_id AND p_mother.relation = 'Mother'
     LEFT JOIN otherInfo oi ON pds.pds_id = oi.pds_id
-    WHERE pds.employee_id = ?";
+    WHERE pds.user_id = ?";
 
     $stmt = $pdo->prepare($query);
-    $stmt->execute([$employee_id]);
+    $stmt->execute([$user_id]);
     $pds = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $multiTables = [
@@ -258,7 +258,7 @@
                     </div>
                 </div>
                 <div
-                    class="contents d-flex flex-column align-items-center p-3 m-0 col-md-11 shadow rounded-2 scroll leave-height">
+                    class="contents d-flex flex-column align-items-center p-3 m-0 col-md-12 col-11 shadow rounded-2 scroll leave-height">
                     <div class="stepper" id="stepOne" style="display:flex;">
                         <div class="step active">1</div>
                         <div class="line"></div>
@@ -296,7 +296,7 @@
                         <div class="step active">4</div>
                     </div>
                     <form id="pds-update" method="post" class="col-md-12">
-                        <input type="hidden" name="employee_id" value="<?= $pds["employee_id"] ?>">
+                        <input type="hidden" name="user_id" value="<?= $pds["user_id"] ?>">
                         <!-- ============================== PERSONAL INFORMATION ========================================= -->
                         <div id="personalInfo"
                             class="personalInfo flex-row align-items-center p-0 m-0 mt-3 flex-wrap col-md-12 gap-1"

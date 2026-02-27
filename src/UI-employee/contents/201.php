@@ -1,8 +1,8 @@
 <link rel="stylesheet" href="../../assets/css/files.css">
 <?php
 // Get employee data
-$stmtEmployee = $pdo->prepare("SELECT firstname, lastname FROM employee_data WHERE employee_id = :employee_id");
-$stmtEmployee->execute(['employee_id' => $employee_id]);
+$stmtEmployee = $pdo->prepare("SELECT firstname, lastname FROM users WHERE user_id = :user_id");
+$stmtEmployee->execute(['user_id' => $user_id]);
 $dataEmployee = $stmtEmployee->fetch(PDO::FETCH_ASSOC);
 
 // Define file types
@@ -11,8 +11,8 @@ $file_types = ['communication', 'certifications', 'training_certificates', 'lice
 $file_data = [];
 
 // Get all files data in one query
-$stmt = $pdo->prepare("SELECT * FROM files WHERE employee_id = :employee_id");
-$stmt->execute(['employee_id' => $employee_id]);
+$stmt = $pdo->prepare("SELECT * FROM files WHERE user_id = :user_id");
+$stmt->execute(['user_id' => $user_id]);
 $all_files = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Organize files by type
@@ -34,7 +34,7 @@ foreach ($all_files as $file) {
         </div>
         <div class="col-md-4 text-end">
             <button class="btn btn-success" data-bs-toggle="modal" id="getID" data-bs-target="#create201"
-                data-id="<?= htmlspecialchars($employee_id) ?>">
+                data-id="<?= htmlspecialchars($user_id) ?>">
                 <i class="fa-solid fa-plus me-2"></i>Add New File
             </button>
         </div>
@@ -72,7 +72,7 @@ foreach ($all_files as $file) {
                         <div class="mx-2">
                             <label class="form-label">Employee file</label>
                             <input required type="file" name="201file" class="form-control">
-                            <input type="hidden" name="employee_id" id="employee_id">
+                            <input type="hidden" name="user_id" id="user_id" value="<?= $user_id ?>">
                         </div>
 
                         <!-- Form Submission -->
@@ -171,7 +171,7 @@ foreach ($all_files as $file) {
                                             title="Download File">
                                             <i class="fa-solid fa-download me-1"></i>Download
                                         </button>
-                                        <button class="btn btn-outline-danger btn-sm delete-file" data-bs-toggle="modal"
+                                        <button class="btn btn-outline-danger btn-sm " id="delete-file" data-bs-toggle="modal"
                                             data-bs-target="#deleteFile"
                                             data-id="<?= htmlspecialchars($files["files_id"]) ?>" title="Delete File">
                                             <i class="fa-solid fa-trash me-1"></i>Delete
@@ -224,4 +224,4 @@ foreach ($all_files as $file) {
         </form>
     </div>
 </div>
-<script src="../../assets/js/hr_js/files.js" defer></script>
+<script src="../../assets/js/hr_js/admin/files.js" defer></script>

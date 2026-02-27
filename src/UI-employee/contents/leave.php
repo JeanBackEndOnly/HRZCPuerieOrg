@@ -9,196 +9,10 @@
                 Leave</button>
         </div>
     </div>
-    <!-- create leave modal -->
-    <div class="modal fade" id="create_leave" tabindex="-1" aria-labelledby="create_leaveLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title text-white" id="create_leaveLabel">Request a leave</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form class="row g-3" id="leave-form" enctype="multipart/form-data">
-                        <input type="hidden" name="user_id" value="<?= htmlspecialchars($user_id) ?>">
-                        <input type="hidden" name="leaveStatus" value="Pending">
-                        <h5 class="w-100 text-center m-0">ZAMBOANGA PUERICULTURE CENTER ORG. NO.144 INC.</h5>
-                        <strong class="w-100 text-center m-0">APPLICATION FOR LEAVE</strong>
-                        <?php 
-                            date_default_timezone_set('Asia/Manila');
-                            $date = date('Y-m-d');
-                       ?>
-                        <input type="hidden" name="leaveDate" value="<?= $date ?>" class="form-control">
-                        <div class="col-md-3">
-                            <label class="form-label m-0">LEAVE APPLIED FOR <span class="text-danger">*</span></label>
-                        </div>
-                        <div class="col-md-3 d-flex align-items-center">
-                            <input type="radio" name="leaveType" value="Vacation_leave" required
-                                onclick="hide_medical()">
-                            <span class="d-flex align-items-center ms-2">Vacation Leave</span>
-                        </div>
-                        <div class="col-md-2 d-flex align-items-center">
-                            <input type="radio" name="leaveType" value="Sick_leave" required onclick="show_medical()">
-                            <span class="d-flex align-items-center ms-2">Sick Leave</span>
-                        </div>
-                        <div class="col-md-3 d-flex align-items-center">
-                            <input type="radio" name="leaveType" value="Special_leave" required
-                                onclick="hide_medical()">
-                            <span class="d-flex align-items-center ms-2">Special Leave</span>
-                        </div>
-                        <div class="col-md-12 align-items-center" style="display: none;" id="show-medical">
-                            <label class="form-label m-0 me-3">Medical Proof <span class="text-danger">*</span></label>
-                            <div class="col-md-9">
-                                <input type="file" name="medical_proof" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-md-2 d-flex align-items-center">
-                            <input type="radio" name="leaveType" value="Others" id="leaveTypeOthers" required
-                                onclick="hide_medical()">
-                            <label class="form-label d-flex align-items-center m-0 ms-2">Others Specify</label>
-                        </div>
-                        <div class="col-md-10">
-                            <input type="text" name="Others" class="form-control" id="othersInput" disabled>
-                        </div>
-                        <div class="col-md-12">
-                            <label class="form-label">COURSE/PURPOSE <span class="text-danger">(required)</span></label>
-                            <input type="text" required name="Purpose" class="form-control">
-                        </div>
-                        <div class="col-md-12 row">
-                            <div class="col-md-12 d-flex justify-content-start align-items-center mt-3">
-                                <button type="button" id="addDateBtn" class="btn btn-danger">Add date</button>
-                            </div>
-
-                            <div id="dateContainer" class="row">
-                                <div class="col-md-4">
-                                    <label class="form-label">
-                                        INCLUSIVE DATE: <span class="text-danger">(required)</span>
-                                    </label>
-                                    <input type="date" id="Inclusive_date" required name="inclusive_date[]"
-                                        class="form-control mb-2 inclusive-date">
-                                </div>
-                            </div>
-                            <script>
-                            document.getElementById("addDateBtn").addEventListener("click", function() {
-
-                                const container = document.getElementById("dateContainer");
-
-                                const div = document.createElement("div");
-                                div.className = "col-md-4";
-
-                                div.innerHTML = `
-                                        <label class="form-label">
-                                            INCLUSIVE DATE: <span class="text-danger">(required)</span>
-                                        </label>
-                                        <input type="date" required name="inclusive_date[]" 
-                                            class="form-control mb-2 inclusive-date">
-                                    `;
-
-                                container.appendChild(div);
-
-                                attachDateListeners();
-                            });
-                            </script>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="form-label">NO. OF DAYS <span
-                                        class="text-danger">(required)</span></label>
-                                <input type="number" required name="numberOfDays" class="form-control" id="numberOfDays"
-                                    readonly>
-                                <div id="daysError" class="text-danger small mt-1"></div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">CONTACT NO. WHILE ON LEAVE <span
-                                        class="text-danger">(required)</span></label>
-                                <input type="number" name="contact" required class="form-control">
-                            </div>
-                        </div>
-                        <p class="text-start w-100 text-dark">I hereby pledge to report for work immediately the
-                            following day after expiration of my approved leave of absence unless
-                            otherwise duly extended. My failure to do so shall subject me to disciplinary action</p>
-
-                        <div class="col-md-6">
-                            <label class="form-label">Section Head<span class="text-dark"> (optional)</span></label>
-                            <input type="text" name="sectionHead" class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Department Head<span class="text-dark"> (optional)</span></label>
-                            <input type="text" name="departmentHead" class="form-control">
-                        </div>
-                        <!-- Form Submission -->
-                        <div class="col-12 text-center mt-3">
-                            <button type="submit" class="btn btn-primary px-5">
-                                <i class="bi bi-person-plus-fill me-1"></i> Submit request
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="cancel_leave" tabindex="-1" aria-labelledby="cancel_leaveLabel" aria-hidden="true">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title text-white" id="cancel_leaveLabel">Confirmation Cancel</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form class="row g-3" id="cancel-leave-form">
-                        <input type="hidden" name="leave_id" id="get_leave_id">
-                        <input type="hidden" name="user_id" value="<?= $user_id ?>">
-                        <p class="text-center m-2 text-dark">Are you sure you watn to <strong>Cancel</strong> this leave
-                            request?</p>
-                        <!-- Form Submission -->
-                        <div class="col-12 text-center mt-3">
-                            <button type="submit" class="btn btn-primary px-5">
-                                <i class="bi bi-person-plus-fill me-1"></i> Yes, cancel
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mb-2">
-        <?php
-            $official = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Approved' AND user_id = '$user_id'")->fetchColumn();
-            $pending = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Pending' AND user_id = '$user_id'")->fetchColumn();
-            $recommended = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Recommended' AND user_id = '$user_id'")->fetchColumn();
-            $inactive = $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Disapproved' AND user_id = '$user_id'")->fetchColumn();
-            
-            // Total pending + recommended
-            $totalPendingRecommended = $pending + $recommended;
-        ?>
-        <div class="col-md-3">
-            <div class="card shadow bg-white text-center p-4">
-                <h4><?= $totalPendingRecommended ?></h4><span>Pending & Recommended</span>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card shadow bg-white text-center p-4">
-                <h4><?= $official ?></h4><span>Approved Leave</span>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card shadow bg-white text-center p-4">
-                <h4><?= $inactive ?></h4><span>Rejected Leave</span>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card shadow bg-white text-center p-4">
-                <h4><?= $official + $totalPendingRecommended + $inactive ?></h4><span>Total Leaves</span>
-            </div>
-        </div>
-    </div>
-
     <!-- EMPLOYEE ACCOUNT DISPLAYS =============================================================================================== -->
     <div class="card pb-5 mb-5">
-        <!-- NAVIAGATIONS OF TABS -->
-        <div class="card-body col-md-12 col-12 d-flex justify-content-between">
-            <ul class="nav nav-tabs col-md-10 col-12" id="LeaveRequestTabs">
+        <div class="card-body col-md-12 col-12 d-flex justify-content-between p-2">
+            <ul class="nav nav-tabs col-md-12 col-12" id="LeaveRequestTabs">
                 <li class="nav-item cursor-pointer col-md-3">
                     <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Pending_Leave"><i
                             class="fa-solid fa-clock me-2"></i>Pending Leaves</a>
@@ -216,123 +30,13 @@
                             class="fa-solid fa-user-minus me-2"></i>Disapproved Leaves</a>
                 </li>
             </ul>
-            <!-- <div class="col-md-2 col-12">
-                <input type="text" id="searchLeaves" placeholder="search by... Employee name, ID and leave_type" class="form-control">
-            </div> -->
         </div>
         <!-- CONTENTS -->
-        <div class="card-body ">
+        <div class="card-body p-2">
             <div class="tab-content">
                 <!-- Pending Leaves -->
-                <div class="tab-pane text-center table-body fade show active" id="Pending_Leave" role="tabpanel">
-
-                    <table class="text-center table table-bordered text-center table-sm">
-                        <thead class="table-light col-md-12">
-                            <tr>
-                                <th>#</th>
-                                <th>Employee Name</th>
-                                <th>Leave Type</th>
-                                <th>Inclusive Date</th>
-                                <th>Status</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody style="color: #666;">
-                            <?php 
-                                $stmt = $pdo->prepare("SELECT 
-                                        lr.leave_id,
-                                        lr.leaveType,
-                                        lr.leaveStatus,
-                                        lr.Purpose,
-                                        lr.numberOfDays,
-                                        lr.contact,
-                                        lr.request_date,
-                                        ed.user_id,
-                                        ed.firstname,
-                                        ed.middlename,
-                                        ed.lastname,
-                                        ed.suffix,
-                                        hd.employeeID
-                                    FROM leaveReq lr
-                                    INNER JOIN employee_data ed ON lr.user_id = ed.user_id
-                                    INNER JOIN hr_data hd ON ed.user_id = hd.user_id
-                                    WHERE lr.leaveStatus = 'Pending' AND ed.user_id = :user_id
-                                    ORDER BY lr.request_date DESC");
-                                $stmt->execute([
-                                    'user_id' => $user_id
-                                ]);
-                                $pendingLeave = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                                $count = 1;
-                                if (empty($pendingLeave)): ?>
-                            <tr>
-                                <td colspan="6" class="text-center text-muted py-4">No pending leaves found</td>
-                            </tr>
-                            <?php else: ?>
-                            <?php foreach($pendingLeave as $pending) : ?>
-                            <tr>
-                                <td><?= $count++ ?></td>
-                                <td><?= htmlspecialchars($pending["firstname"]) . " " . htmlspecialchars(substr($pending["middlename"], 0, 1)) . ". " . htmlspecialchars($pending["lastname"]) ?>
-                                </td>
-                                <td><?= htmlspecialchars($pending["leaveType"]) ?></td>
-                                <td>
-                                    <?php 
-                                        $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
-                                        LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
-                                        WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
-                                        $stmt->execute(['user_id' => $user_id, 'leave_id' => $pending["leave_id"]]);
-                                        $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                    ?>
-                                    <?php
-                                        if (!empty($getDate)) {
-
-                                            $timestamps = array_map(fn($d) => strtotime($d['inclusive_date']), $getDate);
-
-                                            sort($timestamps);
-
-                                            $months = [];
-                                            foreach ($timestamps as $ts) {
-                                                $month = strtoupper(date('M', $ts));
-                                                $day   = date('j', $ts); 
-                                                $months[$month][] = $day;
-                                            }
-
-                                            $year = date('Y', $timestamps[0]);
-
-                                            $parts = [];
-                                            foreach ($months as $month => $days) {
-                                                if (count($days) > 1) {
-                                                    $lastDay = array_pop($days);
-                                                    $parts[] = $month . ' ' . implode(', ', $days) . ', ' . $lastDay;
-                                                } else {
-                                                    $parts[] = $month . ' ' . $days[0];
-                                                }
-                                            }
-
-                                            echo implode(' ', $parts) . ' ' . $year;
-                                        }
-                                    ?>
-
-                                </td>
-                                <td><span class="badge bg-info"><?= htmlspecialchars($pending["leaveStatus"]) ?></span>
-                                </td>
-                                <td>
-                                    <button class="btn btn-danger m-0 btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#cancel_leave"
-                                        onclick="getLeaveId(<?= $pending['leave_id'] ?>)">
-                                        Cancel Request
-                                    </button>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Recommended Leaves -->
-                <div class="tab-pane text-center table-body fade" id="Recommended_Leave" role="tabpanel">
-                    <div class="table-responsive">
+                <div class="col-md-12 tab-pane text-center table-body fade show active" id="Pending_Leave" role="tabpanel">
+                    <div class="table-responsive w-100">
                         <table class="text-center table table-bordered text-center table-sm">
                             <thead class="table-light col-md-12">
                                 <tr>
@@ -346,51 +50,27 @@
                             </thead>
                             <tbody style="color: #666;">
                                 <?php 
-                                $stmt = $pdo->prepare("SELECT 
-                                        lr.leave_id,
-                                        lr.leaveType,
-                                        lr.leaveStatus,
-                                        lr.Purpose,
-                                        lr.numberOfDays,
-                                        lr.contact,
-                                        lr.request_date,
-                                        ed.user_id,
-                                        ed.firstname,
-                                        ed.middlename,
-                                        ed.lastname,
-                                        ed.suffix,
-                                        hd.employeeID                                    
-                                    FROM leaveReq lr
-                                    INNER JOIN employee_data ed ON lr.user_id = ed.user_id
-                                    INNER JOIN hr_data hd ON ed.user_id = hd.user_id
-                                    WHERE lr.leaveStatus = 'Recommended' AND ed.user_id = :user_id
-                                    ORDER BY lr.request_date DESC");
-                                $stmt->execute([
-                                    'user_id' => $user_id
-                                ]);
-                                $recommendedLeave = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                                $count = 1;
-                                if (empty($recommendedLeave)): ?>
+                                $countPending = 1;
+                                if (empty($PendingLeave)): ?>
                                 <tr>
-                                    <td colspan="6" class="text-center text-muted py-4">No recommended leaves found</td>
+                                    <td colspan="6" class="text-center text-muted py-4">No pending leaves found</td>
                                 </tr>
                                 <?php else: ?>
-                                <?php foreach($recommendedLeave as $recommended) : ?>
+                                <?php foreach($PendingLeave as $pending) : ?>
                                 <tr>
-                                    <td><?= $count++ ?></td>
-                                    <td><?= htmlspecialchars($recommended["firstname"]) . " " . htmlspecialchars(substr($recommended["middlename"], 0, 1)) . ". " . htmlspecialchars($recommended["lastname"]) ?>
+                                    <td><?= $countPending++ ?></td>
+                                    <td><?= htmlspecialchars($pending["firstname"]) . " " . htmlspecialchars(substr($pending["middlename"], 0, 1)) . ". " . htmlspecialchars($pending["lastname"]) ?>
                                     </td>
-                                    <td><?= htmlspecialchars($recommended["leaveType"]) ?></td>
+                                    <td><?= htmlspecialchars($pending["leaveType"]) ?></td>
                                     <td>
-                                    <?php 
+                                        <?php 
                                         $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
                                         LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
                                         WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
-                                        $stmt->execute(['user_id' => $user_id, 'leave_id' => $recommended["leave_id"]]);
+                                        $stmt->execute(['user_id' => $user_id, 'leave_id' => $pending["leave_id"]]);
                                         $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     ?>
-                                    <?php
+                                        <?php
                                         if (!empty($getDate)) {
 
                                             $timestamps = array_map(fn($d) => strtotime($d['inclusive_date']), $getDate);
@@ -420,7 +100,92 @@
                                         }
                                     ?>
 
-                                </td>
+                                    </td>
+                                    <td><span
+                                            class="badge bg-info"><?= htmlspecialchars($pending["leaveStatus"]) ?></span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger m-0 btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#cancel_leave"
+                                            onclick="getLeaveId(<?= $pending['leave_id'] ?>)">
+                                            Cancel Request
+                                        </button>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Recommended Leaves -->
+                <div class="col-md-12 tab-pane text-center table-body fade" id="Recommended_Leave" role="tabpanel">
+                    <div class="table-responsive w-100">
+                        <table class="text-center table table-bordered text-center table-sm">
+                            <thead class="table-light col-md-12">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Employee Name</th>
+                                    <th>Leave Type</th>
+                                    <th>Inclusive Date</th>
+                                    <th>Status</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody style="color: #666;">
+                                <?php 
+                                $countRecommended = 1;
+                                if (empty($RecommendedLeave)): ?>
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-4">No recommended leaves found</td>
+                                </tr>
+                                <?php else: ?>
+                                <?php foreach($RecommendedLeave as $recommended) : ?>
+                                <tr>
+                                    <td><?= $countRecommended++ ?></td>
+                                    <td><?= htmlspecialchars($recommended["firstname"]) . " " . htmlspecialchars(substr($recommended["middlename"], 0, 1)) . ". " . htmlspecialchars($recommended["lastname"]) ?>
+                                    </td>
+                                    <td><?= htmlspecialchars($recommended["leaveType"]) ?></td>
+                                    <td>
+                                        <?php 
+                                        $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
+                                        LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
+                                        WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
+                                        $stmt->execute(['user_id' => $user_id, 'leave_id' => $recommended["leave_id"]]);
+                                        $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                    ?>
+                                        <?php
+                                        if (!empty($getDate)) {
+
+                                            $timestamps = array_map(fn($d) => strtotime($d['inclusive_date']), $getDate);
+
+                                            sort($timestamps);
+
+                                            $months = [];
+                                            foreach ($timestamps as $ts) {
+                                                $month = strtoupper(date('M', $ts));
+                                                $day   = date('j', $ts); 
+                                                $months[$month][] = $day;
+                                            }
+
+                                            $year = date('Y', $timestamps[0]);
+
+                                            $parts = [];
+                                            foreach ($months as $month => $days) {
+                                                if (count($days) > 1) {
+                                                    $lastDay = array_pop($days);
+                                                    $parts[] = $month . ' ' . implode(', ', $days) . ', ' . $lastDay;
+                                                } else {
+                                                    $parts[] = $month . ' ' . $days[0];
+                                                }
+                                            }
+
+                                            echo implode(' ', $parts) . ' ' . $year;
+                                        }
+                                    ?>
+
+                                    </td>
                                     <td><span
                                             class="badge bg-info"><?= htmlspecialchars($recommended["leaveStatus"]) ?></span>
                                     </td>
@@ -439,8 +204,8 @@
                 </div>
 
                 <!-- Approved Leaves -->
-                <div class="tab-pane text-center table-body fade" id="Approved_leave" role="tabpanel">
-                    <div class="table-responsive">
+                <div class="col-md-12 tab-pane text-center table-body fade" id="Approved_leave" role="tabpanel">
+                    <div class="table-responsive w-100">
                         <table class="text-center table table-bordered text-center table-sm">
                             <thead class="table-light col-md-12">
                                 <tr>
@@ -454,31 +219,7 @@
                             </thead>
                             <tbody style="color: #666;">
                                 <?php 
-                                $stmt = $pdo->prepare("SELECT 
-                                        lr.leave_id,
-                                        lr.leaveType,
-                                        lr.leaveStatus,
-                                        lr.Purpose,
-                                        lr.numberOfDays,
-                                        lr.contact,
-                                        lr.request_date,
-                                        ed.user_id,
-                                        ed.firstname,
-                                        ed.middlename,
-                                        ed.lastname,
-                                        ed.suffix,
-                                        hd.employeeID                                    
-                                    FROM leaveReq lr
-                                    INNER JOIN employee_data ed ON lr.user_id = ed.user_id
-                                    INNER JOIN hr_data hd ON ed.user_id = hd.user_id
-                                    WHERE lr.leaveStatus = 'Approved' AND ed.user_id = :user_id
-                                    ORDER BY lr.request_date DESC");
-                                $stmt->execute([
-                                    'user_id' => $user_id
-                                ]);
-                                $ApprovedLeave = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                                $count = 1;
+                                $countApproved = 1;
                                 if (empty($ApprovedLeave)): ?>
                                 <tr>
                                     <td colspan="6" class="text-center text-muted py-4">No approved leaves found</td>
@@ -486,7 +227,7 @@
                                 <?php else: ?>
                                 <?php foreach($ApprovedLeave as $approved) : ?>
                                 <tr>
-                                    <td><?= $count++ ?></td>
+                                    <td><?= $countApproved++ ?></td>
                                     <td><?= htmlspecialchars($approved["firstname"]) . " " . htmlspecialchars(substr($approved["middlename"], 0, 1)) . ". " . htmlspecialchars($approved["lastname"]) ?>
                                     </td>
                                     <td><?= htmlspecialchars($approved["leaveType"]) ?></td>
@@ -497,10 +238,37 @@
                                             WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
                                             $stmt->execute(['user_id' => $user_id, 'leave_id' => $approved["leave_id"]]);
                                             $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                            foreach($getDate as $date):
                                         ?>
-                                        <?= htmlspecialchars($date["inclusive_date"]) ?>
-                                        <?php endforeach; ?>
+                                        <?php
+                                            if (!empty($getDate)) {
+
+                                                $timestamps = array_map(fn($d) => strtotime($d['inclusive_date']), $getDate);
+
+                                                sort($timestamps);
+
+                                                $months = [];
+                                                foreach ($timestamps as $ts) {
+                                                    $month = strtoupper(date('M', $ts));
+                                                    $day   = date('j', $ts); 
+                                                    $months[$month][] = $day;
+                                                }
+
+                                                $year = date('Y', $timestamps[0]);
+
+                                                $parts = [];
+                                                foreach ($months as $month => $days) {
+                                                    if (count($days) > 1) {
+                                                        $lastDay = array_pop($days);
+                                                        $parts[] = $month . ' ' . implode(', ', $days) . ', ' . $lastDay;
+                                                    } else {
+                                                        $parts[] = $month . ' ' . $days[0];
+                                                    }
+                                                }
+
+                                                echo implode(' ', $parts) . ' ' . $year;
+                                            }
+                                        ?>
+
                                     </td>
                                     <td>
                                         <span
@@ -521,8 +289,8 @@
                 </div>
 
                 <!-- Rejected Leaves -->
-                <div class="tab-pane text-center table-body fade" id="Rejected_Leave" role="tabpanel">
-                    <div class="table-responsive">
+                <div class="col-md-12 tab-pane text-center table-body fade" id="Rejected_Leave" role="tabpanel">
+                    <div class="table-responsive w-100">
                         <table class="text-center table table-bordered text-center table-sm">
                             <thead class="table-light col-md-12">
                                 <tr>
@@ -536,81 +304,57 @@
                             </thead>
                             <tbody style="color: #666;">
                                 <?php 
-                                $stmt = $pdo->prepare("SELECT 
-                                        lr.leave_id,
-                                        lr.leaveType,
-                                        lr.leaveStatus,
-                                        lr.Purpose,
-                                        lr.numberOfDays,
-                                        lr.contact,
-                                        lr.request_date,
-                                        ed.user_id,
-                                        ed.firstname,
-                                        ed.middlename,
-                                        ed.lastname,
-                                        ed.suffix,
-                                        hd.employeeID                                    
-                                    FROM leaveReq lr
-                                    INNER JOIN employee_data ed ON lr.user_id = ed.user_id
-                                    INNER JOIN hr_data hd ON ed.user_id = hd.user_id
-                                    WHERE lr.leaveStatus = 'Disapproved' AND ed.user_id = :user_id
-                                    ORDER BY lr.request_date DESC");
-                                $stmt->execute([
-                                    'user_id' => $user_id
-                                ]);
-                                $disapprovedLeave = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                                $count = 1;
-                                if (empty($disapprovedLeave)): ?>
+                                $countDisapproved = 1;
+                                if (empty($DisapprovedLeave)): ?>
                                 <tr>
                                     <td colspan="6" class="text-center text-muted py-4">No disapproved leaves found</td>
                                 </tr>
                                 <?php else: ?>
-                                <?php foreach($disapprovedLeave as $disapproved) : ?>
+                                <?php foreach($DisapprovedLeave as $disapproved) : ?>
                                 <tr>
-                                    <td><?= $count++ ?></td>
+                                    <td><?= $countDisapproved++ ?></td>
                                     <td><?= htmlspecialchars($disapproved["firstname"]) . " " . htmlspecialchars(substr($disapproved["middlename"], 0, 1)) . ". " . htmlspecialchars($disapproved["lastname"]) ?>
                                     </td>
                                     <td><?= htmlspecialchars($disapproved["leaveType"]) ?></td>
                                     <td>
-                                    <?php 
-                                        $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
-                                        LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
-                                        WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
-                                        $stmt->execute(['user_id' => $user_id, 'leave_id' => $recommended["leave_id"]]);
-                                        $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                    ?>
-                                    <?php
-                                        if (!empty($getDate)) {
+                                        <?php 
+                                            $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
+                                            LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
+                                            WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
+                                            $stmt->execute(['user_id' => $user_id, 'leave_id' => $disapproved["leave_id"]]);
+                                            $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                        ?>
+                                        <?php
+                                            if (!empty($getDate)) {
 
-                                            $timestamps = array_map(fn($d) => strtotime($d['inclusive_date']), $getDate);
+                                                $timestamps = array_map(fn($d) => strtotime($d['inclusive_date']), $getDate);
 
-                                            sort($timestamps);
+                                                sort($timestamps);
 
-                                            $months = [];
-                                            foreach ($timestamps as $ts) {
-                                                $month = strtoupper(date('M', $ts));
-                                                $day   = date('j', $ts); 
-                                                $months[$month][] = $day;
-                                            }
-
-                                            $year = date('Y', $timestamps[0]);
-
-                                            $parts = [];
-                                            foreach ($months as $month => $days) {
-                                                if (count($days) > 1) {
-                                                    $lastDay = array_pop($days);
-                                                    $parts[] = $month . ' ' . implode(', ', $days) . ', ' . $lastDay;
-                                                } else {
-                                                    $parts[] = $month . ' ' . $days[0];
+                                                $months = [];
+                                                foreach ($timestamps as $ts) {
+                                                    $month = strtoupper(date('M', $ts));
+                                                    $day   = date('j', $ts); 
+                                                    $months[$month][] = $day;
                                                 }
+
+                                                $year = date('Y', $timestamps[0]);
+
+                                                $parts = [];
+                                                foreach ($months as $month => $days) {
+                                                    if (count($days) > 1) {
+                                                        $lastDay = array_pop($days);
+                                                        $parts[] = $month . ' ' . implode(', ', $days) . ', ' . $lastDay;
+                                                    } else {
+                                                        $parts[] = $month . ' ' . $days[0];
+                                                    }
+                                                }
+
+                                                echo implode(' ', $parts) . ' ' . $year;
                                             }
+                                        ?>
 
-                                            echo implode(' ', $parts) . ' ' . $year;
-                                        }
-                                    ?>
-
-                                </td>
+                                    </td>
                                     <td><span
                                             class="badge bg-danger"><?= htmlspecialchars($disapproved["leaveStatus"]) ?></span>
                                     </td>
@@ -631,13 +375,225 @@
         </div>
     </div>
 </section>
+<!-- =========================== MODALS ========================================= -->
+<!-- create leave modal -->
+<div class="modal fade" id="create_leave" tabindex="-1" aria-labelledby="create_leaveLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title text-white" id="create_leaveLabel">Request a leave</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" id="leave-form" enctype="multipart/form-data">
+                    <input type="hidden" name="user_id" value="<?= htmlspecialchars($user_id) ?>">
+                    <input type="hidden" name="leaveStatus" value="Pending">
+                    <h5 class="w-100 text-center m-0">ZAMBOANGA PUERICULTURE CENTER ORG. NO.144 INC.</h5>
+                    <strong class="w-100 text-center m-0">APPLICATION FOR LEAVE</strong>
+                    <?php 
+                            date_default_timezone_set('Asia/Manila');
+                            $date = date('Y-m-d');
+                       ?>
+                    <input type="hidden" name="leaveDate" value="<?= $date ?>" class="form-control">
+                    <div class="col-md-3">
+                        <label class="form-label m-0">LEAVE APPLIED FOR <span class="text-danger">*</span></label>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <input type="radio" name="leaveType" value="Vacation_leave" required onclick="hide_medical()">
+                        <span class="d-flex align-items-center ms-2">Vacation Leave</span>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-center">
+                        <input type="radio" name="leaveType" value="Sick_leave" required onclick="show_medical()">
+                        <span class="d-flex align-items-center ms-2">Sick Leave</span>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <input type="radio" name="leaveType" value="Special_leave" required onclick="hide_medical()">
+                        <span class="d-flex align-items-center ms-2">Special Leave</span>
+                    </div>
+                    <div class="col-md-12 align-items-center" style="display: none;" id="show-medical">
+                        <label class="form-label m-0 me-3">Medical Proof <span class="text-danger">*</span></label>
+                        <div class="col-md-9">
+                            <input type="file" name="medical_proof" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-center">
+                        <input type="radio" name="leaveType" value="Others" id="leaveTypeOthers" required
+                            onclick="hide_medical()">
+                        <label class="form-label d-flex align-items-center m-0 ms-2">Others Specify</label>
+                    </div>
+                    <div class="col-md-10">
+                        <input type="text" name="Others" class="form-control" id="othersInput" disabled>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="form-label">COURSE/PURPOSE <span class="text-danger">(required)</span></label>
+                        <input type="text" required name="Purpose" class="form-control">
+                    </div>
+                    <div class="col-md-12 row">
+                        <div class="col-md-12 d-flex justify-content-start align-items-center mt-3">
+                            <button type="button" id="addDateBtn" class="btn btn-danger">Add date</button>
+                        </div>
 
+                        <div id="dateContainer" class="row">
+                            <div class="col-md-4">
+                                <label class="form-label">
+                                    INCLUSIVE DATE: <span class="text-danger">(required)</span>
+                                </label>
+                                <input type="date" id="Inclusive_date" required name="inclusive_date[]"
+                                    class="form-control mb-2 inclusive-date">
+                            </div>
+                        </div>
+                        <script>
+                        document.getElementById("addDateBtn").addEventListener("click", function() {
+
+                            const container = document.getElementById("dateContainer");
+
+                            const div = document.createElement("div");
+                            div.className = "col-md-4";
+
+                            div.innerHTML = `
+                                        <label class="form-label">
+                                            INCLUSIVE DATE: <span class="text-danger">(required)</span>
+                                        </label>
+                                        <input type="date" required name="inclusive_date[]" 
+                                            class="form-control mb-2 inclusive-date">
+                                    `;
+
+                            container.appendChild(div);
+
+                            attachDateListeners();
+                        });
+                        </script>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">NO. OF DAYS <span class="text-danger">(required)</span></label>
+                            <input type="number" required name="numberOfDays" class="form-control" id="numberOfDays"
+                                readonly>
+                            <div id="daysError" class="text-danger small mt-1"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">CONTACT NO. WHILE ON LEAVE <span
+                                    class="text-danger">(required)</span></label>
+                            <input type="number" name="contact" required class="form-control">
+                        </div>
+                    </div>
+                    <p class="text-start w-100 text-dark">I hereby pledge to report for work immediately the
+                        following day after expiration of my approved leave of absence unless
+                        otherwise duly extended. My failure to do so shall subject me to disciplinary action</p>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Section Head<span class="text-dark"> (optional)</span></label>
+                        <input type="text" name="sectionHead" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Department Head<span class="text-dark"> (optional)</span></label>
+                        <input type="text" name="departmentHead" class="form-control">
+                    </div>
+                    <!-- Form Submission -->
+                    <div class="col-12 text-center mt-3">
+                        <button type="submit" class="btn btn-primary px-5">
+                            <i class="bi bi-person-plus-fill me-1"></i> Submit request
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cancel leave modal -->
+<div class="modal fade" id="cancel_leave" tabindex="-1" aria-labelledby="cancel_leaveLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title text-white" id="cancel_leaveLabel">Confirmation Cancel</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" id="cancel-leave-form">
+                    <input type="hidden" name="leave_id" id="get_leave_id">
+                    <input type="hidden" name="user_id" value="<?= $user_id ?>">
+                    <p class="text-center m-2 text-dark">Are you sure you watn to <strong>Cancel</strong> this leave
+                        request?</p>
+                    <!-- Form Submission -->
+                    <div class="col-12 text-center mt-3">
+                        <button type="submit" class="btn btn-primary px-5">
+                            <i class="bi bi-person-plus-fill me-1"></i> Yes, cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
-function getLeaveId(LeaveId) {
-    document.getElementById("get_leave_id").value = LeaveId;
-}
+    document.addEventListener('DOMContentLoaded', function() {
+        employeeLeaveIni();
+    
+    });
 
+    function employeeLeaveIni() {
+        const tabButtons = document.querySelectorAll('#LeaveRequestTabs .nav-link');
+        const tabContents = document.querySelectorAll('.tab-pane');
+        
+        // Initialize tabs - hide all except active
+        tabContents.forEach(content => {
+            if (!content.classList.contains('active')) {
+                content.style.display = 'none';
+            }
+        });
+        
+        tabButtons.forEach((button) => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Update active button
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Hide all tab contents
+                tabContents.forEach(content => {
+                    content.style.display = 'none';
+                    content.classList.remove('show', 'active');
+                });
+                
+                // Show the selected tab
+                const targetId = this.getAttribute('data-bs-target');
+                const targetContent = document.querySelector(targetId);
+                if (targetContent) {
+                    targetContent.style.display = 'flex';
+                    targetContent.classList.add('show', 'active');
+                    
+                    // Load data for the active tab
+                    if (targetId === '#Recommended_Leave') {
+                        // loadEmployeeData_hr_pending();
+                    } else if (targetId === '#Pending_Leave') {
+                        // loadEmployeeData_hr();
+                    } else if (targetId === '#Approved_leave') {
+                        // loadEmployeeData_hr_rejected();
+                    }  else if (targetId === '#Rejected_Leave') {
+                        // loadEmployeeData_hr_rejected();
+                    } 
+                }
+            });
+        });
+    }
 
+    function getLeaveId(LeaveId) {
+        document.getElementById("get_leave_id").value = LeaveId;
+    }
+
+    function show_medical() {
+        const medical = document.getElementById('show-medical').style.display = 'flex';
+    }
+
+    function hide_medical() {
+        const medical = document.getElementById('show-medical').style.display = 'none';
+    }
+
+</script>
+<script>
 const daysInput = document.getElementById('numberOfDays');
 const daysError = document.getElementById('daysError');
 
@@ -694,13 +650,4 @@ document.addEventListener('DOMContentLoaded', function() {
         radio.addEventListener('change', toggleOthersInput);
     });
 });
-</script>
-<script>
-function show_medical() {
-    const medical = document.getElementById('show-medical').style.display = 'flex';
-}
-
-function hide_medical() {
-    const medical = document.getElementById('show-medical').style.display = 'none';
-}
 </script>

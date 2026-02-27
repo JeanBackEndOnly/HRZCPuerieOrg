@@ -5,49 +5,10 @@
     
     require_once '../../authentication/config.php';
 
-// HR data fetching ==================================================================================
-    function getHrData(){
-        $pdo = db_connect();
-        if($_SESSION["hrData"]["user_id"]){
-            $hr_id = $_SESSION["hrData"]["user_id"];
-        }else{
-            $hr_id = null;
-        }
-        $query = "SELECT jobtitles.*, users.*, departments.*, employee_data.*, us.unit_section_id, us.unit_section_name FROM users
-        INNER JOIN employee_data ON users.user_id = employee_data.user_id
-        INNER JOIN jobtitles ON employee_data.jobtitle_id = jobtitles.jobtitles_id
-        INNER JOIN departments ON employee_data.Department_id = departments.Department_id
-        LEFT JOIN unit_section us ON employee_data.unit_section_id = us.unit_section_id
-        WHERE users.user_id = :user_id";
-        $stmt = $pdo->prepare($query);
-        $stmt->execute(['user_id' => $hr_id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-// ADMIN DATA ========================================================================================
-    function getAdminData(){
-        $pdo = db_connect();
-        if($_SESSION["adminData"]["user_id"]){
-            $admin_id = $_SESSION["adminData"]["user_id"];
-        }else{
-            $admin_id = null;
-        }
-        $query = "SELECT jobtitles.*, users.*, departments.*, employee_data.*, us.unit_section_id, us.unit_section_name 
-        FROM users
-        INNER JOIN employee_data ON users.user_id = employee_data.user_id
-        LEFT JOIN jobtitles ON employee_data.jobtitle_id = jobtitles.jobtitles_id
-        LEFT JOIN departments ON employee_data.Department_id = departments.Department_id
-        LEFT JOIN unit_section us ON employee_data.unit_section_id = us.unit_section_id
-        WHERE users.user_id = :user_id";
-        $stmt = $pdo->prepare($query);
-        $stmt->execute(['user_id' => $admin_id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-
 // Get Leaves ========================================================================================
-    function getRecommendedLeave(){
+    function getPendingLeave(){
         $pdo = db_connect();
+        $user_id = $_SESSION["employeeData"]["user_id"];
         $stmt = $pdo->prepare("SELECT 
             lr.leave_id,
             lr.leaveType,
@@ -64,13 +25,38 @@
             u.employeeID
             FROM leaveReq lr
             INNER JOIN users u ON lr.user_id = u.user_id
-            WHERE lr.leaveStatus = 'Recommended'
+            WHERE lr.leaveStatus = 'Pending' AND u.user_id = ?
             ORDER BY lr.request_date DESC");
-        $stmt->execute();
+        $stmt->execute([$user_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    function getRecommendedLeave(){
+        $pdo = db_connect();
+        $user_id = $_SESSION["employeeData"]["user_id"];
+        $stmt = $pdo->prepare("SELECT 
+            lr.leave_id,
+            lr.leaveType,
+            lr.leaveStatus,
+            lr.Purpose,
+            lr.numberOfDays,
+            lr.contact,
+            lr.request_date,
+            u.user_id,
+            u.firstname,
+            u.middlename,
+            u.lastname,
+            u.suffix,
+            u.employeeID
+            FROM leaveReq lr
+            INNER JOIN users u ON lr.user_id = u.user_id
+            WHERE lr.leaveStatus = 'Recommended' AND u.user_id = ?
+            ORDER BY lr.request_date DESC");
+        $stmt->execute([$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     function getApprovedLeave(){
         $pdo = db_connect();
+        $user_id = $_SESSION["employeeData"]["user_id"];
         $stmt = $pdo->prepare("SELECT 
             lr.leave_id,
             lr.leaveType,
@@ -87,13 +73,14 @@
             u.employeeID
             FROM leaveReq lr
             INNER JOIN users u ON lr.user_id = u.user_id
-            WHERE lr.leaveStatus = 'Approved'
+            WHERE lr.leaveStatus = 'Approved' AND u.user_id = ?
             ORDER BY lr.request_date DESC");
-        $stmt->execute();
+        $stmt->execute([$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     function getDisapprovedLeave(){
         $pdo = db_connect();
+        $user_id = $_SESSION["employeeData"]["user_id"];
         $stmt = $pdo->prepare("SELECT 
             lr.leave_id,
             lr.leaveType,
@@ -110,19 +97,37 @@
             u.employeeID
             FROM leaveReq lr
             INNER JOIN users u ON lr.user_id = u.user_id
-            WHERE lr.leaveStatus = 'Disapproved'
+            WHERE lr.leaveStatus = 'Disapproved' AND u.user_id = ?
             ORDER BY lr.request_date DESC");
-        $stmt->execute();
+        $stmt->execute([$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-// Career Path History ==============================================================================
-    function getCareerPathHistory(){
+// Fetch own Data =============================================================
+    function getEmployeeData(){
         $pdo = db_connect();
-        if(isset($_GET["id"]) && $_GET["id"] !== ''){
-            $user_id = $_GET["id"];
-        }else if($_SESSION["adminData"]["user_id"]){
-            $user_id = $_SESSION["adminData"]["user_id"];
+        if($_SESSION["employeeData"]["user_id"]){
+            $employee_id = $_SESSION["employeeData"]["user_id"];
+        }else{
+            $employee_id = null;
+        }
+        $query = "SELECT jobtitles.*, lc.*, users.*, departments.*, employee_data.*, us.unit_section_id, us.unit_section_name FROM users
+        INNER JOIN employee_data ON users.user_id = employee_data.user_id
+        INNER JOIN jobtitles ON employee_data.jobtitle_id = jobtitles.jobtitles_id
+        INNER JOIN departments ON employee_data.Department_id = departments.Department_id
+        INNER JOIN leaveCounts lc ON users.user_id = lc.user_id
+        LEFT JOIN unit_section us ON employee_data.unit_section_id = us.unit_section_id
+        WHERE users.user_id = :user_id";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute(['user_id' => $employee_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+// Career Path History ==============================================================================
+    function employeeCareerPath(){
+        $pdo = db_connect();
+        if($_SESSION["employeeData"]["user_id"]){
+            $user_id = $_SESSION["employeeData"]["user_id"];
         }
         $stmt = $pdo->prepare("SELECT 
             jh.job_historyID,

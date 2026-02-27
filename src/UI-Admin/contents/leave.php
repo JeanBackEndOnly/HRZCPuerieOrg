@@ -56,8 +56,8 @@
                                             <?php 
                                                 $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
                                                 LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
-                                                WHERE lr.employee_id = :employee_id AND lr.leave_id = :leave_id");
-                                                $stmt->execute(['employee_id' => $recommended["employee_id"], 'leave_id' => $recommended["leave_id"]]);
+                                                WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
+                                                $stmt->execute(['user_id' => $recommended["user_id"], 'leave_id' => $recommended["leave_id"]]);
                                                 $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             ?>
                                             <?php
@@ -133,8 +133,8 @@
                                         <?php 
                                             $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
                                             LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
-                                            WHERE lr.employee_id = :employee_id AND lr.leave_id = :leave_id");
-                                            $stmt->execute(['employee_id' => $approved["employee_id"], 'leave_id' => $approved["leave_id"]]);
+                                            WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
+                                            $stmt->execute(['user_id' => $approved["user_id"], 'leave_id' => $approved["leave_id"]]);
                                             $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         ?>
                                         <?php
@@ -210,8 +210,8 @@
                                         <?php 
                                             $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
                                             LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
-                                            WHERE lr.employee_id = :employee_id AND lr.leave_id = :leave_id");
-                                            $stmt->execute(['employee_id' => $disapproved["employee_id"], 'leave_id' => $disapproved["leave_id"]]);
+                                            WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
+                                            $stmt->execute(['user_id' => $disapproved["user_id"], 'leave_id' => $disapproved["leave_id"]]);
                                             $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         ?>
                                         <?php

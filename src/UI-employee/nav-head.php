@@ -2,6 +2,9 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+include 'view_header.php';
+
 if (!isset($_SESSION['employeeData'])) {
   include 'eror.php';
   exit;
@@ -98,35 +101,13 @@ if ($days_passed >= 15) {
 }
 </style>
 
-<div class="media-logout-adjust bg-gradient-primary justify-content-between d-flex ">
+<div class="media-logout-adjust bg-gradient-primary justify-content-between d-flex p-2">
     <div class="col-md-2 col-1 align-items-center justify-content-center burger-ka-saken" style="display: none;">
         <i class="fa-solid fw-solid fa-bars"></i>
     </div>
     <div class="mx-3 d-flex align-items-center justify-content-center col-md-6 col-7 no-media-margin">
         <img src="../../assets/image/system_logo/pueri-logo.png" class="image-header me-2">
         <h4 class="w-100 text-white m-0 system-title">Zamboanga Puericulture Center</h4>
-    </div>
-    <div class="justify-content-start p-4 mx-2 d-flex col-md-1 col-2 media-header-padding no-media-margin">
-
-        <button type="button" id="logoutBtn" class="col-md-2 col-3 button-location-media">
-            <i class="fas fa-sign-out-alt text-black ms-1"></i>
-        </button>
-        <div class="logoutDomain col-md-3 col-8 h-auto  shadow rounded-1 flex-column border" id="logoutDomain"
-            style="display:none; background-color: #fff !important;">
-            <div class="header-logout bg-danger p-3 d-flex align-items-start justify-content-start w-100 rounded-top">
-                <strong class="text-white">Logout Confirmation</strong>
-            </div>
-            <div class="body-logout py-4 px-4">
-                <span class="fw-bold text-muted"> Are you sure you want to logout?</span>
-            </div>
-            <div class="footer-logout w-100 d-flex align-items-end justify-content-end gap-3 pb-3 pe-3 pt-2"
-                style="border-top: solid .5px #0e0e0e4f !important;">
-                <button class="m-0 btn btn-danger" id="logout" class="logout" style="cursor: pointer;">
-                    yes
-                </button>
-                <button class="m-0 btn btn-dark" type="button">Cancel</button>
-            </div>
-        </div>
     </div>
 </div>
 

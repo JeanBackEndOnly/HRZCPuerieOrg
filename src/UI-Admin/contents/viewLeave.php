@@ -3,11 +3,11 @@ $leave_id = $_GET["leave_id"];
 $stmtGetLEave = $pdo->prepare("
     SELECT 
         lr.*,
-        ed.firstname,
-        ed.middlename,
-        ed.lastname,
-        ed.suffix,
-        ed.employee_id,
+        u.firstname,
+        u.middlename,
+        u.lastname,
+        u.suffix,
+        u.user_id,
         jt.jobTitle,
         d.Department_name AS department,
         lc.VacationBalance,
@@ -15,16 +15,16 @@ $stmtGetLEave = $pdo->prepare("
         lc.SpecialBalance,
         lc.OthersBalance
     FROM leaveReq lr
-    INNER JOIN employee_data ed ON lr.employee_id = ed.employee_id
-    LEFT JOIN hr_data hr ON lr.employee_id = hr.employee_id
-    LEFT JOIN jobTitles jt ON hr.jobtitle_id = jt.jobTitles_id
-    LEFT JOIN departments d ON hr.Department_id = d.Department_id
-    LEFT JOIN leaveCounts lc ON ed.employee_id = lc.employee_id
+    INNER JOIN users u ON lr.user_id = u.user_id
+    LEFT JOIN employee_data ed ON lr.user_id = ed.user_id
+    LEFT JOIN jobTitles jt ON ed.jobtitle_id = jt.jobTitles_id
+    LEFT JOIN departments d ON ed.Department_id = d.Department_id
+    LEFT JOIN leaveCounts lc ON u.user_id = lc.user_id
     WHERE lr.leave_id = ?
 ");
 $stmtGetLEave->execute([$leave_id]);
 $leave = $stmtGetLEave->fetch(PDO::FETCH_ASSOC);
-$employee_id = $leave["employee_id"] ?? '';
+$user_id = $leave["user_id"] ?? '';
 
 ?>
 
@@ -57,7 +57,7 @@ $employee_id = $leave["employee_id"] ?? '';
 
         <div class="modal-body row w-100 scroll leave-height ms-2">
             <!-- Hidden Fields -->
-            <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
+            <input type="hidden" name="user_id" value="<?= $user_id ?>">
             <input type="hidden" name="leave_id" id="leave_id" value="<?= htmlspecialchars($leave['leave_id']) ?>">
 
             <h5 class="w-100 text-center m-0">ZAMBOANGA PUERICULTURE CENTER ORG. NO.144 INC.</h5>
@@ -144,8 +144,8 @@ $employee_id = $leave["employee_id"] ?? '';
                 <?php 
                                             $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
                                             LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
-                                            WHERE lr.employee_id = :employee_id AND lr.leave_id = :leave_id");
-                                            $stmt->execute(['employee_id' => $leave["employee_id"], 'leave_id' => $leave["leave_id"]]);
+                                            WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
+                                            $stmt->execute(['user_id' => $leave["user_id"], 'leave_id' => $leave["leave_id"]]);
                                             $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         ?>
                 <?php

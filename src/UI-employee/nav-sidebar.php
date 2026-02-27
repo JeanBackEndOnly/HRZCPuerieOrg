@@ -2,31 +2,33 @@
 <nav id="sidebar" class="navbarHide">
     <div style="width: 240px !important;">
         <div class="sidebar-list">
-            <div class="profile-nav bg-gradeint-fade w-100 d-flex align-items-start justify-content-center flex-column p-2">
-                <div class="w-100 d-flex align-items-center justify-content-center">
+            <div
+                class="profile-nav mb-1 p-3 bg-gradeint-fade w-100 d-flex align-items-start justify-content-center p-2">
+                <div class="col-md-4 d-flex align-items-center justify-content-center">
                     <?php if($profile_picture == null){ ?>
-                        <strong class="py-1 px-5 text-dark mb-2" style="
-                                    border-radius: 50%;
-                                    font-size: 4rem;
-                                    background-color: #FEFEFE;
-                                "><?= htmlspecialchars(substr($lastname, 0,1)) ?>
+                    <div class="nav-circle-profile d-flex align-items-center justify-content-center font-19">
+                        <strong class="p-0 text-white">
+                            <?= htmlspecialchars(substr($firstname, 0,1) . substr($lastname, 0,1)) ?>
                         </strong>
-                    <?php } else { ?>
-                        <img src="../../authentication/uploads/<?= $profile_picture ?>" class="image-profile">
+                    </div>
+                    <?php } else {?>
+                    <img src="../../authentication/uploads<?= $profile_picture ?>" class="image-profile"
+                        alt="This is the admin profile picture">
                     <?php } ?>
                 </div>
-                <strong class="text-center text-dark fw-bolder w-100 m-0">
-                    <?= htmlspecialchars($firstname) . ' ' . htmlspecialchars(substr($middelname,0,1)) . ' ' . htmlspecialchars($lastname) ?>
-                </strong>
-                <strong class="w-100 text-center text-dark fw-bolder">
-                    <span class="w-100 text-dark fw-bolder"><?= ' ' . htmlspecialchars($employeeID) ?></span>
-                </strong>
-                <strong class="w-100 text-center text-dark fw-bolder">
-                    <span class="w-100 text-dark fw-bolder"><?= ' ' . htmlspecialchars($position) ?></span>
-                </strong>
-                <strong class="w-100 text-center text-dark fw-bolder">
-                    <span class="w-100 text-dark fw-bolder"><?= ' ' . htmlspecialchars($department) ?></span>
-                </strong>
+                <div class="col-md-8 d-flex flex-column ps-2">
+                    <strong class="text-start text-dark fw-bolder col-md-12 m-0">
+                        <span
+                            class="w-100 text-start text-dark fw-bolder"><?= htmlspecialchars($firstname) . ' '
+                            . htmlspecialchars(substr($middelname,0,1)) . '. ' . htmlspecialchars($lastname) ?>
+                        </span>
+                    </strong>
+                    <strong class="w-100 text-start text-dark d-flex align-items-center">
+                        <i class="fa-solid fa-circle text-success font-8 me-1"></i><span
+                            class="w-100 text-start text-dark fw-bolder"><?= 'EMP-' . htmlspecialchars($employeeID) ?></span>
+                    </strong>
+                </div>
+
             </div>
             <a href="index.php?page=home" class="nav-item nav-home ">
                 <span class=""><i class=""></i></span> Dashboard
@@ -40,19 +42,42 @@
             <a href="index.php?page=contents/payroll" class="nav-item nav-payroll my-0">
                 <span class=""><i class=""></i></span> Payslip
             </a>
-            <a href="index.php?page=contents/employment" class="nav-item nav-employment my-0">
-                <span class=""><i class=""></i></span> Employment History 
-            </a>
             <a href="index.php?page=contents/201" class="nav-item nav-201 my-0">
                 <span class=""><i class=""></i></span> 201 Files
             </a>
-            <a href="index.php?page=contents/setting" class="nav-item nav-setting my-0">
+            <a href="index.php?page=contents/setting" class="nav-item nav-setting nav-pds my-0">
                 <span class=""><i class=""></i></span> Account Settings
             </a>
+            <div class="text-dark position-logout d-flex border" style="width: 240px;">
+                <div class="w-70 text-center p-2">
+                    <strong class="fs-6">EMPLOYEE PANEL</strong>
+                </div>
+                <div class="w-30 p-2 d-flex align-items-center justify-content-center" style="border-left: solid 1px #00000038;">
+                    <button type="button" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt text-dark ms-1 me-3 fs-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="logoutDomain col-md-3 col-8 h-auto shadow rounded-1 flex-column border" id="logoutDomain"
+        style="display:none; background-color: #fff !important;">
+        <div class="header-logout bg-danger p-3 d-flex align-items-start justify-content-start w-100 rounded-top">
+            <strong class="text-white">Logout Confirmation</strong>
+        </div>
+        <div class="body-logout py-4 px-4">
+            <span class="fw-bold text-muted"> Are you sure you want to logout?</span>
+        </div>
+        <div class="footer-logout w-100 d-flex align-items-end justify-content-end gap-3 pb-3 pe-3 pt-2"
+            style="border-top: solid .5px #0e0e0e4f !important;">
+            <button class="m-0 btn btn-danger" id="logout" class="logout" style="cursor: pointer;">
+                yes
+            </button>
+            <button class="m-0 btn btn-dark" type="button">Cancel</button>
         </div>
     </div>
 </nav>
-
+<script src="../../assets/js/hr_js/admin/nav.js" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const toggleButtons = document.querySelectorAll('.toggle-btn');

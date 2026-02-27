@@ -12,11 +12,11 @@
             <ul class="nav nav-tabs col-md-9 col-12" id="LeaveRequestTabs">
                 <li class="nav-item cursor-pointer col-md-4">
                     <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Pending_Leave">
-                       <i class="fa-solid fa-calendar-plus me-2"></i>Recommended Leaves</a>
+                       <i class="fa-solid fa-calendar-plus me-2"></i>Pending Leaves</a>
                 </li>
                 <li class="nav-item cursor-pointer col-md-4">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Approved_leave">
-                        <i class="fa-solid fa-calendar-check me-2"></i>Approved Leaves</a>
+                        <i class="fa-solid fa-calendar-check me-2"></i>Recommended Leaves</a>
                 </li>
                 <li class="nav-item cursor-pointer col-md-4">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Rejected_Leave">
@@ -56,8 +56,8 @@
                                             <?php 
                                                 $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
                                                 LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
-                                                WHERE lr.employee_id = :employee_id AND lr.leave_id = :leave_id");
-                                                $stmt->execute(['employee_id' => $Pending["employee_id"], 'leave_id' => $Pending["leave_id"]]);
+                                                WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
+                                                $stmt->execute(['user_id' => $Pending["user_id"], 'leave_id' => $Pending["leave_id"]]);
                                                 $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             ?>
                                             <?php
@@ -133,8 +133,8 @@
                                         <?php 
                                             $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
                                             LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
-                                            WHERE lr.employee_id = :employee_id AND lr.leave_id = :leave_id");
-                                            $stmt->execute(['employee_id' => $Recommended["employee_id"], 'leave_id' => $Recommended["leave_id"]]);
+                                            WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
+                                            $stmt->execute(['user_id' => $Recommended["user_id"], 'leave_id' => $Recommended["leave_id"]]);
                                             $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         ?>
                                         <?php
@@ -210,8 +210,8 @@
                                         <?php 
                                             $stmt = $pdo->prepare("SELECT inclusive_date FROM leave_date ld
                                             LEFT JOIN leaveReq lr ON ld.leave_id = lr.leave_id
-                                            WHERE lr.employee_id = :employee_id AND lr.leave_id = :leave_id");
-                                            $stmt->execute(['employee_id' => $disapproved["employee_id"], 'leave_id' => $disapproved["leave_id"]]);
+                                            WHERE lr.user_id = :user_id AND lr.leave_id = :leave_id");
+                                            $stmt->execute(['user_id' => $disapproved["user_id"], 'leave_id' => $disapproved["leave_id"]]);
                                             $getDate = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         ?>
                                         <?php

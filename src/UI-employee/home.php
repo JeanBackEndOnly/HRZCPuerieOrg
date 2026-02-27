@@ -88,7 +88,7 @@
          </label>
          <label class="col-md-2 col-5 d-flex flex-column min-height  align-items-center justify-content-center shadow rounded py-4 bg-color-mp">
             <div class="col-md-12 text-center text-white">
-               <strong class="text-wite fs-2"><?= htmlspecialchars($SickBalance) ?></strong>
+               <strong class="text-wite fs-2"><?= htmlspecialchars($VacationBalance) ?></strong>
             </div>
             <div class="col-md-12 d-flex">
                <div class="col-md-6 d-flex flex-column text-white text-end">
@@ -102,7 +102,7 @@
          </label>
          <label class="col-md-2 col-5 d-flex flex-column min-height align-items-center justify-content-center shadow rounded py-4 bg-color-mf">
             <div class="col-md-12 text-center text-white">
-               <strong class="text-wite fs-2"><?= htmlspecialchars($SickBalance) ?></strong>
+               <strong class="text-wite fs-2"><?= htmlspecialchars($SpecialBalance) ?></strong>
             </div>
             <div class="col-md-12 d-flex">
                <div class="col-md-6 d-flex flex-column text-white text-end">
@@ -116,7 +116,7 @@
          </label>
          <label class="col-md-2 col-5 d-flex flex-column min-height  align-items-center justify-content-center shadow rounded py-4 bg-color-others">
             <div class="col-md-12 text-center text-white">
-               <strong class="text-wite fs-2"><?= htmlspecialchars($SickBalance) ?></strong>
+               <strong class="text-wite fs-2"><?= htmlspecialchars($OthersBalance) ?></strong>
             </div>
             <div class="col-md-12 d-flex">
                <div class="col-md-6 d-flex flex-column text-white text-end">

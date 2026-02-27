@@ -6,6 +6,9 @@
 .profile-nav{
     border-bottom: solid 1px #0000003b;
 }
+.max-width-hr-settings{
+    max-width: 80vw !important;
+}
 .profile-contents{
     height: 76vh !important;
     overflow-y: scroll !important;

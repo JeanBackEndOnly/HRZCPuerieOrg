@@ -215,8 +215,8 @@ class Action
             $user_id = $_SESSION['employeeData']['user_id'];
         } elseif (!empty($_SESSION['hrData']['user_id'])) {
             $user_id = $_SESSION['hrData']['user_id'];
-        } elseif (!empty($_SESSION['adminData']['admin_id'])) {
-            $admin_id = $_SESSION['adminData']['admin_id'];
+        } elseif (!empty($_SESSION['adminData']['user_id'])) {
+            $user_id = $_SESSION['adminData']['user_id'];
         }
 
         // ✅ Update logout_time only if we got an user_id
@@ -230,18 +230,7 @@ class Action
 
             $stmt = $this->db->prepare($sql);
             $stmt->execute(['user_id' => $user_id]);
-        }else if($admin_id !== null){
-            $sql = "UPDATE admin_login_history 
-                    SET logout_time = NOW() 
-                    WHERE user_id = :user_id 
-                    AND logout_time IS NULL 
-                    ORDER BY login_time DESC 
-                    LIMIT 1";
-
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute(['user_id' => $admin_id]);
         }
-
         // ✅ Now clear and destroy the session
         $_SESSION = [];
         if (ini_get("session.use_cookies")) {
@@ -1472,6 +1461,10 @@ class Action
                 ]);
             }
 
+            if($salary == ''){
+
+            }
+
             $stmt = $this->db->prepare("UPDATE employee_data SET  Department_id = :Department_id, salary = :salary, 
                 joined_at = :joined_at, unit_section_id = :unit_section_id WHERE user_id = :user_id");
             $stmt->execute([
@@ -2352,6 +2345,9 @@ class Action
                     'message' => 'New Designation not found, please debug it.'
                 ]);
             }
+
+            $stmtUpdate = $this->db->prepare("UPDATE employee_data SET jobtitle_id = ? WHERE user_id = ?");
+            $stmtUpdate->execute([$jobTitles_id, $user_id]);
 
             $stmt = $this->db->prepare("INSERT INTO job_history 
                 (user_id, job_from, job_to, current_salary, new_salary, job_status)

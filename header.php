@@ -22,5 +22,3 @@ include 'authentication/functions.php';
 </head>
 
 <body class="bg-light-300">
-
-    

@@ -105,7 +105,8 @@
                         </div>
                         <?php if($getAdminData["status"] == 'Active'){ ?>
                         <div class="col-md-7 d-flex justify-content-end me-5">
-                            <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
+                            <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i
+                                    class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                         </div>
                         <?php } else {} ?>
                     </div>
@@ -138,7 +139,8 @@
                                 </option>
                                 <option value="II" <?= ($getAdminData["suffix"] ?? '') == 'II' ? 'selected' : '' ?>>II
                                 </option>
-                                <option value="III" <?= ($getAdminData["suffix"] ?? '') == 'III' ? 'selected' : '' ?>>III
+                                <option value="III" <?= ($getAdminData["suffix"] ?? '') == 'III' ? 'selected' : '' ?>>
+                                    III
                                 </option>
                             </select>
                         </div>
@@ -174,10 +176,12 @@
                                     <?= ($getAdminData["civil_status"] ?? '') == 'Separated' ? 'selected' : '' ?>>
                                     Separated</option>
                                 <option value="Divorced"
-                                    <?= ($getAdminData["civil_status"] ?? '') == 'Divorced' ? 'selected' : '' ?>>Divorced
+                                    <?= ($getAdminData["civil_status"] ?? '') == 'Divorced' ? 'selected' : '' ?>>
+                                    Divorced
                                 </option>
                                 <option value="Annulled"
-                                    <?= ($getAdminData["civil_status"] ?? '') == 'Annulled' ? 'selected' : '' ?>>Annulled
+                                    <?= ($getAdminData["civil_status"] ?? '') == 'Annulled' ? 'selected' : '' ?>>
+                                    Annulled
                                 </option>
                             </select>
                         </div>
@@ -194,7 +198,8 @@
                                     <?= ($getAdminData["religion"] ?? '') == 'Iglesia ni Cristo' ? 'selected' : '' ?>>
                                     Iglesia ni Cristo</option>
                                 <option value="Protestant"
-                                    <?= ($getAdminData["religion"] ?? '') == 'Protestant' ? 'selected' : '' ?>>Protestant
+                                    <?= ($getAdminData["religion"] ?? '') == 'Protestant' ? 'selected' : '' ?>>
+                                    Protestant
                                 </option>
                                 <option value="Born Again Christian"
                                     <?= ($getAdminData["religion"] ?? '') == 'Born Again Christian' ? 'selected' : '' ?>>
@@ -279,7 +284,8 @@
                                     <?= ($getAdminData["profession_title"] == "Prof.") ? 'selected' : '' ?>>Prof.
                                 </option>
                                 <option value="Assoc. Prof."
-                                    <?= ($getAdminData["profession_title"] == "Assoc. Prof.") ? 'selected' : '' ?>>Assoc.
+                                    <?= ($getAdminData["profession_title"] == "Assoc. Prof.") ? 'selected' : '' ?>>
+                                    Assoc.
                                     Prof.</option>
                                 <option value="Asst. Prof."
                                     <?= ($getAdminData["profession_title"] == "Asst. Prof.") ? 'selected' : '' ?>>Asst.
@@ -351,7 +357,8 @@
                         </div>
                         <?php if($getAdminData["status"] == 'Active'){ ?>
                         <div class="col-md-12 d-flex justify-content-end pb-5">
-                            <button type="submit" class="btn btn-sm btn-danger px-3 btn-sm mt-3 me-2"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
+                            <button type="submit" class="btn btn-sm btn-danger px-3 btn-sm mt-3 me-2"><i
+                                    class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                         </div>
                         <?php } else {} ?>
                     </div>
@@ -372,7 +379,8 @@
                             </div>
                             <?php if($getAdminData["status"] == 'Active'){ ?>
                             <div class="col-md-7 d-flex justify-content-end me-5">
-                                <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i class="fa-solid fa-pen-to-square me-2"></i>Update</button>
+                                <button type="submit" class="btn btn-sm btn-danger px-3 mt-3 me-5"><i
+                                        class="fa-solid fa-pen-to-square me-2"></i>Update</button>
                             </div>
                             <?php } else {} ?>
                         </div>
@@ -445,9 +453,9 @@
                     <div class="col-md-12 d-flex justify-content-end">
                         <button class="btn btn-danger btn-sm px-3 py-2" data-bs-toggle="modal"
                             data-bs-target="#manageCareerPath" onclick="getEmploymentData(
-                                <?= $user_id ?>,
-                                '<?= addslashes($getAdminData['jobTitle']) ?>',
-                                '<?= $getAdminData['salary'] ?>'
+                                <?= $admin_id ?>,
+                                '<?= addslashes($getAdminData['jobTitle'] ?? '') ?>',
+                                '<?= $getAdminData['salary'] ?? '' ?>'
                             )"><i class="fa-solid fa-pen-to-square me-2"></i>Manage
                             Career Path</button>
                     </div>
@@ -479,9 +487,9 @@
                                     }else{ ?>
                                 <tr>
                                     <td>Initial Position</td>
-                                    <td><?= $getAdminData["jobTitle"] ?></td>
+                                    <td><?= $career["jobTitle"] ?></td>
                                     <td>Current</td>
-                                    <td><?= $getAdminData["joined_at"] ?></td>
+                                    <td><?= $career["joined_at"] ?></td>
                                     <td>
                                         <button class="btn btn-danger btn-sm m-0 my-2 mx-3"><i
                                                 class="fa-solid fa-print me-2"></i>Print</button>
@@ -511,23 +519,23 @@
                     <?php 
                         $stmtOfficial = $pdo->prepare("
                             SELECT 
-                                ed.employee_id, 
-                                ed.firstname, 
-                                ed.middlename, 
-                                ed.lastname, 
-                                ed.suffix,
+                                u.user_id, 
+                                u.firstname, 
+                                u.middlename, 
+                                u.lastname, 
+                                u.suffix,
                                 d.Department_name AS department,
-                                hd.employeeID,
+                                u.employeeID,
                                 jt.jobTitle,
                                 jt.salary,
-                                ed.status,
-                                ed.user_role
-                            FROM employee_data ed
-                            INNER JOIN hr_data hd ON ed.employee_id = hd.employee_id
-                            LEFT JOIN jobTitles jt ON hd.jobtitle_id = jt.jobTitles_id
-                            LEFT JOIN departments d ON hd.Department_id = d.Department_id
-                            WHERE ed.user_role = 'HRSM'
-                            ORDER BY ed.status
+                                u.status,
+                                u.user_role
+                            FROM users u
+                            INNER JOIN employee_data ed ON u.user_id = ed.user_id
+                            LEFT JOIN jobTitles jt ON ed.jobtitle_id = jt.jobTitles_id
+                            LEFT JOIN departments d ON ed.Department_id = d.Department_id
+                            WHERE u.user_role = 'HRSM'
+                            ORDER BY u.status
                         ");
                         $stmtOfficial->execute();
                         $officialEmployees = $stmtOfficial->fetchAll(PDO::FETCH_ASSOC);
@@ -588,10 +596,10 @@
                 <div class="table-responsive table-body-201">
                     <table class="text-center table table-bordered text-center table-sm">
                         <?php
-                        $stmtHistory = $pdo->prepare("SELECT * FROM admin_login_history WHERE employee_id = '$admin_id' ORDER BY login_time DESC");
-                        $stmtHistory->execute();
-                        $history = $stmtHistory->fetchAll(PDO::FETCH_ASSOC);  
-                    ?>
+                            $stmtHistory = $pdo->prepare("SELECT * FROM login_history WHERE user_id = ? ORDER BY login_time DESC");
+                            $stmtHistory->execute([$admin_id]);
+                            $history = $stmtHistory->fetchAll(PDO::FETCH_ASSOC);  
+                        ?>
 
 
 
@@ -624,37 +632,86 @@
             </div>
         </div>
     </div>
-    </div>
-
-    <!-- CHANGE PASSWORD MODAL -->
-    <div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="changePass_form" class="modal-content">
-                <input type="hidden" name="admin_id" value="<?= $admin_id ?>">
-                <div class="modal-header bg-gradient-primary">
-                    <h5 class="modal-title text-start text-white w-100" id="passwordModalLabel">Change Password</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <label for="currentPassword">Current Password:</label>
-                    <input type="password" name="current_password" id="currentPassword" class="form-control" required>
-                </div>
-                <div class="modal-body">
-                    <label for="newPassword">New Password:</label>
-                    <input type="password" name="new_pass" id="newPassword" class="form-control" required>
-                </div>
-                <div class="modal-body">
-                    <label for="confirmPassword">Confirm Password:</label>
-                    <input type="password" name="confirm_pass" id="confirmPassword" class="form-control" required>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Confirm</button>
-                </div>
-            </form>
-        </div>
-    </div>
 </section>
+<!-- =================================== MODALS =================================== -->
+<!-- CHANGE PASSWORD MODAL -->
+<div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="changePass_form" class="modal-content">
+            <input type="hidden" name="admin_id" value="<?= $admin_id ?>">
+            <div class="modal-header bg-gradient-primary">
+                <h5 class="modal-title text-start text-white w-100" id="passwordModalLabel">Change Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label for="currentPassword">Current Password:</label>
+                <input type="password" name="current_password" id="currentPassword" class="form-control" required>
+            </div>
+            <div class="modal-body">
+                <label for="newPassword">New Password:</label>
+                <input type="password" name="new_pass" id="newPassword" class="form-control" required>
+            </div>
+            <div class="modal-body">
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" name="confirm_pass" id="confirmPassword" class="form-control" required>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Confirm</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Career Path Modal -->
+<div class="modal fade" id="manageCareerPath" tabindex="-1" aria-labelledby="manageCareerPathLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" id="career-path-form">
+            <div class="modal-header bg-gradient-primary text-white">
+                <h5 class="modal-title text-white" id="manageCareerPathLabel">Manage Employee Career Path</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" class="form-control" name="user_id" id="user_id_careerPath">
+                <div class="mx-2">
+                    <label class="form-label">Current Designation</label>
+                    <input class="form-control" readonly type="text" name="job_from" id="currentDesignationId">
+                </div>
+                <div class="mx-2">
+                    <label class="form-label">Current Salary</label>
+                    <input class="form-control" readonly type="text" name="current_salary" id="currentSalaryId">
+                </div>
+                <div class="mx-2">
+                    <label class="form-label">New Designation</label>
+                    <select name="jobTitles_id" id="newDesignationIdToggle" class="form-select">
+                        <option value="">Select Job Title</option>
+                        <?php foreach($getDesignations as $jb): ?>
+                        <option value="<?= $jb['jobTitles_id'] ?>">
+                            <?= htmlspecialchars($jb['jobTitle']) ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="mx-2">
+                    <label class="form-label">New salary</label>
+                    <input class="form-control" readonly type="text" name="new_salary">
+                </div>
+                <div class="mx-2">
+                    <label class="form-label">Manage Type</label>
+                    <select name="job_status" class="form-select">
+                        <option value="">Select Type</option>
+                        <option value="Update">Update</option>
+                        <option value="Promote">Promote</option>
+                        <option value="Demote">Demote</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger">Confirm</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const birthdayInput = document.getElementById("admin_birth");
@@ -673,7 +730,6 @@ document.addEventListener("DOMContentLoaded", function() {
         const monthDiff = today.getMonth() - birthDate.getMonth();
         const dayDiff = today.getDate() - birthDate.getDate();
 
-        // Adjust age if birthday hasn't occurred yet this year
         if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
             age--;
         }
@@ -681,10 +737,62 @@ document.addEventListener("DOMContentLoaded", function() {
         ageInput.value = age;
     }
 
-    // Calculate on change
     birthdayInput.addEventListener("change", calculateAge);
 
-    // Calculate on page load (for pre-filled birthdays)
     calculateAge();
+});
+
+function getEmploymentData(user_id, designation, salary) {
+    document.getElementById('user_id_careerPath').value = user_id;
+    document.getElementById('currentDesignationId').value = designation;
+    document.getElementById('currentSalaryId').value = salary;
+}
+document.addEventListener('DOMContentLoaded', function() {
+    const jobTitleSelect = document.getElementById('newDesignationIdToggle');
+    const salaryInput = document.querySelector('input[name="new_salary"]');
+
+    if (!jobTitleSelect || !salaryInput) return;
+
+    let jobSalaries = {};
+
+    function loadJobSalaries() {
+        <?php
+            $jobSalaries = [];
+            foreach($getDesignations as $jb) {
+                $jobSalaries[$jb['jobTitles_id']] = $jb['salary'];
+            }
+            ?>
+
+        jobSalaries = <?php echo json_encode($jobSalaries); ?>;
+    }
+
+    loadJobSalaries();
+
+    jobTitleSelect.addEventListener('change', function() {
+        const selectedJobId = this.value;
+
+        if (selectedJobId && jobSalaries[selectedJobId]) {
+            const salary = jobSalaries[selectedJobId];
+            salaryInput.value = formatCurrency(salary);
+        } else {
+            ed
+            salaryInput.value = '';
+        }
+    });
+
+    function formatCurrency(amount) {
+        const numAmount = parseFloat(amount);
+
+        return new Intl.NumberFormat('en-PH', {
+            style: 'currency',
+            currency: 'PHP',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(numAmount);
+    }
+
+    if (jobTitleSelect.value) {
+        jobTitleSelect.dispatchEvent(new Event('change'));
+    }
 });
 </script>

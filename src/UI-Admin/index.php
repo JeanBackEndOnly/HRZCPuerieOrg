@@ -1,5 +1,4 @@
 
-
 <?php include 'nav-head.php'; ?>
 
 <title><?php echo get_option('system_title'); ?></title>

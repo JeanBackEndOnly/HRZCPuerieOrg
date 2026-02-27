@@ -97,7 +97,7 @@
     }
 
 // ADMIN DATA ========================================================================================
-function getAdminData(){
+    function getAdminData(){
         $pdo = db_connect();
         if($_SESSION["adminData"]["user_id"]){
             $admin_id = $_SESSION["adminData"]["user_id"];
@@ -281,6 +281,11 @@ function getAdminData(){
 // Career Path History ==============================================================================
     function getCareerPathHistory(){
         $pdo = db_connect();
+        if($_SESSION["adminData"]["user_id"]){
+            $user_id = $_SESSION["adminData"]["user_id"];
+        }else if($_GET["id"]){
+            $user_id = $_GET["id"];
+        }
         $stmt = $pdo->prepare("SELECT 
             jh.job_historyID,
             u.user_id,
@@ -292,7 +297,8 @@ function getAdminData(){
             jh.addAt
             FROM job_history jh
             JOIN users u ON jh.user_id = u.user_id
+            WHERE u.user_id = ?
             ORDER BY jh.addAt ASC");
-        $stmt->execute();
+        $stmt->execute([$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

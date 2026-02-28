@@ -27,7 +27,7 @@
 // ADMIN DATA ========================================================================================
     function getAdminData(){
         $pdo = db_connect();
-        if($_SESSION["adminData"]["user_id"]){
+        if(isset($_SESSION["adminData"]["user_id"]) && $_SESSION["adminData"]["user_id"] !== ''){
             $admin_id = $_SESSION["adminData"]["user_id"];
         }else{
             $admin_id = null;
@@ -123,6 +123,8 @@
             $user_id = $_GET["id"];
         }else if(isset($_SESSION["adminData"]["user_id"]) && $_SESSION["adminData"]["user_id"] !== ''){
             $user_id = $_SESSION["adminData"]["user_id"];
+        }else{
+            $user_id = null;
         }
         $stmt = $pdo->prepare("SELECT 
             jh.job_historyID,

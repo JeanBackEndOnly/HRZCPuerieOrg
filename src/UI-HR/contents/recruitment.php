@@ -96,7 +96,7 @@
                     <?php 
                             if($PendingEmployees){
                                 foreach ($PendingEmployees as $pendings) : ?>
-                    <a href="index.php?page=contents/profile&id=<?= htmlspecialchars($pendings["employee_id"]) ?>"
+                    <a href="index.php?page=contents/profile&id=<?= htmlspecialchars($pendings["user_id"]) ?>"
                         class="col-md-4">
                         <div class="card col-md-12 d-flex flex-row shadow p-2 rounded-3 border">
                             <div class="col-md-2 d-flex align-items-center">
@@ -135,7 +135,7 @@
                     <?php 
                             if($InactiveEmployees){
                                 foreach ($InactiveEmployees as $inactive) : ?>
-                    <a href="index.php?page=contents/profile&id=<?= htmlspecialchars($inactive["employee_id"]) ?>"
+                    <a href="index.php?page=contents/profile&id=<?= htmlspecialchars($inactive["user_id"]) ?>"
                         class="col-md-4">
                         <div class="card col-md-12 d-flex flex-row shadow p-2 rounded-3 border">
                             <div class="col-md-2 d-flex align-items-center">

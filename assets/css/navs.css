@@ -4,6 +4,12 @@
         font-weight: bold;
         color: snow;
     }
+    .nav-width{
+        width: 240px; border-radius: 5px;
+    }
+    .border-width-panel{
+        width: 240px !important; border: solid 1px #0000003b; border-right: none !important;
+    }
     .sidebar-list a {
         font-weight: 500;
         padding: .5rem;

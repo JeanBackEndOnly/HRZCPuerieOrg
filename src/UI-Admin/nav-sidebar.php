@@ -1,5 +1,5 @@
 <nav id="sidebar" class="navbarHide">
-    <div style="width: 240px; border-radius: 5px;">
+    <div class="nav-width">
         <div class="sidebar-list">
             <div
                 class="profile-nav mb-1 p-3 bg-gradeint-fade w-100 d-flex align-items-start justify-content-center p-2">
@@ -51,7 +51,7 @@
             <a href="index.php?page=contents/setting" class="nav-item nav-setting ">
                 <span class="me-1"><i class="fa-solid fa-user-gear"></i></span> Account Setting
             </a>
-            <div class="text-dark position-logout d-flex border" style="width: 240px;">
+            <div class="text-dark position-logout d-flex border-width-panel">
                 <div class="w-70 text-center p-2">
                     <strong class="fs-5">ADMIN PANEL</strong>
                 </div>
@@ -64,8 +64,7 @@
         </div>
 
     </div>
-    <div class="logoutDomain col-md-3 col-8 h-auto shadow rounded-1 flex-column border" id="logoutDomain"
-        style="display:none; background-color: #fff !important;">
+    <div class="logoutDomain col-md-3 col-8 h-auto shadow rounded-1 flex-column border" id="logoutDomain">
         <div class="header-logout bg-danger p-3 d-flex align-items-start justify-content-start w-100 rounded-top">
             <strong class="text-white">Logout Confirmation</strong>
         </div>

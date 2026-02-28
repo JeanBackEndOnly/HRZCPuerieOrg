@@ -10,15 +10,15 @@ if (!isset($_SESSION['employeeData'])) {
   exit;
 }
 
-$employeeID = $_SESSION['employeeData']['employeeID'];
+$employeeID = $_SESSION['employeeData']['employeeID'] ?? '';
 $position = $_SESSION['employeeData']['employee_position'] ?? '';
 $department = $_SESSION['employeeData']['employee_department'] ?? '';
-$firstname = $_SESSION['employeeData']['firstname'];
-$middelname = $_SESSION['employeeData']['middlename'];
-$lastname = $_SESSION['employeeData']['lastname'];
-$profile_picture = $_SESSION['employeeData']['profile_picture'];
-// $getEmployee = $employees["employee_data"];
-$user_id = $_SESSION['employeeData']['user_id'];
+$firstname = $_SESSION['employeeData']['firstname'] ?? '';
+$middelname = $_SESSION['employeeData']['middlename'] ?? '';
+$lastname = $_SESSION['employeeData']['lastname'] ?? '';
+$profile_picture = $_SESSION['employeeData']['profile_picture'] ?? '';
+// $getEmployee = $employees["employee_data"] ?? '';
+$user_id = $_SESSION['employeeData']['user_id'] ?? '';
 verify_init($user_id);
 
 $stmt = $pdo->prepare("SELECT firstname, lastname, middlename, suffix FROM users WHERE user_id = ?");

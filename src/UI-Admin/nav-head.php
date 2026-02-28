@@ -11,14 +11,14 @@ if (!isset($_SESSION['adminData'])) {
 }
 
 
-$admin_id = $_SESSION['adminData']['user_id'];
-$employeeID = $_SESSION['adminData']['employeeID'];
-$admin_position = $_SESSION['adminData']['employee_position'];
+$admin_id = $_SESSION['adminData']['user_id'] ?? '';
+$employeeID = $_SESSION['adminData']['employeeID'] ?? '';
+$admin_position = $_SESSION['adminData']['employee_position'] ?? '';
 $admin_department = $_SESSION['adminData']['employee_department'] ?? '';
-$admin_firstname = $_SESSION['adminData']['firstname'];
-$admin_middelname = $_SESSION['adminData']['middlename'];
-$admin_lastname = $_SESSION['adminData']['lastname'];
-$profile_picture = $_SESSION['adminData']['profile_picture'];
+$admin_firstname = $_SESSION['adminData']['firstname'] ?? '';
+$admin_middelname = $_SESSION['adminData']['middlename'] ?? '';
+$admin_lastname = $_SESSION['adminData']['lastname'] ?? '';
+$profile_picture = $_SESSION['adminData']['profile_picture'] ?? '';
 
 $stmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE type = 'ADMIN' AND status = 'Active'");
 $stmt->execute();

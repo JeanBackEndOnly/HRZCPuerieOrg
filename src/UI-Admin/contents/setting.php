@@ -26,7 +26,7 @@
                 </li>
                 <li class="nav-item cursor-pointer col-md-3 col-12">
                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#hrEmployees">
-                        <i class="fa-solid fa-circle-info me-2"></i> HRMS Activation
+                        <i class="fa-solid fa-circle-info me-2"></i> Head Activation
                     </a>
                 </li>
                 <li class="nav-item cursor-pointer col-md-3 col-12">
@@ -83,7 +83,7 @@
                                 Inactive</option>
                         </select>
                     </form>
-                    <a class="font-15 mt-2" href="index.php?page=contents/pds&user_id=<?= $user_id ?>"
+                    <a class="font-15 mt-2" href="index.php?page=contents/pds&user_id=<?= $admin_id ?>"
                         class="mt-2"><strong>View
                             Personal Data Sheet <i class="fa-solid fa-arrow-up-right-from-square ms-2"></i></strong></a>
                 </div>
@@ -505,7 +505,7 @@
 
         </div>
         <!-- HRMS Activation -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="hrEmployees">
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="hrEmployees">
             <table class="text-center table table-bordered text-center table-sm">
                 <thead class="table-light col-md-12">
                     <tr class="col-md-12">
@@ -546,7 +546,7 @@
                         <th><?= $countOfficials++ ?></th>
                         <th><?= htmlspecialchars($officials["firstname"]) . ' ' . htmlspecialchars($officials["lastname"]) ?>
                         </th>
-                        <th>HRMS</th>
+                        <th><?= $officials["user_role"] ?></th>
                         <td class="d-flex justify-content-center flex-wrap gap-1">
                             <a
                                 href="index.php?page=contents/profile&id=<?= htmlspecialchars($officials["user_id"]) ?>">
@@ -583,8 +583,8 @@
             </table>
         </div>
         <!-- LOGIN HISTORY TAB -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="history">
-            <div class="card rounded-2 profile-contents" style="overflow-y: scroll;">
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="history">
+            <div class="card rounded-2 p-2 p-0 profile-contents ps-2 pe-0" style="overflow-y: scroll;">
                 <!-- LOGIN HISTORY HEADER -->
                 <div class="header ps-3 pt-3">
                     <h5 class="m-0 p-0">
@@ -593,7 +593,7 @@
                 </div>
 
                 <!-- LOGIN HISTORY CONTENTS -->
-                <div class="table-responsive table-body-201">
+                <div class="ps-3 pt-3 table-responsive table-body-201">
                     <table class="text-center table table-bordered text-center table-sm">
                         <?php
                             $stmtHistory = $pdo->prepare("SELECT * FROM login_history WHERE user_id = ? ORDER BY login_time DESC");

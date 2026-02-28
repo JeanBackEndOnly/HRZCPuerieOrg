@@ -4,6 +4,62 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 include "../../view/admin/view.php";
 include "../../view/system/view.php";
+
+
+// GLOBAL COUNTS FOR SYSTEM, EMPLOYEES AND LEAVES =================================
+    // Leaves ==========================================
+        $leavePendingCounts = leavePendingCounts();
+        if (empty($leavePendingCounts)) {
+            $_SESSION['error'] = "Failed to load unit sections";
+            $leavePendingCounts = null; 
+        }
+        $leaveRecommendedCounts = leaveRecommendedCounts();
+        if (empty($leaveRecommendedCounts)) {
+            $_SESSION['error'] = "Failed to load Designations";
+            $leaveRecommendedCounts = null; 
+        }
+        $leaveApprovedCounts = leaveApprovedCounts();
+        if (empty($leaveApprovedCounts)) {
+            $_SESSION['error'] = "Failed to load Designations";
+            $leaveApprovedCounts = null; 
+        }
+        $leaveDisapprovedCounts = leaveDisapprovedCounts();
+        if (empty($leaveDisapprovedCounts)) {
+            $_SESSION['error'] = "Failed to load Designations";
+            $leaveDisapprovedCounts = null; 
+        }
+    // Accounts ==========================================
+        $AccountPendingCounts = AccountPendingCounts();
+        if (empty($AccountPendingCounts)) {
+            $_SESSION['error'] = "Failed to load unit sections";
+            $AccountPendingCounts = null; 
+        }
+        $AccountActiveCounts = AccountActiveCounts();
+        if (empty($AccountActiveCounts)) {
+            $_SESSION['error'] = "Failed to load Designations";
+            $AccountActiveCounts = null; 
+        }
+        $AccountInactiveCounts = AccountInactiveCounts();
+        if (empty($AccountInactiveCounts)) {
+            $_SESSION['error'] = "Failed to load Designations";
+            $AccountInactiveCounts = null; 
+        }
+    // system ==========================================
+        $DepartmentsCounts = DepartmentsCounts();
+        if (empty($DepartmentsCounts)) {
+            $_SESSION['error'] = "Failed to load unit sections";
+            $DepartmentsCounts = null; 
+        }
+        $UnitsCounts = UnitsCounts();
+        if (empty($UnitsCounts)) {
+            $_SESSION['error'] = "Failed to load Designations";
+            $UnitsCounts = null; 
+        }
+        $DesignationsCounts = DesignationsCounts();
+        if (empty($DesignationsCounts)) {
+            $_SESSION['error'] = "Failed to load Designations";
+            $DesignationsCounts = null; 
+        }
 // Global ==========================================================================
 $getUnit = getUnitSection();
 if (empty($getUnit)) {

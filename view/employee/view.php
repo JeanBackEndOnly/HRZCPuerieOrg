@@ -8,7 +8,7 @@
 // Get Leaves ========================================================================================
     function getPendingLeave(){
         $pdo = db_connect();
-        $user_id = $_SESSION["employeeData"]["user_id"];
+        $user_id = $_SESSION["employeeData"]["user_id"] ?? null;
         $stmt = $pdo->prepare("SELECT 
             lr.leave_id,
             lr.leaveType,
@@ -32,7 +32,7 @@
     }
     function getRecommendedLeave(){
         $pdo = db_connect();
-        $user_id = $_SESSION["employeeData"]["user_id"];
+        $user_id = $_SESSION["employeeData"]["user_id"] ?? null;
         $stmt = $pdo->prepare("SELECT 
             lr.leave_id,
             lr.leaveType,
@@ -56,7 +56,7 @@
     }
     function getApprovedLeave(){
         $pdo = db_connect();
-        $user_id = $_SESSION["employeeData"]["user_id"];
+        $user_id = $_SESSION["employeeData"]["user_id"] ?? null;
         $stmt = $pdo->prepare("SELECT 
             lr.leave_id,
             lr.leaveType,
@@ -80,7 +80,7 @@
     }
     function getDisapprovedLeave(){
         $pdo = db_connect();
-        $user_id = $_SESSION["employeeData"]["user_id"];
+        $user_id = $_SESSION["employeeData"]["user_id"] ?? null;
         $stmt = $pdo->prepare("SELECT 
             lr.leave_id,
             lr.leaveType,
@@ -106,7 +106,7 @@
 // Fetch own Data =============================================================
     function getEmployeeData(){
         $pdo = db_connect();
-        if($_SESSION["employeeData"]["user_id"]){
+        if(isset($_SESSION["employeeData"]["user_id"]) && $_SESSION["employeeData"]["user_id"] !== ''){
             $employee_id = $_SESSION["employeeData"]["user_id"];
         }else{
             $employee_id = null;
@@ -126,8 +126,10 @@
 // Career Path History ==============================================================================
     function employeeCareerPath(){
         $pdo = db_connect();
-        if($_SESSION["employeeData"]["user_id"]){
+        if(isset($_SESSION["employeeData"]["user_id"]) && $_SESSION["employeeData"]["user_id"] !== ''){
             $user_id = $_SESSION["employeeData"]["user_id"];
+        }else{
+            $user_id = null;
         }
         $stmt = $pdo->prepare("SELECT 
             jh.job_historyID,

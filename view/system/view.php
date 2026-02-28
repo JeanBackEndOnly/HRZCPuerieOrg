@@ -5,7 +5,50 @@
     
     require_once '../../authentication/config.php';
 
-
+// GLOBAL COUNTS FOR SYSTEM, EMPLOYEES AND LEAVES ===========================================================
+    // Leaves =====================================
+        function leavePendingCounts(){
+            $pdo = db_connect();
+            return $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Pending'")->fetchColumn();
+        }
+        function leaveRecommendedCounts(){
+            $pdo = db_connect();
+            return $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Recommended'")->fetchColumn();
+        }
+        function leaveApprovedCounts(){
+            $pdo = db_connect();
+            return $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Approved'")->fetchColumn();
+        }
+        function leaveDisapprovedCounts(){
+            $pdo = db_connect();
+            return $pdo->query("SELECT COUNT(*) FROM leaveReq WHERE leaveStatus = 'Disapproved'")->fetchColumn();
+        }
+    // Accounts =====================================
+        function AccountPendingCounts(){
+            $pdo = db_connect();
+            return $pdo->query("SELECT COUNT(*) FROM users WHERE status = 'Pending'")->fetchColumn();
+        }
+        function AccountActiveCounts(){
+            $pdo = db_connect();
+            return $pdo->query("SELECT COUNT(*) FROM users WHERE status = 'Active'")->fetchColumn();
+        }
+        function AccountInactiveCounts(){
+            $pdo = db_connect();
+            return $pdo->query("SELECT COUNT(*) FROM users WHERE status = 'Inactive'")->fetchColumn();
+        }
+    // System =====================================
+        function DepartmentsCounts(){
+            $pdo = db_connect();
+            return $pdo->query("SELECT COUNT(*) FROM departments")->fetchColumn();
+        }
+        function UnitsCounts(){
+            $pdo = db_connect();
+            return $pdo->query("SELECT COUNT(*) FROM unit_section")->fetchColumn();
+        }
+        function DesignationsCounts(){
+            $pdo = db_connect();
+            return $pdo->query("SELECT COUNT(*) FROM jobtitles")->fetchColumn();
+        }
 // System Fetching (GLOBAL) ===================================================================================
     function getUnitSection(){
         try {

@@ -12,9 +12,11 @@
 .profile-contents{
     height: 76vh !important;
     overflow-y: scroll !important;
+    padding-left: 0 !important;
 }
 .profile-contents::-webkit-scrollbar{
     display: flex !important;
+    padding-left: 0 !important;
 }
 .height{
     height: 76vh !important;

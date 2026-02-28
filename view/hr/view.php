@@ -10,7 +10,7 @@
         $pdo = db_connect();
         if(isset($_GET["id"]) && $_GET["id"] !== ''){
             $user_id = $_GET["id"];
-        }else if($_SESSION["hrData"]["user_id"]){
+        }else if(isset($_SESSION["hrData"]["user_id"]) && $_SESSION["hrData"]["user_id"] !== ''){
             $user_id = $_SESSION["hrData"]["user_id"];
         }
         $stmt = $pdo->prepare("SELECT 
@@ -33,7 +33,7 @@
 // Fetch own Data =============================================================
     function getHrData(){
         $pdo = db_connect();
-        if($_SESSION["hrData"]["user_id"]){
+        if(isset($_SESSION["hrData"]["user_id"]) && $_SESSION["hrData"]["user_id"] !== ''){
             $hr_id = $_SESSION["hrData"]["user_id"];
         }else{
             $hr_id = null;

@@ -9,14 +9,14 @@ if (!isset($_SESSION['hrData'])) {
   exit;
 }
 
-$employeeID = $_SESSION['hrData']['employeeID'];
+$employeeID = $_SESSION['hrData']['employeeID'] ?? '';
 $position = $_SESSION['hrData']['employee_position'] ?? '';
 $department = $_SESSION['hrData']['employee_department'] ?? '';
-$firstname = $_SESSION['hrData']['firstname'];
-$middelname = $_SESSION['hrData']['middlename'];
-$lastname = $_SESSION['hrData']['lastname'];
-$profile_picture = $_SESSION['hrData']['profile_picture'];
-$hr_id = $_SESSION['hrData']['user_id'];
+$firstname = $_SESSION['hrData']['firstname'] ?? '';
+$middelname = $_SESSION['hrData']['middlename'] ?? '';
+$lastname = $_SESSION['hrData']['lastname'] ?? '';
+$profile_picture = $_SESSION['hrData']['profile_picture'] ?? '';
+$hr_id = $_SESSION['hrData']['user_id'] ?? '';
 
 $stmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE type = 'HR' AND status = 'Active'");
 $stmt->execute();

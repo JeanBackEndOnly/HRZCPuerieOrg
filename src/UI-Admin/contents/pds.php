@@ -1,195 +1,194 @@
+<style>
+    .hrNavI {
+        padding: .5rem;
+        border: solid .2rem #fff !important;
+        border-radius: 50%;
+    }
 
-    <style>
-        .hrNavI {
-            padding: .5rem;
-            border: solid .2rem #fff !important;
-            border-radius: 50%;
+    .stepper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        width: 100%;
+    }
+
+    .step {
+        width: 40px;
+        height: 40px;
+        background-color: white;
+        border: 2px solid #333;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        position: relative;
+        z-index: 1;
+    }
+
+    .step.active {
+        background-color: #444;
+        color: white;
+    }
+
+    .line {
+        height: 2px;
+        width: 60px;
+        background-color: #333;
+        margin: 0 5px;
+        z-index: 0;
+    }
+
+    @media (max-width: 576px) {
+
+        /* General adjustments */
+        .main-body {
+            overflow-x: auto;
+        }
+
+        .usersButton span.fw-bold {
+            display: none;
+        }
+
+        .usersButton a {
+            margin-left: 5px !important;
+        }
+
+        .sideNav i {
+            margin-right: 0 !important;
+        }
+
+        .contents {
+            padding: 5px !important;
+        }
+
+        .linkToEmployeeManagement {
+            margin-top: 10px !important;
+            margin-bottom: 10px !important;
         }
 
         .stepper {
-            display: flex;
-            align-items: center;
+            flex-wrap: wrap;
             justify-content: center;
-            margin: 0;
-            width: 100%;
         }
 
         .step {
-            width: 40px;
-            height: 40px;
-            background-color: white;
-            border: 2px solid #333;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            position: relative;
-            z-index: 1;
+            width: 25px;
+            height: 25px;
+            font-size: 12px;
         }
 
-        .step.active {
-            background-color: #444;
-            color: white;
+        .lines {
+            width: 15px;
         }
 
-        .line {
-            height: 2px;
-            width: 60px;
-            background-color: #333;
-            margin: 0 5px;
-            z-index: 0;
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 20rem;
         }
 
-        @media (max-width: 576px) {
-
-            /* General adjustments */
-            .main-body {
-                overflow-x: auto;
-            }
-
-            .usersButton span.fw-bold {
-                display: none;
-            }
-
-            .usersButton a {
-                margin-left: 5px !important;
-            }
-
-            .sideNav i {
-                margin-right: 0 !important;
-            }
-
-            .contents {
-                padding: 5px !important;
-            }
-
-            .linkToEmployeeManagement {
-                margin-top: 10px !important;
-                margin-bottom: 10px !important;
-            }
-
-            .stepper {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .step {
-                width: 25px;
-                height: 25px;
-                font-size: 12px;
-            }
-
-            .lines {
-                width: 15px;
-            }
-
-            /* Tables */
-            .table-responsive {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                width: 20rem;
-            }
-
-            table {
-                font-size: 12px;
-            }
-
-            th,
-            td {
-                padding: 4px !important;
-            }
-
-            /* Form inputs */
-            .form-control {
-                font-size: 12px;
-                padding: 4px 8px;
-                width: auto;
-            }
-
-            textarea.form-control {
-                min-height: 60px;
-            }
-
-            /* Radio buttons and checkboxes */
-            .form-check {
-                margin-right: 5px !important;
-            }
-
-            .form-check-label {
-                font-size: 12px;
-            }
-
-            /* Buttons */
-            .btn {
-                font-size: 12px;
-                padding: 5px 10px;
-            }
-
-            /* Modal */
-            .modal-dialog {
-                margin: 10px;
-            }
-
-            /* Specific table adjustments */
-            #personal-info th,
-            #family-bg th,
-            #education-table th,
-            #work-experience th,
-            #seminar-training th,
-            #others-section th {
-                font-size: 11px;
-                white-space: nowrap;
-            }
-
-            /* Hide less important columns on small screens */
-            #education-table th:nth-child(4),
-            #education-table td:nth-child(4) {
-                display: none;
-            }
-
-            #work-experience th:nth-child(4),
-            #work-experience td:nth-child(4) {
-                display: none;
-            }
-
-            /* Signature section */
-            #declaration-section td {
-                padding: 2px !important;
-            }
-
-            #declaration-section .border {
-                height: 50px !important;
-            }
-
-            #declaration-section small {
-                font-size: 10px;
-            }
-
-            /* Navigation buttons */
-            .nextButtons,
-            .backsButtons {
-                flex-wrap: wrap;
-            }
-
-            .nextButtons button,
-            .backsButtons button {
-                margin: 3px;
-            }
-
-            /* Loading animation */
-            .loading-lines .line {
-                width: 20px;
-                height: 3px;
-            }
+        table {
+            font-size: 12px;
         }
-    </style>
+
+        th,
+        td {
+            padding: 4px !important;
+        }
+
+        /* Form inputs */
+        .form-control {
+            font-size: 12px;
+            padding: 4px 8px;
+            width: auto;
+        }
+
+        textarea.form-control {
+            min-height: 60px;
+        }
+
+        /* Radio buttons and checkboxes */
+        .form-check {
+            margin-right: 5px !important;
+        }
+
+        .form-check-label {
+            font-size: 12px;
+        }
+
+        /* Buttons */
+        .btn {
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+
+        /* Modal */
+        .modal-dialog {
+            margin: 10px;
+        }
+
+        /* Specific table adjustments */
+        #personal-info th,
+        #family-bg th,
+        #education-table th,
+        #work-experience th,
+        #seminar-training th,
+        #others-section th {
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        /* Hide less important columns on small screens */
+        #education-table th:nth-child(4),
+        #education-table td:nth-child(4) {
+            display: none;
+        }
+
+        #work-experience th:nth-child(4),
+        #work-experience td:nth-child(4) {
+            display: none;
+        }
+
+        /* Signature section */
+        #declaration-section td {
+            padding: 2px !important;
+        }
+
+        #declaration-section .border {
+            height: 50px !important;
+        }
+
+        #declaration-section small {
+            font-size: 10px;
+        }
+
+        /* Navigation buttons */
+        .nextButtons,
+        .backsButtons {
+            flex-wrap: wrap;
+        }
+
+        .nextButtons button,
+        .backsButtons button {
+            margin: 3px;
+        }
+
+        /* Loading animation */
+        .loading-lines .line {
+            width: 20px;
+            height: 3px;
+        }
+    }
+</style>
 <?php
-    $employee_id = $_GET["employee_id"];
+    $user_id = $_GET["user_id"];
 
     // Get PDS ID
-    $stmtPDS = $pdo->prepare("SELECT pds_id FROM personal_data_sheet WHERE employee_id = ?");
-    $stmtPDS->execute([$employee_id]);
+    $stmtPDS = $pdo->prepare("SELECT pds_id FROM personal_data_sheet WHERE user_id = ?");
+    $stmtPDS->execute([$user_id]);
     $pdsData = $stmtPDS->fetch(PDO::FETCH_ASSOC);
 
     if (!$pdsData) {
@@ -200,8 +199,8 @@
 
     // Main query for employee, HR, and single-record tables
     $query = "SELECT 
+        u.*,
         ed.*,
-        hr.*,
         pds.pds_id,
         pds.accomplished_on,
         ug.*,
@@ -210,17 +209,17 @@
         p_mother.*,
         oi.*
     FROM personal_data_sheet pds
-    INNER JOIN employee_data ed ON pds.employee_id = ed.employee_id
-    INNER JOIN hr_data hr ON ed.employee_id = hr.employee_id
+    INNER JOIN users u ON pds.user_id = u.user_id
+    INNER JOIN employee_data ed ON u.user_id = ed.user_id
     LEFT JOIN userGovIDs ug ON pds.pds_id = ug.pds_id
     LEFT JOIN spouseInfo si ON pds.pds_id = si.pds_id
     LEFT JOIN parents p_father ON pds.pds_id = p_father.pds_id AND p_father.relation = 'Father'
     LEFT JOIN parents p_mother ON pds.pds_id = p_mother.pds_id AND p_mother.relation = 'Mother'
     LEFT JOIN otherInfo oi ON pds.pds_id = oi.pds_id
-    WHERE pds.employee_id = ?";
+    WHERE pds.user_id = ?";
 
     $stmt = $pdo->prepare($query);
-    $stmt->execute([$employee_id]);
+    $stmt->execute([$user_id]);
     $pds = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $multiTables = [
@@ -245,7 +244,6 @@
         $pds['education_by_level'] = $educationByLevel;
     }
 ?>
-
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
         <div class="d-flex w-100 align-items-start" style="height: 91%">
@@ -260,7 +258,7 @@
                     </div>
                 </div>
                 <div
-                    class="contents d-flex flex-column align-items-center p-3 m-0 col-md-11 shadow rounded-2 scroll leave-height">
+                    class="contents d-flex flex-column align-items-center p-3 m-0 col-md-12 col-11 shadow rounded-2 scroll leave-height">
                     <div class="stepper" id="stepOne" style="display:flex;">
                         <div class="step active">1</div>
                         <div class="line"></div>
@@ -298,7 +296,7 @@
                         <div class="step active">4</div>
                     </div>
                     <form id="pds-update" method="post" class="col-md-12">
-                        <input type="hidden" name="employee_id" value="<?= $pds["employee_id"] ?>">
+                        <input type="hidden" name="user_id" value="<?= $pds["user_id"] ?>">
                         <!-- ============================== PERSONAL INFORMATION ========================================= -->
                         <div id="personalInfo"
                             class="personalInfo flex-row align-items-center p-0 m-0 mt-3 flex-wrap col-md-12 gap-1"
@@ -971,7 +969,7 @@
                             </div>
                         </div>
                         <!-- ============================== OTHERS ========================================= -->
-                        <div id="Others"
+                      <div id="Others"
                             class="Others flex-row align-items-center p-0 m-0 mt-3 flex-wrap col-md-12 gap-1"
                             style="display: none; height: auto; width: 71.5vw !important;">
                             <div class="table-responsive mb-3 col-md-12">
@@ -1117,12 +1115,12 @@
                             <div class="modal-dialog modal-md modal-dialog-start">
                                 <div class="modal-content">
                                     <div class="modal-header bg-gradient-primary">
-                                        <h5 class="modal-title text-white" id="updateModalLabel">Update Employee PDS</h5>
+                                        <h5 class="modal-title text-white" id="updateModalLabel">Update Employee Profile</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modalConfirmation px-3 py-4 text-center">
-                                        <h5 class="mb-0">Are you sure you want to update this PDS?</h5>
+                                        <h5 class="mb-0">Are you sure you want to update this profile?</h5>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-danger">Save Changes</button>
@@ -1169,131 +1167,131 @@
     </div>
 </div>
 <script>
-    function showLoadingAndRun(callback) {
-        showLoader();
-        setTimeout(() => {
-            hideLoader();
-            callback();
-        }, 500);
-    }
+function showLoadingAndRun(callback) {
+    showLoader();
+    setTimeout(() => {
+        hideLoader();
+        callback();
+    }, 500);
+}
 
-    function showLoader() {
-        document.getElementById('loadingAnimation').style.display = 'flex';
-    }
+function showLoader() {
+    document.getElementById('loadingAnimation').style.display = 'flex';
+}
 
-    function hideLoader() {
-        document.getElementById('loadingAnimation').style.display = 'none';
-    }
+function hideLoader() {
+    document.getElementById('loadingAnimation').style.display = 'none';
+}
 
-    window.addEventListener('pageshow', hideLoader);
+window.addEventListener('pageshow', hideLoader);
 
-    function goToStepTwo() {
-        document.getElementById('stepOne').style.display = 'none';
-        document.getElementById('personalInfo').style.display = 'none';
-        document.getElementById('buttonFirstN').style.display = 'none';
+function goToStepTwo() {
+    document.getElementById('stepOne').style.display = 'none';
+    document.getElementById('personalInfo').style.display = 'none';
+    document.getElementById('buttonFirstN').style.display = 'none';
 
-        document.getElementById('stepTwo').style.display = 'flex';
-        document.getElementById('familyBackground').style.display = 'flex';
-        document.getElementById('buttonSecondN').style.display = 'flex';
-        document.getElementById('buttonSecondB').style.display = 'flex';
+    document.getElementById('stepTwo').style.display = 'flex';
+    document.getElementById('familyBackground').style.display = 'flex';
+    document.getElementById('buttonSecondN').style.display = 'flex';
+    document.getElementById('buttonSecondB').style.display = 'flex';
 
-        document.getElementById('stepThree').style.display = 'none';
-        document.getElementById('EducBG_WorkExp').style.display = 'none';
-        document.getElementById('buttonThirdN').style.display = 'none';
-        document.getElementById('buttonThirdB').style.display = 'none';
+    document.getElementById('stepThree').style.display = 'none';
+    document.getElementById('EducBG_WorkExp').style.display = 'none';
+    document.getElementById('buttonThirdN').style.display = 'none';
+    document.getElementById('buttonThirdB').style.display = 'none';
 
-        document.getElementById('stepFour').style.display = 'none';
-        document.getElementById('Others').style.display = 'none';
-        document.getElementById('updateButtonEBG').style.display = 'none';
-        document.getElementById('buttonFourthB').style.display = 'none';
-    }
+    document.getElementById('stepFour').style.display = 'none';
+    document.getElementById('Others').style.display = 'none';
+    document.getElementById('updateButtonEBG').style.display = 'none';
+    document.getElementById('buttonFourthB').style.display = 'none';
+}
 
-    function goToStepOne() {
-        document.getElementById('stepOne').style.display = 'flex';
-        document.getElementById('personalInfo').style.display = 'flex';
-        document.getElementById('buttonFirstN').style.display = 'flex';
+function goToStepOne() {
+    document.getElementById('stepOne').style.display = 'flex';
+    document.getElementById('personalInfo').style.display = 'flex';
+    document.getElementById('buttonFirstN').style.display = 'flex';
 
-        document.getElementById('stepTwo').style.display = 'none';
-        document.getElementById('familyBackground').style.display = 'none';
-        document.getElementById('buttonSecondN').style.display = 'none';
-        document.getElementById('buttonSecondB').style.display = 'none';
+    document.getElementById('stepTwo').style.display = 'none';
+    document.getElementById('familyBackground').style.display = 'none';
+    document.getElementById('buttonSecondN').style.display = 'none';
+    document.getElementById('buttonSecondB').style.display = 'none';
 
-        document.getElementById('stepThree').style.display = 'none';
-        document.getElementById('EducBG_WorkExp').style.display = 'none';
-        document.getElementById('buttonThirdN').style.display = 'none';
-        document.getElementById('buttonThirdB').style.display = 'none';
+    document.getElementById('stepThree').style.display = 'none';
+    document.getElementById('EducBG_WorkExp').style.display = 'none';
+    document.getElementById('buttonThirdN').style.display = 'none';
+    document.getElementById('buttonThirdB').style.display = 'none';
 
-        document.getElementById('stepFour').style.display = 'none';
-        document.getElementById('Others').style.display = 'none';
-        document.getElementById('updateButtonEBG').style.display = 'none';
-        document.getElementById('buttonFourthB').style.display = 'none';
-    }
+    document.getElementById('stepFour').style.display = 'none';
+    document.getElementById('Others').style.display = 'none';
+    document.getElementById('updateButtonEBG').style.display = 'none';
+    document.getElementById('buttonFourthB').style.display = 'none';
+}
 
-    function goToStepThree() {
-        document.getElementById('stepOne').style.display = 'none';
-        document.getElementById('personalInfo').style.display = 'none';
-        document.getElementById('buttonFirstN').style.display = 'none';
+function goToStepThree() {
+    document.getElementById('stepOne').style.display = 'none';
+    document.getElementById('personalInfo').style.display = 'none';
+    document.getElementById('buttonFirstN').style.display = 'none';
 
-        document.getElementById('stepTwo').style.display = 'none';
-        document.getElementById('familyBackground').style.display = 'none';
-        document.getElementById('buttonSecondN').style.display = 'none';
-        document.getElementById('buttonSecondB').style.display = 'none';
+    document.getElementById('stepTwo').style.display = 'none';
+    document.getElementById('familyBackground').style.display = 'none';
+    document.getElementById('buttonSecondN').style.display = 'none';
+    document.getElementById('buttonSecondB').style.display = 'none';
 
-        document.getElementById('stepThree').style.display = 'flex';
-        document.getElementById('EducBG_WorkExp').style.display = 'flex';
-        document.getElementById('buttonThirdN').style.display = 'flex';
-        document.getElementById('buttonThirdB').style.display = 'flex';
+    document.getElementById('stepThree').style.display = 'flex';
+    document.getElementById('EducBG_WorkExp').style.display = 'flex';
+    document.getElementById('buttonThirdN').style.display = 'flex';
+    document.getElementById('buttonThirdB').style.display = 'flex';
 
-        document.getElementById('stepFour').style.display = 'none';
-        document.getElementById('Others').style.display = 'none';
-        document.getElementById('buttonFourthB').style.display = 'none';
-        document.getElementById('updateButtonEBG').style.display = 'none';
-    }
+    document.getElementById('stepFour').style.display = 'none';
+    document.getElementById('Others').style.display = 'none';
+    document.getElementById('buttonFourthB').style.display = 'none';
+    document.getElementById('updateButtonEBG').style.display = 'none';
+}
 
-    function goToStepFour() {
-        document.getElementById('stepOne').style.display = 'none';
-        document.getElementById('personalInfo').style.display = 'none';
-        document.getElementById('buttonFirstN').style.display = 'none';
+function goToStepFour() {
+    document.getElementById('stepOne').style.display = 'none';
+    document.getElementById('personalInfo').style.display = 'none';
+    document.getElementById('buttonFirstN').style.display = 'none';
 
-        document.getElementById('stepTwo').style.display = 'none';
-        document.getElementById('familyBackground').style.display = 'none';
-        document.getElementById('buttonSecondN').style.display = 'none';
-        document.getElementById('buttonSecondB').style.display = 'none';
+    document.getElementById('stepTwo').style.display = 'none';
+    document.getElementById('familyBackground').style.display = 'none';
+    document.getElementById('buttonSecondN').style.display = 'none';
+    document.getElementById('buttonSecondB').style.display = 'none';
 
-        document.getElementById('stepThree').style.display = 'none';
-        document.getElementById('EducBG_WorkExp').style.display = 'none';
-        document.getElementById('buttonThirdN').style.display = 'none';
-        document.getElementById('buttonThirdB').style.display = 'none';
+    document.getElementById('stepThree').style.display = 'none';
+    document.getElementById('EducBG_WorkExp').style.display = 'none';
+    document.getElementById('buttonThirdN').style.display = 'none';
+    document.getElementById('buttonThirdB').style.display = 'none';
 
-        document.getElementById('stepFour').style.display = 'flex';
-        document.getElementById('Others').style.display = 'flex';
-        document.getElementById('buttonFourthB').style.display = 'flex';
-        document.getElementById('updateButtonEBG').style.display = 'flex';
-    }
+    document.getElementById('stepFour').style.display = 'flex';
+    document.getElementById('Others').style.display = 'flex';
+    document.getElementById('buttonFourthB').style.display = 'flex';
+    document.getElementById('updateButtonEBG').style.display = 'flex';
+}
 
-    function buttonFirstN() {
-        showLoadingAndRun(goToStepTwo);
-    }
+function buttonFirstN() {
+    showLoadingAndRun(goToStepTwo);
+}
 
-    function buttonSecondN() {
-        showLoadingAndRun(goToStepThree);
-    }
+function buttonSecondN() {
+    showLoadingAndRun(goToStepThree);
+}
 
-    function buttonThirdN() {
-        showLoadingAndRun(goToStepFour);
-    }
+function buttonThirdN() {
+    showLoadingAndRun(goToStepFour);
+}
 
-    function buttonSecondB() {
-        showLoadingAndRun(goToStepOne);
-    }
+function buttonSecondB() {
+    showLoadingAndRun(goToStepOne);
+}
 
-    function buttonThirdB() {
-        showLoadingAndRun(goToStepTwo);
-    }
+function buttonThirdB() {
+    showLoadingAndRun(goToStepTwo);
+}
 
-    function buttonFourthB() {
-        showLoadingAndRun(goToStepThree);
-    }
+function buttonFourthB() {
+    showLoadingAndRun(goToStepThree);
+}
 </script>
 <script>
     // FIXED PRINT SCRIPT - REPLACE ALL THE PRINT JAVASCRIPT WITH THIS

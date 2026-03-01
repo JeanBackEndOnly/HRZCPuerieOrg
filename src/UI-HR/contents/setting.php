@@ -1074,7 +1074,7 @@
             </div>
         </div>
         <!-- LOGIN HISTORY TAB -->
-        <div class="column p-2 m-0 rounded-2 col-12 col-md-8 height tab-pane fade" role="tabpanel" id="history">
+        <div class="column p-2 m-0 rounded-2 col-12 col-md-9 height tab-pane fade" role="tabpanel" id="history">
             <div class="card rounded-2 profile-contents" style="overflow-y: scroll;">
                 <!-- LOGIN HISTORY HEADER -->
                 <div class="header ps-3 pt-3">

@@ -1,22 +1,21 @@
 <body>
    <?php 
-            $leaveCounts = $stmt = $pdo->prepare("SELECT * FROM  leaveCounts WHERE user_id = :user_id");
-            $leaveCounts->execute([
-               'user_id' => $user_id
-            ]);
-            $getCounts = $stmt->fetch(PDO::FETCH_ASSOC);
-            $VacationBalance = $getCounts["VacationBalance"];
-            $SickBalance = $getCounts["SickBalance"];
-            $SpecialBalance = $getCounts["SpecialBalance"];
-            $OthersBalance = $getCounts["OthersBalance"];
+      $leaveCounts = $stmt = $pdo->prepare("SELECT * FROM  leaveCounts WHERE user_id = :user_id");
+      $leaveCounts->execute([
+            'user_id' => $user_id
+         ]);
+      $getCounts = $stmt->fetch(PDO::FETCH_ASSOC);
+      $VacationBalance = $getCounts["VacationBalance"];
+      $SickBalance = $getCounts["SickBalance"];
+      $SpecialBalance = $getCounts["SpecialBalance"];
+      $OthersBalance = $getCounts["OthersBalance"];
 
-            $stmtSchedule = $pdo->prepare("SELECT es.schedule_at, st.scheduleName, st.schedule_from, st.schedule_to FROM employee_schedule es
-            LEFT JOIN sched_template st ON es.schedule_id = st.template_id
-            WHERE es.user_id = ? AND es.schedule_at = CURDATE()");
-            $stmtSchedule->execute([$user_id]);
-            $result = $stmtSchedule->fetch(PDO::FETCH_ASSOC);
-            
-         ?>
+      $stmtSchedule = $pdo->prepare("SELECT es.schedule_at, st.scheduleName, st.schedule_from, st.schedule_to FROM employee_schedule es
+         LEFT JOIN sched_template st ON es.schedule_id = st.template_id
+         WHERE es.user_id = ? AND es.schedule_at = CURDATE()");
+      $stmtSchedule->execute([$user_id]);
+      $result = $stmtSchedule->fetch(PDO::FETCH_ASSOC);
+   ?>
    <section class="">
       <div class="mb-4">
          <div class="mx-2">
@@ -24,27 +23,6 @@
             <small class="text-muted">Overviews</small>
          </div>
       </div>
-
-      <!-- SCHEDULE HERE -->
-      <?php if($result){ ?>
-         <div class="col-md-8 d-flex mb-3 ms-2">
-            <div class="try rounded bg-employee-dashboard"></div>
-            <div class="col-md-10 col-12 ms-2 m-0 d-flex flex-column bw text-dark p-2 px-2 shadow">
-               <strong class="fs-5">
-                  DATE TODAY: 
-                  <span><?= date('M d Y', strtotime($result["schedule_at"])); ?></span>
-                  </strong>
-               <strong class="fs-6">YOUR TIME SCHEDULE TODAY: <?= date('h:i A', strtotime($result["schedule_from"])) . ' - ' . date('h:i A', strtotime($result["schedule_to"])) ?></strong>
-            </div>
-         </div>
-      <?php }else{ ?>
-      <div class="col-md-12 d-flex mb-3 bw">
-         <div class="try rounded me-1 bg-employee-dashboard"></div>
-            <strong>You have no Schedule today!</strong>
-         </div>
-      </div>
-      <?php }?>
-      <!-- Grid Row -->
       <div class="row text-center pb-2 ms-2 gap-2">
          <a href="index.php?page=contents/leave" class="col-md-3 col-5 hover min-height rounded d-flex flex-column py-4  shadow text-white align-items-center justify-content-center cursor-pointer bg-color-lr">
             <div class="col-md-12 text-center">
@@ -71,6 +49,7 @@
             </div>
          </a>
       </div>
+      
       <div class="row ms-1 gap-2 pb-5">
          <label class="col-md-2 col-5 d-flex flex-column min-height align-items-center justify-content-center shadow rounded py-4 bg-color-lr">
             <div class="col-md-12 text-center text-white">

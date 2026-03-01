@@ -4,6 +4,10 @@
             <h4 class=""><i class="fa-solid fa-calendar me-2"></i>Leave Management</h4>
             <small class="text-muted ">Accept, Reject and Update Employee Leave Request</small>
         </div>
+        <div class="col-md-2 d-flex justify-content-end">
+            <button class="btn btn-danger m-0" data-bs-toggle="modal" data-bs-target="#create_leave">Request
+                Leave</button>
+        </div>
     </div>
     <!-- EMPLOYEE ACCOUNT DISPLAYS =============================================================================================== -->
     <div class="card">
@@ -262,4 +266,188 @@
         </div>
     </div>
 </section>
+<!-- MODAL SECTION -->
+ <!-- create leave modal -->
+<div class="modal fade" id="create_leave" tabindex="-1" aria-labelledby="create_leaveLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title text-white" id="create_leaveLabel">Request a leave</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" id="leave-form" enctype="multipart/form-data">
+                    <input type="hidden" name="user_id" value="<?= htmlspecialchars($hr_id) ?>">
+                    <input type="hidden" name="leaveStatus" value="Pending">
+                    <h5 class="w-100 text-center m-0">ZAMBOANGA PUERICULTURE CENTER ORG. NO.144 INC.</h5>
+                    <strong class="w-100 text-center m-0">APPLICATION FOR LEAVE</strong>
+                    <?php 
+                            date_default_timezone_set('Asia/Manila');
+                            $date = date('Y-m-d');
+                       ?>
+                    <input type="hidden" name="leaveDate" value="<?= $date ?>" class="form-control">
+                    <div class="col-md-3">
+                        <label class="form-label m-0">LEAVE APPLIED FOR <span class="text-danger">*</span></label>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <input type="radio" name="leaveType" value="Vacation_leave" required onclick="hide_medical()">
+                        <span class="d-flex align-items-center ms-2">Vacation Leave</span>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-center">
+                        <input type="radio" name="leaveType" value="Sick_leave" required onclick="show_medical()">
+                        <span class="d-flex align-items-center ms-2">Sick Leave</span>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <input type="radio" name="leaveType" value="Special_leave" required onclick="hide_medical()">
+                        <span class="d-flex align-items-center ms-2">Special Leave</span>
+                    </div>
+                    <div class="col-md-12 align-items-center" style="display: none;" id="show-medical">
+                        <label class="form-label m-0 me-3">Medical Proof <span class="text-danger">*</span></label>
+                        <div class="col-md-9">
+                            <input type="file" name="medical_proof" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-center">
+                        <input type="radio" name="leaveType" value="Others" id="leaveTypeOthers" required
+                            onclick="hide_medical()">
+                        <label class="form-label d-flex align-items-center m-0 ms-2">Others Specify</label>
+                    </div>
+                    <div class="col-md-10">
+                        <input type="text" name="Others" class="form-control" id="othersInput" disabled>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="form-label">COURSE/PURPOSE <span class="text-danger">(required)</span></label>
+                        <input type="text" required name="Purpose" class="form-control">
+                    </div>
+                    <div class="col-md-12 row">
+                        <div class="col-md-12 d-flex justify-content-start align-items-center mt-3">
+                            <button type="button" id="addDateBtn" class="btn btn-danger">Add date</button>
+                        </div>
+
+                        <div id="dateContainer" class="row">
+                            <div class="col-md-4">
+                                <label class="form-label">
+                                    INCLUSIVE DATE: <span class="text-danger">(required)</span>
+                                </label>
+                                <input type="date" id="Inclusive_date" required name="inclusive_date[]"
+                                    class="form-control mb-2 inclusive-date">
+                            </div>
+                        </div>
+                        <script>
+                        document.getElementById("addDateBtn").addEventListener("click", function() {
+
+                            const container = document.getElementById("dateContainer");
+
+                            const div = document.createElement("div");
+                            div.className = "col-md-4";
+
+                            div.innerHTML = `
+                                        <label class="form-label">
+                                            INCLUSIVE DATE: <span class="text-danger">(required)</span>
+                                        </label>
+                                        <input type="date" required name="inclusive_date[]" 
+                                            class="form-control mb-2 inclusive-date">
+                                    `;
+
+                            container.appendChild(div);
+
+                            attachDateListeners();
+                        });
+                        </script>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">NO. OF DAYS <span class="text-danger">(required)</span></label>
+                            <input type="number" required name="numberOfDays" class="form-control" id="numberOfDays"
+                                readonly>
+                            <div id="daysError" class="text-danger small mt-1"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">CONTACT NO. WHILE ON LEAVE <span
+                                    class="text-danger">(required)</span></label>
+                            <input type="number" name="contact" required class="form-control">
+                        </div>
+                    </div>
+                    <p class="text-start w-100 text-dark">I hereby pledge to report for work immediately the
+                        following day after expiration of my approved leave of absence unless
+                        otherwise duly extended. My failure to do so shall subject me to disciplinary action</p>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Section Head<span class="text-dark"> (optional)</span></label>
+                        <input type="text" name="sectionHead" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Department Head<span class="text-dark"> (optional)</span></label>
+                        <input type="text" name="departmentHead" class="form-control">
+                    </div>
+                    <!-- Form Submission -->
+                    <div class="col-12 text-center mt-3">
+                        <button type="submit" class="btn btn-primary px-5">
+                            <i class="bi bi-person-plus-fill me-1"></i> Submit request
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="../../assets/js/hr_js/admin/leave.js" defer></script>
+<script>
+const daysInput = document.getElementById('numberOfDays');
+const daysError = document.getElementById('daysError');
+
+function calculateDays() {
+    const dates = document.querySelectorAll('.inclusive-date');
+    const uniqueDates = new Set();
+
+    dates.forEach(date => {
+        if (date.value) {
+            uniqueDates.add(date.value);
+        }
+    });
+
+    const count = uniqueDates.size;
+
+    if (count === 0) {
+        daysInput.value = '';
+        daysError.textContent = "Please select at least one date.";
+    } else {
+        daysInput.value = count;
+        daysError.textContent = "";
+    }
+}
+
+function attachDateListeners() {
+    const dates = document.querySelectorAll('.inclusive-date');
+    dates.forEach(date => {
+        date.removeEventListener('change', calculateDays);
+        date.addEventListener('change', calculateDays);
+    });
+}
+
+attachDateListeners();
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    const othersRadio = document.getElementById('leaveTypeOthers');
+    const othersInput = document.getElementById('othersInput');
+    const leaveTypeRadios = document.querySelectorAll('input[name="leaveType"]');
+
+    function toggleOthersInput() {
+        if (othersRadio.checked) {
+            othersInput.disabled = false;
+            othersInput.required = true;
+            othersInput.focus();
+        } else {
+            othersInput.disabled = true;
+            othersInput.required = false;
+            othersInput.value = '';
+        }
+    }
+
+    leaveTypeRadios.forEach(radio => {
+        radio.addEventListener('change', toggleOthersInput);
+    });
+});
+</script>

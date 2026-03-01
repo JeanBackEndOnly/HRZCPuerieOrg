@@ -208,7 +208,7 @@ echo "<!-- Debug: " . print_r($leave, true) . " -->";
                 <p class="w-100" style="border-bottom: solid 1px #000; transform: translateY(15px);"></p>
                 <span class="w-100 text-center m-0">Signature of Applicant</span>
             </div> -->
-            <div class="col-md-12 row">
+            <div class="col-md-12 row print-row">
                 <div class="col-md-6">
                     <label class="form-label">Section Head</label>
                     <input type="text" readonly name="sectionHead"
@@ -520,7 +520,11 @@ $(document).ready(function() {
                         size: A4;
                         margin: 0.5in;
                     }
-                    
+                    .print-row{
+                        display: flex !important;
+                        flex-direction: row !important;
+                        gap: 2;
+                    }
                     body {
                         font-family: 'Arial', sans-serif;
                         font-size: 12px;

@@ -1,5 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
     initTabs();
+    // Download functionality
+    document.addEventListener("click", function(e) {
+        if (e.target.classList.contains("downloadBtn") || e.target.closest('.downloadBtn')) {
+            const button = e.target.classList.contains("downloadBtn") ? e.target : e.target.closest(
+                '.downloadBtn');
+            const file = button.getAttribute("data-file");
+            console.log("Downloading file:", file);
+
+            const a = document.createElement("a");
+            a.href = file;
+            a.download = "";
+            a.style.display = "none";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    });
 });
 
 function initTabs() {

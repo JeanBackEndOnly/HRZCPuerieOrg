@@ -4,10 +4,12 @@
             <h4 class="mb-0"><i class="fa fa-comments text-dakr me-2"></i>System Announcement</h4>
             <small class="text-muted">Share your thoughts, suggestions, and company matters</small>
         </div>
-        <button class="btn btn-danger btn-sm" id="newFeedbackBtn" data-bs-target="#create_announcemenet"
-            data-bs-toggle="modal">
-            <i class="fa fa-plus"></i> Create Announcement
-        </button>
+        <?php if($getEmployeeData["employee_type"] == 'head') : ?>
+            <button class="btn btn-danger btn-sm" id="newFeedbackBtn" data-bs-target="#create_announcemenet"
+                data-bs-toggle="modal">
+                <i class="fa fa-plus"></i> Create Announcement
+            </button>
+        <?php endif; ?>
     </div>
     <div class="card">
         <!-- NAVIAGATIONS OF TABS -->

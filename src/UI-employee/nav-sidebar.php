@@ -45,10 +45,13 @@
             <a href="index.php?page=contents/201" class="nav-item nav-201 my-0">
                 <span class=""><i class=""></i></span> 201 Files
             </a>
+            <a href="index.php?page=contents/announcement" class="nav-item nav-announcement my-0">
+                <span class="me-1"><i class="fa-solid fa-bullhorn"></i></span> Announcement
+            </a>
             <a href="index.php?page=contents/setting" class="nav-item nav-setting nav-pds my-0">
                 <span class=""><i class=""></i></span> Account Settings
             </a>
-            <div class="text-dark position-logout d-flex border" style="width: 240px;">
+            <div class="text-dark position-logout d-flex border-width-panel">
                 <div class="w-70 text-center p-2">
                     <strong class="fs-6">EMPLOYEE PANEL</strong>
                 </div>

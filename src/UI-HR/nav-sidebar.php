@@ -51,7 +51,7 @@
             <a href="index.php?page=contents/setting" class="nav-item nav-setting ">
                 <span class="me-1"><i class="fa-solid fa-user-gear"></i></span> Account Setting
             </a>
-            <div class="text-dark position-logout d-flex border" style="width: 240px;">
+            <div class="text-dark position-logout d-flex border-width-panel">
                 <div class="w-70 text-center p-2">
                     <strong class="fs-5">HR PANEL</strong>
                 </div>

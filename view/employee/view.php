@@ -5,6 +5,16 @@
     
     require_once '../../authentication/config.php';
 
+    $employeeID = $_SESSION['employeeData']['employeeID'] ?? '';
+    $position = $_SESSION['employeeData']['employee_position'] ?? '';
+    $department = $_SESSION['employeeData']['employee_department'] ?? '';
+    $firstname = $_SESSION['employeeData']['firstname'] ?? '';
+    $middelname = $_SESSION['employeeData']['middlename'] ?? '';
+    $lastname = $_SESSION['employeeData']['lastname'] ?? '';
+    $profile_picture = $_SESSION['employeeData']['profile_picture'] ?? '';
+    $user_id = $_SESSION['employeeData']['user_id'] ?? '';
+    verify_init($user_id);
+
 // Get Leaves ========================================================================================
     function getPendingLeave(){
         $pdo = db_connect();

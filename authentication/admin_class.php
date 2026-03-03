@@ -136,6 +136,20 @@ class Action
                         'user_role' => $user['firstname'] . " " . $user['lastname']
                     ]);
                     break;
+                
+                case 'PAYROLL':
+                    $_SESSION['payrollData'] = $sessionData;
+                    $this->insertLoginHistory($user['user_id']);
+                    
+                    $redirectPath = 'src/UI-Payroll/index.php';
+                    
+                    return json_encode([
+                        'status' => 1,
+                        'message' => 'Login successful.',
+                        'redirect_url' => $redirectPath,
+                        'user_role' => $user['firstname'] . " " . $user['lastname']
+                    ]);
+                    break;
 
                 case 'EMPLOYEE':
                     $_SESSION['employeeData'] = $sessionData;

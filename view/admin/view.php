@@ -153,7 +153,7 @@
     function getPrivateMessages(){
         $pdo = db_connect();
         $user_id = $_SESSION["adminData"]["user_id"] ?? null;
-        $stmt = $pdo->prepare("SELECT * FROM announcement WHERE announce_by = ? AND announcement_type = 'private' ORDER BY announce_at DESC");
+        $stmt = $pdo->prepare("SELECT * FROM announcement WHERE user_id = ? AND announcement_type = 'private' ORDER BY announce_at DESC");
         $stmt->execute([$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

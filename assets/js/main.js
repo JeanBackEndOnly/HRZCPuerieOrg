@@ -7,7 +7,7 @@ $(document).ready(function () {
       icon: "success",
       toast: true,
       position: "top-end",
-      timer: 3000,
+      timer: 1500,
       showConfirmButton: false,
     }).then(() => {
       window.location.href = base_url + "src/";
@@ -93,7 +93,7 @@ $(document).ready(function () {
       //                     icon: "success",
       //                     toast: true,
       //                     position: "top-end",
-      //                     timer: 3000,
+      //                     timer: 1500,
       //                     showConfirmButton: false,
       //                 }).then(() => {
       //                   window.location.href = 'loginVerification.php';
@@ -105,7 +105,7 @@ $(document).ready(function () {
       //                     icon: "error",
       //                     toast: true,
       //                     position: "top-end",
-      //                     timer: 3000,
+      //                     timer: 1500,
       //                     showConfirmButton: false,
       //                 });
       //             }
@@ -118,7 +118,7 @@ $(document).ready(function () {
       //                 icon: "error",
       //                 toast: true,
       //                 position: "top-end",
-      //                 timer: 3000,
+      //                 timer: 1500,
       //                 showConfirmButton: false,
       //             });
       //         },
@@ -209,7 +209,7 @@ $(document).ready(function () {
             icon: "error",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           });
         }
@@ -222,7 +222,7 @@ $(document).ready(function () {
           icon: "error",
           toast: true,
           position: "top-end",
-          timer: 3000,
+          timer: 1500,
           showConfirmButton: false,
         });
       },
@@ -269,7 +269,7 @@ $(document).ready(function () {
   //             icon: "success",
   //             toast: true,
   //             position: "top-end",
-  //             timer: 3000,
+  //             timer: 1500,
   //             showConfirmButton: false,
   //           }).then(() => {
   //             window.location.href =
@@ -291,7 +291,7 @@ $(document).ready(function () {
   //             text: "Incorrect Email/Username or Password",
   //             toast: true,
   //             position: "top-end",
-  //             timer: 3000,
+  //             timer: 1500,
   //             showConfirmButton: false,
   //           });
   //           $this.removeClass("processing");
@@ -398,7 +398,7 @@ $(document).ready(function () {
               text: "Incorrect Email/Username or Password",
               toast: true,
               position: "top-end",
-              timer: 3000,
+              timer: 1500,
               showConfirmButton: false,
             });
             $this.removeClass("processing");
@@ -431,7 +431,7 @@ $(document).ready(function () {
             icon: "success",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           }).then(() => {
             window.location.href =
@@ -541,7 +541,7 @@ $(document).ready(function () {
             icon: "success",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           }).then(() => {
             window.location.href = "index.php";
@@ -553,7 +553,7 @@ $(document).ready(function () {
             icon: "error",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           });
         }
@@ -566,7 +566,7 @@ $(document).ready(function () {
           icon: "error",
           toast: true,
           position: "top-end",
-          timer: 3000,
+          timer: 1500,
           showConfirmButton: false,
         });
       },
@@ -608,7 +608,7 @@ $(document).ready(function () {
             icon: "success",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           }).then(() => {
             window.location.href = "veirificationPass.php";
@@ -620,7 +620,7 @@ $(document).ready(function () {
             icon: "error",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           });
         }
@@ -633,7 +633,7 @@ $(document).ready(function () {
           icon: "error",
           toast: true,
           position: "top-end",
-          timer: 3000,
+          timer: 1500,
           showConfirmButton: false,
         });
       },
@@ -1299,7 +1299,7 @@ $(document).ready(function () {
         icon: "error",
         toast: true,
         position: "top-end",
-        timer: 3000,
+        timer: 1500,
         showConfirmButton: false,
       });
       $form.data("isSubmitted", false);
@@ -1378,7 +1378,7 @@ $(document).ready(function () {
         icon: "error",
         toast: true,
         position: "top-end",
-        timer: 3000,
+        timer: 1500,
         showConfirmButton: false,
       });
       $form.data("isSubmitted", false);
@@ -1405,7 +1405,7 @@ $(document).ready(function () {
             icon: "success",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           }).then(() => {
             window.location.href = "verification.php";
@@ -1417,7 +1417,7 @@ $(document).ready(function () {
             icon: "error",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           });
         }
@@ -1430,7 +1430,7 @@ $(document).ready(function () {
           icon: "error",
           toast: true,
           position: "top-end",
-          timer: 3000,
+          timer: 1500,
           showConfirmButton: false,
         });
       },
@@ -1470,7 +1470,7 @@ $(document).ready(function () {
             icon: "success",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           }).then(() => {
             window.location.href = "register.php";
@@ -1482,7 +1482,7 @@ $(document).ready(function () {
             icon: "error",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           });
         }
@@ -1495,7 +1495,7 @@ $(document).ready(function () {
           icon: "error",
           toast: true,
           position: "top-end",
-          timer: 3000,
+          timer: 1500,
           showConfirmButton: false,
         });
       },
@@ -1536,7 +1536,7 @@ $(document).ready(function () {
             icon: "error",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           });
         }
@@ -3379,7 +3379,7 @@ $(document).ready(function () {
             icon: "success",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           }).then(() => {
             location.reload();
@@ -3391,7 +3391,7 @@ $(document).ready(function () {
             icon: "error",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           });
         }
@@ -3404,7 +3404,7 @@ $(document).ready(function () {
           icon: "error",
           toast: true,
           position: "top-end",
-          timer: 3000,
+          timer: 1500,
           showConfirmButton: false,
         });
       },
@@ -3442,7 +3442,7 @@ $(document).ready(function () {
             icon: "success",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           }).then(() => {
             location.reload();
@@ -3454,7 +3454,7 @@ $(document).ready(function () {
             icon: "error",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           });
         }
@@ -3467,7 +3467,7 @@ $(document).ready(function () {
           icon: "error",
           toast: true,
           position: "top-end",
-          timer: 3000,
+          timer: 1500,
           showConfirmButton: false,
         });
       },
@@ -3503,7 +3503,7 @@ $(document).ready(function () {
             icon: "success",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           }).then(() => {
             location.reload();
@@ -3515,7 +3515,7 @@ $(document).ready(function () {
             icon: "error",
             toast: true,
             position: "top-end",
-            timer: 3000,
+            timer: 1500,
             showConfirmButton: false,
           });
         }
@@ -3528,7 +3528,7 @@ $(document).ready(function () {
           icon: "error",
           toast: true,
           position: "top-end",
-          timer: 3000,
+          timer: 1500,
           showConfirmButton: false,
         });
       },
@@ -3546,7 +3546,7 @@ $(document).ready(function () {
       icon: "error",
       toast: true,
       position: "top-end",
-      timer: 3000,
+      timer: 1500,
       showConfirmButton: false,
     });
   }

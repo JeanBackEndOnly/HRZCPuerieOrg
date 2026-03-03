@@ -436,8 +436,9 @@ function db_connect()
                     email,
                     username,
                     password,
-                    user_role
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    user_role,
+                    employee_type
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
 
             $stmt->execute([
@@ -453,7 +454,8 @@ function db_connect()
                 'admin@example.com',
                 'admin',
                 password_hash('admin123', PASSWORD_BCRYPT),
-                'ADMIN'
+                'ADMIN',
+                'head'
             ]);
 
             $user_id = $pdo->lastInsertId();

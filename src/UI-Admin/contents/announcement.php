@@ -4,9 +4,8 @@
             <h4 class="mb-0"><i class="fa fa-comments text-dakr me-2"></i>System Announcement</h4>
             <small class="text-muted">Share your thoughts, suggestions, and company matters</small>
         </div>
-        <button class="btn btn-danger btn-sm" id="newFeedbackBtn"
-        data-bs-target="#create_announcemenet"
-        data-bs-toggle="modal">
+        <button class="btn btn-danger btn-sm" id="newFeedbackBtn" data-bs-target="#create_announcemenet"
+            data-bs-toggle="modal">
             <i class="fa fa-plus"></i> Create Announcement
         </button>
     </div>
@@ -44,187 +43,138 @@
                 <!-- Private Message -->
                 <div class="tab-pane fade show active row" id="privateMessage" role="tabpanel"
                     aria-labelledby="approved-tab" tabindex="0">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-bordered file-table">
-                            <thead class="table-light">
-                                <tr>
-                                    <th width="5%">#</th>
-                                    <th width="25%">Title</th>
-                                    <th width="50%">Description</th>
-                                    <th width="20%">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                        <?php if($getPrivateMessages) { 
-                            $countsPrivate = 1;
-                            foreach($getPrivateMessages as $private) :
-                            ?>
-                            <tr>
-                                    <td class="text-center"><?= $countsPrivate++ ?></td>
-                                    <td>
-                                        <?= htmlspecialchars($private["announcement_name"]) ?>
-                                    </td>
-                                    <td>
-                                        <?= htmlspecialchars($private["description"]) ?>
-                                    </td>
-                                    <td class="file-actions">
-                                        <?php if($private["file"]){ ?>
-                                            <a href="../../authentication/uploads/<?= urlencode($private["file"]) ?>"
-                                                target="_blank" class="btn-info btn">
-                                                <i class="fa-solid fa-eye"></i> Preview PDF
-                                            </a>
-                                        <?php } ?>
-                                        <?php if($private["file"]){ ?>
-                                            <button class="btn btn-dark btn-sm downloadBtn"
-                                                data-file="<?= '../../authentication/uploads/' . $private["file"] ?>"
-                                                title="Download File">
-                                                <i class="fa-solid fa-download me-1"></i>Download
-                                            </button>
-                                        <?php } ?>
-                                        <button class="btn btn-danger btn-sm" id="delete-announcement"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#deleteFile"
-                                            data-id="<?= htmlspecialchars($private["announcement_id"]) ?>" title="Delete File"
-                                        >
-                                            <i class="fa-solid fa-trash me-1"></i>Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                        <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                    <div class="col-md-12 d-flex flex-column">
+                        <?php 
+                            if($getPrivateMessages) :
+                                foreach($getPrivateMessages as $private) : ?>
+                        <div class="card col-md-12 p-2 m-1">
+                            <div class="col-md-12 px-2">
+                                <label class="form-label w-100 text-end">Announced At: <strong
+                                        class="fs-6"><?= htmlspecialchars(date('M d Y', strtotime($private["announce_at"]))) ?></strong></label>
+                            </div>
+                            <div class="col-md-12 px-2 mb-2">
+                                <label class="form-label">ABOUT </label>
+                                <strong class="form-control" readonly><?= $private["announcement_name"] ?></strong>
+                            </div>
+                            <div class="col-md-12 px-2 mb-2">
+                                <label class="form-label">DESCRIPTION</label>
+                                <textarea class="form-control" readonly><?= $private["description"] ?></textarea>
+                            </div>
+                            <?php if($private["file"]) : ?>
+                            <div class="px-2">
+                                <label class="form-label">NOTE: you can preview and download this file with the button
+                                    below</label>
+                                <p class="form-control" readonly><?= $private["file"] ?></p>
+                            </div>
+                            <?php endif; ?>
+                            <div class="col-md-12 pe-2 d-flex gap-2 justify-content-end">
+                                <button class="btn btn-sm btn-info m-0"><i class="fa-solid fa-eye"></i> preview</button>
+                                <button class="btn btn-sm btn-dark m-0"><i class="fa-solid fa-download"></i>
+                                    download</button>
+                                <button class="btn btn-sm btn-danger m-0"><i class="fa-solid fa-trash-can"></i>
+                                    delete</button>
+
+                            </div>
+                        </div>
+                        <?php   
+                                endforeach;
+                            else : ?>
+                        <strong class="w-100 text-center txt-dark">No Private Messages Recieve</strong>
+                        <?php endif; ?>
                     </div>
-                           <?php }else{ ?>
-                            <strong class="w-100 text-center m-1">No Messages Recieve</strong>
-                        <?php } ?>
                 </div>
 
                 <!-- Public announcement -->
                 <div class="tab-pane fade" id="publicMessage" role="tabpanel" aria-labelledby="pending-tab"
                     tabindex="0">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-bordered file-table">
-                            <thead class="table-light">
-                                <tr>
-                                    <th width="5%">#</th>
-                                    <th width="25%">Title</th>
-                                    <th width="50%">Description</th>
-                                    <th width="20%">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                        <?php if($getPublicMessages) { 
-                            $countspublic = 1;
-                            foreach($getPublicMessages as $public) :
-                            ?>
-                            <tr>
-                                    <td class="text-center"><?= $countspublic++ ?></td>
-                                    <td>
-                                        <?= htmlspecialchars($public["announcement_name"]) ?>
-                                    </td>
-                                    <td>
-                                        <?= htmlspecialchars($public["description"]) ?>
-                                    </td>
-                                    <td class="file-actions">
-                                        <?php if($public["file"]){ ?>
-                                            <a href="../../authentication/uploads/<?= urlencode($public["file"]) ?>"
-                                                target="_blank" class="btn-info btn">
-                                                <i class="fa-solid fa-eye"></i> Preview PDF
-                                            </a>
-                                        <?php } ?>
-                                        <?php if($public["file"]){ ?>
-                                            <button class="btn btn-dark btn-sm downloadBtn"
-                                                data-file="<?= '../../authentication/uploads/' . $public["file"] ?>"
-                                                title="Download File">
-                                                <i class="fa-solid fa-download me-1"></i>Download
-                                            </button>
-                                        <?php } ?>
-                                        <button class="btn btn-danger btn-sm" id="delete-announcement"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#deleteFile"
-                                            data-id="<?= htmlspecialchars($public["announcement_id"]) ?>" title="Delete File"
-                                        >
-                                            <i class="fa-solid fa-trash me-1"></i>Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                        <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                    <div class="col-md-12 d-flex flex-column">
+                        <?php 
+                            if($getPublicMessages) :
+                                foreach($getPublicMessages as $public) : ?>
+                        <div class="card col-md-12 p-2 m-1">
+                            <div class="col-md-12 px-2">
+                                <label class="form-label w-100 text-end">Announced At: <strong
+                                        class="fs-6"><?= htmlspecialchars(date('M d Y', strtotime($public["announce_at"]))) ?></strong></label>
+                            </div>
+                            <div class="col-md-12 px-2 mb-2">
+                                <label class="form-label">ABOUT </label>
+                                <strong class="form-control" readonly><?= $public["announcement_name"] ?></strong>
+                            </div>
+                            <div class="col-md-12 px-2 mb-2">
+                                <label class="form-label">DESCRIPTION</label>
+                                <textarea class="form-control" readonly><?= $public["description"] ?></textarea>
+                            </div>
+                            <?php if($public["file"]) : ?>
+                            <div class="px-2">
+                                <label class="form-label">NOTE: you can preview and download this file with the button
+                                    below</label>
+                                <p class="form-control" readonly><?= $public["file"] ?></p>
+                            </div>
+                            <?php endif; ?>
+                            <div class="col-md-12 pe-2 d-flex gap-2 justify-content-end">
+                                <button class="btn btn-sm btn-info m-0"><i class="fa-solid fa-eye"></i> preview</button>
+                                <button class="btn btn-sm btn-dark m-0"><i class="fa-solid fa-download"></i>
+                                    download</button>
+
+                            </div>
+                        </div>
+                        <?php   
+                                endforeach;
+                            else : ?>
+                        <strong class="w-100 text-center txt-dark">No Private Messages Recieve</strong>
+                        <?php endif; ?>
                     </div>
-                    <?php
-                     }else{ ?>
-                        <strong class="w-100 text-center m-1">No Public Messages</strong>
-                    <?php } ?>
                 </div>
 
                 <!-- messege sent -->
-                <div class="tab-pane fade" id="sentMessage" role="tabpanel" aria-labelledby="rejected-tab"
-                    tabindex="0">
-                     <div class="table-responsive">
-                        <table class="table table-hover table-bordered file-table">
-                            <thead class="table-light">
-                                <tr>
-                                    <th width="5%">#</th>
-                                    <th width="25%">Title</th>
-                                    <th width="50%">Description</th>
-                                    <th width="20%">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                        <?php if($getSentMessages) { 
-                            $countssent = 1;
-                            foreach($getSentMessages as $sent) :
-                            ?>
-                            <tr>
-                                    <td class="text-center"><?= $countssent++ ?></td>
-                                    <td>
-                                        <?= htmlspecialchars($sent["announcement_name"]) ?>
-                                    </td>
-                                    <td>
-                                        <?= htmlspecialchars($sent["description"]) ?>
-                                    </td>
-                                    <td class="file-actions">
-                                        <?php if($sent["file"]){ ?>
-                                            <a href="../../authentication/uploads/<?= urlencode($sent["file"]) ?>"
-                                                target="_blank" class="btn-info btn">
-                                                <i class="fa-solid fa-eye"></i> Preview PDF
-                                            </a>
-                                        <?php } ?>
-                                        <?php if($sent["file"]){ ?>
-                                            <button class="btn btn-dark btn-sm downloadBtn"
-                                                data-file="<?= '../../authentication/uploads/' . $sent["file"] ?>"
-                                                title="Download File">
-                                                <i class="fa-solid fa-download me-1"></i>Download
-                                            </button>
-                                        <?php } ?>
-                                        <button class="btn btn-danger btn-sm" id="delete-announcement"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#deleteFile"
-                                            data-id="<?= htmlspecialchars($sent["announcement_id"]) ?>" title="Delete File"
-                                        >
-                                            <i class="fa-solid fa-trash me-1"></i>Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                        <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                <div class="tab-pane fade" id="sentMessage" role="tabpanel" aria-labelledby="rejected-tab" tabindex="0">
+                    <div class="col-md-12 d-flex flex-column">
+                        <?php 
+                            if($getSentMessages) :
+                                foreach($getSentMessages as $sent) : ?>
+                        <div class="card col-md-12 p-2 m-1">
+                            <div class="col-md-12 px-2">
+                                <label class="form-label w-100 text-end">Announced At: <strong
+                                        class="fs-6"><?= htmlspecialchars(date('M d Y', strtotime($sent["announce_at"]))) ?></strong></label>
+                            </div>
+                            <div class="col-md-12 px-2 mb-2">
+                                <label class="form-label">ABOUT </label>
+                                <strong class="form-control" readonly><?= $sent["announcement_name"] ?></strong>
+                            </div>
+                            <div class="col-md-12 px-2 mb-2">
+                                <label class="form-label">DESCRIPTION</label>
+                                <textarea class="form-control" readonly><?= $sent["description"] ?></textarea>
+                            </div>
+                            <?php if($sent["file"]) : ?>
+                            <div class="px-2">
+                                <label class="form-label">NOTE: you can preview and download this file with the button
+                                    below</label>
+                                <p class="form-control" readonly><?= $sent["file"] ?></p>
+                            </div>
+                            <?php endif; ?>
+                            <div class="col-md-12 pe-2 d-flex gap-2 justify-content-end">
+                                <button class="btn btn-sm btn-info m-0"><i class="fa-solid fa-eye"></i> preview</button>
+                                <button class="btn btn-sm btn-dark m-0"><i class="fa-solid fa-download"></i>
+                                    download</button>
+                                <button class="btn btn-sm btn-danger m-0"><i class="fa-solid fa-trash-can"></i>
+                                    delete</button>
+
+                            </div>
+                        </div>
+                        <?php   
+                                endforeach;
+                            else : ?>
+                        <strong class="w-100 text-center txt-dark">No Private Messages Recieve</strong>
+                        <?php endif; ?>
                     </div>
-                    <?php
-                    }else{ ?>
-                        <strong class="w-100 text-center m-1">No Message Sent</strong>
-                    <?php } ?>
                 </div>
             </div>
         </div>
     </div>
 </main>
 <!-- Modal section ================================================= -->
- <div class="modal fade" id="create_announcemenet" tabindex="-1" aria-labelledby="create_announcemenetLabel" aria-hidden="true">
+<div class="modal fade" id="create_announcemenet" tabindex="-1" aria-labelledby="create_announcemenetLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
@@ -241,7 +191,9 @@
                             <option value="" disabled>Announce it to.....</option>
                             <option value="2105">Public Announcement</option>
                             <?php foreach($getUsersForAnnouncement as $heads) : ?>
-                                <option value="<?= htmlspecialchars($heads["user_id"]) ?>"><?= htmlspecialchars($heads["lastname"] . ' ' . substr($heads["middlename"], 0, 1) . '. ' . $heads["lastname"]) ?></option>
+                            <option value="<?= htmlspecialchars($heads["user_id"]) ?>">
+                                <?= htmlspecialchars($heads["lastname"] . ' ' . substr($heads["middlename"], 0, 1) . '. ' . $heads["lastname"]) ?>
+                            </option>
                             <?php endforeach; ?>
                         </select>
                     </div>

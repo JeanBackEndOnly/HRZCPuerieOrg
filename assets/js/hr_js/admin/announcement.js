@@ -48,7 +48,7 @@ function initTabs() {
             const targetId = this.getAttribute('data-bs-target');
             const targetContent = document.querySelector(targetId);
             if (targetContent) {
-                targetContent.style.display = 'block';
+                targetContent.style.display = 'flex';
                 targetContent.classList.add('show', 'active');
                 
                 // Load data for the active tab

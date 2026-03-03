@@ -18,9 +18,9 @@ $lastname = $_SESSION['hrData']['lastname'] ?? '';
 $profile_picture = $_SESSION['hrData']['profile_picture'] ?? '';
 $hr_id = $_SESSION['hrData']['user_id'] ?? '';
 
-$stmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE type = 'HR' AND status = 'Active'");
-$stmt->execute();
-$leaveCounts = $stmt->fetchColumn();
+// $stmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE type = 'HR' AND status = 'Active'");
+// $stmt->execute();
+// $leaveCounts = $stmt->fetchColumn();
 ?>
 
 <div class="bg-gradient-primary col-md-12 col-12 justify-content-between d-flex">
@@ -31,7 +31,7 @@ $leaveCounts = $stmt->fetchColumn();
         <img src="../../assets/image/system_logo/pueri-logo.png" class="image-header me-2">
         <h4 class="text-white m-0 header-text">Zamboanga Puericulture Center</h4>
     </div>
-    <div class="justify-content-end dap-3 p-4 col-md-7 col-6 mx-2 d-flex media-adjustaments">
+    <!-- <div class="justify-content-end dap-3 p-4 col-md-7 col-6 mx-2 d-flex media-adjustaments">
         <div class="notification me-2 d-flex align-items-center justify-content-center">
             <form action="../../authentication/hrAuth.php" method="POST">
                 <?php $csrf = $_SESSION["csrf_token"] ?? ''?>
@@ -47,7 +47,7 @@ $leaveCounts = $stmt->fetchColumn();
                 </button>
             </form>
         </div>
-    </div>
+    </div> -->
 </div>
 
 

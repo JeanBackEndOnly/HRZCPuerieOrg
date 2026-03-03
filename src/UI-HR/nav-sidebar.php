@@ -45,6 +45,9 @@
             <a href="index.php?page=contents/hr_settings" class="nav-item nav-hr_settings nav-employee_sched">
                 <span class="me-1"><i class="fa-solid fa-gears"></i></span> Schedule Management
             </a>
+            <a href="index.php?page=contents/announcement" class="nav-item nav-announcement">
+                <span class="me-1"><i class="fa-solid fa-bullhorn"></i></span> Announcement
+            </a>
             <a href="index.php?page=contents/setting" class="nav-item nav-setting ">
                 <span class="me-1"><i class="fa-solid fa-user-gear"></i></span> Account Setting
             </a>

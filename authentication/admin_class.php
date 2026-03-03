@@ -761,6 +761,7 @@ class Action
         $gender = htmlspecialchars(trim($_POST["gender"]));
         $email = htmlspecialchars(trim($_POST["email"]));
         $user_role = htmlspecialchars($_POST["user_role"]);
+        $employee_type = htmlspecialchars($_POST["employee_type"] ?? '');
         $contact = $_POST["contact"];
         $username = $_POST["username"];
         $password = $_POST["password"];
@@ -800,8 +801,8 @@ class Action
 
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
             // FIXED: Use $this->db instead of $pdo
-            $query = "INSERT INTO users (firstname, middlename, lastname, suffix, email, contact, gender, username, password, user_role, status) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Active')";
+            $query = "INSERT INTO users (firstname, middlename, lastname, suffix, email, contact, gender, username, password, user_role, employee_type, status) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Active')";
 
             $stmt = $this->db->prepare($query); // CHANGED: $pdo to $this->db
             $stmt->execute([
@@ -814,7 +815,8 @@ class Action
                 $gender,
                 $username,
                 $hashedPassword,
-                $user_role
+                $user_role,
+                $employee_type
             ]);
 
             $user_id = $this->db->lastInsertId();

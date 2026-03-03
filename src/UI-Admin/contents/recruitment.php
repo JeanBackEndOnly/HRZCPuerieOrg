@@ -17,7 +17,7 @@
     <div class="card">
         <!-- NAVIAGATIONS OF TABS -->
         <div class="card-body col-md-12 col-12 d-flex justify-content-between flex-wrap">
-            <ul class="nav nav-tabs col-md-7 col-12" id="employeesTabs" role="tablist">
+            <ul class="nav nav-tabs col-md-8 col-12" id="employeesTabs" role="tablist">
                 <li class="nav-item col-md-4" role="presentation">
                     <button class="nav-link w-100 h-100 active" id="approved-tab" data-bs-toggle="tab"
                         data-bs-target="#Approved_Employees" type="button" role="tab" aria-controls="Approved_Employees"
@@ -259,7 +259,7 @@
                     </div>
 
                     <!-- Contact Information -->
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Account Role <span class="text-danger">*</span></label>
                         <select name="user_role" class="form-select" id="">
                             <option value="">Select Account Role</option>
@@ -268,11 +268,20 @@
                             <option value="HR">HR</option>
                         </select>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                        <label class="form-label">Employee Type <span class="text-danger">*</span></label>
+                        <select name="employee_type" class="form-select" id="">
+                            <option value="">Select Employee Type</option>
+                            <option value="head">head</option>
+                            <option value="regular">regular</option>
+                            <option value="probationary">probationary</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
                         <label class="form-label">Email <span class="text-danger">*</span></label>
                         <input type="email" class="form-control" name="email" required>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Contact Number <span class="text-danger">*</span></label>
                         <input type="tel" class="form-control" name="contact" required>
                     </div>

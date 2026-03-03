@@ -4,7 +4,7 @@ function db_connect()
     $host = 'localhost';
     $username = 'root';
     $password = '';
-    $database = 'ZClient_DB';
+    $database = 'pueri_db';
 
     try {
         // Step 1: Initial connection to MySQL (no DB yet)
@@ -21,18 +21,32 @@ function db_connect()
         // Step 4: Define table structure
         $tableQueries = [
             "CREATE TABLE IF NOT EXISTS departments(
-                Department_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                Department_id INT(11) NOT NULL AUTO_INCREMENT,
                 Department_name VARCHAR(50) NOT NULL,
                 Department_code VARCHAR(50),
-                addAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-            )",
+                addAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (Department_id)
+            ) ENGINE=InnoDB;",
+
             "CREATE TABLE IF NOT EXISTS unit_section(
-                unit_section_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                department_id INT,
+                unit_section_id INT(11) NOT NULL AUTO_INCREMENT,
+                department_id INT(11) NOT NULL,
                 unit_section_name VARCHAR(50) NOT NULL,
-                addAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY(department_id) REFERENCES departments(Department_id)
-            )",
+                addAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (unit_section_id),
+                CONSTRAINT fk_department
+                    FOREIGN KEY (department_id)
+                    REFERENCES departments(Department_id)
+                    ON DELETE CASCADE
+                    ON UPDATE CASCADE
+            ) ENGINE=InnoDB;",
+            // "CREATE TABLE IF NOT EXISTS unit_section(
+            //     unit_section_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            //     department_id INT,
+            //     unit_section_name VARCHAR(50) NOT NULL,
+            //     addAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            //     FOREIGN KEY(department_id) REFERENCES departments(Department_id)
+            // )",
             "CREATE TABLE IF NOT EXISTS jobTitles(
                 jobTitles_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
                 jobTitle VARCHAR(50) NOT NULL,
@@ -75,6 +89,7 @@ function db_connect()
                 username VARCHAR(50) NOT NULL,
                 password VARCHAR(255) NOT NULL,
                 user_role ENUM('HR','EMPLOYEE', 'ADMIN', 'PAYROLL'),
+                employee_type ENUM('head', 'regular', 'probationary'),
                 email VARCHAR(100) NOT NULL,
 
                 reason TEXT,
@@ -379,9 +394,22 @@ function db_connect()
             )",
             "CREATE TABLE IF NOT EXISTS notifications (
                 notifications_id INT AUTO_INCREMENT PRIMARY KEY,
-                type ENUM('HR', 'ADMIN', 'EMPLOYEE', 'PAYROLL') NOT NULL,
-                status ENUM('Active', 'Inactive'),
-                notify_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                user_id INT,
+                notification_name VARCHAR(100),
+                description TEXT NOT NULL,
+                notification_status ENUM('unread', 'read'),
+                notify_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY(user_id) REFERENCES users (user_id)
+            )",
+            "CREATE TABLE IF NOT EXISTS announcement (
+                announcement_id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT,
+                announcement_name VARCHAR(100),
+                description TEXT NOT NULL,
+                file VARCHAR(255),
+                announcement_type ENUM('private', 'public'),
+                announce_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY(user_id) REFERENCES users (user_id)
             )"
         ];
 

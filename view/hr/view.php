@@ -9,9 +9,11 @@
     function getCareerPathHistory(){
         $pdo = db_connect();
         if(isset($_GET["id"]) && $_GET["id"] !== ''){
-            $user_id = $_GET["id"];
+            $user_id = $_GET["id"] ?? null;
         }else if(isset($_SESSION["hrData"]["user_id"]) && $_SESSION["hrData"]["user_id"] !== ''){
-            $user_id = $_SESSION["hrData"]["user_id"];
+            $user_id = $_SESSION["hrData"]["user_id"] ?? null;
+        }else{
+            $user_id = null;
         }
         $stmt = $pdo->prepare("SELECT 
             jh.job_historyID,

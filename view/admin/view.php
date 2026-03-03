@@ -142,3 +142,11 @@
         $stmt->execute([$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+// fetch users for announcement ==========================
+    function getUsersForAnnouncement(){
+        $pdo = db_connect();
+        $stmt = $pdo->prepare("SELECT * FROM users u WHERE employee_type = 'head'");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }

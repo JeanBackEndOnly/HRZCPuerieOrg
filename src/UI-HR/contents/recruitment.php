@@ -259,20 +259,23 @@
                     </div>
 
                     <!-- Contact Information -->
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Account Role <span class="text-danger">*</span></label>
-                        <select name="user_role" class="form-select" id="">
+                        <input type="text" value="EMPLOYEE" name="user_role" class="form-control" readonly>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Account Role <span class="text-danger">*</span></label>
+                        <select name="employee_type" class="form-select" id="">
                             <option value="">Select Account Role</option>
-                            <option value="EMPLOYEE">EMPLOYEE</option>
-                            <option value="PAYROLL">PAYROLL</option>
-                            <option value="HR">HR</option>
+                            <option value="regular">regular</option>
+                            <option value="probationary">probationary</option>
                         </select>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Email <span class="text-danger">*</span></label>
                         <input type="email" class="form-control" name="email" required>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Contact Number <span class="text-danger">*</span></label>
                         <input type="tel" class="form-control" name="contact" required>
                     </div>

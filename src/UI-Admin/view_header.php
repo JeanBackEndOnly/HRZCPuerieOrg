@@ -139,4 +139,11 @@ if(!$employeeCareerPath){
     $_SESSION['error'] = "Failed to fetch employees data";
     $employeeCareerPath = null;
 }
+
+// announcement matters ====================================================
+$getUsersForAnnouncement = getUsersForAnnouncement();
+if(!$getUsersForAnnouncement){
+    $_SESSION['error'] = "Failed to fetch employees data";
+    $getUsersForAnnouncement = null;
+}
 ?>

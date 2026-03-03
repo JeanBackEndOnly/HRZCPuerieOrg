@@ -48,6 +48,9 @@
             <a href="index.php?page=contents/system_setting" class="nav-item nav-system_setting">
                 <span class="me-1"><i class="fa-solid fa-building-user"></i></span> System Management
             </a>
+            <a href="index.php?page=contents/announcement" class="nav-item nav-announcement">
+                <span class="me-1"><i class="fa-solid fa-bullhorn"></i></span> Announcement
+            </a>
             <a href="index.php?page=contents/setting" class="nav-item nav-setting ">
                 <span class="me-1"><i class="fa-solid fa-user-gear"></i></span> Account Setting
             </a>

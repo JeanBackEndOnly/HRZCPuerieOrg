@@ -19,7 +19,7 @@
                     </div>
                     <div class="col-8 d-flex flex-column align-items-center justify-content-center p-3">
                         <i class="fa-solid fs-4 fa-calendar-minus"></i>
-                        <span class="text-center font-12 mt-2 w-100">PENDING LEAVES</span>
+                        <span class="text-center font-12 mt-2 w-100">PENDING</span>
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="col-8 d-flex flex-column align-items-center justify-content-center p-3">
                         <i class="fa-solid fs-4 fa-calendar-plus"></i>
-                        <span class="text-center font-12 mt-2 w-100">RECOMMENDED LEAVES</span>
+                        <span class="text-center font-12 mt-2 w-100">RECOMMENDED</span>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-8 d-flex flex-column align-items-center justify-content-center p-3">
                         <i class="fa-solid fs-4 fa-calendar-check"></i>
-                        <span class="text-center font-12 mt-2 w-100">APPROVED LEAVES</span>
+                        <span class="text-center font-12 mt-2 w-100">APPROVED</span>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                     </div>
                     <div class="col-8 d-flex flex-column align-items-center justify-content-center p-3">
                         <i class="fa-solid fs-4 fa-calendar-xmark"></i>
-                        <span class="text-center font-12 mt-2 w-100">DISAPPROVED LEAVES</span>
+                        <span class="text-center font-12 mt-2 w-100">DISAPPROVED</span>
                     </div>
                 </div>
             </div>

@@ -3434,5 +3434,21 @@ class Action
             ]);
         }
     }
+    function announcement_delete_form(){
+        $announcement_id = $_POST["announcement_id"];
+        try {
+            $stmt = $this->db->prepare("DELETE FROM announcement WHERE announcement_id = ?");
+            $stmt->execute([$announcement_id]);
+            return json_encode([
+                'status' => 1,
+                'message' => 'Announcement Delete Successfully.'
+            ]);      
+        } catch (PDOException $e) {
+            return json_encode([
+                'status' => 0,
+                'message' => 'An error occured: ' . $e->getMessage()
+            ]); 
+        }
+    }
 
 } 

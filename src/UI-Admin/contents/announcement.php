@@ -82,7 +82,7 @@
                                                 <i class="fa-solid fa-download me-1"></i>Download
                                             </button>
                                         <?php } ?>
-                                        <button class="btn btn-danger btn-sm" id="delete-file"
+                                        <button class="btn btn-danger btn-sm" id="delete-announcement"
                                             data-bs-toggle="modal"
                                             data-bs-target="#deleteFile"
                                             data-id="<?= htmlspecialchars($private["announcement_id"]) ?>" title="Delete File"
@@ -141,7 +141,7 @@
                                                 <i class="fa-solid fa-download me-1"></i>Download
                                             </button>
                                         <?php } ?>
-                                        <button class="btn btn-danger btn-sm" id="delete-file"
+                                        <button class="btn btn-danger btn-sm" id="delete-announcement"
                                             data-bs-toggle="modal"
                                             data-bs-target="#deleteFile"
                                             data-id="<?= htmlspecialchars($public["announcement_id"]) ?>" title="Delete File"
@@ -201,7 +201,7 @@
                                                 <i class="fa-solid fa-download me-1"></i>Download
                                             </button>
                                         <?php } ?>
-                                        <button class="btn btn-danger btn-sm" id="delete-file"
+                                        <button class="btn btn-danger btn-sm" id="delete-announcement"
                                             data-bs-toggle="modal"
                                             data-bs-target="#deleteFile"
                                             data-id="<?= htmlspecialchars($sent["announcement_id"]) ?>" title="Delete File"
@@ -267,6 +267,34 @@
                 </form>
             </div>
         </div>
+    </div>
+</div>
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteFile" tabindex="-1" aria-labelledby="deleteFileLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <form id="announcement-delete-form" class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title text-white">
+                    <i class="fa-solid fa-trash me-2"></i>Confirm Deletion
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fa-solid fa-exclamation-triangle fa-2x text-warning mb-3"></i>
+                <h6>Are you sure you want to delete this file?</h6>
+                <p class="text-muted small">This action cannot be undone.</p>
+                <input type="hidden" name="announcement_id" id="announcement_id">
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa-solid fa-trash me-2"></i>Yes, Delete
+                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-times me-2"></i>Cancel
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 <script src="../../assets/js/hr_js/admin/announcement.js"></script>

@@ -302,6 +302,10 @@ if ($action === 'announcement_form') {
     $result = $crud->announcement_form();
     echo $result;
 }
+if ($action === 'announcement_delete_form') {
+    $result = $crud->announcement_delete_form();
+    echo $result;
+}
 
 
 ?>

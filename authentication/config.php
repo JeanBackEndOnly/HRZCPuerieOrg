@@ -408,8 +408,10 @@ function db_connect()
                 description TEXT NOT NULL,
                 file VARCHAR(255),
                 announcement_type ENUM('private', 'public'),
+                announce_by INT,
                 announce_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                FOREIGN KEY(user_id) REFERENCES users (user_id)
+                FOREIGN KEY(user_id) REFERENCES users (user_id),
+                FOREIGN KEY(announce_by) REFERENCES users (user_id)
             )"
         ];
 

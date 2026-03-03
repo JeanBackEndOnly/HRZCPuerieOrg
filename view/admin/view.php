@@ -150,3 +150,23 @@
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    function getPrivateMessages(){
+        $pdo = db_connect();
+        $user_id = $_SESSION["adminData"]["user_id"] ?? null;
+        $stmt = $pdo->prepare("SELECT * FROM announcement WHERE announce_by = ? AND announcement_type = 'private' ORDER BY announce_at DESC");
+        $stmt->execute([$user_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    function getPublicMessages(){
+        $pdo = db_connect();
+        $stmt = $pdo->prepare("SELECT * FROM announcement WHERE announcement_type = 'public' ORDER BY announce_at DESC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    function getSentMessages(){
+        $pdo = db_connect();
+        $user_id = $_SESSION["adminData"]["user_id"] ?? null;
+        $stmt = $pdo->prepare("SELECT * FROM announcement WHERE announce_by = ? ORDER BY announce_at DESC");
+        $stmt->execute([$user_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }

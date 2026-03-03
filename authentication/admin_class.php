@@ -3362,4 +3362,77 @@ class Action
         }
     }
     
+// announcement module ================================================================================
+    function announcement_form() {
+
+        $announced_by = $_POST["announced_by"] ?? null;
+
+        if ($_POST["user_id"] == 2105) {
+            $user_id = null;
+            $announcement_type = 'public';
+        } else {
+            $user_id = $_POST["user_id"] ?? null;
+            $announcement_type = 'private';
+        }
+
+        $announcement_name = $_POST["announcement_name"] ?? '';
+        $description = $_POST["description"] ?? '';
+
+        try {
+
+            $fileName = null;
+
+            if (isset($_FILES['file_name']) && $_FILES['file_name']['error'] === UPLOAD_ERR_OK) {
+
+                $file = $_FILES['file_name'];
+
+                $uploadDir = "uploads/";
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+
+                $fileName = time() . "_" . preg_replace(
+                    "/[^a-zA-Z0-9\._-]/",
+                    "",
+                    basename($file['name'])
+                );
+
+                $targetPath = $uploadDir . $fileName;
+
+                if (!move_uploaded_file($file['tmp_name'], $targetPath)) {
+                    return json_encode([
+                        'status' => 0,
+                        'message' => 'Failed to save uploaded file.'
+                    ]);
+                }
+            }
+
+            $stmt = $this->db->prepare("
+                INSERT INTO announcement 
+                (user_id, announcement_name, description, file, announcement_type, announce_by) 
+                VALUES (?, ?, ?, ?, ?, ?)
+            ");
+
+            $stmt->execute([
+                $user_id,
+                $announcement_name,
+                $description,
+                $fileName, // will be NULL if no file
+                $announcement_type,
+                $announced_by
+            ]);
+
+            return json_encode([
+                'status' => 1,
+                'message' => 'Announcement has been successfully announced.'
+            ]);
+
+        } catch (PDOException $e) {
+            return json_encode([
+                'status' => 0,
+                'message' => 'An error occurred: ' . $e->getMessage()
+            ]);
+        }
+    }
+
 } 

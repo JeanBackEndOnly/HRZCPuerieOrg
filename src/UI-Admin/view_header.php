@@ -146,4 +146,19 @@ if(!$getUsersForAnnouncement){
     $_SESSION['error'] = "Failed to fetch employees data";
     $getUsersForAnnouncement = null;
 }
+$getPrivateMessages = getPrivateMessages();
+if(!$getPrivateMessages){
+    $_SESSION['error'] = "Failed to fetch employees data";
+    $getPrivateMessages = null;
+}
+$getPublicMessages = getPublicMessages();
+if(!$getPublicMessages){
+    $_SESSION['error'] = "Failed to fetch employees data";
+    $getPublicMessages = null;
+}
+$getSentMessages = getSentMessages();
+if(!$getSentMessages){
+    $_SESSION['error'] = "Failed to fetch employees data";
+    $getSentMessages = null;
+}
 ?>

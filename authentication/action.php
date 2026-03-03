@@ -297,7 +297,11 @@ if ($action === 'pds_update') {
     echo $result;
 }
 
-
+// Announcement module ===========================================================================
+if ($action === 'announcement_form') {
+    $result = $crud->announcement_form();
+    echo $result;
+}
 
 
 ?>

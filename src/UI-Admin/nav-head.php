@@ -29,9 +29,9 @@ $profile_picture = $_SESSION['adminData']['profile_picture'] ?? '';
     <div class="col-md-2 col-1 align-items-center justify-content-center burger-ka-saken" style="display: none;">
         <i class="fa-solid fw-solid fa-bars"></i>
     </div>
-    <div class=" d-flex col-md-4 col-6 align-items-center justify-content-center ">
+    <div class=" d-flex col-md-7 col-8 align-items-center justify-content-start ">
         <img src="../../assets/image/system_logo/pueri-logo.png" class="image-header me-2">
-        <h4 class="text-white m-0 header-text">Zamboanga Puericulture Center</h4>
+        <h4 class="text-white m-0 header-text">Zamboanga Puericulture Center Org. 144 </h4>
     </div>
     <!-- <div class="justify-content-end dap-3 p-4 col-md-7 col-6 mx-2 d-flex media-adjustaments">
         <div class="notification me-2 d-flex align-items-center justify-content-center">

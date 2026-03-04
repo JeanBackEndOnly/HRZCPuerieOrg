@@ -28,6 +28,9 @@ if (!isset($_SESSION['employeeData'])) {
         <img src="../../assets/image/system_logo/pueri-logo.png" class="image-header me-2">
         <h4 class="w-100 text-white m-0 system-title">Zamboanga Puericulture Center</h4>
     </div>
+    <div class="col-md-2">
+        <i class="fa-solid fa-bell shadow"></i>
+    </div>
 </div>
 
 

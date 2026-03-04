@@ -5,6 +5,15 @@
     
     require_once '../../authentication/config.php';
 
+    $admin_id = $_SESSION['adminData']['user_id'] ?? '';
+    $employeeID = $_SESSION['adminData']['employeeID'] ?? '';
+    $admin_position = $_SESSION['adminData']['employee_position'] ?? '';
+    $admin_department = $_SESSION['adminData']['employee_department'] ?? '';
+    $admin_firstname = $_SESSION['adminData']['firstname'] ?? '';
+    $admin_middelname = $_SESSION['adminData']['middlename'] ?? '';
+    $admin_lastname = $_SESSION['adminData']['lastname'] ?? '';
+    $profile_picture = $_SESSION['adminData']['profile_picture'] ?? '';
+
 // HR data fetching ==================================================================================
     function getHrData(){
         $pdo = db_connect();
@@ -167,6 +176,15 @@
         $pdo = db_connect();
         $user_id = $_SESSION["adminData"]["user_id"] ?? null;
         $stmt = $pdo->prepare("SELECT * FROM announcement WHERE announce_by = ? ORDER BY announce_at DESC");
+        $stmt->execute([$user_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+// get notifications ===================================================
+    function getNotifications(){
+        $pdo = db_connect();
+        $user_id = $_SESSION["adminData"]["user_id"] ?? null;
+        $stmt = $pdo->prepare("SELECT * FROM notifications WHERE user_id = ?");
         $stmt->execute([$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

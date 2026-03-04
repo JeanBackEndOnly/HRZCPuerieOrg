@@ -65,6 +65,15 @@ $(document).ready(function () {
       const id = $(this).data('id');
       document.getElementById('announcement_id').value = id;
     });
+    $(document).on("click", "#notification-bell", function (){
+      const notify = document.getElementById('display-notifications');
+      if(notify.style.display == 'none'){
+        notify.style.display = 'flex';
+      }else{
+        notify.style.display = 'none'
+      }
+    });
+
 
 // Login Forms here ===========================================================
       // $(document).on("submit", "#login-form", function (e) {

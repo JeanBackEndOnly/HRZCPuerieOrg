@@ -161,4 +161,11 @@ if(!$getSentMessages){
     $_SESSION['error'] = "Failed to fetch employees data";
     $getSentMessages = null;
 }
+
+// get notifications ============================================
+$getNotifications = getNotifications();
+if(!$getNotifications){
+    $_SESSION['error'] = "Failed to fetch employees data";
+    $getNotifications = null;
+}
 ?>

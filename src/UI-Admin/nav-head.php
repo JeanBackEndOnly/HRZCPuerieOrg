@@ -21,8 +21,13 @@ if (!isset($_SESSION['adminData'])) {
         <h4 class="text-white m-0 header-text">Zamboanga Puericulture Center Org. 144 </h4>
     </div>
     <div class="col-md-1 col-2 d-flex align-items-center justify-content-center">
-        <i class="fa-solid fa-bell shadow border rounded text-light cursor-pointer m-0 p-1 fs-4"
-        id="notification-bell"></i>
+        <div class="d-flex align-items-center justify-content-center notification-count"><strong class="font-12"><?= $notificationCounts ?? 0 ?></strong></div>
+        <form id="notification-bell-form">
+            <input type="hidden" name="user_id" value="<?= $admin_id ?>" >
+            <button type="submit" class="button-no-border" id="notification-bell" onclick="notify_display()">
+            <i class="fa-solid fa-bell shadow border rounded text-light cursor-pointer m-0 p-1 fs-4"></i>
+            </button>
+        </form>
     </div>
     <div class="col-md-3 display-notification position-fixed card p-1 shadow rounded" id="display-notifications">
         <?php 
@@ -54,33 +59,41 @@ if (!isset($_SESSION['adminData'])) {
 
 
 <script>
-$(document).ready(function() {
-    $('html').css('scroll-behavior', 'smooth');
-});
-$(document).ready(function() {
-    const sidebar = $('.navbarHide');
-    const burger = $('.burger-ka-saken i');
-
-    if (!$('.sidebar-overlay').length) {
-        $('body').append('<div class="sidebar-overlay"></div>');
-    }
-
-    $('.burger-ka-saken').on('click', function() {
-        sidebar.toggleClass('navbarShow');
-        $('.sidebar-overlay').toggleClass('active');
-        burger.toggleClass('fa-times');
-    });
-
-    $(document).on('click', function(e) {
-        if (!$(e.target).closest('.navbarHide, .burger-ka-saken').length) {
-            sidebar.removeClass('navbarShow');
-            $('.sidebar-overlay').removeClass('active');
-            burger.removeClass('fa-times');
+    function notify_display(){
+        let notify = document.getElementById('display-notifications');
+        if(notify.style.display == 'flex'){
+            notify.style.display = 'none'
+        }else{
+            notify.style.display = 'flex'
         }
+    }
+    $(document).ready(function() {
+        $('html').css('scroll-behavior', 'smooth');
     });
+    $(document).ready(function() {
+        const sidebar = $('.navbarHide');
+        const burger = $('.burger-ka-saken i');
 
-    sidebar.on('click', function(e) {
-        e.stopPropagation();
+        if (!$('.sidebar-overlay').length) {
+            $('body').append('<div class="sidebar-overlay"></div>');
+        }
+
+        $('.burger-ka-saken').on('click', function() {
+            sidebar.toggleClass('navbarShow');
+            $('.sidebar-overlay').toggleClass('active');
+            burger.toggleClass('fa-times');
+        });
+
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.navbarHide, .burger-ka-saken').length) {
+                sidebar.removeClass('navbarShow');
+                $('.sidebar-overlay').removeClass('active');
+                burger.removeClass('fa-times');
+            }
+        });
+
+        sidebar.on('click', function(e) {
+            e.stopPropagation();
+        });
     });
-});
 </script>

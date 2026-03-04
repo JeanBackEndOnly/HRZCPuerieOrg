@@ -2802,21 +2802,6 @@ class Action
                 $credits = $_POST[$baseType."Credits"] ?? 0;
                 $lessLeave = $_POST[$baseType."LessLeave"] ?? 0;
                 
-                // // Determine which balance to use
-                // switch($baseType) {
-                //     case 'vacation':
-                //         $balanceToDate = $vacationBalanceToDate;
-                //         break;
-                //     case 'sick':
-                //         $balanceToDate = $sickBalanceToDate;
-                //         break;
-                //     case 'special':
-                //         $balanceToDate = $specialBalanceToDate;
-                //         break;
-                //     default:
-                //         $balanceToDate = 0;
-                // }
-                
                 $stmtLeave_details = $this->db->prepare("UPDATE leave_details SET disapprovalDetails = :disapprovalDetails, disapproved_at = NOW()
                     WHERE leave_id = :leave_id");
                 $stmtLeave_details->execute([
@@ -3487,6 +3472,22 @@ class Action
                 'status' => 0,
                 'message' => 'An error occured: ' . $e->getMessage()
             ]); 
+        }
+    }
+    function notification_bell(){
+        $user_id = $_POST["user_id"];
+        try {
+            $stmt = $this->db->prepare("UPDATE notifications SET notification_status = 'read' WHERE user_id = ?");
+            $stmt->execute([$user_id]);
+            return json_encode([
+                'status' => 1,
+                'message' => 'Notification successfully seen.'
+            ]);
+        } catch (PDOException $e) {
+            return json_encode([
+                'status' => 0,
+                'message' => 'An error occured: ' . $e->getMessage()
+            ]);
         }
     }
 

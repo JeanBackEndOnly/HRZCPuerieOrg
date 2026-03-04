@@ -65,14 +65,6 @@ $(document).ready(function () {
       const id = $(this).data('id');
       document.getElementById('announcement_id').value = id;
     });
-    $(document).on("click", "#notification-bell", function (){
-      const notify = document.getElementById('display-notifications');
-      if(notify.style.display == 'none'){
-        notify.style.display = 'flex';
-      }else{
-        notify.style.display = 'none'
-      }
-    });
 
 
 // Login Forms here ===========================================================
@@ -3544,6 +3536,41 @@ $(document).ready(function () {
       complete: function () {
         $form.data("isSubmitted", false);
         $btn.prop("disabled", false).html("Update");
+      },
+    });
+  });
+  $(document).on("submit", "#notification-bell-form", function (e) {
+    e.preventDefault();
+    const $form = $(this);
+    if ($form.data("isSubmitted")) return;
+    $form.data("isSubmitted", true);
+
+    const formData = new FormData(this);
+    const $btn = $form.find("button[type='submit']");
+    $btn.prop("disabled", true);
+
+    $.ajax({
+      url: base_url + "authentication/action.php?action=notification_bell",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      dataType: "json",
+      error: function (jqXHR, textStatus, err) {
+        console.error("AJAX error:", textStatus, err);
+        Swal.fire({
+          title: "Connection Error",
+          text: "Please check your connection and try again.",
+          icon: "error",
+          toast: true,
+          position: "top-end",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      },
+      complete: function () {
+        $form.data("isSubmitted", false);
+        $btn.prop("disabled", false).html('<i class="fa-solid fa-bell shadow border rounded text-light cursor-pointer m-0 p-1 fs-4"></i>');
       },
     });
   });

@@ -49,6 +49,20 @@
             $pdo = db_connect();
             return $pdo->query("SELECT COUNT(*) FROM jobtitles")->fetchColumn();
         }
+    // notifications counts =======================
+        function notificationCounts(){
+            $pdo = db_connect();
+            if(isset($_SESSION["adminData"]["user_id"]) && $_SESSION["adminData"]["user_id"] !== null){
+                $user_id = $_SESSION["adminData"]["user_id"];
+            }else if(isset($_SESSION["hrData"]["user_id"]) && $_SESSION["hrData"]["user_id"] !== null){
+                $user_id = $_SESSION["hrData"]["user_id"];
+            }else if(isset($_SESSION["employeeData"]["user_id"]) && $_SESSION["employeeData"]["user_id"] !== null){
+                $user_id = $_SESSION["employeeData"]["user_id"];
+            }else{
+                $user_id = null;
+            }
+            return $pdo->query("SELECT COUNT(*) FROM notifications WHERE user_id = '$user_id' AND notification_status = 'unread'")->fetchColumn();
+        }
 // System Fetching (GLOBAL) ===================================================================================
     function getUnitSection(){
         try {

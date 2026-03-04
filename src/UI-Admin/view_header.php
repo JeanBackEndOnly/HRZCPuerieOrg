@@ -168,4 +168,9 @@ if(!$getNotifications){
     $_SESSION['error'] = "Failed to fetch employees data";
     $getNotifications = null;
 }
+$notificationCounts = notificationCounts();
+if(!$notificationCounts){
+    $_SESSION['error'] = "Failed to fetch employees data";
+    $notificationCounts = null;
+}
 ?>

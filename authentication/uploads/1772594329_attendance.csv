@@ -1,0 +1,5 @@
+"Date","Employee","ID","In","Out","Hours","Status"
+"2026-02-23","Carlos Reyes","EMP-002","1:23 PM","1:23 PM","0","present"
+"2026-02-20","Carlos Reyes","EMP-002","7:55 AM","5:30 PM","9.58","present"
+"2026-02-20","Juan Dela Cruz","EMP-003","8:15 AM","6:00 PM","9.75","present"
+"2026-02-20","Mark Lim","EMP-005","8:30 AM","5:30 PM","9","present"

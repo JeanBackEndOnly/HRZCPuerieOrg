@@ -24,10 +24,29 @@ if (!isset($_SESSION['adminData'])) {
         <i class="fa-solid fa-bell shadow border rounded text-light cursor-pointer m-0 p-1 fs-4"
         id="notification-bell"></i>
     </div>
-    <div class="col-md-2 display-notification position-fixed card p-2 shadow rounded" id="display-notifications">
-        <?php if($getNotifications) : ?>
-            
-        <?php else : ?>
+    <div class="col-md-3 display-notification position-fixed card p-1 shadow rounded" id="display-notifications">
+        <?php 
+            if($getNotifications) : 
+                foreach($getNotifications as $notify) : 
+        ?>
+            <div class="card p-2 mt-1" >
+                <div class="col-md-12 d-flex justify-content-between align-items-center">
+                    <div class="col-md-6">
+                        <label class="form-label ms-0"><?= $notify["notification_name"] ?></label>
+                    </div>
+                    <div class="col-md-6 pe-1">
+                        <label class="form-label w-100 text-end">date: <?= date('M d Y', strtotime($notify["notify_at"])) ?></label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label m-0">Description:</label>
+                    <label class="form-label"><?= $notify["description"] ?></label>
+                </div>
+            </div>
+        <?php   
+                endforeach;
+            else : 
+        ?>
             <strong class="w-100 text-center text-dark">NO NOTIFICATIONS YET</strong>
         <?php endif; ?>
     </div>

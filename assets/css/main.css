@@ -23,6 +23,8 @@
   overflow-y: auto;
   top: 4rem;
   right: 1rem !important;
+  z-index: 9999 !important;
+  background-color: #ffffff !important;
 }
 .image-profile{
   width: 110px;

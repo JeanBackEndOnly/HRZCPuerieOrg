@@ -3431,20 +3431,45 @@ class Action
                 $user_id,
                 $announcement_name,
                 $description,
-                $fileName, // will be NULL if no file
+                $fileName, 
                 $announcement_type,
                 $announced_by
             ]);
 
+            $stmtUser = $this->db->prepare("SELECT lastname, firstname FROM users WHERE user_id = ?");
+            $stmtUser->execute([$user_id]);
+            $getUserName = $stmtUser->fetch(PDO::FETCH_ASSOC);
+            $notifay_user_name = $getUserName["lastname"] . ', ' . $getUserName["firstname"];
+
+            if($announcement_type == 'private'){
+                $insertStmt = $this->db->prepare("
+                    INSERT INTO notifications 
+                    (user_id, notification_name, description, notification_status)
+                    VALUES (?, ?, ?, ?)
+                ");
+
+                $notification_name        = 'Private Message';
+                $notification_description = $notifay_user_name . ' sent you a private message';
+                $notification_status      = 'unread';
+
+                $insertStmt->execute([
+                    $user_id,
+                    $notification_name,
+                    $notification_description,
+                    $notification_status
+                ]);
+            }
+            
+
             return json_encode([
                 'status' => 1,
-                'message' => 'Announcement has been successfully announced.'
+                'message' => 'Announcement has been successfully announced. '
             ]);
 
         } catch (PDOException $e) {
             return json_encode([
                 'status' => 0,
-                'message' => 'An error occurred: ' . $e->getMessage()
+                'message' => 'An error occurred: ' . $e->getMessage() . ' ' . $notification_description
             ]);
         }
     }

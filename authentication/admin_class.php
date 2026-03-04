@@ -2577,7 +2577,6 @@ class Action
 
         try {
 
-            // Valid leave types based on your TABLE DESIGN
             $validLeaveTypes = [
                 "Vacation_leave" => "VacationBalance",
                 "Sick_leave"     => "SickBalance",
@@ -2657,8 +2656,18 @@ class Action
             ");
             $stmtActivity->execute([$user_id, ucfirst($activity_type)]);
 
-            $stmtNotify = $this->db->prepare("INSERT INTO notifications (type, status) VALUES ('HR', 'Active')");
-            $stmtNotify->execute();
+            $stmt = $this->db->prepare("SELECT user_id FROM users WHERE user_role = 'HR'");
+            $stmt->execute();
+            $getId = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            $stmt = $this->db->prepare("INSERT INTO notifications 
+                (user_id, notification_name, description, notification_status)
+                    VALUES
+                (?, 'Pending Leave', 'An employee request a leave.', 'unread')");
+                foreach($getId as $hr_user_id){
+                    $stmt->execute([$hr_user_id["user_id"]]);
+                }
+            
 
             // SUCCESS RESPONSE
             return json_encode([
@@ -2779,8 +2788,18 @@ class Action
                     VALUES (?, ?, ?, ?, ?, ?, NOW())");
                 $stmt->execute([$leave_id, $balance, $earned, $credits, $lessLeave, $balanceToDate]);
 
-                $stmtNotify = $this->db->prepare("INSERT INTO notifications (type, status) VALUES ('ADMIN', 'Active')");
-                $stmtNotify->execute();
+                $stmt = $this->db->prepare("SELECT user_id FROM users WHERE user_role = 'ADMIN'");
+                $stmt->execute();
+                $idResult = $stmt->fetch(PDO::FETCH_ASSOC);
+                $notification_user_id = $idResult["user_id"];
+
+                $stmt = $this->db->prepare("INSERT INTO notifications
+                    (user_id, notification_name, description, notification_status)
+                        VALUES
+                    (?, 'Recommended Leave', 'This leave is ready for approval.', 'unread')");
+                $stmt->execute([
+                    $notification_user_id
+                ]);
 
                 return json_encode(['status'=>1,'message'=>'Leave Recommended Successfully!']);
 
@@ -2842,16 +2861,6 @@ class Action
                 'leave_id' => $leave_id
             ]);
 
-            // Activity log
-            // $activity_type = "Cancelled a leave:  " . str_replace("_", " ", strtolower($leaveType));
-
-            // $stmtActivity = $this->db->prepare("
-            //     INSERT INTO activities (user_id, activity_type) 
-            //     VALUES (?, ?)
-            // ");
-            // $stmtActivity->execute([$user_id, ucfirst($activity_type)]);
-
-            // SUCCESS RESPONSE
             return json_encode([
                 'status' => 1,
                 'message' => 'Leave Cencelled successfully!'

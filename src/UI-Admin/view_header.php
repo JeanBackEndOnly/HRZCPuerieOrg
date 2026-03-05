@@ -2,8 +2,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-include "../../view/admin/view.php";
-include "../../view/system/view.php";
+include '../../authentication/view/admin_view.php';
+include '../../authentication/view/system_view.php';
 
 
 // GLOBAL COUNTS FOR SYSTEM, EMPLOYEES AND LEAVES =================================
@@ -163,14 +163,14 @@ if(!$getSentMessages){
 }
 
 // get notifications ============================================
-$getNotifications = getNotifications();
-if(!$getNotifications){
-    $_SESSION['error'] = "Failed to fetch employees data";
-    $getNotifications = null;
-}
-$notificationCounts = notificationCounts();
-if(!$notificationCounts){
-    $_SESSION['error'] = "Failed to fetch employees data";
-    $notificationCounts = null;
-}
+    $getNotifications = getNotifications();
+    if(!$getNotifications){
+        $_SESSION['error'] = "Failed to fetch employees data";
+        $getNotifications = null;
+    }
+    $notificationCounts = notificationCounts();
+    if(!$notificationCounts){
+        $_SESSION['error'] = "Failed to fetch employees data";
+        $notificationCounts = null;
+    }
 ?>

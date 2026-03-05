@@ -185,3 +185,12 @@
         $stmt->execute([$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+// get notifications ===================================================
+    function getNotifications(){
+        $pdo = db_connect();
+        $user_id = $_SESSION["employeeData"]["user_id"] ?? null;
+        $stmt = $pdo->prepare("SELECT * FROM notifications WHERE user_id = ? ORDER BY notify_at DESC");
+        $stmt->execute([$user_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }

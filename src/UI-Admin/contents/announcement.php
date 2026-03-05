@@ -213,7 +213,7 @@
             </div>
             <div class="modal-body">
                 <form id="announcement-form" enctype="multipart/form-data">
-                    <input type="hidden" name="announced_by" value="<?= $hr_id ?>">
+                    <input type="hidden" name="announced_by" value="<?= $admin_id ?>">
                     <div class="mx-2">
                         <label class="form-label">Sent to</label>
                         <select name="user_id" id="" class="form-select">

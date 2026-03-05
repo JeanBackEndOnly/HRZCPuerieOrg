@@ -392,6 +392,25 @@
                                     id="employeeID_field" class="form-control">
                             </div>
                             <div class="col-md-4">
+                                <label class="form-label">EMPLOYEE TYPE</label>
+                                <select name="employee_type" class="form-select">
+                                    <option value="head"
+                                        <?= ($getAdminData['employee_type'] == 'head') ? 'selected' : '' ?>>
+                                        head
+                                    </option>
+
+                                    <option value="regular"
+                                        <?= ($getAdminData['employee_type'] == 'regular') ? 'selected' : '' ?>>
+                                        regular
+                                    </option>
+
+                                    <option value="probationary"
+                                        <?= ($getAdminData['employee_type'] == 'probationary') ? 'selected' : '' ?>>
+                                        probationary
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
                                 <label class="form-label">Joined at</label>
                                 <input type="text" name="joined_at" value="<?= $getAdminData["joined_at"] ?>"
                                     id="joined_at_field" class="form-control">
@@ -487,9 +506,9 @@
                                     }else{ ?>
                                 <tr>
                                     <td>Initial Position</td>
-                                    <td><?= $career["jobTitle"] ?></td>
+                                    <td><?= $getAdminData["jobTitle"] ?></td>
                                     <td>Current</td>
-                                    <td><?= $career["joined_at"] ?></td>
+                                    <td><?= $getAdminData["joined_at"] ?></td>
                                     <td>
                                         <button class="btn btn-danger btn-sm m-0 my-2 mx-3"><i
                                                 class="fa-solid fa-print me-2"></i>Print</button>

@@ -37,7 +37,12 @@ if (!isset($_SESSION['adminData'])) {
             <div class="card p-2 mt-1" >
                 <div class="col-md-12 d-flex justify-content-between align-items-center">
                     <div class="col-md-6">
-                        <label class="form-label ms-0"><?= $notify["notification_name"] ?></label>
+                        <label class="form-label ms-0">
+                            <strong class="me-1">
+                                 <?= isset($notify["notification_status"]) && $notify["notification_status"] == 'read' ? '<i class="fa-solid text-dark fa-circle"></i>' : '<i class="fa-solid text-success fa-circle"></i>'; ?>
+                            </strong>
+                            <?= $notify["notification_name"] ?>
+                        </label>
                     </div>
                     <div class="col-md-6 pe-1">
                         <label class="form-label w-100 text-end">date: <?= date('M d Y', strtotime($notify["notify_at"])) ?></label>

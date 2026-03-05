@@ -30,26 +30,27 @@
                 </div>
 
             </div>
+            <strong class="text-start p-2">Menu</strong>
             <a href="index.php?page=home" class="nav-item nav-home ">
-                <span class=""><i class=""></i></span> Dashboard
+                <span class=""><i class="fa-solid fa-gauge"></i></span> Dashboard
             </a>
             <a href="index.php?page=contents/schedule" class="nav-item nav-schedule my-0">
-                <span class=""><i class=""></i></span> Schedule
+                <span class=""><i class="fa-solid fa-business-time"></i></span> Schedule
             </a>
             <a href="index.php?page=contents/leave" class="nav-item nav-leave my-0">
-                <span class=""><i class=""></i></span> Leave Request
+                <span class=""><i class="fa-solid fa-calendar"></i></span> Leave Request
             </a>
             <a href="index.php?page=contents/payroll" class="nav-item nav-payroll my-0">
                 <span class=""><i class=""></i></span> Payslip
             </a>
             <a href="index.php?page=contents/201" class="nav-item nav-201 my-0">
-                <span class=""><i class=""></i></span> 201 Files
+                <span class=""><i class="fa-solid fa-file-pdf"></i></span> 201 Files
             </a>
             <a href="index.php?page=contents/announcement" class="nav-item nav-announcement my-0">
                 <span class="me-1"><i class="fa-solid fa-bullhorn"></i></span> Announcement
             </a>
             <a href="index.php?page=contents/setting" class="nav-item nav-setting nav-pds my-0">
-                <span class=""><i class=""></i></span> Account Settings
+                <span class=""><i class="fa-solid fa-user-gear"></i></span> Account Settings
             </a>
             <div class="text-dark position-logout d-flex border-width-panel">
                 <div class="w-70 text-center p-2">

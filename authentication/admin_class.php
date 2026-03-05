@@ -1457,6 +1457,7 @@ class Action
         $joined_at = htmlSpecialChars($_POST["joined_at"]);
         $user_id = htmlSpecialChars($_POST["user_id"]);
         $Department_id = htmlSpecialChars($_POST["Department_id"]);
+        $employee_type = htmlSpecialChars($_POST["employee_type"]);
 
         try {
             if($unit_section_id == ''){
@@ -1469,6 +1470,9 @@ class Action
             if($salary == ''){
 
             }
+            
+            $stmt = $this->db->prepare("UPDATE users SET employee_type = ? WHERE user_id = ?");
+            $stmt->execute([$employee_type, $user_id]);
 
             $stmt = $this->db->prepare("UPDATE employee_data SET  Department_id = :Department_id, salary = :salary, 
                 joined_at = :joined_at, unit_section_id = :unit_section_id WHERE user_id = :user_id");

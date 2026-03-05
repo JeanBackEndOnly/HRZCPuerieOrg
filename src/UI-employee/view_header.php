@@ -2,9 +2,9 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-include "../../view/employee/view.php";
-include "../../view/system/view.php";
 
+include '../../authentication/view/employee_view.php';
+include '../../authentication/view/system_view.php';
 
 // Global ==========================================================================
 $getUnit = getUnitSection();
@@ -77,5 +77,17 @@ if(!$employeeCareerPath){
     if(!$getSentMessages){
         $_SESSION['error'] = "Failed to fetch employees data";
         $getSentMessages = null;
+    }
+
+// Get notifications ============================================
+    $getNotifications = getNotifications();
+    if(!$getNotifications){
+        $_SESSION['error'] = "Failed to fetch employees data";
+        $getNotifications = null;
+    }
+    $notificationCounts = notificationCounts();
+    if(!$notificationCounts){
+        $_SESSION['error'] = "Failed to fetch employees data";
+        $notificationCounts = null;
     }
 ?>

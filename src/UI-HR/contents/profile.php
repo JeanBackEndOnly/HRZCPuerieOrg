@@ -397,6 +397,25 @@
                                     id="employeeID_field" class="form-control">
                             </div>
                             <div class="col-md-4">
+                                <label class="form-label">EMPLOYEE TYPE</label>
+                                <select name="employee_type" disabled class="form-select">
+                                    <option value="head"
+                                        <?= ($getEmployee['employee_type'] == 'head') ? 'selected' : '' ?>>
+                                        head
+                                    </option>
+
+                                    <option value="regular"
+                                        <?= ($getEmployee['employee_type'] == 'regular') ? 'selected' : '' ?>>
+                                        regular
+                                    </option>
+
+                                    <option value="probationary"
+                                        <?= ($getEmployee['employee_type'] == 'probationary') ? 'selected' : '' ?>>
+                                        probationary
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
                                 <label class="form-label">Joined at</label>
                                 <input type="text" name="joined_at" value="<?= $getEmployee["joined_at"] ?>"
                                     id="joined_at_field" class="form-control">

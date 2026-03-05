@@ -5,6 +5,15 @@
     
     require_once '../../authentication/config.php';
 
+$employeeID = $_SESSION['hrData']['employeeID'] ?? '';
+$position = $_SESSION['hrData']['employee_position'] ?? '';
+$department = $_SESSION['hrData']['employee_department'] ?? '';
+$firstname = $_SESSION['hrData']['firstname'] ?? '';
+$middelname = $_SESSION['hrData']['middlename'] ?? '';
+$lastname = $_SESSION['hrData']['lastname'] ?? '';
+$profile_picture = $_SESSION['hrData']['profile_picture'] ?? '';
+$hr_id = $_SESSION['hrData']['user_id'] ?? '';
+
 // Fetch Career Path history ==================================================
     function getCareerPathHistory(){
         $pdo = db_connect();
@@ -147,6 +156,15 @@
         $pdo = db_connect();
         $user_id = $_SESSION["hrData"]["user_id"] ?? null;
         $stmt = $pdo->prepare("SELECT * FROM announcement WHERE announce_by = ? ORDER BY announce_at DESC");
+        $stmt->execute([$user_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+// get notifications ===================================================
+    function getNotifications(){
+        $pdo = db_connect();
+        $user_id = $_SESSION["hrData"]["user_id"] ?? null;
+        $stmt = $pdo->prepare("SELECT * FROM notifications WHERE user_id = ? ORDER BY notify_at DESC");
         $stmt->execute([$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

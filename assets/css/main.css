@@ -277,6 +277,10 @@ a:hover{
   border-top-left-radius: 5px !important;
   border-bottom-left-radius: 5px !important;
 }
+.image-header{
+  height: 50px;
+  width: 50px;
+}
 .setting-circle-profile, .nav-circle-profile, .recruitment-profile-circle, .profile-circle{
   border-radius: 50% !important;
   background-color: rgba(255, 14, 14, 0.70) !important;

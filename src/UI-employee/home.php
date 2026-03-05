@@ -16,17 +16,20 @@
       $stmtSchedule->execute([$user_id]);
       $result = $stmtSchedule->fetch(PDO::FETCH_ASSOC);
    ?>
-   <section class="">
-      <div class="mb-4">
+   <section>
+       <div class="mb-4">
          <div class="mx-2">
             <h4><i class="fa fa-tv mx-2"></i>Employee Dashboard</h4>
             <small class="text-muted">Overviews</small>
          </div>
       </div>
-      <div class="row text-center pb-2 ms-2 gap-2">
+      <div class="col-md-12 mb-2 mt-4">
+            <strong>REDIRECT</strong>
+        </div>
+      <div class="row text-center pb-2 ms-1 gap-3">
          <a href="index.php?page=contents/leave" class="col-md-3 col-5 hover min-height rounded d-flex flex-column py-4  shadow text-white align-items-center justify-content-center cursor-pointer bg-color-lr">
             <div class="col-md-12 text-center">
-               <i class="fa-solid fa-person-through-window fs-1"></i>
+               <i class="fa-solid fa-person-through-window fs-3"></i>
             </div>
             <div class="col-md-12">
                <strong class="mt-2">Request a Leave</strong>
@@ -34,7 +37,7 @@
          </a>
          <a href="index.php?page=contents/setting" class="col-md-3 col-5 hover min-height rounded d-flex flex-column py-4 shadow text-white align-items-center justify-content-center cursor-pointer bg-color-mp">
             <div class="col-md-12 text-center">
-               <i class="fa-solid fa-gear fs-1"></i>
+               <i class="fa-solid fa-gear fs-3"></i>
             </div>
             <div class="col-md-12">
                <strong class="mt-2">Manage Profile and settings</strong>
@@ -42,72 +45,64 @@
          </a>
          <a href="index.php?page=contents/201" class="col-md-3 col-5 hover min-height rounded d-flex flex-column py-4 shadow text-white align-items-center justify-content-center cursor-pointer bg-color-mf">
             <div class="col-md-12 text-center">
-               <i class="fa-solid fa-file fs-1"></i>
+               <i class="fa-solid fa-file fs-3"></i>
             </div>
             <div class="col-md-12">
                <strong class="mt-2">Manage 201 files</strong>
             </div>
          </a>
       </div>
-      
-      <div class="row ms-1 gap-2 pb-5">
-         <label class="col-md-2 col-5 d-flex flex-column min-height align-items-center justify-content-center shadow rounded py-4 bg-color-lr">
-            <div class="col-md-12 text-center text-white">
-               <strong class="text-wite fs-2"><?= htmlspecialchars($SickBalance) ?></strong>
+      <div class="col-md-12 mb-2 mt-4">
+            <strong>LEAVE PENDING, RECOMMENDED, APPROVED AND DISAPPROVED OVERVIEW</strong>
+        </div>
+      <div class="row g-3">
+            <div class="col-md-3">
+                <div class="rounded card d-flex flex-row border shadow">
+                    <div class="col-4 card rounded-left bg-dark border-right d-flex align-items-center justify-content-center p-3">
+                        <strong class="fs-3 text-white"><?= htmlspecialchars($VacationBalance ?? 0) ?></strong>
+                    </div>
+                    <div class="col-8 d-flex flex-column align-items-center justify-content-center p-3">
+                        <i class="fa-solid fa-head-side-cough fs-4"></i>
+                        <span class="text-center font-12 mt-2 w-100">Sick Leave Balance</span>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-12 d-flex">
-               <div class="col-md-6 d-flex flex-column text-white text-end">
-                  <strong class="font-12">SICK LEAVE</strong>
-                  <strong class="font-12">BALANCE</strong>
-               </div>
-               <div class="col-md-6 ms-2 d-flex align-items-center text-white">
-                  <i class="fa-solid fa-disease"></i>
-               </div>
+            
+            <div class="col-md-3">
+                <div class="rounded card d-flex flex-row border shadow">
+                    <div class="col-4 card rounded-left bg-info border-right d-flex align-items-center justify-content-center p-3">
+                        <strong class="fs-3 text-white"><?= htmlspecialchars($SickBalance ?? 0) ?></strong>
+                    </div>
+                    <div class="col-8 d-flex flex-column align-items-center justify-content-center p-3">
+                        <i class="fa-solid fa-umbrella-beach fs-4"></i>
+                        <span class="text-center font-12 mt-2 w-100">Vacation Leave Balance</span>
+                    </div>
+                </div>
             </div>
-         </label>
-         <label class="col-md-2 col-5 d-flex flex-column min-height  align-items-center justify-content-center shadow rounded py-4 bg-color-mp">
-            <div class="col-md-12 text-center text-white">
-               <strong class="text-wite fs-2"><?= htmlspecialchars($VacationBalance) ?></strong>
+            
+            <div class="col-md-3">
+                <div class="rounded card d-flex flex-row border shadow">
+                    <div class="col-4 card rounded-left bg-success border-right d-flex align-items-center justify-content-center p-3">
+                        <strong class="fs-3 text-white"><?= htmlspecialchars($SpecialBalance ?? 0) ?></strong>
+                    </div>
+                    <div class="col-8 d-flex flex-column align-items-center justify-content-center p-3">
+                        <i class="fa-solid fa-cake-candles fs-4"></i>
+                        <span class="text-center font-12 mt-2 w-100">Special Leave Balance</span>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-12 d-flex">
-               <div class="col-md-6 d-flex flex-column text-white text-end">
-                  <strong class="font-12">VACATION LEAVE</strong>
-                  <strong class="font-12">BALANCE</strong>
-               </div>
-               <div class="col-md-6 ms-2 d-flex align-items-center text-white">
-                  <i class="fa-solid fa-umbrella-beach fs-1"></i>
-               </div>
+            
+            <div class="col-md-3">
+                <div class="rounded card d-flex flex-row border shadow">
+                    <div class="col-4 card rounded-left bg-danger border-right d-flex align-items-center justify-content-center p-3">
+                        <strong class="fs-3 text-white"><?= htmlspecialchars($OthersBalance ?? 0) ?></strong>
+                    </div>
+                    <div class="col-8 d-flex flex-column align-items-center justify-content-center p-3">
+                        <i class="fa-solid fa-biohazard fs-4"></i>
+                        <span class="text-center font-12 mt-2 w-100">Others Leave Balance</span>
+                    </div>
+                </div>
             </div>
-         </label>
-         <label class="col-md-2 col-5 d-flex flex-column min-height align-items-center justify-content-center shadow rounded py-4 bg-color-mf">
-            <div class="col-md-12 text-center text-white">
-               <strong class="text-wite fs-2"><?= htmlspecialchars($SpecialBalance) ?></strong>
-            </div>
-            <div class="col-md-12 d-flex">
-               <div class="col-md-6 d-flex flex-column text-white text-end">
-                  <strong class="font-12">SPECIAL LEAVE</strong>
-                  <strong class="font-12">BALANCE</strong>
-               </div>
-               <div class="col-md-6 ms-2 d-flex align-items-center text-white">
-                  <i class="fa-solid fa-cake-candles fs-1"></i>
-               </div>
-            </div>
-         </label>
-         <label class="col-md-2 col-5 d-flex flex-column min-height  align-items-center justify-content-center shadow rounded py-4 bg-color-others">
-            <div class="col-md-12 text-center text-white">
-               <strong class="text-wite fs-2"><?= htmlspecialchars($OthersBalance) ?></strong>
-            </div>
-            <div class="col-md-12 d-flex">
-               <div class="col-md-6 d-flex flex-column text-white text-end">
-                  <strong class="font-12">OTHERS LEAVE</strong>
-                  <strong class="font-12">BALANCE</strong>
-               </div>
-               <div class="col-md-6 ms-2 d-flex align-items-center text-white">
-                  <i class="fa-solid fa-biohazard fs-1"></i>
-               </div>
-            </div>
-         </label>
-
-      </div>
+        </div>
    </section>
 </body>

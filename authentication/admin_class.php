@@ -2367,6 +2367,13 @@ class Action
             $stmt->execute([
                 $user_id, $job_from, $job_to, $current_salary, $new_salary, $job_status
             ]);
+
+            $stmt = $this->db->prepare("INSERT INTO notifications 
+                (user_id, notification_name, description, notification_status)
+                    VALUES 
+                (?, 'Designation Update', 'Your deisgnation have been updated from $job_from to $job_to', 'unread')");
+            $stmt->execute([$user_id]);
+
             return json_encode([
                 'status' => 1,
                 'message' => 'Employee ' . $job_status . ' Successfully!'
@@ -2808,12 +2815,21 @@ class Action
                 return json_encode(['status'=>1,'message'=>'Leave Recommended Successfully!']);
 
             } else if($leaveStatus === 'Disapproved'){
-                $stmt = $this->db->prepare("UPDATE leaveReq SET leaveStatus = '$leaveStatus' WHERE leave_id = ?");
-                $stmt->execute([$leave_id]);
+                $stmt = $this->db->prepare("UPDATE leaveReq SET leaveStatus = ? WHERE leave_id = ?");
+                $stmt->execute([$leaveStatus, $leave_id]);
                 
                 $stmtLeave_details = $this->db->prepare("INSERT INTO leave_details (leave_id, disapprovalDetails, disapproved_at)
-                VALUES ('$leave_id', '$disapprovalDetails', NOW())");
-                $stmtLeave_details->execute();
+                VALUES (?, ?, NOW())");
+                $stmtLeave_details->execute([$leave_id, $disapprovalDetails]);
+
+                $stmt = $this->db->prepare("INSERT INTO notifications
+                    (user_id, notification_name, description, notification_status)
+                        VALUES
+                    (?, 'Leave Disapproved', 'Your leave have been disapproved.', 'unread')");
+                $stmt->execute([
+                    $user_id
+                ]);
+
                 return json_encode(['status'=>1,'message'=>'Leave Disapproved Successfully!']);
             }else if($leaveStatus === 'Approved'){
                 $stmt = $this->db->prepare("UPDATE leaveReq SET leaveStatus = ? WHERE leave_id = ?");
@@ -2837,6 +2853,14 @@ class Action
                     VacationBalance = ?, SickBalance = ?, SpecialBalance = ? 
                     WHERE user_id = ?");
                 $stmt->execute([$vacationBalanceToDate, $sickBalanceToDate, $specialBalanceToDate, $user_id]);
+                
+                $stmt = $this->db->prepare("INSERT INTO notifications
+                    (user_id, notification_name, description, notification_status)
+                        VALUES
+                    (?, 'Leave Approved', 'Your leave have been Approved.', 'unread')");
+                $stmt->execute([
+                    $user_id
+                ]);
 
                 return json_encode(['status'=>1,'message'=>'Leave Approved Successfully!']);
             }

@@ -55,7 +55,7 @@
       <div class="col-md-12 mb-2 mt-4">
             <strong>LEAVE PENDING, RECOMMENDED, APPROVED AND DISAPPROVED OVERVIEW</strong>
         </div>
-      <div class="row g-3">
+      <div class="row g-3 pb-3">
             <div class="col-md-3">
                 <div class="rounded card d-flex flex-row border shadow">
                     <div class="col-4 card rounded-left bg-dark border-right d-flex align-items-center justify-content-center p-3">

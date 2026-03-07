@@ -1,196 +1,215 @@
 <?php include '../../header.php'; ?>
-    <style>
-        .hrNavI {
-            padding: .5rem;
-            border: solid .2rem #fff !important;
-            border-radius: 50%;
-        }
+<style>
+.hrNavI {
+    padding: .5rem;
+    border: solid .2rem #fff !important;
+    border-radius: 50%;
+}
 
-        .stepper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0;
-            width: 100%;
-        }
+.stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    width: 100%;
+}
 
-        .step {
-            width: 40px;
-            height: 40px;
-            background-color: white;
-            border: 2px solid #333;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            position: relative;
-            z-index: 1;
-        }
+.step {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border: 2px solid #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    position: relative;
+    z-index: 1;
+}
 
-        .step.active {
-            background-color: #444;
-            color: white;
-        }
+.step.active {
+    background-color: #444;
+    color: white;
+}
 
-        .line {
-            height: 2px;
-            width: 60px;
-            background-color: #333;
-            margin: 0 5px;
-            z-index: 0;
-        }
+.line {
+    height: 2px;
+    width: 60px;
+    background-color: #333;
+    margin: 0 5px;
+    z-index: 0;
+}
 
-        @media (max-width: 576px) {
+@media (max-width: 576px) {
 
-            /* General adjustments */
-            .main-body {
-                overflow-x: auto;
-            }
+    .media-pending-img {
+        height: 40px !important;
+        width: 40px !important;
+    }
 
-            .usersButton span.fw-bold {
-                display: none;
-            }
+    h2 {
+        font-size: 13px !important;
+    }
 
-            .usersButton a {
-                margin-left: 5px !important;
-            }
+    .button-media-text {
+        font-size: 12px !important;
+    }
 
-            .sideNav i {
-                margin-right: 0 !important;
-            }
+    .bg-gradient-primary {
+        margin: 0 !important;
+        padding: .5rem !important;
+        s
+    }
 
-            .contents {
-                padding: 5px !important;
-            }
+    /* General adjustments */
+    .main-body {
+        overflow-x: auto;
+    }
 
-            .linkToEmployeeManagement {
-                margin-top: 10px !important;
-                margin-bottom: 10px !important;
-            }
+    .usersButton span.fw-bold {
+        display: none;
+    }
 
-            .stepper {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
+    .usersButton a {
+        margin-left: 5px !important;
+    }
 
-            .step {
-                width: 25px;
-                height: 25px;
-                font-size: 12px;
-            }
+    .sideNav i {
+        margin-right: 0 !important;
+    }
 
-            .lines {
-                width: 15px;
-            }
+    .contents {
+        padding: 5px !important;
+    }
 
-            /* Tables */
-            .table-responsive {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                width: 20rem;
-            }
+    .linkToEmployeeManagement {
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
+    }
 
-            table {
-                font-size: 12px;
-            }
+    .stepper {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 
-            th,
-            td {
-                padding: 4px !important;
-            }
+    .step {
+        width: 25px;
+        height: 25px;
+        font-size: 12px;
+    }
 
-            /* Form inputs */
-            .form-control {
-                font-size: 12px;
-                padding: 4px 8px;
-                width: auto;
-            }
+    .lines {
+        width: 15px;
+    }
 
-            textarea.form-control {
-                min-height: 60px;
-            }
+    /* Tables */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        width: 20rem;
+    }
 
-            /* Radio buttons and checkboxes */
-            .form-check {
-                margin-right: 5px !important;
-            }
+    table {
+        font-size: 12px;
+    }
 
-            .form-check-label {
-                font-size: 12px;
-            }
+    th,
+    td {
+        padding: 4px !important;
+    }
 
-            /* Buttons */
-            .btn {
-                font-size: 12px;
-                padding: 5px 10px;
-            }
+    /* Form inputs */
+    .form-control {
+        font-size: 12px;
+        padding: 4px 8px;
+        width: auto;
+    }
 
-            /* Modal */
-            .modal-dialog {
-                margin: 10px;
-            }
+    textarea.form-control {
+        min-height: 60px;
+    }
 
-            /* Specific table adjustments */
-            #personal-info th,
-            #family-bg th,
-            #education-table th,
-            #work-experience th,
-            #seminar-training th,
-            #others-section th {
-                font-size: 11px;
-                white-space: nowrap;
-            }
+    /* Radio buttons and checkboxes */
+    .form-check {
+        margin-right: 5px !important;
+    }
 
-            /* Hide less important columns on small screens */
-            #education-table th:nth-child(4),
-            #education-table td:nth-child(4) {
-                display: none;
-            }
+    .form-check-label {
+        font-size: 12px;
+    }
 
-            #work-experience th:nth-child(4),
-            #work-experience td:nth-child(4) {
-                display: none;
-            }
+    /* Buttons */
+    .btn {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
 
-            /* Signature section */
-            #declaration-section td {
-                padding: 2px !important;
-            }
+    /* Modal */
+    .modal-dialog {
+        margin: 10px;
+    }
 
-            #declaration-section .border {
-                height: 50px !important;
-            }
+    /* Specific table adjustments */
+    #personal-info th,
+    #family-bg th,
+    #education-table th,
+    #work-experience th,
+    #seminar-training th,
+    #others-section th {
+        font-size: 11px;
+        white-space: nowrap;
+    }
 
-            #declaration-section small {
-                font-size: 10px;
-            }
+    /* Hide less important columns on small screens */
+    #education-table th:nth-child(4),
+    #education-table td:nth-child(4) {
+        display: none;
+    }
 
-            /* Navigation buttons */
-            .nextButtons,
-            .backsButtons {
-                flex-wrap: wrap;
-            }
+    #work-experience th:nth-child(4),
+    #work-experience td:nth-child(4) {
+        display: none;
+    }
 
-            .nextButtons button,
-            .backsButtons button {
-                margin: 3px;
-            }
+    /* Signature section */
+    #declaration-section td {
+        padding: 2px !important;
+    }
 
-            /* Loading animation */
-            .loading-lines .line {
-                width: 20px;
-                height: 3px;
-            }
-        }
-    </style>
+    #declaration-section .border {
+        height: 50px !important;
+    }
+
+    #declaration-section small {
+        font-size: 10px;
+    }
+
+    /* Navigation buttons */
+    .nextButtons,
+    .backsButtons {
+        flex-wrap: wrap;
+    }
+
+    .nextButtons button,
+    .backsButtons button {
+        margin: 3px;
+    }
+
+    /* Loading animation */
+    .loading-lines .line {
+        width: 20px;
+        height: 3px;
+    }
+}
+</style>
 <?php
     require_once '../../authentication/config.php';
-    $employee_id = $_GET["employee_id"];
+    $user_id = $_GET["user_id"];
 
     // Get PDS ID
-    $stmtPDS = $pdo->prepare("SELECT pds_id FROM personal_data_sheet WHERE employee_id = ?");
-    $stmtPDS->execute([$employee_id]);
+    $stmtPDS = $pdo->prepare("SELECT pds_id FROM personal_data_sheet WHERE user_id = ?");
+    $stmtPDS->execute([$user_id]);
     $pdsData = $stmtPDS->fetch(PDO::FETCH_ASSOC);
 
     if (!$pdsData) {
@@ -201,8 +220,8 @@
 
     // Main query for employee, HR, and single-record tables
     $query = "SELECT 
+        u.*,
         ed.*,
-        hr.*,
         pds.pds_id,
         pds.accomplished_on,
         ug.*,
@@ -211,17 +230,17 @@
         p_mother.*,
         oi.*
     FROM personal_data_sheet pds
-    INNER JOIN employee_data ed ON pds.employee_id = ed.employee_id
-    INNER JOIN hr_data hr ON ed.employee_id = hr.employee_id
+    INNER JOIN users u ON pds.user_id = u.user_id
+    INNER JOIN employee_data ed ON u.user_id = ed.user_id
     LEFT JOIN userGovIDs ug ON pds.pds_id = ug.pds_id
     LEFT JOIN spouseInfo si ON pds.pds_id = si.pds_id
     LEFT JOIN parents p_father ON pds.pds_id = p_father.pds_id AND p_father.relation = 'Father'
     LEFT JOIN parents p_mother ON pds.pds_id = p_mother.pds_id AND p_mother.relation = 'Mother'
     LEFT JOIN otherInfo oi ON pds.pds_id = oi.pds_id
-    WHERE pds.employee_id = ?";
+    WHERE pds.user_id = ?";
 
     $stmt = $pdo->prepare($query);
-    $stmt->execute([$employee_id]);
+    $stmt->execute([$user_id]);
     $pds = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $multiTables = [
@@ -246,16 +265,16 @@
         $pds['education_by_level'] = $educationByLevel;
     }
 ?>
- <div class="bg-gradient-primary h-auto p-3 d-flex  align-items-center justify-content-between" style="background-image: linear-gradient(300deg,#E32126, #FF6F8F,#E32126);
+<div class="bg-gradient-primary h-auto p-3 d-flex align-items-center justify-content-between" style="background-image: linear-gradient(300deg,#E32126, #FF6F8F,#E32126);
     color: #fff;">
-        <div class="col-md-7 d-flex">
-            <img src="../../assets/image/system_logo/pueri-logo.png" class="me-2" style="height: auto; width: 50px;">
-            <h2 class="m-0 d-flex align-items-center fw-bold text-white">Zamboanga Puericulture Center</h2>
-        </div>  
-        <div class="col-md-5 d-flex justify-content-end">
-            <a href="pending.php"><button class="btn btn-sm btn-info m-0">Back to hompage</button></a>
-        </div>
+    <div class="col-md-7 d-flex">
+        <img src="../../assets/image/system_logo/pueri-logo.png" class="me-2 media-pending-img " style="height: auto; width: 50px;">
+        <h2 class="m-0 d-flex align-items-center fw-bold text-white">Zamboanga Puericulture Center</h2>
     </div>
+    <div class="col-md-5 d-flex justify-content-end">
+        <a href="pending.php"><button class="btn btn-sm btn-info m-0">Back to hompage</button></a>
+    </div>
+</div>
 <main>
     <div class="main-body w-100 h-100 m-0 p-0">
         <div class="d-flex w-100 align-items-start" style="height: 91%">
@@ -308,8 +327,7 @@
                         <div class="step active">4</div>
                     </div>
                     <form id="pds-update" method="post" class="col-md-12">
-                        <?php $employee_id = $_SESSION["employeeData"]["employee_id"]; ?> 
-                        <input type="hidden" name="employee_id" value="<?= $employee_id ?>">
+                        <input type="hidden" name="user_id" value="<?= $user_id ?>">
                         <!-- ============================== PERSONAL INFORMATION ========================================= -->
                         <div id="personalInfo"
                             class="personalInfo flex-row align-items-center p-0 m-0 mt-3 flex-wrap col-md-12 gap-1"
@@ -1180,143 +1198,143 @@
     </div>
 </div>
 <script>
-    function showLoadingAndRun(callback) {
-        showLoader();
-        setTimeout(() => {
-            hideLoader();
-            callback();
-        }, 500);
-    }
+function showLoadingAndRun(callback) {
+    showLoader();
+    setTimeout(() => {
+        hideLoader();
+        callback();
+    }, 500);
+}
 
-    function showLoader() {
-        document.getElementById('loadingAnimation').style.display = 'flex';
-    }
+function showLoader() {
+    document.getElementById('loadingAnimation').style.display = 'flex';
+}
 
-    function hideLoader() {
-        document.getElementById('loadingAnimation').style.display = 'none';
-    }
+function hideLoader() {
+    document.getElementById('loadingAnimation').style.display = 'none';
+}
 
-    window.addEventListener('pageshow', hideLoader);
+window.addEventListener('pageshow', hideLoader);
 
-    function goToStepTwo() {
-        document.getElementById('stepOne').style.display = 'none';
-        document.getElementById('personalInfo').style.display = 'none';
-        document.getElementById('buttonFirstN').style.display = 'none';
+function goToStepTwo() {
+    document.getElementById('stepOne').style.display = 'none';
+    document.getElementById('personalInfo').style.display = 'none';
+    document.getElementById('buttonFirstN').style.display = 'none';
 
-        document.getElementById('stepTwo').style.display = 'flex';
-        document.getElementById('familyBackground').style.display = 'flex';
-        document.getElementById('buttonSecondN').style.display = 'flex';
-        document.getElementById('buttonSecondB').style.display = 'flex';
+    document.getElementById('stepTwo').style.display = 'flex';
+    document.getElementById('familyBackground').style.display = 'flex';
+    document.getElementById('buttonSecondN').style.display = 'flex';
+    document.getElementById('buttonSecondB').style.display = 'flex';
 
-        document.getElementById('stepThree').style.display = 'none';
-        document.getElementById('EducBG_WorkExp').style.display = 'none';
-        document.getElementById('buttonThirdN').style.display = 'none';
-        document.getElementById('buttonThirdB').style.display = 'none';
+    document.getElementById('stepThree').style.display = 'none';
+    document.getElementById('EducBG_WorkExp').style.display = 'none';
+    document.getElementById('buttonThirdN').style.display = 'none';
+    document.getElementById('buttonThirdB').style.display = 'none';
 
-        document.getElementById('stepFour').style.display = 'none';
-        document.getElementById('Others').style.display = 'none';
-        document.getElementById('updateButtonEBG').style.display = 'none';
-        document.getElementById('buttonFourthB').style.display = 'none';
-    }
+    document.getElementById('stepFour').style.display = 'none';
+    document.getElementById('Others').style.display = 'none';
+    document.getElementById('updateButtonEBG').style.display = 'none';
+    document.getElementById('buttonFourthB').style.display = 'none';
+}
 
-    function goToStepOne() {
-        document.getElementById('stepOne').style.display = 'flex';
-        document.getElementById('personalInfo').style.display = 'flex';
-        document.getElementById('buttonFirstN').style.display = 'flex';
+function goToStepOne() {
+    document.getElementById('stepOne').style.display = 'flex';
+    document.getElementById('personalInfo').style.display = 'flex';
+    document.getElementById('buttonFirstN').style.display = 'flex';
 
-        document.getElementById('stepTwo').style.display = 'none';
-        document.getElementById('familyBackground').style.display = 'none';
-        document.getElementById('buttonSecondN').style.display = 'none';
-        document.getElementById('buttonSecondB').style.display = 'none';
+    document.getElementById('stepTwo').style.display = 'none';
+    document.getElementById('familyBackground').style.display = 'none';
+    document.getElementById('buttonSecondN').style.display = 'none';
+    document.getElementById('buttonSecondB').style.display = 'none';
 
-        document.getElementById('stepThree').style.display = 'none';
-        document.getElementById('EducBG_WorkExp').style.display = 'none';
-        document.getElementById('buttonThirdN').style.display = 'none';
-        document.getElementById('buttonThirdB').style.display = 'none';
+    document.getElementById('stepThree').style.display = 'none';
+    document.getElementById('EducBG_WorkExp').style.display = 'none';
+    document.getElementById('buttonThirdN').style.display = 'none';
+    document.getElementById('buttonThirdB').style.display = 'none';
 
-        document.getElementById('stepFour').style.display = 'none';
-        document.getElementById('Others').style.display = 'none';
-        document.getElementById('updateButtonEBG').style.display = 'none';
-        document.getElementById('buttonFourthB').style.display = 'none';
-    }
+    document.getElementById('stepFour').style.display = 'none';
+    document.getElementById('Others').style.display = 'none';
+    document.getElementById('updateButtonEBG').style.display = 'none';
+    document.getElementById('buttonFourthB').style.display = 'none';
+}
 
-    function goToStepThree() {
-        document.getElementById('stepOne').style.display = 'none';
-        document.getElementById('personalInfo').style.display = 'none';
-        document.getElementById('buttonFirstN').style.display = 'none';
+function goToStepThree() {
+    document.getElementById('stepOne').style.display = 'none';
+    document.getElementById('personalInfo').style.display = 'none';
+    document.getElementById('buttonFirstN').style.display = 'none';
 
-        document.getElementById('stepTwo').style.display = 'none';
-        document.getElementById('familyBackground').style.display = 'none';
-        document.getElementById('buttonSecondN').style.display = 'none';
-        document.getElementById('buttonSecondB').style.display = 'none';
+    document.getElementById('stepTwo').style.display = 'none';
+    document.getElementById('familyBackground').style.display = 'none';
+    document.getElementById('buttonSecondN').style.display = 'none';
+    document.getElementById('buttonSecondB').style.display = 'none';
 
-        document.getElementById('stepThree').style.display = 'flex';
-        document.getElementById('EducBG_WorkExp').style.display = 'flex';
-        document.getElementById('buttonThirdN').style.display = 'flex';
-        document.getElementById('buttonThirdB').style.display = 'flex';
+    document.getElementById('stepThree').style.display = 'flex';
+    document.getElementById('EducBG_WorkExp').style.display = 'flex';
+    document.getElementById('buttonThirdN').style.display = 'flex';
+    document.getElementById('buttonThirdB').style.display = 'flex';
 
-        document.getElementById('stepFour').style.display = 'none';
-        document.getElementById('Others').style.display = 'none';
-        document.getElementById('buttonFourthB').style.display = 'none';
-        document.getElementById('updateButtonEBG').style.display = 'none';
-    }
+    document.getElementById('stepFour').style.display = 'none';
+    document.getElementById('Others').style.display = 'none';
+    document.getElementById('buttonFourthB').style.display = 'none';
+    document.getElementById('updateButtonEBG').style.display = 'none';
+}
 
-    function goToStepFour() {
-        document.getElementById('stepOne').style.display = 'none';
-        document.getElementById('personalInfo').style.display = 'none';
-        document.getElementById('buttonFirstN').style.display = 'none';
+function goToStepFour() {
+    document.getElementById('stepOne').style.display = 'none';
+    document.getElementById('personalInfo').style.display = 'none';
+    document.getElementById('buttonFirstN').style.display = 'none';
 
-        document.getElementById('stepTwo').style.display = 'none';
-        document.getElementById('familyBackground').style.display = 'none';
-        document.getElementById('buttonSecondN').style.display = 'none';
-        document.getElementById('buttonSecondB').style.display = 'none';
+    document.getElementById('stepTwo').style.display = 'none';
+    document.getElementById('familyBackground').style.display = 'none';
+    document.getElementById('buttonSecondN').style.display = 'none';
+    document.getElementById('buttonSecondB').style.display = 'none';
 
-        document.getElementById('stepThree').style.display = 'none';
-        document.getElementById('EducBG_WorkExp').style.display = 'none';
-        document.getElementById('buttonThirdN').style.display = 'none';
-        document.getElementById('buttonThirdB').style.display = 'none';
+    document.getElementById('stepThree').style.display = 'none';
+    document.getElementById('EducBG_WorkExp').style.display = 'none';
+    document.getElementById('buttonThirdN').style.display = 'none';
+    document.getElementById('buttonThirdB').style.display = 'none';
 
-        document.getElementById('stepFour').style.display = 'flex';
-        document.getElementById('Others').style.display = 'flex';
-        document.getElementById('buttonFourthB').style.display = 'flex';
-        document.getElementById('updateButtonEBG').style.display = 'flex';
-    }
+    document.getElementById('stepFour').style.display = 'flex';
+    document.getElementById('Others').style.display = 'flex';
+    document.getElementById('buttonFourthB').style.display = 'flex';
+    document.getElementById('updateButtonEBG').style.display = 'flex';
+}
 
-    function buttonFirstN() {
-        showLoadingAndRun(goToStepTwo);
-    }
+function buttonFirstN() {
+    showLoadingAndRun(goToStepTwo);
+}
 
-    function buttonSecondN() {
-        showLoadingAndRun(goToStepThree);
-    }
+function buttonSecondN() {
+    showLoadingAndRun(goToStepThree);
+}
 
-    function buttonThirdN() {
-        showLoadingAndRun(goToStepFour);
-    }
+function buttonThirdN() {
+    showLoadingAndRun(goToStepFour);
+}
 
-    function buttonSecondB() {
-        showLoadingAndRun(goToStepOne);
-    }
+function buttonSecondB() {
+    showLoadingAndRun(goToStepOne);
+}
 
-    function buttonThirdB() {
-        showLoadingAndRun(goToStepTwo);
-    }
+function buttonThirdB() {
+    showLoadingAndRun(goToStepTwo);
+}
 
-    function buttonFourthB() {
-        showLoadingAndRun(goToStepThree);
-    }
+function buttonFourthB() {
+    showLoadingAndRun(goToStepThree);
+}
 </script>
 <script>
-    // FIXED PRINT SCRIPT - REPLACE ALL THE PRINT JAVASCRIPT WITH THIS
+// FIXED PRINT SCRIPT - REPLACE ALL THE PRINT JAVASCRIPT WITH THIS
 document.getElementById('Print_PDS').addEventListener('click', function() {
     const form = document.getElementById('pds-update');
     const formData = new FormData(form);
     const employeeData = {};
-    
+
     for (let [key, value] of formData.entries()) {
         employeeData[key] = value;
     }
-    
+
     // Helper functions defined BEFORE they're used
     function generateChildrenRows(data) {
         let rows = '';
@@ -1337,132 +1355,133 @@ document.getElementById('Print_PDS').addEventListener('click', function() {
             } else {
                 spouseCell = '<td>TELEPHONE NO.</td>';
             }
-            
-            rows += '<tr>' + spouseCell + 
-                   '<td>' + (data['child_full_name_' + i] || '') + '</td>' +
-                   '<td>' + (data['child_dob_' + i] || '') + '</td>' +
-                   '</tr>';
+
+            rows += '<tr>' + spouseCell +
+                '<td>' + (data['child_full_name_' + i] || '') + '</td>' +
+                '<td>' + (data['child_dob_' + i] || '') + '</td>' +
+                '</tr>';
         }
         return rows;
     }
-    
+
     function generateParentsRows(data) {
         return '<tr>' +
-               '<td colspan="2" class="table-label">FATHER\'S INFORMATION</td>' +
-               '<td colspan="2" class="table-label">MOTHER\'S MAIDEN NAME</td>' +
-               '</tr>' +
-               '<tr>' +
-               '<td>SURNAME</td>' +
-               '<td>' + (data.father_surname || '') + '</td>' +
-               '<td>SURNAME</td>' +
-               '<td>' + (data.mother_surname || '') + '</td>' +
-               '</tr>' +
-               '<tr>' +
-               '<td>FIRST NAME</td>' +
-               '<td>' + (data.father_first_name || '') + '</td>' +
-               '<td>FIRST NAME</td>' +
-               '<td>' + (data.mother_first_name || '') + '</td>' +
-               '</tr>' +
-               '<tr>' +
-               '<td>MIDDLE NAME</td>' +
-               '<td>' + (data.father_middle_name || '') + '</td>' +
-               '<td>MIDDLE NAME</td>' +
-               '<td>' + (data.mother_middle_name || '') + '</td>' +
-               '</tr>' +
-               '<tr>' +
-               '<td>OCCUPATION</td>' +
-               '<td>' + (data.father_occupation || '') + '</td>' +
-               '<td>OCCUPATION</td>' +
-               '<td>' + (data.mother_occupation || '') + '</td>' +
-               '</tr>' +
-               '<tr>' +
-               '<td>ADDRESS</td>' +
-               '<td>' + (data.father_address || '') + '</td>' +
-               '<td>ADDRESS</td>' +
-               '<td>' + (data.mother_address || '') + '</td>' +
-               '</tr>';
+            '<td colspan="2" class="table-label">FATHER\'S INFORMATION</td>' +
+            '<td colspan="2" class="table-label">MOTHER\'S MAIDEN NAME</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td>SURNAME</td>' +
+            '<td>' + (data.father_surname || '') + '</td>' +
+            '<td>SURNAME</td>' +
+            '<td>' + (data.mother_surname || '') + '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td>FIRST NAME</td>' +
+            '<td>' + (data.father_first_name || '') + '</td>' +
+            '<td>FIRST NAME</td>' +
+            '<td>' + (data.mother_first_name || '') + '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td>MIDDLE NAME</td>' +
+            '<td>' + (data.father_middle_name || '') + '</td>' +
+            '<td>MIDDLE NAME</td>' +
+            '<td>' + (data.mother_middle_name || '') + '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td>OCCUPATION</td>' +
+            '<td>' + (data.father_occupation || '') + '</td>' +
+            '<td>OCCUPATION</td>' +
+            '<td>' + (data.mother_occupation || '') + '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td>ADDRESS</td>' +
+            '<td>' + (data.father_address || '') + '</td>' +
+            '<td>ADDRESS</td>' +
+            '<td>' + (data.mother_address || '') + '</td>' +
+            '</tr>';
     }
-    
+
     function generateSiblingsRows(data) {
         let rows = '';
         for (let i = 1; i <= 8; i++) {
             rows += '<tr>' +
-                   '<td>' + (data['sibling_full_name_' + i] || '') + '</td>' +
-                   '<td>' + (data['sibling_age_' + i] || '') + '</td>' +
-                   '<td>' + (data['sibling_occupation_' + i] || '') + '</td>' +
-                   '<td>' + (data['sibling_address_' + i] || '') + '</td>' +
-                   '</tr>';
+                '<td>' + (data['sibling_full_name_' + i] || '') + '</td>' +
+                '<td>' + (data['sibling_age_' + i] || '') + '</td>' +
+                '<td>' + (data['sibling_occupation_' + i] || '') + '</td>' +
+                '<td>' + (data['sibling_address_' + i] || '') + '</td>' +
+                '</tr>';
         }
         return rows;
     }
-    
+
     function generateEducationRows(data) {
         return '<tr>' +
-               '<td class="table-label">ELEMENTARY</td>' +
-               '<td>' + (data.elem_school_name || '') + '</td>' +
-               '<td>' + (data.elem_degree_course || '') + '</td>' +
-               '<td>' + (data.elem_school_address || '') + '</td>' +
-               '<td>' + (data.elem_year_grad || '') + '</td>' +
-               '</tr>' +
-               '<tr>' +
-               '<td class="table-label">SECONDARY</td>' +
-               '<td>' + (data.sec_school_name || '') + '</td>' +
-               '<td>' + (data.sec_degree_course || '') + '</td>' +
-               '<td>' + (data.sec_school_address || '') + '</td>' +
-               '<td>' + (data.sec_year_grad || '') + '</td>' +
-               '</tr>' +
-               '<tr>' +
-               '<td class="table-label">VOCATIONAL</td>' +
-               '<td>' + (data.voc_school_name || '') + '</td>' +
-               '<td>' + (data.voc_degree_course || '') + '</td>' +
-               '<td>' + (data.voc_school_address || '') + '</td>' +
-               '<td>' + (data.voc_year_grad || '') + '</td>' +
-               '</tr>' +
-               '<tr>' +
-               '<td class="table-label">COLLEGE</td>' +
-               '<td>' + (data.college_school_name || '') + '</td>' +
-               '<td>' + (data.college_degree_course || '') + '</td>' +
-               '<td>' + (data.college_school_address || '') + '</td>' +
-               '<td>' + (data.college_year_grad || '') + '</td>' +
-               '</tr>' +
-               '<tr>' +
-               '<td class="table-label">GRADUATE</td>' +
-               '<td>' + (data.grad_school_name || '') + '</td>' +
-               '<td>' + (data.grad_degree_course || '') + '</td>' +
-               '<td>' + (data.grad_school_address || '') + '</td>' +
-               '<td>' + (data.grad_year_grad || '') + '</td>' +
-               '</tr>';
+            '<td class="table-label">ELEMENTARY</td>' +
+            '<td>' + (data.elem_school_name || '') + '</td>' +
+            '<td>' + (data.elem_degree_course || '') + '</td>' +
+            '<td>' + (data.elem_school_address || '') + '</td>' +
+            '<td>' + (data.elem_year_grad || '') + '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td class="table-label">SECONDARY</td>' +
+            '<td>' + (data.sec_school_name || '') + '</td>' +
+            '<td>' + (data.sec_degree_course || '') + '</td>' +
+            '<td>' + (data.sec_school_address || '') + '</td>' +
+            '<td>' + (data.sec_year_grad || '') + '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td class="table-label">VOCATIONAL</td>' +
+            '<td>' + (data.voc_school_name || '') + '</td>' +
+            '<td>' + (data.voc_degree_course || '') + '</td>' +
+            '<td>' + (data.voc_school_address || '') + '</td>' +
+            '<td>' + (data.voc_year_grad || '') + '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td class="table-label">COLLEGE</td>' +
+            '<td>' + (data.college_school_name || '') + '</td>' +
+            '<td>' + (data.college_degree_course || '') + '</td>' +
+            '<td>' + (data.college_school_address || '') + '</td>' +
+            '<td>' + (data.college_year_grad || '') + '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td class="table-label">GRADUATE</td>' +
+            '<td>' + (data.grad_school_name || '') + '</td>' +
+            '<td>' + (data.grad_degree_course || '') + '</td>' +
+            '<td>' + (data.grad_school_address || '') + '</td>' +
+            '<td>' + (data.grad_year_grad || '') + '</td>' +
+            '</tr>';
     }
-    
+
     function generateWorkExperienceRows(data) {
         let rows = '';
         for (let i = 1; i <= 5; i++) {
             const from = data['exp_' + i + '_date_from'] || '';
             const to = data['exp_' + i + '_date_to'] || '';
             const dates = from && to ? from + ' to ' + to : '';
-            
+
             rows += '<tr>' +
-                   '<td>' + dates + '</td>' +
-                   '<td>' + (data['exp_' + i + '_position_title'] || '') + '</td>' +
-                   '<td>' + (data['exp_' + i + '_department'] || '') + '</td>' +
-                   '<td>' + (data['exp_' + i + '_monthly_salary'] ? 'PHP ' + data['exp_' + i + '_monthly_salary'] : '') + '</td>' +
-                   '</tr>';
+                '<td>' + dates + '</td>' +
+                '<td>' + (data['exp_' + i + '_position_title'] || '') + '</td>' +
+                '<td>' + (data['exp_' + i + '_department'] || '') + '</td>' +
+                '<td>' + (data['exp_' + i + '_monthly_salary'] ? 'PHP ' + data['exp_' + i + '_monthly_salary'] :
+                    '') + '</td>' +
+                '</tr>';
         }
         return rows;
     }
-    
+
     function generateSeminarRows(data) {
         let rows = '';
         for (let i = 1; i <= 5; i++) {
             rows += '<tr>' +
-                   '<td>' + (data['seminar_' + i + '_inclusive_dates'] || '') + '</td>' +
-                   '<td>' + (data['seminar_' + i + '_title'] || '') + '</td>' +
-                   '<td>' + (data['seminar_' + i + '_place'] || '') + '</td>' +
-                   '</tr>';
+                '<td>' + (data['seminar_' + i + '_inclusive_dates'] || '') + '</td>' +
+                '<td>' + (data['seminar_' + i + '_title'] || '') + '</td>' +
+                '<td>' + (data['seminar_' + i + '_place'] || '') + '</td>' +
+                '</tr>';
         }
         return rows;
     }
-    
+
     function formatHouseType(type) {
         const types = {
             'light': 'Light Materials',
@@ -1471,413 +1490,414 @@ document.getElementById('Print_PDS').addEventListener('click', function() {
         };
         return types[type] || type || '';
     }
-    
+
     // Get current date for footer
     const now = new Date();
-    
+
     // Build the HTML content using string concatenation instead of template literals
     const printContent = '<!DOCTYPE html>' +
-    '<html>' +
-    '<head>' +
+        '<html>' +
+        '<head>' +
         '<meta charset="UTF-8">' +
         '<style>' +
-            '@media print {' +
-                '@page {' +
-                    'margin: 0.5in;' +
-                    'size: letter;' +
-                '}' +
-                'body {' +
-                    'margin: 0;' +
-                    'padding: 0;' +
-                    'font-family: "Arial", sans-serif;' +
-                    'font-size: 11pt;' +
-                    'color: #000;' +
-                    'line-height: 1.3;' +
-                '}' +
-                '.print-header {' +
-                    'text-align: center;' +
-                    'border: 2px solid #000;' +
-                    'padding: 10px;' +
-                    'margin-bottom: 20px;' +
-                    'background-color: #f8f9fa;' +
-                '}' +
-                '.print-header h1 {' +
-                    'margin: 5px 0;' +
-                    'font-size: 16pt;' +
-                    'font-weight: bold;' +
-                    'letter-spacing: 1px;' +
-                '}' +
-                '.agency-line {' +
-                    'border-top: 2px solid #000;' +
-                    'border-bottom: 2px solid #000;' +
-                    'padding: 5px 0;' +
-                    'margin: 10px 0;' +
-                    'font-size: 10pt;' +
-                '}' +
-                '.cs-form-no {' +
-                    'text-align: center;' +
-                    'font-size: 9pt;' +
-                    'margin-bottom: 15px;' +
-                '}' +
-                '.print-section {' +
-                    'page-break-inside: avoid;' +
-                    'margin-bottom: 20px;' +
-                '}' +
-                '.section-title {' +
-                    'background-color: #e9ecef;' +
-                    'border: 1px solid #000;' +
-                    'padding: 8px;' +
-                    'font-weight: bold;' +
-                    'font-size: 12pt;' +
-                    'margin-bottom: 10px;' +
-                '}' +
-                '.print-table {' +
-                    'width: 100%;' +
-                    'border-collapse: collapse;' +
-                    'border: 1px solid #000;' +
-                    'margin-bottom: 15px;' +
-                    'font-size: 10pt;' +
-                '}' +
-                '.print-table th {' +
-                    'background-color: #f8f9fa;' +
-                    'border: 1px solid #000;' +
-                    'padding: 6px 8px;' +
-                    'text-align: center;' +
-                    'vertical-align: middle;' +
-                    'font-weight: bold;' +
-                '}' +
-                '.print-table td {' +
-                    'border: 1px solid #000;' +
-                    'padding: 6px 8px;' +
-                    'vertical-align: top;' +
-                '}' +
-                '.table-label {' +
-                    'font-weight: bold;' +
-                    'background-color: #f8f9fa;' +
-                '}' +
-                '.data-field {' +
-                    'min-height: 22px;' +
-                    'padding: 3px 5px;' +
-                    'border-bottom: 1px solid #ccc;' +
-                '}' +
-                '.print-signature {' +
-                    'border: 1px solid #000;' +
-                    'height: 80px;' +
-                    'margin: 5px 0;' +
-                    'text-align: center;' +
-                    'vertical-align: middle;' +
-                '}' +
-                '.print-photo-box {' +
-                    'border: 2px solid #000;' +
-                    'width: 140px;' +
-                    'height: 180px;' +
-                    'text-align: center;' +
-                    'vertical-align: middle;' +
-                    'font-size: 10pt;' +
-                    'display: flex;' +
-                    'align-items: center;' +
-                    'justify-content: center;' +
-                    'background-color: #f8f9fa;' +
-                '}' +
-                '.no-print {' +
-                    'display: none !important;' +
-                '}' +
-                '.declaration {' +
-                    'font-size: 9pt;' +
-                    'line-height: 1.4;' +
-                    'margin: 15px 0;' +
-                    'text-align: justify;' +
-                '}' +
-                '.footer-note {' +
-                    'font-size: 8pt;' +
-                    'color: #666;' +
-                    'margin-top: 20px;' +
-                    'text-align: center;' +
-                    'font-style: italic;' +
-                '}' +
-            '}' +
-            'body {' +
-                'font-family: "Arial", sans-serif;' +
-                'margin: 20px;' +
-                'padding: 20px;' +
-                'background-color: #fff;' +
-            '}' +
-            '.print-controls {' +
-                'text-align: center;' +
-                'margin: 20px 0;' +
-                'padding: 15px;' +
-                'background-color: #f8f9fa;' +
-                'border: 1px solid #ddd;' +
-            '}' +
-            '.print-controls button {' +
-                'margin: 0 10px;' +
-                'padding: 10px 20px;' +
-                'font-size: 14px;' +
-            '}' +
-            '@media screen {' +
-                '.print-header {' +
-                    'text-align: center;' +
-                    'border: 2px solid #000;' +
-                    'padding: 15px;' +
-                    'margin-bottom: 30px;' +
-                    'background-color: #f8f9fa;' +
-                '}' +
-                '.print-table {' +
-                    'width: 100%;' +
-                    'border-collapse: collapse;' +
-                    'border: 1px solid #000;' +
-                    'margin-bottom: 20px;' +
-                '}' +
-            '}' +
+        '@media print {' +
+        '@page {' +
+        'margin: 0.5in;' +
+        'size: letter;' +
+        '}' +
+        'body {' +
+        'margin: 0;' +
+        'padding: 0;' +
+        'font-family: "Arial", sans-serif;' +
+        'font-size: 11pt;' +
+        'color: #000;' +
+        'line-height: 1.3;' +
+        '}' +
+        '.print-header {' +
+        'text-align: center;' +
+        'border: 2px solid #000;' +
+        'padding: 10px;' +
+        'margin-bottom: 20px;' +
+        'background-color: #f8f9fa;' +
+        '}' +
+        '.print-header h1 {' +
+        'margin: 5px 0;' +
+        'font-size: 16pt;' +
+        'font-weight: bold;' +
+        'letter-spacing: 1px;' +
+        '}' +
+        '.agency-line {' +
+        'border-top: 2px solid #000;' +
+        'border-bottom: 2px solid #000;' +
+        'padding: 5px 0;' +
+        'margin: 10px 0;' +
+        'font-size: 10pt;' +
+        '}' +
+        '.cs-form-no {' +
+        'text-align: center;' +
+        'font-size: 9pt;' +
+        'margin-bottom: 15px;' +
+        '}' +
+        '.print-section {' +
+        'page-break-inside: avoid;' +
+        'margin-bottom: 20px;' +
+        '}' +
+        '.section-title {' +
+        'background-color: #e9ecef;' +
+        'border: 1px solid #000;' +
+        'padding: 8px;' +
+        'font-weight: bold;' +
+        'font-size: 12pt;' +
+        'margin-bottom: 10px;' +
+        '}' +
+        '.print-table {' +
+        'width: 100%;' +
+        'border-collapse: collapse;' +
+        'border: 1px solid #000;' +
+        'margin-bottom: 15px;' +
+        'font-size: 10pt;' +
+        '}' +
+        '.print-table th {' +
+        'background-color: #f8f9fa;' +
+        'border: 1px solid #000;' +
+        'padding: 6px 8px;' +
+        'text-align: center;' +
+        'vertical-align: middle;' +
+        'font-weight: bold;' +
+        '}' +
+        '.print-table td {' +
+        'border: 1px solid #000;' +
+        'padding: 6px 8px;' +
+        'vertical-align: top;' +
+        '}' +
+        '.table-label {' +
+        'font-weight: bold;' +
+        'background-color: #f8f9fa;' +
+        '}' +
+        '.data-field {' +
+        'min-height: 22px;' +
+        'padding: 3px 5px;' +
+        'border-bottom: 1px solid #ccc;' +
+        '}' +
+        '.print-signature {' +
+        'border: 1px solid #000;' +
+        'height: 80px;' +
+        'margin: 5px 0;' +
+        'text-align: center;' +
+        'vertical-align: middle;' +
+        '}' +
+        '.print-photo-box {' +
+        'border: 2px solid #000;' +
+        'width: 140px;' +
+        'height: 180px;' +
+        'text-align: center;' +
+        'vertical-align: middle;' +
+        'font-size: 10pt;' +
+        'display: flex;' +
+        'align-items: center;' +
+        'justify-content: center;' +
+        'background-color: #f8f9fa;' +
+        '}' +
+        '.no-print {' +
+        'display: none !important;' +
+        '}' +
+        '.declaration {' +
+        'font-size: 9pt;' +
+        'line-height: 1.4;' +
+        'margin: 15px 0;' +
+        'text-align: justify;' +
+        '}' +
+        '.footer-note {' +
+        'font-size: 8pt;' +
+        'color: #666;' +
+        'margin-top: 20px;' +
+        'text-align: center;' +
+        'font-style: italic;' +
+        '}' +
+        '}' +
+        'body {' +
+        'font-family: "Arial", sans-serif;' +
+        'margin: 20px;' +
+        'padding: 20px;' +
+        'background-color: #fff;' +
+        '}' +
+        '.print-controls {' +
+        'text-align: center;' +
+        'margin: 20px 0;' +
+        'padding: 15px;' +
+        'background-color: #f8f9fa;' +
+        'border: 1px solid #ddd;' +
+        '}' +
+        '.print-controls button {' +
+        'margin: 0 10px;' +
+        'padding: 10px 20px;' +
+        'font-size: 14px;' +
+        '}' +
+        '@media screen {' +
+        '.print-header {' +
+        'text-align: center;' +
+        'border: 2px solid #000;' +
+        'padding: 15px;' +
+        'margin-bottom: 30px;' +
+        'background-color: #f8f9fa;' +
+        '}' +
+        '.print-table {' +
+        'width: 100%;' +
+        'border-collapse: collapse;' +
+        'border: 1px solid #000;' +
+        'margin-bottom: 20px;' +
+        '}' +
+        '}' +
         '</style>' +
-    '</head>' +
-    '<body>' +
+        '</head>' +
+        '<body>' +
         '<div class="print-controls no-print">' +
-            '<button onclick="window.print()" style="background-color: #28a745; color: white; border: none; padding: 12px 24px; border-radius: 4px; cursor: pointer;">' +
-                '🖨️ PRINT PDS' +
-            '</button>' +
-            '<button onclick="window.close()" style="background-color: #dc3545; color: white; border: none; padding: 12px 24px; border-radius: 4px; cursor: pointer;">' +
-                '✖️ CLOSE' +
-            '</button>' +
-            '<p style="margin-top: 10px; font-size: 12px; color: #666;">' +
-                'Preview the PDS below. Click PRINT PDS when ready.' +
-            '</p>' +
+        '<button onclick="window.print()" style="background-color: #28a745; color: white; border: none; padding: 12px 24px; border-radius: 4px; cursor: pointer;">' +
+        '🖨️ PRINT PDS' +
+        '</button>' +
+        '<button onclick="window.close()" style="background-color: #dc3545; color: white; border: none; padding: 12px 24px; border-radius: 4px; cursor: pointer;">' +
+        '✖️ CLOSE' +
+        '</button>' +
+        '<p style="margin-top: 10px; font-size: 12px; color: #666;">' +
+        'Preview the PDS below. Click PRINT PDS when ready.' +
+        '</p>' +
         '</div>' +
-        
+
         '<div class="print-header">' +
-            '<div style="margin-bottom: 15px;">' +
-                '<h1>REPUBLIC OF THE PHILIPPINES</h1>' +
-                '<div class="agency-line">' +
-                    '<strong>CIVIL SERVICE COMMISSION</strong>' +
-                '</div>' +
-                '<h1>PERSONAL DATA SHEET</h1>' +
-            '</div>' +
-        
-            '<div class="section-title">I. PERSONAL INFORMATION</div>' +
-            '<table class="print-table">' +
-                '<tr>' +
-                    '<td width="20%" class="table-label">SURNAME</td>' +
-                    '<td width="30%"><div class="data-field">' + (employeeData.lname || '') + '</div></td>' +
-                    '<td width="20%" class="table-label">NICKNAME</td>' +
-                    '<td width="30%"><div class="data-field">' + (employeeData.nickname || '') + '</div></td>' +
-                '</tr>' +
-                '<tr>' +
-                    '<td class="table-label">FIRST NAME</td>' +
-                    '<td colspan="3"><div class="data-field">' + (employeeData.fname || '') + '</div></td>' +
-                '</tr>' +
-                '<tr>' +
-                    '<td class="table-label">MIDDLE NAME</td>' +
-                    '<td><div class="data-field">' + (employeeData.mname || '') + '</div></td>' +
-                    '<td class="table-label">NAME EXTENSION</td>' +
-                    '<td><div class="data-field">' + (employeeData.suffix || '') + '</div></td>' +
-                '</tr>' +
-                '<tr>' +
-                    '<td class="table-label">DATE OF BIRTH</td>' +
-                    '<td><div class="data-field">' + (employeeData.birthday || '') + '</div></td>' +
-                    '<td class="table-label">PLACE OF BIRTH</td>' +
-                    '<td><div class="data-field">' + (employeeData.birthPlace || '') + '</div></td>' +
-                '</tr>' +
-                '<tr>' +
-                    '<td class="table-label">RESIDENTIAL ADDRESS</td>' +
-                    '<td colspan="3"><div class="data-field">' + (employeeData.res_address || '') + '</div></td>' +
-                '</tr>' +
-                '<tr>' +
-                    '<td class="table-label">AGE</td>' +
-                    '<td><div class="data-field">' + (employeeData.age || '') + '</div></td>' +
-                    '<td class="table-label">ZIP CODE</td>' +
-                    '<td><div class="data-field">' + (employeeData.zip_code || '') + '</div></td>' +
-                '</tr>' +
-                '<tr>' +
-                    '<td class="table-label">GENDER</td>' +
-                    '<td><div class="data-field">' + (employeeData.gender || '') + '</div></td>' +
-                    '<td class="table-label">TELEPHONE NO.</td>' +
-                    '<td><div class="data-field">' + (employeeData.tel_no || '') + '</div></td>' +
-                '</tr>' +
-                '<tr>' +
-                    '<td class="table-label">CIVIL STATUS</td>' +
-                    '<td><div class="data-field">' + (employeeData.civil_status || '') + '</div></td>' +
-                    '<td class="table-label">CELLPHONE NO.</td>' +
-                    '<td><div class="data-field">' + (employeeData.contact || '') + '</div></td>' +
-                '</tr>' +
-                '<tr>' +
-                    '<td class="table-label">CITIZENSHIP</td>' +
-                    '<td><div class="data-field">' + (employeeData.citizenship || '') + '</div></td>' +
-                    '<td class="table-label">EMAIL ADDRESS</td>' +
-                    '<td><div class="data-field">' + (employeeData.email || '') + '</div></td>' +
-                '</tr>' +
-                '<tr>' +
-                    '<td class="table-label">RELIGION</td>' +
-                    '<td><div class="data-field">' + (employeeData.religion || '') + '</div></td>' +
-                    '<td class="table-label">PAG-IBIG NO.</td>' +
-                    '<td><div class="data-field">' + (employeeData.pagibig_no || '') + '</div></td>' +
-                '</tr>' +
-                '<tr>' +
-                    '<td class="table-label">HEIGHT (m)</td>' +
-                    '<td><div class="data-field">' + (employeeData.height || '') + '</div></td>' +
-                    '<td class="table-label">WEIGHT (kg)</td>' +
-                    '<td><div class="data-field">' + (employeeData.weight || '') + '</div></td>' +
-                '</tr>' +
-                '<tr>' +
-                    '<td class="table-label">PHILHEALTH NO.</td>' +
-                    '<td><div class="data-field">' + (employeeData.philhealth_no || '') + '</div></td>' +
-                    '<td class="table-label">BLOOD TYPE</td>' +
-                    '<td><div class="data-field">' + (employeeData.blood_type || '') + '</div></td>' +
-                '</tr>' +
-                '<tr>' +
-                    '<td class="table-label">SSS NO.</td>' +
-                    '<td><div class="data-field">' + (employeeData.sss_no || '') + '</div></td>' +
-                    '<td class="table-label">TIN NO.</td>' +
-                    '<td><div class="data-field">' + (employeeData.tin_no || '') + '</div></td>' +
-                '</tr>' +
-                '<tr>' +
-                    '<td class="table-label" style="font-size: 10pt;">IN CASE OF EMERGENCY CALL</td>' +
-                    '<td colspan="3"><div class="data-field">' + (employeeData.emergency_contact || '') + '</div></td>' +
-                '</tr>' +
-            '</table>' +
+        '<div style="margin-bottom: 15px;">' +
+        '<h1>REPUBLIC OF THE PHILIPPINES</h1>' +
+        '<div class="agency-line">' +
+        '<strong>CIVIL SERVICE COMMISSION</strong>' +
         '</div>' +
-        
+        '<h1>PERSONAL DATA SHEET</h1>' +
+        '</div>' +
+
+        '<div class="section-title">I. PERSONAL INFORMATION</div>' +
+        '<table class="print-table">' +
+        '<tr>' +
+        '<td width="20%" class="table-label">SURNAME</td>' +
+        '<td width="30%"><div class="data-field">' + (employeeData.lname || '') + '</div></td>' +
+        '<td width="20%" class="table-label">NICKNAME</td>' +
+        '<td width="30%"><div class="data-field">' + (employeeData.nickname || '') + '</div></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label">FIRST NAME</td>' +
+        '<td colspan="3"><div class="data-field">' + (employeeData.fname || '') + '</div></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label">MIDDLE NAME</td>' +
+        '<td><div class="data-field">' + (employeeData.mname || '') + '</div></td>' +
+        '<td class="table-label">NAME EXTENSION</td>' +
+        '<td><div class="data-field">' + (employeeData.suffix || '') + '</div></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label">DATE OF BIRTH</td>' +
+        '<td><div class="data-field">' + (employeeData.birthday || '') + '</div></td>' +
+        '<td class="table-label">PLACE OF BIRTH</td>' +
+        '<td><div class="data-field">' + (employeeData.birthPlace || '') + '</div></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label">RESIDENTIAL ADDRESS</td>' +
+        '<td colspan="3"><div class="data-field">' + (employeeData.res_address || '') + '</div></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label">AGE</td>' +
+        '<td><div class="data-field">' + (employeeData.age || '') + '</div></td>' +
+        '<td class="table-label">ZIP CODE</td>' +
+        '<td><div class="data-field">' + (employeeData.zip_code || '') + '</div></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label">GENDER</td>' +
+        '<td><div class="data-field">' + (employeeData.gender || '') + '</div></td>' +
+        '<td class="table-label">TELEPHONE NO.</td>' +
+        '<td><div class="data-field">' + (employeeData.tel_no || '') + '</div></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label">CIVIL STATUS</td>' +
+        '<td><div class="data-field">' + (employeeData.civil_status || '') + '</div></td>' +
+        '<td class="table-label">CELLPHONE NO.</td>' +
+        '<td><div class="data-field">' + (employeeData.contact || '') + '</div></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label">CITIZENSHIP</td>' +
+        '<td><div class="data-field">' + (employeeData.citizenship || '') + '</div></td>' +
+        '<td class="table-label">EMAIL ADDRESS</td>' +
+        '<td><div class="data-field">' + (employeeData.email || '') + '</div></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label">RELIGION</td>' +
+        '<td><div class="data-field">' + (employeeData.religion || '') + '</div></td>' +
+        '<td class="table-label">PAG-IBIG NO.</td>' +
+        '<td><div class="data-field">' + (employeeData.pagibig_no || '') + '</div></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label">HEIGHT (m)</td>' +
+        '<td><div class="data-field">' + (employeeData.height || '') + '</div></td>' +
+        '<td class="table-label">WEIGHT (kg)</td>' +
+        '<td><div class="data-field">' + (employeeData.weight || '') + '</div></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label">PHILHEALTH NO.</td>' +
+        '<td><div class="data-field">' + (employeeData.philhealth_no || '') + '</div></td>' +
+        '<td class="table-label">BLOOD TYPE</td>' +
+        '<td><div class="data-field">' + (employeeData.blood_type || '') + '</div></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label">SSS NO.</td>' +
+        '<td><div class="data-field">' + (employeeData.sss_no || '') + '</div></td>' +
+        '<td class="table-label">TIN NO.</td>' +
+        '<td><div class="data-field">' + (employeeData.tin_no || '') + '</div></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label" style="font-size: 10pt;">IN CASE OF EMERGENCY CALL</td>' +
+        '<td colspan="3"><div class="data-field">' + (employeeData.emergency_contact || '') + '</div></td>' +
+        '</tr>' +
+        '</table>' +
+        '</div>' +
+
         '<div class="print-section">' +
-            '<div class="section-title">II. FAMILY BACKGROUND</div>' +
-            '<table class="print-table">' +
-                '<thead>' +
-                    '<tr>' +
-                        '<th colspan="2">&nbsp;</th>' +
-                        '<th>NAME OF CHILD<br><small>(write full name & list all)</small></th>' +
-                        '<th>DATE OF BIRTH</th>' +
-                    '</tr>' +
-                '</thead>' +
-                '<tbody>' +
-                    generateChildrenRows(employeeData) +
-                    '<tr><td colspan="4" style="height: 10px; background-color: #fff;"></td></tr>' +
-                    generateParentsRows(employeeData) +
-                    '<tr class="table-label">' +
-                        '<th colspan="4">NAME OF BROTHER / SISTER<br><small>(write in full name & list all from eldest to youngest)</small></th>' +
-                    '</tr>' +
-                    generateSiblingsRows(employeeData) +
-                '</tbody>' +
-            '</table>' +
+        '<div class="section-title">II. FAMILY BACKGROUND</div>' +
+        '<table class="print-table">' +
+        '<thead>' +
+        '<tr>' +
+        '<th colspan="2">&nbsp;</th>' +
+        '<th>NAME OF CHILD<br><small>(write full name & list all)</small></th>' +
+        '<th>DATE OF BIRTH</th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tbody>' +
+        generateChildrenRows(employeeData) +
+        '<tr><td colspan="4" style="height: 10px; background-color: #fff;"></td></tr>' +
+        generateParentsRows(employeeData) +
+        '<tr class="table-label">' +
+        '<th colspan="4">NAME OF BROTHER / SISTER<br><small>(write in full name & list all from eldest to youngest)</small></th>' +
+        '</tr>' +
+        generateSiblingsRows(employeeData) +
+        '</tbody>' +
+        '</table>' +
         '</div>' +
-        
+
         '<div class="print-section">' +
-            '<div class="section-title">III. EDUCATIONAL BACKGROUND</div>' +
-            '<table class="print-table">' +
-                '<thead>' +
-                    '<tr>' +
-                        '<th>LEVEL</th>' +
-                        '<th>NAME OF SCHOOL</th>' +
-                        '<th>DEGREE / COURSE</th>' +
-                        '<th>SCHOOL ADDRESS</th>' +
-                        '<th>YEAR GRADUATED</th>' +
-                    '</tr>' +
-                '</thead>' +
-                '<tbody>' +
-                    generateEducationRows(employeeData) +
-                '</tbody>' +
-            '</table>' +
+        '<div class="section-title">III. EDUCATIONAL BACKGROUND</div>' +
+        '<table class="print-table">' +
+        '<thead>' +
+        '<tr>' +
+        '<th>LEVEL</th>' +
+        '<th>NAME OF SCHOOL</th>' +
+        '<th>DEGREE / COURSE</th>' +
+        '<th>SCHOOL ADDRESS</th>' +
+        '<th>YEAR GRADUATED</th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tbody>' +
+        generateEducationRows(employeeData) +
+        '</tbody>' +
+        '</table>' +
         '</div>' +
-        
+
         '<div class="print-section">' +
-            '<div class="section-title">IV. WORK EXPERIENCE</div>' +
-            '<table class="print-table">' +
-                '<thead>' +
-                    '<tr>' +
-                        '<th>Inclusive Dates<br><small>(mm/dd/yyyy)</small></th>' +
-                        '<th>Position Title<br><small>(write in full)</small></th>' +
-                        '<th>Dept. / Agency / Office / Company<br><small>(write in full)</small></th>' +
-                        '<th>Monthly Salary</th>' +
-                    '</tr>' +
-                '</thead>' +
-                '<tbody>' +
-                    generateWorkExperienceRows(employeeData) +
-                '</tbody>' +
-            '</table>' +
+        '<div class="section-title">IV. WORK EXPERIENCE</div>' +
+        '<table class="print-table">' +
+        '<thead>' +
+        '<tr>' +
+        '<th>Inclusive Dates<br><small>(mm/dd/yyyy)</small></th>' +
+        '<th>Position Title<br><small>(write in full)</small></th>' +
+        '<th>Dept. / Agency / Office / Company<br><small>(write in full)</small></th>' +
+        '<th>Monthly Salary</th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tbody>' +
+        generateWorkExperienceRows(employeeData) +
+        '</tbody>' +
+        '</table>' +
         '</div>' +
-        
+
         '<div class="print-section">' +
-            '<div class="section-title">V. SEMINARS / WORKSHOPS / TRAININGS ATTENDED</div>' +
-            '<table class="print-table">' +
-                '<thead>' +
-                    '<tr>' +
-                        '<th>Inclusive Dates</th>' +
-                        '<th>Title of Seminar / Training</th>' +
-                        '<th>Place</th>' +
-                    '</tr>' +
-                '</thead>' +
-                '<tbody>' +
-                    generateSeminarRows(employeeData) +
-                '</tbody>' +
-            '</table>' +
+        '<div class="section-title">V. SEMINARS / WORKSHOPS / TRAININGS ATTENDED</div>' +
+        '<table class="print-table">' +
+        '<thead>' +
+        '<tr>' +
+        '<th>Inclusive Dates</th>' +
+        '<th>Title of Seminar / Training</th>' +
+        '<th>Place</th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tbody>' +
+        generateSeminarRows(employeeData) +
+        '</tbody>' +
+        '</table>' +
         '</div>' +
-        
+
         '<div class="print-section">' +
-            '<div class="section-title">VI. OTHERS</div>' +
-            '<table class="print-table">' +
-                '<tbody>' +
-                    '<tr>' +
-                        '<td width="25%" class="table-label">What are your special skills / hobbies?</td>' +
-                        '<td colspan="3"><div class="data-field">' + (employeeData.special_skills || '') + '</div></td>' +
-                    '</tr>' +
-                    '<tr>' +
-                        '<td class="table-label">Do you own / rent the house you live in?</td>' +
-                        '<td colspan="3">' +
-                            '<div class="data-field">' +
-                                (employeeData.house_status ? employeeData.house_status.toUpperCase() : '') +
-                                (employeeData.rental_amount ? ' - PHP ' + employeeData.rental_amount : '') +
-                            '</div>' +
-                        '</td>' +
-                    '</tr>' +
-                    '<tr>' +
-                        '<td class="table-label">Type of House</td>' +
-                        '<td colspan="3"><div class="data-field">' + formatHouseType(employeeData.house_type) + '</div></td>' +
-                    '</tr>' +
-                    '<tr>' +
-                        '<td class="table-label">Who stays with you at home?<br><small>(State number of persons & relationship)</small></td>' +
-                        '<td colspan="3"><div class="data-field">' + (employeeData.household_members || '') + '</div></td>' +
-                    '</tr>' +
-                '</tbody>' +
-            '</table>' +
+        '<div class="section-title">VI. OTHERS</div>' +
+        '<table class="print-table">' +
+        '<tbody>' +
+        '<tr>' +
+        '<td width="25%" class="table-label">What are your special skills / hobbies?</td>' +
+        '<td colspan="3"><div class="data-field">' + (employeeData.special_skills || '') + '</div></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label">Do you own / rent the house you live in?</td>' +
+        '<td colspan="3">' +
+        '<div class="data-field">' +
+        (employeeData.house_status ? employeeData.house_status.toUpperCase() : '') +
+        (employeeData.rental_amount ? ' - PHP ' + employeeData.rental_amount : '') +
         '</div>' +
-        
+        '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label">Type of House</td>' +
+        '<td colspan="3"><div class="data-field">' + formatHouseType(employeeData.house_type) + '</div></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label">Who stays with you at home?<br><small>(State number of persons & relationship)</small></td>' +
+        '<td colspan="3"><div class="data-field">' + (employeeData.household_members || '') + '</div></td>' +
+        '</tr>' +
+        '</tbody>' +
+        '</table>' +
+        '</div>' +
+
         '<div class="print-section">' +
-            '<div class="section-title">DECLARATION AND SIGNATURE</div>' +
-            '<div class="declaration">' +
-                'I declare under oath that this Personal Data Sheet has been accomplished by me,' +
-                'and is a true, correct and complete statement pursuant to the provisions of' +
-                'pertinent laws, rules and regulations of the Republic of the Philippines.<br>' +
-                'I also authorize the head/authorized representative to verify/validate the contents' +
-                'stated herein. I trust that this information shall remain confidential.' +
-            '</div>' +
-            '<table class="print-table">' +
-                '<tr>' +
-                    '<td width="40%" style="text-align: center;">' +
-                        '<div class="print-signature"></div>' +
-                        '<small>Signature (sign inside the box)</small>' +
-                    '</td>' +
-                    '<td width="25%" style="text-align: center;">' +
-                        '<div class="print-signature"></div>' +
-                        '<small>Right Thumbmark</small>' +
-                    '</td>' +
-                    '<td width="25%" style="text-align: center;">' +
-                        '<div class="print-signature"></div>' +
-                        '<small>Left Thumbmark</small>' +
-                    '</td>' +
-                    '<td width="10%" style="text-align: center;">' +
-                        '<div class="print-photo-box">PHOTO<br>2"x2"</div>' +
-                    '</td>' +
-                '</tr>' +
-                '<tr>' +
-                    '<td class="table-label">Date Accomplished</td>' +
-                    '<td colspan="3"><div class="data-field">' + (employeeData.date_accomplished || '') + '</div></td>' +
-                '</tr>' +
-            '</table>' +
+        '<div class="section-title">DECLARATION AND SIGNATURE</div>' +
+        '<div class="declaration">' +
+        'I declare under oath that this Personal Data Sheet has been accomplished by me,' +
+        'and is a true, correct and complete statement pursuant to the provisions of' +
+        'pertinent laws, rules and regulations of the Republic of the Philippines.<br>' +
+        'I also authorize the head/authorized representative to verify/validate the contents' +
+        'stated herein. I trust that this information shall remain confidential.' +
         '</div>' +
-        
+        '<table class="print-table">' +
+        '<tr>' +
+        '<td width="40%" style="text-align: center;">' +
+        '<div class="print-signature"></div>' +
+        '<small>Signature (sign inside the box)</small>' +
+        '</td>' +
+        '<td width="25%" style="text-align: center;">' +
+        '<div class="print-signature"></div>' +
+        '<small>Right Thumbmark</small>' +
+        '</td>' +
+        '<td width="25%" style="text-align: center;">' +
+        '<div class="print-signature"></div>' +
+        '<small>Left Thumbmark</small>' +
+        '</td>' +
+        '<td width="10%" style="text-align: center;">' +
+        '<div class="print-photo-box">PHOTO<br>2"x2"</div>' +
+        '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td class="table-label">Date Accomplished</td>' +
+        '<td colspan="3"><div class="data-field">' + (employeeData.date_accomplished || '') + '</div></td>' +
+        '</tr>' +
+        '</table>' +
+        '</div>' +
+
         '<div class="footer-note">' +
-            'Generated on: ' + now.toLocaleDateString() + ' ' + now.toLocaleTimeString() + ' | CS Form No. 212, Revised 2017 - Personal Data Sheet ' +
+        'Generated on: ' + now.toLocaleDateString() + ' ' + now.toLocaleTimeString() +
+        ' | CS Form No. 212, Revised 2017 - Personal Data Sheet ' +
         '</div>' +
-    '</body>' +
-    '</html>';
-    
+        '</body>' +
+        '</html>';
+
     const printWindow = window.open('', '_blank', 'width=1200,height=800');
     printWindow.document.open();
     printWindow.document.write(printContent);

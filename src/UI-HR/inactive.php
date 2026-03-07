@@ -16,9 +16,6 @@
             <img src="../../assets/image/system_logo/pueri-logo.png" class="me-2" style="height: auto; width: 50px;">
             <h2 class="m-0 d-flex align-items-center fw-bold">Zamboanga Puericulture Center</h2>
         </div>  
-        <div class="col-md-3 d-flex justify-content-end">
-            <a href="inactive_workHistory.php?employee_id=<?= $_SESSION['hrData']['employee_id'] ?>"><button class="btn btn-info m-0 fw-bold me-3 text-white">Work History</button></a>
-        </div>
     </div>
     <div class="d-flex flex-column justify-content-center align-items-center" style="width: 100vw; height: 85vh; overflow-hidden;">
         <strong class="text-center">Your account have been Deactivated for some reason, <br> please ask the admin for clarification</strong>

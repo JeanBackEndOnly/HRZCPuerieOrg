@@ -31,7 +31,7 @@
         <small class="text-muted ">Manage employee schedules</small>
     </div>
 </div>
-<main class="col-md-12 d-flex justify-content-start align-items-start">
+<main class="col-md-12 col-12 d-flex justify-content-start align-items-start" style="overflow-x: hidden; flex-wrap: wrap !important;">
     <div class="column p-2 m-0 rounded-2 col-12 col-md-3 col-12">
         <div class="card rounded-2">
             <div class="d-flex flex-column w-100 align-items-center justify-content-center p-2">
@@ -68,11 +68,11 @@
             <!-- NAVIAGATIONS OF TABS -->
             <div class="card-body col-md-12 col-12 d-flex justify-content-between pb-4">
                 <ul class="nav nav-tabs col-md-8 col-12" id="SchedTabs">
-                    <li class="nav-item cursor-pointer col-md-6">
+                    <li class="nav-item cursor-pointer col-6 col-md-6">
                         <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Active">
                             <i class="fa-solid fa-calendar-days me-2"></i>Current Schedules</a>
                     </li>
-                    <li class="nav-item cursor-pointer col-md-6">
+                    <li class="nav-item cursor-pointer col-6 col-md-6">
                         <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Inactive">
                             <i class="fa-solid fa-calendar me-2"></i>Upcoming Schedules</a>
                     </li>

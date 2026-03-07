@@ -497,7 +497,6 @@
                                     <td>To Position</td>
                                     <td>Type</td>
                                     <td>Date</td>
-                                    <td>Action</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -508,10 +507,6 @@
                                     <td><?= $career["job_to"] ?></td>
                                     <td><?= $career["job_status"] ?></td>
                                     <td><?= date('M d Y', strtotime($career["addAt"])) ?></td>
-                                    <td>
-                                        <button class="btn btn-danger btn-sm m-0 my-2 mx-3"><i
-                                                class="fa-solid fa-print me-2"></i>Print</button>
-                                    </td>
                                 </tr>
                                 <?php endforeach; 
                                     }else{ ?>
@@ -520,10 +515,6 @@
                                     <td><?= $hr_data["jobTitle"] ?></td>
                                     <td>Current</td>
                                     <td><?= $hr_data["joined_at"] ?></td>
-                                    <td>
-                                        <button class="btn btn-danger btn-sm m-0 my-2 mx-3"><i
-                                                class="fa-solid fa-print me-2"></i>Print</button>
-                                    </td>
                                 </tr>
                                 <?php } ?>
                             </tbody>

@@ -40,9 +40,6 @@
             <a href="index.php?page=contents/leave" class="nav-item nav-leave my-0">
                 <span class=""><i class="fa-solid fa-calendar"></i></span> Leave Request
             </a>
-            <a href="index.php?page=contents/payroll" class="nav-item nav-payroll my-0">
-                <span class=""><i class=""></i></span> Payslip
-            </a>
             <a href="index.php?page=contents/201" class="nav-item nav-201 my-0">
                 <span class=""><i class="fa-solid fa-file-pdf"></i></span> 201 Files
             </a>

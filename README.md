@@ -1,12 +1,7 @@
 Zamboanga Puericulture Center
 A Digital HR Record Management System for Puericulture Organizations
 
-https://img.shields.io/badge/PHP-7.4%252B-777BB4?style=flat&logo=php
-https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat&logo=mysql
-https://img.shields.io/badge/Bootstrap-5.0-7952B3?style=flat&logo=bootstrap
-https://img.shields.io/badge/jQuery-3.6-0769AD?style=flat&logo=jquery
-
-📋 Overview
+(Overview)
 ZClient is a vanilla PHP-based HR management system designed specifically for puericulture organizations. It replaces manual paper-based employee record keeping with a digital solution that prevents data loss, streamlines leave tracking, and automates email notifications.
 
 The Problem It Solves
@@ -15,7 +10,8 @@ Lost or misplaced 201 files	Centralized digital document storage
 Manual leave tracking	Automated leave balance calculation
 No backup for paper documents	Database-backed persistent storage
 Slow HR response time	Instant email notifications via PHPMailer
-✨ Features
+
+(Features)
 Employee Management
 Digital storage of employee 201 files
 
@@ -42,7 +38,7 @@ Prevents misplacement of critical records
 
 Reduces manual HR data entry
 
-🛠️ Tech Stack
+(Tech Stack)
 Technology	Purpose
 PHP (Vanilla)	Backend logic and server-side processing
 MySQL	Database storage for employee records and leaves
